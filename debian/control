@@ -1,0 +1,13 @@
+Source: proxmox-widget-toolkit
+Section: web
+Priority: optional
+Maintainer: Proxmox Support Team <support@proxmox.com>
+Build-Depends: debhelper (>= 9)
+Standards-Version: 3.9.5
+Homepage: http://www.proxmox.com
+
+Package: proxmox-widget-toolkit
+Architecture: all
+Depends: ${misc:Depends}
+Description: ExtJS Helper Classes for Proxmox 
+ ExtJS Helper Classes to easy access to Proxmox APIs.
