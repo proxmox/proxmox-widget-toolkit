@@ -183,7 +183,7 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     },
-			  
+
     singleton: true,
     constructor: function() {
 	var me = this;
