@@ -5,8 +5,8 @@ Ext.ns('Proxmox.Setup');
 function gettext(buf) { return buf; }
 
 
-if (!Ext.isDefined(Proxmox.Setup.auth_cookie)) {
-    trow "Proxmox library not initialize";
+if (!Ext.isDefined(Proxmox.Setup.auth_cookie_name)) {
+    throw "Proxmox library not initialized";
 }
 
 // avoid errors related to Accessible Rich Internet Applications
