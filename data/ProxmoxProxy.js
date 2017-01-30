@@ -26,4 +26,12 @@ Ext.define('Proxmox.RestProxy', {
 
 	this.callParent([config]); 
     }
+}, function() {
+
+    Ext.define('KeyValue', {
+	extend: "Ext.data.Model",
+	fields: [ 'key', 'value' ],
+	idProperty: 'key'
+    });
+
 });

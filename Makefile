@@ -18,7 +18,12 @@ JSSRC=					\
 	data/UpdateStore.js		\
 	data/DiffStore.js		\
 	data/ObjectStore.js		\
-	data/TimezoneStore.js
+	data/TimezoneStore.js		\
+	grid/ObjectGrid.js		\
+	window/Edit.js			\
+	window/TaskViewer.js		\
+	node/TimeEdit.js		\
+	node/TimeView.js
 
 all:
 

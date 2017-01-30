@@ -182,6 +182,61 @@ Ext.define('Proxmox.Utils', { utilities: {
 	Ext.Ajax.request(newopts);
     },
 
+    assemble_field_data: function(values, data) {
+        if (Ext.isObject(data)) {
+	    Ext.Object.each(data, function(name, val) {
+		if (values.hasOwnProperty(name)) {
+                    var bucket = values[name];
+                    if (!Ext.isArray(bucket)) {
+                        bucket = values[name] = [bucket];
+                    }
+                    if (Ext.isArray(val)) {
+                        values[name] = bucket.concat(val);
+                    } else {
+                        bucket.push(val);
+                    }
+                } else {
+		    values[name] = val;
+                }
+            });
+	}
+    },
+
+    dialog_title: function(subject, create, isAdd) {
+	if (create) {
+	    if (isAdd) {
+		return gettext('Add') + ': ' + subject;
+	    } else {
+		return gettext('Create') + ': ' + subject;
+	    }
+	} else {
+	    return gettext('Edit') + ': ' + subject;
+	}
+    },
+
+    parse_task_upid: function(upid) {
+	var task = {};
+
+	var res = upid.match(/^UPID:(\S+):([0-9A-Fa-f]{8}):([0-9A-Fa-f]{8,9}):([0-9A-Fa-f]{8}):([^:\s]+):([^:\s]*):([^:\s]+):$/);
+	if (!res) {
+	    throw "unable to parse upid '" + upid + "'";
+	}
+	task.node = res[1];
+	task.pid = parseInt(res[2], 16);
+	task.pstart = parseInt(res[3], 16);
+	task.starttime = parseInt(res[4], 16);
+	task.type = res[5];
+	task.id = res[6];
+	task.user = res[7];
+
+	return task;
+    },
+
+    render_timestamp: function(value, metaData, record, rowIndex, colIndex, store) {
+	var servertime = new Date(value * 1000);
+	return Ext.Date.format(servertime, 'Y-m-d H:i:s');
+    },
+
     },
 
     singleton: true,
