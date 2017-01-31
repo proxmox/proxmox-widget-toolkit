@@ -24,6 +24,7 @@ JSSRC=					\
 	window/Edit.js			\
 	window/TaskViewer.js		\
 	node/Tasks.js			\
+	node/ServiceView.js		\
 	node/TimeEdit.js		\
 	node/TimeView.js
 

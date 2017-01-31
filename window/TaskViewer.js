@@ -50,7 +50,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 	var descr = Proxmox.Utils.format_task_description(task.type, task.id);
 
 	Ext.apply(me, {
-	    title: gettetx('Task') + ': ' + descr,
+	    title: gettext('Task') + ': ' + descr,
 	    width: 300,
 	    layout: 'auto',
 	    modal: true,
