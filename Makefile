@@ -23,6 +23,8 @@ JSSRC=					\
 	panel/LogView.js		\
 	window/Edit.js			\
 	window/TaskViewer.js		\
+	node/NetworkEdit.js		\
+	node/NetworkView.js		\
 	node/Tasks.js			\
 	node/ServiceView.js		\
 	node/TimeEdit.js		\

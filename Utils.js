@@ -41,6 +41,8 @@ Ext.define('Proxmox.Utils', { utilities: {
 
     // this singleton contains miscellaneous utilities
 
+    unknownText: gettext('Unknown'),
+
     authOK: function() {
 	return (Proxmox.UserName !== '') && Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
     },
@@ -212,6 +214,21 @@ Ext.define('Proxmox.Utils', { utilities: {
 	} else {
 	    return gettext('Edit') + ': ' + subject;
 	}
+    },
+
+    network_iface_types: {
+	eth: gettext("Network Device"),
+	bridge: 'Linux Bridge',
+	bond: 'Linux Bond',
+	OVSBridge: 'OVS Bridge',
+	OVSBond: 'OVS Bond',
+	OVSPort: 'OVS Port',
+	OVSIntPort: 'OVS IntPort'
+    },
+
+    render_network_iface_type: function(value) {
+	return Proxmox.Utils.network_iface_types[value] ||
+	    Proxmox.Utils.unknownText;
     },
 
     // you can override this to provide nicer task descriptions
