@@ -208,14 +208,14 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	    column1.push(
 		{
-		    xtype: 'pvetextfield',
+		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.create,
 		    fieldLabel: gettext('IP address'),
 		    vtype: 'IPAddress',
 		    name: 'address'
 		},
 		{
-		    xtype: 'pvetextfield',
+		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.create,
 		    fieldLabel: gettext('Subnet mask'),
 		    vtype: 'IPAddress',
@@ -240,21 +240,21 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    }
 		},
 		{
-		    xtype: 'pvetextfield',
+		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.create,
 		    fieldLabel: gettext('Gateway'),
 		    vtype: 'IPAddress',
 		    name: 'gateway'
 		},
 		{
-		    xtype: 'pvetextfield',
+		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.create,
 		    fieldLabel: gettext('IPv6 address'),
 		    vtype: 'IP6Address',
 		    name: 'address6'
 		},
 		{
-		    xtype: 'pvetextfield',
+		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.create,
 		    fieldLabel: gettext('Prefix length'),
 		    vtype: 'IP6PrefixLength',
@@ -281,7 +281,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    }
 		},
 		{
-		    xtype: 'pvetextfield',
+		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.create,
 		    fieldLabel: gettext('Gateway'),
 		    vtype: 'IP6Address',

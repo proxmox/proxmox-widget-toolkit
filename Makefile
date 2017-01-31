@@ -19,6 +19,7 @@ JSSRC=					\
 	data/DiffStore.js		\
 	data/ObjectStore.js		\
 	data/TimezoneStore.js		\
+	form/TextField.js		\
 	grid/ObjectGrid.js		\
 	panel/InputPanel.js		\
 	panel/LogView.js		\
