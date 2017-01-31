@@ -12,6 +12,7 @@ WWWBASEDIR=${DESTDIR}/usr/share/javascript/${PACKAGE}
 
 JSSRC=					\
 	Utils.js			\
+	Toolkit.js			\
 	data/reader/JsonObject.js	\
 	data/ProxmoxProxy.js		\
 	data/UpdateQueue.js		\
