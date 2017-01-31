@@ -8,11 +8,6 @@ Ext.define('Proxmox.node.Tasks', {
     sortableColumns: false,
     vmidFilter: 0,
 
-    render_upid: function(upid) {
-	var task = Proxmox.Utils.parse_task_upid(upid);
-	return task.type + ' ' + task.id;
-    },
-
     initComponent : function() {
 	var me = this;
 
@@ -147,7 +142,7 @@ Ext.define('Proxmox.node.Tasks', {
 		    header: gettext("Description"),
 		    dataIndex: 'upid',
 		    flex: 1,
-		    renderer: me.render_upid
+		    renderer: Proxmox.Utils.render_upid
 		},
 		{
 		    header: gettext("Status"),

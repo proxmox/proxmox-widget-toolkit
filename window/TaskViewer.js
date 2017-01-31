@@ -47,11 +47,10 @@ Ext.define('Proxmox.window.TaskProgress', {
 	    }
 	});
 
-	// fixme: ??
-	//var descr = Proxmox.Utils.format_task_description(task.type, task.id);
+	var descr = Proxmox.Utils.format_task_description(task.type, task.id);
 
 	Ext.apply(me, {
-	    title: "Task: " + me.upid,
+	    title: gettetx('Task') + ': ' + descr,
 	    width: 300,
 	    layout: 'auto',
 	    modal: true,
@@ -203,8 +202,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	statstore.startUpdate();
 
 	Ext.apply(me, {
-	    // fixme: better title
-	    title: "Task viewer: " + me.upid,
+	    title: "Task viewer: " + task.desc,
 	    width: 800,
 	    height: 400,
 	    layout: 'fit',

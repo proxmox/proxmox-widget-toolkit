@@ -214,6 +214,18 @@ Ext.define('Proxmox.Utils', { utilities: {
 	}
     },
 
+    // you can override this to provide nicer task descriptions
+    format_task_description: function(type, id) {
+	return type + ' ' + id;
+    },
+
+    render_upid: function(value, metaData, record) {
+	var type = record.data.type;
+	var id = record.data.id;
+
+	return Proxmox.Utils.format_task_description(type, id);
+    },
+
     parse_task_upid: function(upid) {
 	var task = {};
 
@@ -228,6 +240,8 @@ Ext.define('Proxmox.Utils', { utilities: {
 	task.type = res[5];
 	task.id = res[6];
 	task.user = res[7];
+
+	task.desc = Proxmox.Utils.format_task_description(task.type, task.id);
 
 	return task;
     },
