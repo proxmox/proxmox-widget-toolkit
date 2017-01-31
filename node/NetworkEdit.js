@@ -45,7 +45,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	if (!(me.iftype === 'OVSIntPort' || me.iftype === 'OVSPort' ||
 	      me.iftype === 'OVSBond')) {
 	    column2.push({
-		xtype: 'pvecheckbox',
+		xtype: 'proxmoxcheckbox',
 		fieldLabel: gettext('Autostart'),
 		name: 'autostart',
 		uncheckedValue: 0,
@@ -55,7 +55,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	if (me.iftype === 'bridge') {
 	    column2.push({
-		xtype: 'pvecheckbox',
+		xtype: 'proxmoxcheckbox',
 		fieldLabel: gettext('VLAN aware'),
 		name: 'bridge_vlan_aware',
 		deleteEmpty: !me.create
