@@ -20,6 +20,7 @@ JSSRC=					\
 	data/ObjectStore.js		\
 	data/TimezoneStore.js		\
 	grid/ObjectGrid.js		\
+	panel/InputPanel.js		\
 	panel/LogView.js		\
 	window/Edit.js			\
 	window/TaskViewer.js		\
