@@ -22,6 +22,7 @@ JSSRC=					\
 	grid/ObjectGrid.js		\
 	window/Edit.js			\
 	window/TaskViewer.js		\
+	node/Tasks.js			\
 	node/TimeEdit.js		\
 	node/TimeView.js
 
