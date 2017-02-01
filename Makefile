@@ -29,6 +29,8 @@ JSSRC=					\
 	window/TaskViewer.js		\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
+	node/DNSEdit.js			\
+	node/DNSView.js			\
 	node/Tasks.js			\
 	node/ServiceView.js		\
 	node/TimeEdit.js		\
