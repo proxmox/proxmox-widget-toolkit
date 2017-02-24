@@ -22,6 +22,48 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     disabled: false,
     hideHeaders: true,
 
+    editorConfig: {}, // default config passed to editor
+
+    run_editor: function() {
+	var me = this;
+
+	var sm = me.getSelectionModel();
+	var rec = sm.getSelection()[0];
+	if (!rec) {
+	    return;
+	}
+
+	var rows = me.rows;
+	var rowdef = rows[rec.data.key];
+	if (!rowdef.editor) {
+	    return;
+	}
+
+	var win;
+	var config;
+	if (Ext.isString(rowdef.editor)) {
+	    config = Ext.apply({
+		confid: rec.data.key,
+	    },  me.editorConfig);
+	    win = Ext.create(rowdef.editor, config);
+	} else {
+	    config = Ext.apply({
+		confid: rec.data.key,
+	    },  me.editorConfig);
+	    Ext.apply(config, rowdef.editor);
+	    win = Ext.createWidget(rowdef.editor.xtype, config);
+	    win.load();
+	}
+
+	win.show();
+	win.on('destroy', me.reload, me);
+    },
+
+    reload: function() {
+	var me = this;
+	me.rstore.load();
+    },
+
     getObjectValue: function(key, defaultValue) {
 	var me = this;
 	var rec = me.store.getById(key);
