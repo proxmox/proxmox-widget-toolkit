@@ -1,6 +1,6 @@
 Ext.define('Proxmox.form.field.Integer',{
     extend: 'Ext.form.field.Number',
-    alias: 'widget.pveintegerfield',
+    alias: 'widget.proxmoxintegerfield',
 
     allowDecimals: false,
     allowExponential: false,
