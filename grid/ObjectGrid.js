@@ -22,6 +22,66 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     disabled: false,
     hideHeaders: true,
 
+    rows: {},
+
+    add_boolean_row: function(name, text, opts) {
+	var me = this;
+
+	opts = opts || {};
+
+	var tm = new Ext.util.TextMetrics();
+
+	me.rows[name] = {
+	    required: true,
+	    defaultValue: opts.defaultValue || 0,
+	    header: text,
+	    renderer: opts.renderer || Proxmox.Utils.format_boolean,
+	    editor: {
+		xtype: 'proxmoxWindowEdit',
+		subject: text,
+		items: {
+		    xtype: 'proxmoxcheckbox',
+		    name: name,
+		    uncheckedValue: 0,
+		    defaultValue: opts.defaultValue  || 0,
+		    checked: opts.defaultValue ? true : false,
+		    deleteDefaultValue: opts.deleteDefaultValue ? true : false,
+		    labelWidth: opts.labelWidth || tm.getWidth(text + ':'),
+		    fieldLabel: text
+		}
+	    }
+	};
+    },
+
+    add_integer_row: function(name, text, opts) {
+	var me = this;
+
+	opts = opts || {}
+
+	var tm = new Ext.util.TextMetrics();
+
+	me.rows[name] = {
+	    required: true,
+	    defaultValue: opts.defaultValue,
+	    header: text,
+	    editor: {
+		xtype: 'proxmoxWindowEdit',
+		subject: text,
+		items: {
+		    xtype: 'proxmoxintegerfield',
+		    name: name,
+		    minValue: opts.minValue,
+		    maxValue: opts.maxValue,
+		    emptyText: gettext('Default'),
+		    deleteEmpty: true,
+		    value: opts.defaultValue,
+		    labelWidth: opts.labelWidth || tm.getWidth(text + ':'),
+		    fieldLabel: text
+		}
+	    }
+	};
+    },
+
     editorConfig: {}, // default config passed to editor
 
     run_editor: function() {

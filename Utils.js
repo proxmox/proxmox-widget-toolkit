@@ -75,6 +75,10 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return !value ? Proxmox.Utils.yesText : Proxmox.Utils.noText;
     },
 
+    format_enabled_toggle: function(value) {
+	return value ? Proxmox.Utils.enabledText : Proxmox.Utils.disabledText;
+    },
+
     authOK: function() {
 	return (Proxmox.UserName !== '') && Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
     },
