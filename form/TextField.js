@@ -1,4 +1,4 @@
-Ext.define('Proxmox.form.Textfield', {
+Ext.define('Proxmox.form.field.Textfield', {
     extend: 'Ext.form.field.Text',
     alias: ['widget.proxmoxtextfield'],
 
