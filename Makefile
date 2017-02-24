@@ -23,6 +23,7 @@ JSSRC=					\
 	form/TextField.js		\
 	form/Checkbox.js		\
 	grid/ObjectGrid.js		\
+	grid/PendingObjectGrid.js	\
 	panel/InputPanel.js		\
 	panel/LogView.js		\
 	window/Edit.js			\

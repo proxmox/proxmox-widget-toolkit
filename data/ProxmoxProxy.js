@@ -34,6 +34,12 @@ Ext.define('Proxmox.RestProxy', {
 	idProperty: 'key'
     });
 
+    Ext.define('KeyValuePendingDelete', {
+	extend: "Ext.data.Model",
+	fields: [ 'key', 'value', 'pending', 'delete' ],
+	idProperty: 'key'
+    });
+
     Ext.define('proxmox-tasks', {
 	extend: 'Ext.data.Model',
 	fields:  [
