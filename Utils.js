@@ -60,6 +60,20 @@ Ext.define('Proxmox.Utils', { utilities: {
     stateText: gettext('State'),
     groupText: gettext('Group'),
 
+    format_boolean_with_default: function(value) {
+	if (Ext.isDefined(value) && value !== '__default__') {
+	    return value ? Proxmox.Utils.yesText : Proxmox.Utils.noText;
+	}
+	return Proxmox.Utils.defaultText;
+    },
+
+    format_boolean: function(value) {
+	return value ? Proxmox.Utils.yesText : Proxmox.Utils.noText;
+    },
+
+    format_neg_boolean: function(value) {
+	return !value ? Proxmox.Utils.yesText : Proxmox.Utils.noText;
+    },
 
     authOK: function() {
 	return (Proxmox.UserName !== '') && Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
