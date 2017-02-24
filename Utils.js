@@ -41,7 +41,25 @@ Ext.define('Proxmox.Utils', { utilities: {
 
     // this singleton contains miscellaneous utilities
 
+    yesText: gettext('Yes'),
+    noText: gettext('No'),
+    enabledText: gettext('Enabled'),
+    disabledText: gettext('Disabled'),
+    noneText: gettext('none'),
+    errorText: gettext('Error'),
     unknownText: gettext('Unknown'),
+    defaultText: gettext('Default'),
+    daysText: gettext('days'),
+    dayText: gettext('day'),
+    runningText: gettext('running'),
+    stoppedText: gettext('stopped'),
+    neverText: gettext('never'),
+    totalText: gettext('Total'),
+    usedText: gettext('Used'),
+    directoryText: gettext('Directory'),
+    stateText: gettext('State'),
+    groupText: gettext('Group'),
+
 
     authOK: function() {
 	return (Proxmox.UserName !== '') && Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
