@@ -24,6 +24,32 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 
     rows: {},
 
+    add_text_row: function(name, text, opts) {
+	var me = this;
+
+	opts = opts || {};
+
+	me.rows[name] = {
+	    required: true,
+	    defaultValue: opts.defaultValue,
+	    header: text,
+	    renderer: opts.renderer,
+	    editor: {
+		xtype: 'proxmoxWindowEdit',
+		subject: text,
+		items: {
+		    xtype: 'proxmoxtextfield',
+		    name: name,
+		    deleteEmpty: true,
+		    emptyText: opts.defaultValue,
+		    labelWidth: Proxmox.Utils.compute_min_label_width(
+			text, opts.labelWidth),
+		    fieldLabel: text
+		}
+	    }
+	};
+    },
+
     add_boolean_row: function(name, text, opts) {
 	var me = this;
 
