@@ -22,12 +22,11 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     disabled: false,
     hideHeaders: true,
 
-    rows: {},
-
     add_text_row: function(name, text, opts) {
 	var me = this;
 
 	opts = opts || {};
+	me.rows = me.rows || {};
 
 	me.rows[name] = {
 	    required: true,
@@ -54,6 +53,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	var me = this;
 
 	opts = opts || {};
+	me.rows = me.rows || {};
 
 	me.rows[name] = {
 	    required: true,
@@ -82,6 +82,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	var me = this;
 
 	opts = opts || {}
+	me.rows = me.rows || {};
 
 	me.rows[name] = {
 	    required: true,
