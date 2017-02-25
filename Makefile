@@ -23,6 +23,7 @@ JSSRC=					\
 	form/IntegerField.js		\
 	form/TextField.js		\
 	form/Checkbox.js		\
+	form/KVComboBox.js		\
 	grid/ObjectGrid.js		\
 	grid/PendingObjectGrid.js	\
 	panel/InputPanel.js		\
