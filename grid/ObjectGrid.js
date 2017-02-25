@@ -29,8 +29,6 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 
 	opts = opts || {};
 
-	var tm = new Ext.util.TextMetrics();
-
 	me.rows[name] = {
 	    required: true,
 	    defaultValue: opts.defaultValue || 0,
@@ -46,7 +44,8 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    defaultValue: opts.defaultValue  || 0,
 		    checked: opts.defaultValue ? true : false,
 		    deleteDefaultValue: opts.deleteDefaultValue ? true : false,
-		    labelWidth: opts.labelWidth || tm.getWidth(text + ':'),
+		    labelWidth: Proxmox.Utils.compute_min_label_width(
+			text, opts.labelWidth),
 		    fieldLabel: text
 		}
 	    }
@@ -57,8 +56,6 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	var me = this;
 
 	opts = opts || {}
-
-	var tm = new Ext.util.TextMetrics();
 
 	me.rows[name] = {
 	    required: true,
@@ -75,7 +72,8 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    emptyText: gettext('Default'),
 		    deleteEmpty: true,
 		    value: opts.defaultValue,
-		    labelWidth: opts.labelWidth || tm.getWidth(text + ':'),
+		    labelWidth: Proxmox.Utils.compute_min_label_width(
+			text, opts.labelWidth),
 		    fieldLabel: text
 		}
 	    }

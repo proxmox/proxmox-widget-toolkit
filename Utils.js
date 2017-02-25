@@ -79,6 +79,16 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return value ? Proxmox.Utils.enabledText : Proxmox.Utils.disabledText;
     },
 
+    compute_min_label_width: function(text, width) {
+
+	if (width === undefined) { width = 100; }
+
+	var tm = new Ext.util.TextMetrics();
+	var min = tm.getWidth(text + ':');
+
+	return min < width ? width : min;
+    },
+
     authOK: function() {
 	return (Proxmox.UserName !== '') && Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
     },
