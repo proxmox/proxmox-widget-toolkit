@@ -74,6 +74,42 @@ Ext.define('Proxmox.panel.InputPanel', {
 		}
 	    ];
 	    me.items = undefined;
+	} else if (me.column4) {
+	    me.columns = 4;
+	    items = [
+		{
+		    columnWidth: 0.25,
+		    padding: '0 10 0 0',
+		    layout: 'anchor',
+		    items: me.column1
+		},
+		{
+		    columnWidth: 0.25,
+		    padding: '0 10 0 0',
+		    layout: 'anchor',
+		    items: me.column2
+		},
+		{
+		    columnWidth: 0.25,
+		    padding: '0 10 0 0',
+		    layout: 'anchor',
+		    items: me.column3
+		},
+		{
+		    columnWidth: 0.25,
+		    padding: '0 0 0 10',
+		    layout: 'anchor',
+		    items: me.column4
+		}
+	    ];
+	    if (me.columnB) {
+		items.push({
+		    columnWidth: 1,
+		    padding: '10 0 0 0',
+		    layout: 'anchor',
+		    items: me.columnB
+		});
+	    }
 	} else if (me.column1) {
 	    me.columns = 2;
 	    items = [
