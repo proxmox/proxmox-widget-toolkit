@@ -22,6 +22,35 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     disabled: false,
     hideHeaders: true,
 
+    add_combobox_row: function(name, text, opts) {
+	var me = this;
+
+	opts = opts || {};
+	me.rows = me.rows || {};
+
+	me.rows[name] = {
+	    required: true,
+	    defaultValue: opts.defaultValue,
+	    header: text,
+	    renderer: opts.renderer,
+	    editor: {
+		xtype: 'proxmoxWindowEdit',
+		subject: text,
+		items: {
+		    xtype: 'proxmoxKVComboBox',
+		    name: name,
+		    comboItems: opts.comboItems,
+		    value: opts.defaultValue,
+		    deleteEmpty: opts.deleteEmpty ? true : false,
+		    emptyText: opts.defaultValue,
+		    labelWidth: Proxmox.Utils.compute_min_label_width(
+			text, opts.labelWidth),
+		    fieldLabel: text
+		}
+	    }
+	};
+    },
+
     add_text_row: function(name, text, opts) {
 	var me = this;
 
@@ -39,7 +68,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		items: {
 		    xtype: 'proxmoxtextfield',
 		    name: name,
-		    deleteEmpty: true,
+		    deleteEmpty: opts.deleteEmpty ? true : false,
 		    emptyText: opts.defaultValue,
 		    labelWidth: Proxmox.Utils.compute_min_label_width(
 			text, opts.labelWidth),
@@ -97,7 +126,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    minValue: opts.minValue,
 		    maxValue: opts.maxValue,
 		    emptyText: gettext('Default'),
-		    deleteEmpty: true,
+		    deleteEmpty: opts.deleteEmpty ? true : false,
 		    value: opts.defaultValue,
 		    labelWidth: Proxmox.Utils.compute_min_label_width(
 			text, opts.labelWidth),
