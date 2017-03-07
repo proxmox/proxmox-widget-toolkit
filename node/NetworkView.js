@@ -45,6 +45,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		failure: function(response, opts) {
 		    changeitem.update(gettext('Error') + ': ' + response.htmlStatus);
 		    store.loadData({});
+		    changeitem.setHidden(true);
 		},
 		success: function(response, opts) {
 		    var result = Ext.decode(response.responseText);
@@ -52,8 +53,11 @@ Ext.define('Proxmox.node.NetworkView', {
 		    var changes = result.changes;
 		    if (changes === undefined || changes === '') {
 			changes = gettext("No changes");
+			changeitem.setHidden(true);
+		    } else {
+			changeitem.update("<pre>" + Ext.htmlEncode(changes) + "</pre>");
+			changeitem.setHidden(false);
 		    }
-		    changeitem.update("<pre>" + Ext.htmlEncode(changes) + "</pre>");
 		}
 	    });
 	};
@@ -326,6 +330,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    border: false,
 		    region: 'south',
 		    autoScroll: true,
+		    hidden: true,
 		    itemId: 'changes',
 		    tbar: [
 			gettext('Pending changes') + ' (' +
