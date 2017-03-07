@@ -131,7 +131,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    columns: [
 		{
 		    header: gettext('Name'),
-		    width: 100,
+		    flex: 1,
 		    sortable: true,
 		    dataIndex: 'name'
 		},
@@ -145,7 +145,7 @@ Ext.define('Proxmox.node.ServiceView', {
 		    header: gettext('Description'),
 		    renderer: Ext.String.htmlEncode,
 		    dataIndex: 'desc',
-		    flex: 1
+		    flex: 2
 		}
 	    ],
 	    listeners: {
