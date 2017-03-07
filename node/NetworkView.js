@@ -245,14 +245,13 @@ Ext.define('Proxmox.node.NetworkView', {
 		    columns: [
 			{
 			    header: gettext('Name'),
-			    width: 100,
 			    sortable: true,
 			    dataIndex: 'iface'
 			},
 			{
 			    header: gettext('Type'),
-			    width: 100,
 			    sortable: true,
+			    width: 120,
 			    renderer: Proxmox.Utils.render_network_iface_type,
 			    dataIndex: 'type'
 			},
@@ -284,6 +283,7 @@ Ext.define('Proxmox.node.NetworkView', {
 			{
 			    header: gettext('IP address'),
 			    sortable: true,
+			    width: 120,
 			    dataIndex: 'address',
 			    renderer: function(value, metaData, rec) {
 				if (rec.data.address && rec.data.address6) {
@@ -298,11 +298,13 @@ Ext.define('Proxmox.node.NetworkView', {
 			},
 			{
 			    header: gettext('Subnet mask'),
+			    width: 120,
 			    sortable: true,
 			    dataIndex: 'netmask'
 			},
 			{
 			    header: gettext('Gateway'),
+			    width: 120,
 			    sortable: true,
 			    dataIndex: 'gateway',
 			    renderer: function(value, metaData, rec) {
@@ -318,6 +320,7 @@ Ext.define('Proxmox.node.NetworkView', {
 			{
 			    header: gettext('Comment'),
 			    dataIndex: 'comments',
+			    flex: 1,
 			    renderer: Ext.String.htmlEncode
 			}
 		    ],
