@@ -63,7 +63,7 @@ install: proxmoxlib.js
 
 .PHONY: upload
 upload: ${DEB}
-	# fixme	tar cf - ${DEB} | ssh repoman@repo.proxmox.com upload
+	tar cf - ${DEB} | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg --dist stretch
 
 distclean: clean
 
