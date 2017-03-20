@@ -74,3 +74,42 @@ Ext.define('Proxmox.button.Button', {
 	}
     }
 });
+
+
+Ext.define('Proxmox.button.StdRemoveButton', {
+    extend: 'Proxmox.button.Button',
+    alias: 'widget.proxmoxStdRemoveButton',
+
+    text: gettext('Remove'),
+
+    disabled: true,
+
+    baseurl: undefined,
+
+    callback: function(options, success, response) {},
+
+    getRecordName: function(rec) { return rec.getId() },
+
+    confirmMsg: function (rec) {
+	var me = this;
+
+	var name = me.getRecordName(rec);
+	return Ext.String.format(
+	    gettext('Are you sure you want to remove entry {0}'),
+	    "'" + name + "'");
+    },
+
+    handler: function(btn, event, rec) {
+	var me = this;
+
+	Proxmox.Utils.API2Request({
+	    url: me.baseurl + '/' + rec.getId(),
+	    method: 'DELETE',
+	    waitMsgTarget: me.waitMsgTarget,
+	    callback: me.callback,
+	    failure: function (response, opts) {
+		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+	    }
+	});
+    }
+});
