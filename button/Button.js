@@ -86,6 +86,10 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
     baseurl: undefined,
 
+    getUrl: function(rec) {
+	return me.baseurl + '/' + rec.getId();
+    },
+
     callback: function(options, success, response) {},
 
     getRecordName: function(rec) { return rec.getId() },
@@ -103,7 +107,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 	var me = this;
 
 	Proxmox.Utils.API2Request({
-	    url: me.baseurl + '/' + rec.getId(),
+	    url: me.getUrl(rec),
 	    method: 'DELETE',
 	    waitMsgTarget: me.waitMsgTarget,
 	    callback: me.callback,
