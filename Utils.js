@@ -79,6 +79,13 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return value ? Proxmox.Utils.enabledText : Proxmox.Utils.disabledText;
     },
 
+    format_expire: function(date) {
+	if (!date) {
+	    return Proxmox.Utils.neverText;
+	}
+	return Ext.Date.format(date, "Y-m-d");
+    },
+
     compute_min_label_width: function(text, width) {
 
 	if (width === undefined) { width = 100; }
