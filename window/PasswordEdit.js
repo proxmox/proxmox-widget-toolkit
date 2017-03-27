@@ -38,6 +38,9 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	Ext.apply(me, {
 	    subject: gettext('Password'),
 	    url: '/api2/extjs/access/password',
+	    fieldDefaults: {
+		labelWidth: 120
+	    },
 	    items: [
 		pwfield, verifypw,
 		{
