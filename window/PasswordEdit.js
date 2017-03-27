@@ -1,5 +1,5 @@
-xt.define('Proxmox.window.PasswordEdit', {
-    extend: 'PVE.window.Edit',
+Ext.define('Proxmox.window.PasswordEdit', {
+    extend: 'Proxmox.window.Edit',
     alias: 'proxmoxWindowPasswordEdit',
 
     initComponent : function() {
