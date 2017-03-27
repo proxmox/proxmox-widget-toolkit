@@ -5,7 +5,7 @@
  * deleteEmpty: if set to true (default), an empty value received from the
  * comboBox will reset the property to its default value
  */
-Ext.define('proxmox.form.KVComboBox', {
+Ext.define('Proxmox.form.KVComboBox', {
     extend: 'Ext.form.field.ComboBox',
     alias: 'widget.proxmoxKVComboBox',
 
