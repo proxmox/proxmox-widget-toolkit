@@ -31,6 +31,7 @@ JSSRC=					\
 	panel/InputPanel.js		\
 	panel/LogView.js		\
 	window/Edit.js			\
+	window/PasswordEdit.js		\
 	window/TaskViewer.js		\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
