@@ -3,16 +3,16 @@
 Ext.define('Proxmox.window.Edit', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxWindowEdit',
- 
+
     resizable: false,
 
     // use this tio atimatically generate a title like
     // Create: <subject>
     subject: undefined,
 
-    // set create to true if you want a Create button (instead 
-    // OK and RESET) 
-    create: false, 
+    // set create to true if you want a Create button (instead
+    // OK and RESET)
+    create: false,
 
     // set to true if you want an Add button (instead of Create)
     isAdd: false,
@@ -65,7 +65,7 @@ Ext.define('Proxmox.window.Edit', {
                 }
             }
 	});
- 
+
 	Ext.Array.each(me.query('inputpanel'), function(panel) {
 	    panel.setValues(values);
 	});
@@ -120,7 +120,7 @@ Ext.define('Proxmox.window.Edit', {
 		    me.hide();
 
 		    var upid = response.result.data;
-		    var win = Ext.create('PVE.window.TaskProgress', { 
+		    var win = Ext.create('PVE.window.TaskProgress', {
 			upid: upid,
 			listeners: {
 			    destroy: function () {
@@ -204,6 +204,8 @@ Ext.define('Proxmox.window.Edit', {
 	    items: items
 	});
 
+	var inputPanel = me.formPanel.down('inputpanel');
+
 	var form = me.formPanel.getForm();
 
 	var submitText;
@@ -249,9 +251,9 @@ Ext.define('Proxmox.window.Edit', {
 	if (me.fieldDefaults && me.fieldDefaults.labelWidth) {
 	    colwidth += me.fieldDefaults.labelWidth - 100;
 	}
-	
 
-	var twoColumn = items[0].column1 || items[0].column2;
+	var twoColumn = inputPanel &&
+	    (inputPanel.column1 || inputPanel.column2);
 
 	if (me.subject && !me.title) {
 	    me.title = Proxmox.Utils.dialog_title(me.subject, me.create, me.isAdd);
@@ -263,7 +265,7 @@ Ext.define('Proxmox.window.Edit', {
 		me.buttons = [ submitBtn, resetBtn ];
 	}
 
-	if (items[0].onlineHelp) {
+	if (inputPanel && inputPanel.onlineHelp) {
 	    var helpButton = Ext.create('PVE.button.Help');
 	    me.buttons.unshift(helpButton, '->');
 	    Ext.GlobalEvents.fireEvent('pveShowHelp', items[0].onlineHelp);
