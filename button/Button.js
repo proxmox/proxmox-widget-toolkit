@@ -24,7 +24,9 @@ Ext.define('Proxmox.button.Button', {
         var me = this;
 
 	if (me.handler) {
-	    me.realHandler = me.handler;
+
+	    // Note: me.realHandler may be a string (see named scopes)
+	    var realHandler = me.handler;
 
 	    me.handler = function(button, event) {
 		var rec, msg;
@@ -50,17 +52,31 @@ Ext.define('Proxmox.button.Button', {
 			    if (btn !== 'yes') {
 				return;
 			    }
-			    me.realHandler(button, event, rec);
+			    Ext.callback(realHandler, me.scope, [button, event, rec], 0, me);
 			}
 		    });
 		} else {
-		    me.realHandler(button, event, rec);
+		    Ext.callback(realHandler, me.scope, [button, event, rec], 0, me);
 		}
 	    };
 	}
 
 	me.callParent();
 
+	if (!me.selModel) {
+	    var grid = me.up('grid');
+	    if (grid && grid.selModel) {
+		me.selModel = grid.selModel;
+		if (me.waitMsgTarget === true) {
+		    me.waitMsgTarget = grid;
+		}
+	    }
+	}
+
+	if (me.waitMsgTarget === true) {
+	    throw "unable to find waitMsgTarget"; // no grid found
+	}
+	
 	if (me.selModel) {
 
 	    me.mon(me.selModel, "selectionchange", function() {
@@ -92,6 +108,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 	return me.baseurl + '/' + rec.getId();
     },
 
+    // also works with names scopes
     callback: function(options, success, response) {},
 
     getRecordName: function(rec) { return rec.getId() },
@@ -112,7 +129,9 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 	    url: me.getUrl(rec),
 	    method: 'DELETE',
 	    waitMsgTarget: me.waitMsgTarget,
-	    callback: me.callback,
+	    callback: function(options, success, response) {
+		Ext.callback(me.callback, me.scope, [options, success, response], 0, me);
+	    },
 	    failure: function (response, opts) {
 		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 	    }
