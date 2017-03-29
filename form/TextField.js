@@ -2,9 +2,11 @@ Ext.define('Proxmox.form.field.Textfield', {
     extend: 'Ext.form.field.Text',
     alias: ['widget.proxmoxtextfield'],
 
-    skipEmptyText: true,
+    config: {
+	skipEmptyText: true,
 
-    deleteEmpty: false,
+	deleteEmpty: false,
+    },
 
     getSubmitData: function() {
         var me = this,
@@ -15,7 +17,7 @@ Ext.define('Proxmox.form.field.Textfield', {
             if (val !== null) {
                 data = {};
                 data[me.getName()] = val;
-            } else if (me.deleteEmpty) {
+            } else if (me.getDeleteEmpty()) {
 		data = {};
                 data['delete'] = me.getName();
 	    }
@@ -31,6 +33,6 @@ Ext.define('Proxmox.form.field.Textfield', {
 	    return value;
 	}
 
-	return me.skipEmptyText ? null: value;
+	return me.getSkipEmptyText() ? null: value;
     }
 });

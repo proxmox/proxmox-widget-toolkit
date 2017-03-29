@@ -9,7 +9,10 @@ Ext.define('Proxmox.form.KVComboBox', {
     extend: 'Ext.form.field.ComboBox',
     alias: 'widget.proxmoxKVComboBox',
 
-    deleteEmpty: true,
+    config: {
+	deleteEmpty: true
+    },
+
     comboItems: undefined,
     displayField: 'value',
     valueField: 'key',
@@ -25,7 +28,7 @@ Ext.define('Proxmox.form.KVComboBox', {
             if (val !== null && val !== '' && val !== '__default__') {
                 data = {};
                 data[me.getName()] = val;
-            } else if (me.deleteEmpty) {
+            } else if (me.getDeleteEmpty()) {
                 data = {};
                 data['delete'] = me.getName();
             }
