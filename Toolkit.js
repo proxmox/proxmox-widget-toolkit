@@ -190,6 +190,19 @@ Ext.define('Proxmox.Datepicker', {
     hideMode: 'visibility'
 });
 
+// ExtJS 6.0.1 has no get/setSubmitValue() (although you find it in the docs).
+Ext.define('Proxmox.form.field.Text', {
+    override: 'Ext.form.field.Text',
+
+    setSubmitValue: function(v) {
+	this.submitValue = v;
+    },
+
+    getSubmitValue: function(v) {
+	return this.submitValue;
+    }
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
