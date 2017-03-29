@@ -4,6 +4,9 @@ Ext.define('Proxmox.window.Edit', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxWindowEdit',
 
+    // autoLoad trigger a load() after component creation
+    autoLoad: false,
+
     resizable: false,
 
     // use this tio atimatically generate a title like
@@ -291,5 +294,9 @@ Ext.define('Proxmox.window.Edit', {
 	    me.isValid();
 	    me.suspendLayout = false;
 	});
+
+	if (me.autoLoad) {
+	    me.load();
+	}
     }
 });
