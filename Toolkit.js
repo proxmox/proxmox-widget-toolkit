@@ -124,7 +124,18 @@ Ext.apply(Ext.form.field.VTypes, {
 
 	return true;
     },
-    HostListText: gettext('Not a valid list of hosts')
+    HostListText: gettext('Not a valid list of hosts'),
+
+    password: function(val, field) {
+        if (field.initialPassField) {
+            var pwd = field.up('form').down(
+		'[name=' + field.initialPassField + ']');
+            return (val == pwd.getValue());
+        }
+        return true;
+    },
+
+    passwordText: gettext('Passwords do not match')
 });
 
 // ExtJs 5-6 has an issue with caching
