@@ -2,6 +2,45 @@ Ext.define('Proxmox.window.PasswordEdit', {
     extend: 'Proxmox.window.Edit',
     alias: 'proxmoxWindowPasswordEdit',
 
+    subject: gettext('Password'),
+
+    url: '/api2/extjs/access/password',
+
+    fieldDefaults: {
+	labelWidth: 120
+    },
+
+    items: [
+	{
+	    xtype: 'textfield',
+	    inputType: 'password',
+	    fieldLabel: gettext('Password'),
+	    minLength: 5,
+	    name: 'password',
+	    listeners: {
+                change: function(field){
+		    field.next().validate();
+                },
+                blur: function(field){
+		    field.next().validate();
+                }
+	    }
+	},
+	{
+	    xtype: 'textfield',
+	    inputType: 'password',
+	    fieldLabel: gettext('Confirm password'),
+	    name: 'verifypassword',
+	    vtype: 'password',
+	    initialPassField: 'password',
+	    submitValue: false
+	},
+	{
+	    xtype: 'hiddenfield',
+	    name: 'userid'
+	}
+    ],
+
     initComponent : function() {
 	var me = this;
 
@@ -9,48 +48,7 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	    throw "no userid specified";
 	}
 
-	var verifypw;
-	var pwfield;
-
-	var validate_pw = function() {
-	    if (verifypw.getValue() !== pwfield.getValue()) {
-		return gettext("Passwords does not match");
-	    }
-	    return true;
-	};
-
-	verifypw = Ext.createWidget('textfield', { 
-	    inputType: 'password',
-	    fieldLabel: gettext('Confirm password'), 
-	    name: 'verifypassword',
-	    submitValue: false,
-	    validator: validate_pw
-	});
-
-	pwfield = Ext.createWidget('textfield', { 
-	    inputType: 'password',
-	    fieldLabel: gettext('Password'), 
-	    minLength: 5,
-	    name: 'password',
-	    validator: validate_pw
-	});
-
-	Ext.apply(me, {
-	    subject: gettext('Password'),
-	    url: '/api2/extjs/access/password',
-	    fieldDefaults: {
-		labelWidth: 120
-	    },
-	    items: [
-		pwfield, verifypw,
-		{
-		    xtype: 'hiddenfield',
-		    name: 'userid',
-		    value: me.userid
-		}
-	    ]
-	});
-
 	me.callParent();
+	me.down('[name=userid]').setValue(me.userid);
     }
 });
