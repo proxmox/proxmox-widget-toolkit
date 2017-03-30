@@ -16,6 +16,7 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	    inputType: 'password',
 	    fieldLabel: gettext('Password'),
 	    minLength: 5,
+	    allowBlank: false,
 	    name: 'password',
 	    listeners: {
                 change: function(field){
@@ -31,6 +32,7 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	    inputType: 'password',
 	    fieldLabel: gettext('Confirm password'),
 	    name: 'verifypassword',
+	    allowBlank: false,
 	    vtype: 'password',
 	    initialPassField: 'password',
 	    submitValue: false
