@@ -36,13 +36,13 @@ Ext.define('Proxmox.Mixin.CBind', {
 		cdata = cbind[prop];
 
 		found = false;
-		if (match = /^\{(!)?([a-z_][a-z0-9_]*)\}$/.exec(cdata)) {
+		if (match = /^\{(!)?([a-z_][a-z0-9_]*)\}$/i.exec(cdata)) {
 		    var cvalue = getConfigValue(match[2]);
 		    if (match[1]) cvalue = !cvalue;
 		    obj[prop] = cvalue;
 		    found = true;
 		} else {
-		    obj[prop] = cdata.replace(/{([a-z_][a-z0-9_]*)\}/g, function(match, cname) {
+		    obj[prop] = cdata.replace(/{([a-z_][a-z0-9_]*)\}/ig, function(match, cname) {
 			var cvalue = getConfigValue(cname);
 			found = true;
 			return cvalue;
