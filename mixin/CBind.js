@@ -83,11 +83,8 @@ Ext.define('Proxmox.Mixin.CBind', {
 			applyCBind(elcopy);
 		    }
 		    copy.push(elcopy);
-		} else if (el.constructor == Object && el.xtype) {
-		    elcopy = cloneTemplateObject(el);
-		    if (elcopy.cbind) {
-			applyCBind(elcopy);
-		    }
+		} else if (el.constructor == Array) {
+		    elcopy = cloneTemplateArray(el);
 		    copy.push(elcopy);
 		} else {
 		    copy.push(el);
