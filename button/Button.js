@@ -63,18 +63,20 @@ Ext.define('Proxmox.button.Button', {
 
 	me.callParent();
 
-	if (!me.selModel) {
+	if (!me.selModel && me.selModel !== null) {
 	    var grid = me.up('grid');
 	    if (grid && grid.selModel) {
 		me.selModel = grid.selModel;
-		if (me.waitMsgTarget === true) {
-		    me.waitMsgTarget = grid;
-		}
 	    }
 	}
 
 	if (me.waitMsgTarget === true) {
-	    throw "unable to find waitMsgTarget"; // no grid found
+	    var grid = me.up('grid');
+	    if (grid) {
+		me.waitMsgTarget = grid;
+	    } else {
+		throw "unable to find waitMsgTarget";
+	    }
 	}
 	
 	if (me.selModel) {
