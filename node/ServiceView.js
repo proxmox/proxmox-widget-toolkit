@@ -39,6 +39,22 @@ Ext.define('Proxmox.node.ServiceView', {
 	    ]
 	});
 
+	var view_service_log = function(grid, rec) {
+	    var win = Ext.create('Ext.window.Window', {
+		title: gettext('Syslog') + ' :' + rec.data.service,
+		modal: true,
+		items: {
+		    xtype: 'proxmoxLogView',
+		    width: 800,
+		    height: 400,
+		    url: "/api2/extjs/nodes/" + me.nodename + "/syslog?service=" +
+			rec.data.service,
+		    log_select_timespan: 1
+		}
+	    });
+	    win.show();
+	};
+
 	var service_cmd = function(cmd) {
 	    var sm = me.getSelectionModel();
 	    var rec = sm.getSelection()[0];
@@ -150,6 +166,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    ],
 	    listeners: {
 		selectionchange: set_button_status,
+		itemdblclick: view_service_log,
 		activate: rstore.startUpdate,
 		destroy: rstore.stopUpdate
 	    }
