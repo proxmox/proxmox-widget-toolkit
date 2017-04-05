@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (1.0-2) unstable; urgency=medium
+
+  * countless improvements
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 05 Apr 2017 10:22:47 +0200
+
 proxmox-widget-toolkit (1.0-1) unstable; urgency=medium
 
   * first try
