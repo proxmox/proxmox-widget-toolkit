@@ -345,11 +345,9 @@ Ext.define('Proxmox.node.NetworkView', {
 		    html: gettext("No changes")
 		}
 	    ],
-	    listeners: {
-		activate: reload
-	    }
 	});
 
 	me.callParent();
+	reload();
     }
 });

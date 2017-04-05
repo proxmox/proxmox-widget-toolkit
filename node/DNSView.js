@@ -39,7 +39,7 @@ Ext.define('Proxmox.node.DNSView', {
 
 	me.callParent();
 
-	me.on('activate', me.rstore.startUpdate);
 	me.on('destroy', me.rstore.stopUpdate);
+	me.rstore.startUpdate();
     }
 });
