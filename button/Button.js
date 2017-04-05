@@ -102,7 +102,9 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
     disabled: true,
 
-    baseurl: undefined,
+    config: {
+	baseurl: undefined
+    },
 
     getUrl: function(rec) {
 	var me = this;
