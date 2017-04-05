@@ -39,7 +39,9 @@ Ext.define('Proxmox.node.ServiceView', {
 	    ]
 	});
 
-	var view_service_log = function(grid, rec) {
+	var view_service_log = function() {
+	    var sm = me.getSelectionModel();
+	    var rec = sm.getSelection()[0];
 	    var win = Ext.create('Ext.window.Window', {
 		title: gettext('Syslog') + ' :' + rec.data.service,
 		modal: true,
@@ -101,6 +103,12 @@ Ext.define('Proxmox.node.ServiceView', {
 	    }
 	});
 
+	var syslog_btn = new Ext.Button({
+	    text: gettext('Syslog'),
+	    disabled: true,
+	    handler: view_service_log
+	});
+
 	var set_button_status = function() {
 	    var sm = me.getSelectionModel();
 	    var rec = sm.getSelection()[0];
@@ -109,10 +117,13 @@ Ext.define('Proxmox.node.ServiceView', {
 		start_btn.disable();
 		stop_btn.disable();
 		restart_btn.disable();
+		syslog_btn.disable();
 		return;
 	    }
 	    var service = rec.data.service;
 	    var state = rec.data.state;
+
+	    syslog_btn.enable();
 
 	    if (me.startOnlyServices[service]) {
 		if (state == 'running') {
@@ -143,7 +154,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	Ext.apply(me, {
 	    store: store,
 	    stateful: false,
-	    tbar: [ start_btn, stop_btn, restart_btn ],
+	    tbar: [ start_btn, stop_btn, restart_btn, syslog_btn ],
 	    columns: [
 		{
 		    header: gettext('Name'),
