@@ -22,6 +22,8 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     disabled: false,
     hideHeaders: true,
 
+    monStoreErrors: false,
+
     add_combobox_row: function(name, text, opts) {
 	var me = this;
 
@@ -283,5 +285,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	});
 
 	me.callParent();
+
+	if (me.monStoreErrors) {
+	    Proxmox.Utils.monStoreErrors(me, me.store);
+	}
    }
 });
