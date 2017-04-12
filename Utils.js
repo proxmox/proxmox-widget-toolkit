@@ -86,6 +86,51 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return Ext.Date.format(date, "Y-m-d");
     },
 
+    format_duration_long: function(ut) {
+
+	var days = Math.floor(ut / 86400);
+	ut -= days*86400;
+	var hours = Math.floor(ut / 3600);
+	ut -= hours*3600;
+	var mins = Math.floor(ut / 60);
+	ut -= mins*60;
+
+	var hours_str = '00' + hours.toString();
+	hours_str = hours_str.substr(hours_str.length - 2);
+	var mins_str = "00" + mins.toString();
+	mins_str = mins_str.substr(mins_str.length - 2);
+	var ut_str = "00" + ut.toString();
+	ut_str = ut_str.substr(ut_str.length - 2);
+
+	if (days) {
+	    var ds = days > 1 ? Proxmox.Utils.daysText : Proxmox.Utils.dayText;
+	    return days.toString() + ' ' + ds + ' ' +
+		hours_str + ':' + mins_str + ':' + ut_str;
+	} else {
+	    return hours_str + ':' + mins_str + ':' + ut_str;
+	}
+    },
+
+    format_duration_short: function(ut) {
+
+	if (ut < 60) {
+	    return ut.toString() + 's';
+	}
+
+	if (ut < 3600) {
+	    var mins = ut / 60;
+	    return mins.toFixed(0) + 'm';
+	}
+
+	if (ut < 86400) {
+	    var hours = ut / 3600;
+	    return hours.toFixed(0) + 'h';
+	}
+
+	var days = ut / 86400;
+	return days.toFixed(0) + 'd';
+    },
+
     compute_min_label_width: function(text, width) {
 
 	if (width === undefined) { width = 100; }
@@ -294,6 +339,21 @@ Ext.define('Proxmox.Utils', { utilities: {
 	var id = record.data.id;
 
 	return Proxmox.Utils.format_task_description(type, id);
+    },
+
+    render_uptime: function(value) {
+
+	var uptime = value;
+
+	if (uptime === undefined) {
+	    return '';
+	}
+
+	if (uptime <= 0) {
+	    return '-';
+	}
+
+	return Proxmox.Utils.format_duration_long(uptime);
     },
 
     parse_task_upid: function(upid) {
