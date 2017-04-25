@@ -25,6 +25,14 @@ Ext.define('Proxmox.window.Edit', {
 
     backgroundDelay: 0,
 
+    // needed for finding the reference to submitbutton
+    // because we do not have a controller
+    referenceHolder: true,
+    defaultButton: 'submitbutton',
+
+    // finds the first form field
+    defaultFocus: 'field',
+
     showProgress: false,
 
     isValid: function() {
@@ -225,6 +233,7 @@ Ext.define('Proxmox.window.Edit', {
 	}
 
 	var submitBtn = Ext.create('Ext.Button', {
+	    reference: 'submitbutton',
 	    text: submitText,
 	    disabled: !me.create,
 	    handler: function() {
