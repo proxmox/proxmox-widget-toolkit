@@ -26,6 +26,7 @@ JSSRC=					\
 	form/Checkbox.js		\
 	form/KVComboBox.js		\
 	form/ComboGrid.js		\
+	form/RRDTypeSelector.js		\
 	button/Button.js		\
 	grid/ObjectGrid.js		\
 	grid/PendingObjectGrid.js	\
