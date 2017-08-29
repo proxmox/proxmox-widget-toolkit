@@ -20,6 +20,7 @@ JSSRC=					\
 	data/UpdateStore.js		\
 	data/DiffStore.js		\
 	data/ObjectStore.js		\
+	data/RRDStore.js		\
 	data/TimezoneStore.js		\
 	form/IntegerField.js		\
 	form/TextField.js		\
