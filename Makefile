@@ -33,6 +33,7 @@ JSSRC=					\
 	grid/PendingObjectGrid.js	\
 	panel/InputPanel.js		\
 	panel/LogView.js		\
+	panel/RRDChart.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/TaskViewer.js		\
