@@ -167,13 +167,19 @@ Ext.define('Proxmox.Utils', { utilities: {
 	}
     },
 
-    monStoreErrors: function(me, store) {
-	me.mon(store, 'beforeload', function(s, operation, eOpts) {
-	    if (!me.loadCount) {
-		me.loadCount = 0; // make sure it is numeric
-		Proxmox.Utils.setErrorMask(me, true);
-	    }
-	});
+    monStoreErrors: function(me, store, clearMaskBeforeLoad) {
+	if (clearMaskBeforeLoad) {
+	    me.mon(store, 'beforeload', function(s, operation, eOpts) {
+		Proxmox.Utils.setErrorMask(me, false);
+	    })
+	} else {
+	    me.mon(store, 'beforeload', function(s, operation, eOpts) {
+		if (!me.loadCount) {
+		    me.loadCount = 0; // make sure it is numeric
+		    Proxmox.Utils.setErrorMask(me, true);
+		}
+	    });
+	}
 
 	// only works with 'proxmox' proxy
 	me.mon(store.proxy, 'afterload', function(proxy, request, success) {
