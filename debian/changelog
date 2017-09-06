@@ -1,3 +1,21 @@
+proxmox-widget-toolkit (1.0-3) unstable; urgency=medium
+
+  * monStoreErrors: new option clearMaskBeforeLoad
+
+  * add RRDChart class
+
+  * add RRDStore class
+
+  * add RRDTypeSelector class
+
+  * set default focus and default button for edit window
+
+  * add helpers to render uptime
+
+  * ObjectGrid.js: new monStoreErrors properties
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 06 Sep 2017 09:37:27 +0200
+
 proxmox-widget-toolkit (1.0-2) unstable; urgency=medium
 
   * countless improvements
