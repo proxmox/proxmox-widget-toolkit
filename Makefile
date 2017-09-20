@@ -24,6 +24,7 @@ JSSRC=					\
 	data/TimezoneStore.js		\
 	form/IntegerField.js		\
 	form/TextField.js		\
+	form/DateTimeField.js		\
 	form/Checkbox.js		\
 	form/KVComboBox.js		\
 	form/ComboGrid.js		\
