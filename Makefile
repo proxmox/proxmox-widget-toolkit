@@ -38,6 +38,7 @@ JSSRC=					\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/TaskViewer.js		\
+	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
 	node/DNSEdit.js			\

@@ -60,6 +60,11 @@ Ext.define('Proxmox.Utils', { utilities: {
     stateText: gettext('State'),
     groupText: gettext('Group'),
 
+    getNoSubKeyHtml: function(url) {
+	// url http://www.proxmox.com/products/proxmox-ve/subscription-service-plans
+	return Ext.String.format('You do not have a valid subscription for this server. Please visit <a target="_blank" href="{0}">www.proxmox.com</a> to get a list of available options.', url || 'http://www.proxmox.com');
+    },
+
     format_boolean_with_default: function(value) {
 	if (Ext.isDefined(value) && value !== '__default__') {
 	    return value ? Proxmox.Utils.yesText : Proxmox.Utils.noText;
@@ -286,6 +291,37 @@ Ext.define('Proxmox.Utils', { utilities: {
 	    target.setLoading(newopts.waitMsg);
 	}
 	Ext.Ajax.request(newopts);
+    },
+
+    checked_command: function(orig_cmd) {
+	Proxmox.Utils.API2Request({
+	    url: '/nodes/localhost/subscription',
+	    method: 'GET',
+	    //waitMsgTarget: me,
+	    failure: function(response, opts) {
+		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+	    },
+	    success: function(response, opts) {
+		var data = response.result.data;
+
+		if (data.status !== 'Active') {
+		    Ext.Msg.show({
+			title: gettext('No valid subscription'),
+			icon: Ext.Msg.WARNING,
+			msg: Proxmox.Utils.getNoSubKeyHtml(data.url),
+			buttons: Ext.Msg.OK,
+			callback: function(btn) {
+			    if (btn !== 'ok') {
+				return;
+			    }
+			    orig_cmd();
+			}
+		    });
+		} else {
+		    orig_cmd();
+		}
+	    }
+	});
     },
 
     assemble_field_data: function(values, data) {
