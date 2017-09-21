@@ -58,5 +58,8 @@ Ext.define('Proxmox.DateTimeField', {
 
 	me.lookupReference('dateentry').setValue(value);
 	me.lookupReference('timeentry').setValue(value);
+
+	me.relayEvents(me.lookupReference('dateentry'), ['change']);
+	me.relayEvents(me.lookupReference('timeentry'), ['change']);
     }
 });
