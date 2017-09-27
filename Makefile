@@ -31,7 +31,6 @@ JSSRC=					\
 	form/RRDTypeSelector.js		\
 	button/Button.js		\
 	button/HelpButton.js		\
-	grid/SelectFeature.js		\
 	grid/ObjectGrid.js		\
 	grid/PendingObjectGrid.js	\
 	panel/InputPanel.js		\
