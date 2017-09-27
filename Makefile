@@ -30,6 +30,7 @@ JSSRC=					\
 	form/ComboGrid.js		\
 	form/RRDTypeSelector.js		\
 	button/Button.js		\
+	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
 	grid/PendingObjectGrid.js	\
 	panel/InputPanel.js		\
