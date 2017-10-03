@@ -277,10 +277,15 @@ Ext.define('Proxmox.window.Edit', {
 		me.buttons = [ submitBtn, resetBtn ];
 	}
 
-	if (inputPanel && inputPanel.onlineHelp) {
-	    var helpButton = Ext.create('PVE.button.Help');
+	var onlineHelp = me.onlineHelp;
+	if (!onlineHelp && inputPanel && inputPanel.onlineHelp) {
+	    onlineHelp = inputPanel.onlineHelp;
+	}
+
+	if (onlineHelp) {
+	    var helpButton = Ext.create('Proxmox.button.Help');
 	    me.buttons.unshift(helpButton, '->');
-	    Ext.GlobalEvents.fireEvent('pveShowHelp', items[0].onlineHelp);
+	    Ext.GlobalEvents.fireEvent('proxmoxShowHelp', onlineHelp);
 	}
 
 	Ext.applyIf(me, {
