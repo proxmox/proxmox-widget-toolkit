@@ -60,6 +60,11 @@ Ext.define('Proxmox.Utils', { utilities: {
     stateText: gettext('State'),
     groupText: gettext('Group'),
 
+    communityText: gettext('Community'),
+    basicText: gettext('Basic'),
+    standardText: gettext('Standard'),
+    premiumText: gettext('Premium'),
+
     getNoSubKeyHtml: function(url) {
 	// url http://www.proxmox.com/products/proxmox-ve/subscription-service-plans
 	return Ext.String.format('You do not have a valid subscription for this server. Please visit <a target="_blank" href="{0}">www.proxmox.com</a> to get a list of available options.', url || 'http://www.proxmox.com');
@@ -134,6 +139,20 @@ Ext.define('Proxmox.Utils', { utilities: {
 
 	var days = ut / 86400;
 	return days.toFixed(0) + 'd';
+    },
+
+    format_subscription_level: function(level) {
+	if (level === 'c') {
+	    return Proxmox.Utils.communityText;
+	} else if (level === 'b') {
+	    return Proxmox.Utils.basicText;
+	} else if (level === 's') {
+	    return Proxmox.Utils.standardText;
+	} else if (level === 'p') {
+	    return Proxmox.Utils.premiumText;
+	} else {
+	    return Proxmox.Utils.noneText;
+	}
     },
 
     compute_min_label_width: function(text, width) {
