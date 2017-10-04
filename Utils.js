@@ -60,6 +60,34 @@ Ext.define('Proxmox.Utils', { utilities: {
     stateText: gettext('State'),
     groupText: gettext('Group'),
 
+    language_map: {
+	en: 'English',
+	fr: 'French',
+	de: 'German',
+	it: 'Italian',
+	es: 'Spanish'
+    },
+
+    render_language: function (value) {
+	if (!value) {
+	    return Proxmox.Utils.defaultText + ' (English)';
+	}
+	var text = Proxmox.Utils.language_map[value];
+	if (text) {
+	    return text + ' (' + value + ')';
+	}
+	return value;
+    },
+
+    language_array: function() {
+	var data = [['__default__', Proxmox.Utils.render_language('')]];
+	Ext.Object.each(Proxmox.Utils.language_map, function(key, value) {
+	    data.push([key, Proxmox.Utils.render_language(value)]);
+	});
+
+	return data;
+    },
+
     getNoSubKeyHtml: function(url) {
 	// url http://www.proxmox.com/products/proxmox-ve/subscription-service-plans
 	return Ext.String.format('You do not have a valid subscription for this server. Please visit <a target="_blank" href="{0}">www.proxmox.com</a> to get a list of available options.', url || 'http://www.proxmox.com');

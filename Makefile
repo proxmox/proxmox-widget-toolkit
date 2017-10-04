@@ -27,6 +27,7 @@ JSSRC=					\
 	form/DateTimeField.js		\
 	form/Checkbox.js		\
 	form/KVComboBox.js		\
+	form/LanguageSelector.js	\
 	form/ComboGrid.js		\
 	form/RRDTypeSelector.js		\
 	button/Button.js		\
