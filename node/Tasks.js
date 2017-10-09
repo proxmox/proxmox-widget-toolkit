@@ -70,6 +70,7 @@ Ext.define('Proxmox.node.Tasks', {
 	    handler: run_task_viewer
 	});
 
+	Proxmox.Utils.monStoreErrors(me, store, true);
 
 	Ext.apply(me, {
 	    store: store,
