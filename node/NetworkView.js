@@ -43,8 +43,9 @@ Ext.define('Proxmox.node.NetworkView', {
 	    Proxmox.Utils.API2Request({
 		url: baseUrl,
 		failure: function(response, opts) {
-		    changeitem.update(gettext('Error') + ': ' + response.htmlStatus);
 		    store.loadData({});
+		    Proxmox.Utils.setErrorMask(me, response.htmlStatus);
+		    changeitem.update('');
 		    changeitem.setHidden(true);
 		},
 		success: function(response, opts) {
@@ -120,8 +121,6 @@ Ext.define('Proxmox.node.NetworkView', {
 	    edit_btn.setDisabled(!rec);
 	    del_btn.setDisabled(!rec);
 	};
-
-	Proxmox.Utils.monStoreErrors(me, store);
 
 	var render_ports = function(value, metaData, record) {
 	    if (value === 'bridge') {
