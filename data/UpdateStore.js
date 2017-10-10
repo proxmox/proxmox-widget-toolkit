@@ -9,8 +9,11 @@
  */
 Ext.define('Proxmox.data.UpdateStore', {
     extend: 'Ext.data.Store',
+    alias: 'store.update',
 
     isStopped: true,
+
+    autoStart: false,
 
     constructor: function(config) {
 	var me = this;
@@ -60,5 +63,9 @@ Ext.define('Proxmox.data.UpdateStore', {
 	    load_task.cancel();
 	    Proxmox.data.UpdateQueue.unqueue(me);
 	});
+
+	if (me.autoStart) {
+	    me.startUpdate();
+	}
     }
 });
