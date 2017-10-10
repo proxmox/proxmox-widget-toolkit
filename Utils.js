@@ -418,6 +418,19 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return type + ' ' + id;
     },
 
+    format_size: function(size) {
+	/*jslint confusion: true */
+
+	var units = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
+	var num = 0;
+
+	while (size >= 1024 && ((num++)+1) < units.length) {
+	    size = size / 1024;
+	}
+
+	return size.toFixed((num > 0)?2:0) + " " + units[num] + "B";
+    },
+
     render_upid: function(value, metaData, record) {
 	var type = record.data.type;
 	var id = record.data.id;
