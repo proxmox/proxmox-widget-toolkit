@@ -90,6 +90,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 
     initComponent: function() {
 	var me = this;
+	var series = {};
 
 	if (!me.store) {
 	    throw "cannot work without store";
@@ -145,33 +146,36 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    if (me.fieldTitles && me.fieldTitles[index]) {
 		title = me.fieldTitles[index];
 	    }
-	    me.addSeries({
-		type: 'line',
-		xField: 'time',
-		yField: item,
-		title: title,
-		fill: true,
-		style: {
-		    lineWidth: 1.5,
-		    opacity: 0.60
-		},
-		marker: {
-		    opacity: 0,
-		    scaling: 0.01,
-		    fx: {
-			duration: 200,
-			easing: 'easeOut'
+	    me.addSeries(Ext.apply(
+		{
+		    type: 'line',
+		    xField: 'time',
+		    yField: item,
+		    title: title,
+		    fill: true,
+		    style: {
+			lineWidth: 1.5,
+			opacity: 0.60
+		    },
+		    marker: {
+			opacity: 0,
+			scaling: 0.01,
+			fx: {
+			    duration: 200,
+			    easing: 'easeOut'
+			}
+		    },
+		    highlightCfg: {
+			opacity: 1,
+			scaling: 1.5
+		    },
+		    tooltip: {
+			trackMouse: true,
+			renderer: 'onSeriesTooltipRender'
 		    }
 		},
-		highlightCfg: {
-		    opacity: 1,
-		    scaling: 1.5
-		},
-		tooltip: {
-		    trackMouse: true,
-		    renderer: 'onSeriesTooltipRender'
-		}
-	    });
+		me.seriesConfig
+	    ));
 	});
 
 	// enable animation after the store is loaded
