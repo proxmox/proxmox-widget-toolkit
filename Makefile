@@ -37,6 +37,7 @@ JSSRC=					\
 	panel/InputPanel.js		\
 	panel/LogView.js		\
 	panel/RRDChart.js		\
+	panel/GaugeWidget.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/TaskViewer.js		\
