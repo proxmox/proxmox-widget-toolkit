@@ -117,23 +117,28 @@ Ext.define('Proxmox.widget.RRDChart', {
 
 	me.axes[0].setTitle(axisTitle);
 
-	me.addTool([{
-	    type: 'minus',
-	    disabled: true,
-	    tooltip: gettext('Undo Zoom'),
-	    handler: function(){
-		var undoButton = me.interactions[0].getUndoButton();
-		if (undoButton.handler) {
-		    undoButton.handler();
+	if (!me.noTool) {
+	    me.addTool([{
+		type: 'minus',
+		disabled: true,
+		tooltip: gettext('Undo Zoom'),
+		handler: function(){
+		    var undoButton = me.interactions[0].getUndoButton();
+		    if (undoButton.handler) {
+			undoButton.handler();
+		    }
 		}
-	    }
-	},{
-	    type: 'restore',
-	    tooltip: gettext('Toggle Legend'),
-	    handler: function(){
-		me.legend.setVisible(!me.legend.isVisible());
-	    }
-	}]);
+	    },{
+		type: 'restore',
+		tooltip: gettext('Toggle Legend'),
+		handler: function(){
+		    if (me.legend) {
+			me.legend.setVisible(!me.legend.isVisible());
+		    }
+		}
+	    }]);
+	}
+
 	// add a series for each field we get
 	me.fields.forEach(function(item, index){
 	    var title = item;
