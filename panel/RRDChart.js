@@ -109,6 +109,10 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    axisTitle = "Bytes";
 	} else if (me.unit === 'bytespersecond') {
 	    axisTitle = "Bytes/s";
+	} else if (me.fieldTitles && me.fieldTitles.length === 1) {
+	    axisTitle = me.fieldTitles[0];
+	} else if (me.fields.length === 1) {
+	    axisTitle = me.fields[0];
 	}
 
 	me.axes[0].setTitle(axisTitle);
