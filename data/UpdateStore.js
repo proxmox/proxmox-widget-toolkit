@@ -15,6 +15,13 @@ Ext.define('Proxmox.data.UpdateStore', {
 
     autoStart: false,
 
+    destroy: function() {
+	var me = this;
+	me.load_task.cancel();
+	Proxmox.data.UpdateQueue.unqueue(me);
+	me.callParent();
+    },
+
     constructor: function(config) {
 	var me = this;
 
@@ -59,10 +66,7 @@ Ext.define('Proxmox.data.UpdateStore', {
 
 	me.callParent([config]);
 
-	me.on('destroy', function() {
-	    load_task.cancel();
-	    Proxmox.data.UpdateQueue.unqueue(me);
-	});
+	me.load_task = load_task;
 
 	if (me.autoStart) {
 	    me.startUpdate();
