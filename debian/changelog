@@ -1,3 +1,31 @@
+proxmox-widget-toolkit (1.0-4) unstable; urgency=medium
+
+  * add textarea/enter workaround
+
+  * fix updateStore destroy
+
+  * RRDChart.js: add the seriesConfig parameter
+
+  * RRDChart.js: add the noTool parameter
+
+  * add autostart and alias to UpdateStore
+
+  * add format_size from pve
+
+  * add GaugeWidget from PVE
+
+  * LanguageSelector.js - add language selector
+
+  * allow to set onlineHelp on Proxmox.window.Edit
+
+  * add HelpButton class
+
+  * new checked_command helper
+
+  * add APT.js
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 24 Oct 2017 08:45:15 +0200
+
 proxmox-widget-toolkit (1.0-3) unstable; urgency=medium
 
   * monStoreErrors: new option clearMaskBeforeLoad
