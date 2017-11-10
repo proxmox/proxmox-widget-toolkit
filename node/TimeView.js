@@ -50,12 +50,8 @@ Ext.define('Proxmox.node.TimeView', {
 
 	me.callParent();
 
-	me.rstore.startUpdate();
-    },
-
-    onDestroy: function() {
-	var me = this;
-	me.rstore.stopUpdate();
-	me.callParent();
+	me.on('activate', me.rstore.startUpdate);
+	me.on('deactivate', me.rstore.stopUpdate);
+	me.on('destroy', me.rstore.stopUpdate);
     }
 });
