@@ -13,9 +13,9 @@ Ext.define('Proxmox.window.Edit', {
     // Create: <subject>
     subject: undefined,
 
-    // set create to true if you want a Create button (instead
+    // set isCreate to true if you want a Create button (instead
     // OK and RESET)
-    create: false,
+    isCreate: false,
 
     // set to true if you want an Add button (instead of Create)
     isAdd: false,
@@ -198,6 +198,8 @@ Ext.define('Proxmox.window.Edit', {
 	    throw "no url specified";
 	}
 
+	if (me.create) {throw "deprecated parameter, use isCreate";}
+
 	var items = Ext.isArray(me.items) ? me.items : [ me.items ];
 
 	me.items = undefined;
@@ -223,7 +225,7 @@ Ext.define('Proxmox.window.Edit', {
 	var form = me.formPanel.getForm();
 
 	var submitText;
-	if (me.create) {
+	if (me.isCreate) {
 	    if (me.submitText) {
 		submitText = me.submitText;
 	    } else if (me.isAdd) {
@@ -240,7 +242,7 @@ Ext.define('Proxmox.window.Edit', {
 	var submitBtn = Ext.create('Ext.Button', {
 	    reference: 'submitbutton',
 	    text: submitText,
-	    disabled: !me.create,
+	    disabled: !me.isCreate,
 	    handler: function() {
 		me.submit();
 	    }
@@ -257,7 +259,7 @@ Ext.define('Proxmox.window.Edit', {
 	var set_button_status = function() {
 	    var valid = form.isValid();
 	    var dirty = form.isDirty();
-	    submitBtn.setDisabled(!valid || !(dirty || me.create));
+	    submitBtn.setDisabled(!valid || !(dirty || me.isCreate));
 	    resetBtn.setDisabled(!dirty);
 	};
 
@@ -273,10 +275,10 @@ Ext.define('Proxmox.window.Edit', {
 	    (inputPanel.column1 || inputPanel.column2);
 
 	if (me.subject && !me.title) {
-	    me.title = Proxmox.Utils.dialog_title(me.subject, me.create, me.isAdd);
+	    me.title = Proxmox.Utils.dialog_title(me.subject, me.isCreate, me.isAdd);
 	}
 
-	if (me.create) {
+	if (me.isCreate) {
 		me.buttons = [ submitBtn ] ;
 	} else {
 		me.buttons = [ submitBtn, resetBtn ];

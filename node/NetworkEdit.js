@@ -13,7 +13,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    throw "no network device type specified";
 	}
 
-	me.create = !me.iface;
+	me.isCreate = !me.iface;
 
 	var iface_vtype;
 
@@ -21,9 +21,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    iface_vtype = 'BridgeName';
 	} else if (me.iftype === 'bond') {
 	    iface_vtype = 'BondName';
-	} else if (me.iftype === 'eth' && !me.create) {
+	} else if (me.iftype === 'eth' && !me.isCreate) {
 	    iface_vtype = 'InterfaceName';
-	} else if (me.iftype === 'vlan' && !me.create) {
+	} else if (me.iftype === 'vlan' && !me.isCreate) {
 	    iface_vtype = 'InterfaceName';
 	} else if (me.iftype === 'OVSBridge') {
 	    iface_vtype = 'BridgeName';
@@ -49,7 +49,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		fieldLabel: gettext('Autostart'),
 		name: 'autostart',
 		uncheckedValue: 0,
-		checked: me.create ? true : undefined
+		checked: me.isCreate ? true : undefined
 	    });
 	}
 
@@ -58,7 +58,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		xtype: 'proxmoxcheckbox',
 		fieldLabel: gettext('VLAN aware'),
 		name: 'bridge_vlan_aware',
-		deleteEmpty: !me.create
+		deleteEmpty: !me.isCreate
 	    });
 	    column2.push({
 		xtype: 'textfield',
@@ -78,7 +78,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    });
 	} else if (me.iftype === 'OVSPort' || me.iftype === 'OVSIntPort') {
 	    column2.push({
-		xtype: me.create ? 'PVE.form.BridgeSelector' : 'displayfield',
+		xtype: me.isCreate ? 'PVE.form.BridgeSelector' : 'displayfield',
 		fieldLabel: Proxmox.Utils.render_network_iface_type('OVSBridge'),
 		allowBlank: false,
 		nodename: me.nodename,
@@ -87,7 +87,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    });
 	    column2.push({
 		xtype: 'pveVlanField',
-		deleteEmpty: !me.create,
+		deleteEmpty: !me.isCreate,
 		name: 'ovs_tag',
 		value: ''
 	    });
@@ -106,7 +106,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    var policySelector = Ext.createWidget('bondPolicySelector', {
 		fieldLabel: gettext('Hash policy'),
 		name: 'bond_xmit_hash_policy',
-		deleteEmpty: !me.create,
+		deleteEmpty: !me.isCreate,
 		disabled: true
 	    });
 
@@ -114,7 +114,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		xtype: 'bondModeSelector',
 		fieldLabel: gettext('Mode'),
 		name: 'bond_mode',
-		value: me.create ? 'balance-rr' : undefined,
+		value: me.isCreate ? 'balance-rr' : undefined,
 		listeners: {
 		    change: function(f, value) {
 			if (value === 'balance-xor' ||
@@ -133,7 +133,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	} else if (me.iftype === 'OVSBond') {
 	    column2.push({
-		xtype: me.create ? 'PVE.form.BridgeSelector' : 'displayfield',
+		xtype: me.isCreate ? 'PVE.form.BridgeSelector' : 'displayfield',
 		fieldLabel: Proxmox.Utils.render_network_iface_type('OVSBridge'),
 		allowBlank: false,
 		nodename: me.nodename,
@@ -142,7 +142,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    });
 	    column2.push({
 		xtype: 'pveVlanField',
-		deleteEmpty: !me.create,
+		deleteEmpty: !me.isCreate,
 		name: 'ovs_tag',
 		value: ''
 	    });
@@ -164,7 +164,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	var url;
 	var method;
 
-	if (me.create) {
+	if (me.isCreate) {
 	    url = "/api2/extjs/nodes/" + me.nodename + "/network";
 	    method = 'POST';
 	} else {
@@ -179,7 +179,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		value: me.iftype
 	    },
 	    {
-		xtype: me.create ? 'textfield' : 'displayfield',
+		xtype: me.isCreate ? 'textfield' : 'displayfield',
 		fieldLabel: gettext('Name'),
 		name: 'iface',
 		value: me.iface,
@@ -195,7 +195,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    fieldLabel: gettext('Mode'),
 		    name: 'bond_mode',
 		    openvswitch: true,
-		    value: me.create ? 'active-backup' : undefined,
+		    value: me.isCreate ? 'active-backup' : undefined,
 		    allowBlank: false
 		},
 		{
@@ -209,14 +209,14 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    column1.push(
 		{
 		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.create,
+		    deleteEmpty: !me.isCreate,
 		    fieldLabel: gettext('IP address'),
 		    vtype: 'IPAddress',
 		    name: 'address'
 		},
 		{
 		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.create,
+		    deleteEmpty: !me.isCreate,
 		    fieldLabel: gettext('Subnet mask'),
 		    vtype: 'IPAddress',
 		    name: 'netmask',
@@ -241,21 +241,21 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		},
 		{
 		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.create,
+		    deleteEmpty: !me.isCreate,
 		    fieldLabel: gettext('Gateway'),
 		    vtype: 'IPAddress',
 		    name: 'gateway'
 		},
 		{
 		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.create,
+		    deleteEmpty: !me.isCreate,
 		    fieldLabel: gettext('IPv6 address'),
 		    vtype: 'IP6Address',
 		    name: 'address6'
 		},
 		{
 		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.create,
+		    deleteEmpty: !me.isCreate,
 		    fieldLabel: gettext('Prefix length'),
 		    vtype: 'IP6PrefixLength',
 		    name: 'netmask6',
@@ -282,7 +282,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		},
 		{
 		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.create,
+		    deleteEmpty: !me.isCreate,
 		    fieldLabel: gettext('Gateway'),
 		    vtype: 'IP6Address',
 		    name: 'gateway6'
@@ -302,7 +302,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	me.callParent();
 
-	if (me.create) {
+	if (me.isCreate) {
 	    me.down('field[name=iface]').setValue(me.iface_default);
 	} else {
 	    me.load({
