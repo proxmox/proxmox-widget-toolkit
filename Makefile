@@ -30,6 +30,7 @@ JSSRC=					\
 	form/LanguageSelector.js	\
 	form/ComboGrid.js		\
 	form/RRDTypeSelector.js		\
+	form/BondModeSelector.js	\
 	button/Button.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
