@@ -1,3 +1,17 @@
+proxmox-widget-toolkit (1.0-6) unstable; urgency=medium
+
+  * change 'create' parameter to 'isCreate'
+
+  * make network devices types configureable
+
+  * use Proxmox.window.TaskProgress instead of PVE.window.TaskProgress
+
+  * add custom submittext to Edit Window
+
+  * add missing BondModeSelector to widget toolkit
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 14 Nov 2017 11:38:51 +0100
+
 proxmox-widget-toolkit (1.0-5) unstable; urgency=medium
 
   * use (de)activate events for dns/timeview
