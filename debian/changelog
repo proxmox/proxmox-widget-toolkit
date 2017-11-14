@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (1.0-5) unstable; urgency=medium
+
+  * use (de)activate events for dns/timeview
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 14 Nov 2017 08:12:09 +0100
+
 proxmox-widget-toolkit (1.0-4) unstable; urgency=medium
 
   * add textarea/enter workaround
