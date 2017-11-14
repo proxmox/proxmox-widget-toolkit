@@ -23,6 +23,9 @@ Ext.define('Proxmox.window.Edit', {
     // set to true if you want an Remove button (instead of Create)
     isRemove: false,
 
+    // custom submitText
+    submitText: undefined,
+
     backgroundDelay: 0,
 
     // needed for finding the reference to submitbutton
@@ -221,7 +224,9 @@ Ext.define('Proxmox.window.Edit', {
 
 	var submitText;
 	if (me.create) {
-	    if (me.isAdd) {
+	    if (me.submitText) {
+		submitText = me.submitText;
+	    } else if (me.isAdd) {
 		submitText = gettext('Add');
 	    } else if (me.isRemove) {
 		submitText = gettext('Remove');
@@ -229,7 +234,7 @@ Ext.define('Proxmox.window.Edit', {
 		submitText = gettext('Create');
 	    }
 	} else {
-	    submitText = gettext('OK');
+	    submitText = me.submitText || gettext('OK');
 	}
 
 	var submitBtn = Ext.create('Ext.Button', {
