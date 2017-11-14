@@ -134,7 +134,7 @@ Ext.define('Proxmox.window.Edit', {
 		    me.hide();
 
 		    var upid = response.result.data;
-		    var win = Ext.create('PVE.window.TaskProgress', {
+		    var win = Ext.create('Proxmox.window.TaskProgress', {
 			upid: upid,
 			listeners: {
 			    destroy: function () {
