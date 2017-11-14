@@ -15,6 +15,10 @@ Ext.define('Proxmox.node.NetworkView', {
 
     alias: ['widget.proxmoxNodeNetworkView'],
 
+    // defines what types of network devices we want to create
+    // order is always the same
+    types: ['bridge', 'bond', 'ovs'],
+
     initComponent : function() {
 	var me = this;
 
@@ -144,75 +148,91 @@ Ext.define('Proxmox.node.NetworkView', {
 	    return prefix + next.toString();
 	};
 
+	var menu_items = [];
+
+	if (me.types.indexOf('bridge') !== -1) {
+	    menu_items.push({
+		text: Proxmox.Utils.render_network_iface_type('bridge'),
+		handler: function() {
+		    var win = Ext.create('Proxmox.node.NetworkEdit', {
+			nodename: me.nodename,
+			iftype: 'bridge',
+			iface_default: find_next_iface_id('vmbr')
+		    });
+		    win.on('destroy', reload);
+		    win.show();
+		}
+	    });
+	}
+
+	if (me.types.indexOf('bond') !== -1) {
+	    menu_items.push({
+		text: Proxmox.Utils.render_network_iface_type('bond'),
+		handler: function() {
+		    var win = Ext.create('Proxmox.node.NetworkEdit', {
+			nodename: me.nodename,
+			iftype: 'bond',
+			iface_default: find_next_iface_id('bond')
+		    });
+		    win.on('destroy', reload);
+		    win.show();
+		}
+	    });
+	}
+
+	if (me.types.indexOf('ovs') !== -1) {
+	    if (menu_items.length > 0) {
+		menu_items.push({ xtype: 'menuseparator' });
+	    }
+
+	    menu_items.push(
+		{
+		    text: Proxmox.Utils.render_network_iface_type('OVSBridge'),
+		    handler: function() {
+			var win = Ext.create('Proxmox.node.NetworkEdit', {
+			    nodename: me.nodename,
+			    iftype: 'OVSBridge',
+			    iface_default: find_next_iface_id('vmbr')
+			});
+			win.on('destroy', reload);
+			win.show();
+		    }
+		},
+		{
+		    text: Proxmox.Utils.render_network_iface_type('OVSBond'),
+		    handler: function() {
+			var win = Ext.create('Proxmox.node.NetworkEdit', {
+			    nodename: me.nodename,
+			    iftype: 'OVSBond',
+			    iface_default: find_next_iface_id('bond')
+			});
+			win.on('destroy', reload);
+			win.show();
+		    }
+		},
+		{
+		    text: Proxmox.Utils.render_network_iface_type('OVSIntPort'),
+		    handler: function() {
+			var win = Ext.create('Proxmox.node.NetworkEdit', {
+			    nodename: me.nodename,
+			    iftype: 'OVSIntPort'
+			});
+			win.on('destroy', reload);
+			win.show();
+		    }
+		}
+	    );
+	}
+
 	Ext.apply(me, {
 	    layout: 'border',
 	    tbar: [
 		{
 		    text: gettext('Create'),
-		    menu: new Ext.menu.Menu({
+		    menu: {
 			plain: true,
-			items: [
-			    {
-				text: Proxmox.Utils.render_network_iface_type('bridge'),
-				handler: function() {
-				    var win = Ext.create('Proxmox.node.NetworkEdit', {
-					nodename: me.nodename,
-					iftype: 'bridge',
-					iface_default: find_next_iface_id('vmbr')
-				    });
-				    win.on('destroy', reload);
-				    win.show();
-				}
-			    },
-			    {
-				text: Proxmox.Utils.render_network_iface_type('bond'),
-				handler: function() {
-				    var win = Ext.create('Proxmox.node.NetworkEdit', {
-					nodename: me.nodename,
-					iftype: 'bond',
-					iface_default: find_next_iface_id('bond')
-				    });
-				    win.on('destroy', reload);
-				    win.show();
-				}
-			    }, '-',
-			    {
-				text: Proxmox.Utils.render_network_iface_type('OVSBridge'),
-				handler: function() {
-				    var win = Ext.create('Proxmox.node.NetworkEdit', {
-					nodename: me.nodename,
-					iftype: 'OVSBridge',
-					iface_default: find_next_iface_id('vmbr')
-				    });
-				    win.on('destroy', reload);
-				    win.show();
-				}
-			    },
-			    {
-				text: Proxmox.Utils.render_network_iface_type('OVSBond'),
-				handler: function() {
-				    var win = Ext.create('Proxmox.node.NetworkEdit', {
-					nodename: me.nodename,
-					iftype: 'OVSBond',
-					iface_default: find_next_iface_id('bond')
-				    });
-				    win.on('destroy', reload);
-				    win.show();
-				}
-			    },
-			    {
-				text: Proxmox.Utils.render_network_iface_type('OVSIntPort'),
-				handler: function() {
-				    var win = Ext.create('Proxmox.node.NetworkEdit', {
-					nodename: me.nodename,
-					iftype: 'OVSIntPort'
-				    });
-				    win.on('destroy', reload);
-				    win.show();
-				}
-			    }
-			]
-		    })
+			items: menu_items
+		    }
 		}, ' ',
 		{
 		    text: gettext('Revert'),
