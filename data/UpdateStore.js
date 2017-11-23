@@ -55,7 +55,8 @@ Ext.define('Proxmox.data.UpdateStore', {
 	Ext.apply(config, {
 	    startUpdate: function() {
 		me.isStopped = false;
-		run_load_task();
+		// run_load_task(); this makes problems with chrome
+		load_task.delay(1, run_load_task);
 	    },
 	    stopUpdate: function() {
 		me.isStopped = true;
