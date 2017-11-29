@@ -16,7 +16,6 @@ JSSRC=					\
 	mixin/CBind.js			\
 	data/reader/JsonObject.js	\
 	data/ProxmoxProxy.js		\
-	data/UpdateQueue.js		\
 	data/UpdateStore.js		\
 	data/DiffStore.js		\
 	data/ObjectStore.js		\

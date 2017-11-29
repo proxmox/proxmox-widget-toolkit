@@ -17,8 +17,7 @@ Ext.define('Proxmox.data.UpdateStore', {
 
     destroy: function() {
 	var me = this;
-	me.load_task.cancel();
-	Proxmox.data.UpdateQueue.unqueue(me);
+	me.stopUpdate();
 	me.callParent();
     },
 
@@ -43,7 +42,9 @@ Ext.define('Proxmox.data.UpdateStore', {
 	    }
 
 	    if (Proxmox.Utils.authOK()) {
-		Proxmox.data.UpdateQueue.queue(me, function(runtime, success) {
+		var start = new Date();
+		me.load(function() {
+		    var runtime = (new Date()) - start;
 		    var interval = config.interval + runtime*2;
 		    load_task.delay(interval, run_load_task);
 		});
@@ -61,7 +62,6 @@ Ext.define('Proxmox.data.UpdateStore', {
 	    stopUpdate: function() {
 		me.isStopped = true;
 		load_task.cancel();
-		Proxmox.data.UpdateQueue.unqueue(me);
 	    }
 	});
 
