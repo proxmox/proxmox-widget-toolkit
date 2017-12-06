@@ -218,7 +218,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	if (clearMaskBeforeLoad) {
 	    me.mon(store, 'beforeload', function(s, operation, eOpts) {
 		Proxmox.Utils.setErrorMask(me, false);
-	    })
+	    });
 	} else {
 	    me.mon(store, 'beforeload', function(s, operation, eOpts) {
 		if (!me.loadCount) {
@@ -476,7 +476,7 @@ Ext.define('Proxmox.Utils', { utilities: {
     render_timestamp: function(value, metaData, record, rowIndex, colIndex, store) {
 	var servertime = new Date(value * 1000);
 	return Ext.Date.format(servertime, 'Y-m-d H:i:s');
-    },
+    }
 
     },
 
