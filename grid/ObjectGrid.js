@@ -74,6 +74,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    emptyText: opts.defaultValue,
 		    labelWidth: Proxmox.Utils.compute_min_label_width(
 			text, opts.labelWidth),
+		    vtype: opts.vtype,
 		    fieldLabel: text
 		}
 	    }
