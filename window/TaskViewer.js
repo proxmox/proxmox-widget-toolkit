@@ -85,6 +85,8 @@ Ext.define('Proxmox.window.TaskViewer', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxTaskViewer',
 
+    extraTitle: '', // string to prepend after the generic task title
+
     initComponent: function() {
         var me = this;
 
@@ -202,7 +204,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	statstore.startUpdate();
 
 	Ext.apply(me, {
-	    title: "Task viewer: " + task.desc,
+	    title: "Task viewer: " + task.desc + me.extraTitle,
 	    width: 800,
 	    height: 400,
 	    layout: 'fit',
