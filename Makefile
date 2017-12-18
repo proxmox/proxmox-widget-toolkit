@@ -65,7 +65,9 @@ lint: ${JSSRC}
 	jslint ${JSSRC}
 
 proxmoxlib.js: ${JSSRC}
-	cat ${JSSRC} >$@.tmp
+	# add the version as comment in the file
+	echo "// ${PKGVER}-${PKGREL}" > $@.tmp
+	cat ${JSSRC} >> $@.tmp
 	mv $@.tmp $@
 
 install: proxmoxlib.js
