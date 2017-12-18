@@ -38,6 +38,11 @@ Ext.define('Proxmox.window.Edit', {
 
     showProgress: false,
 
+    // assign a reference from docs, to add a help button docked to the
+    // bottom of the window. If undefined we magically fall back to the
+    // onlineHelp of our first item, if set.
+    onlineHelp: undefined,
+
     isValid: function() {
 	var me = this;
 
