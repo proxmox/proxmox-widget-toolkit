@@ -197,7 +197,6 @@ Ext.define('Proxmox.form.ComboBox', {
 	// copied from combobox
 	var me = this;
 	me.callParent();
-	me.applyEmptyText();
 
 	// clear and set when not the same
 	var value = me.getValue();
