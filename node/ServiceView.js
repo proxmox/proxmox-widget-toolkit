@@ -43,7 +43,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    var sm = me.getSelectionModel();
 	    var rec = sm.getSelection()[0];
 	    var win = Ext.create('Ext.window.Window', {
-		title: gettext('Syslog') + ' :' + rec.data.service,
+		title: gettext('Syslog') + ': ' + rec.data.service,
 		modal: true,
 		items: {
 		    xtype: 'proxmoxLogView',
