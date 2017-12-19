@@ -82,7 +82,7 @@ Ext.define('Proxmox.node.Tasks', {
 		    var status = record.get('status');
 
 		    if (status && status != 'OK') {
-			return "x-form-invalid-field";
+			return "proxmox-invalid-row";
 		    }
 		}
 	    },
