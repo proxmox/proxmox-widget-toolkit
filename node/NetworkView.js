@@ -280,9 +280,9 @@ Ext.define('Proxmox.node.NetworkView', {
 			    width: 80,
 			    sortable: true,
 			    dataIndex: 'active',
-			    trueText: 'Yes',
-			    falseText: 'No',
-			    undefinedText: 'No'
+			    trueText: Proxmox.Utils.yesText,
+			    falseText: Proxmox.Utils.noText,
+			    undefinedText: Proxmox.Utils.noText,
 			},
 			{
 			    xtype: 'booleancolumn',
@@ -290,9 +290,9 @@ Ext.define('Proxmox.node.NetworkView', {
 			    width: 80,
 			    sortable: true,
 			    dataIndex: 'autostart',
-			    trueText: 'Yes',
-			    falseText: 'No',
-			    undefinedText: 'No'
+			    trueText: Proxmox.Utils.yesText,
+			    falseText: Proxmox.Utils.noText,
+			    undefinedText: Proxmox.Utils.noText
 			},
 			{
 			    xtype: 'booleancolumn',
