@@ -295,6 +295,16 @@ Ext.define('Proxmox.node.NetworkView', {
 			    undefinedText: 'No'
 			},
 			{
+			    xtype: 'booleancolumn',
+			    header: gettext('VLAN aware'),
+			    width: 80,
+			    sortable: true,
+			    dataIndex: 'bridge_vlan_aware',
+			    trueText: Proxmox.Utils.yesText,
+			    falseText: Proxmox.Utils.noText,
+			    undefinedText: Proxmox.Utils.noText
+			},
+			{
 			    header: gettext('Ports/Slaves'),
 			    dataIndex: 'type',
 			    renderer: render_ports
