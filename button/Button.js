@@ -48,6 +48,7 @@ Ext.define('Proxmox.button.Button', {
 			icon: me.dangerous ? Ext.Msg.WARNING : Ext.Msg.QUESTION,
 			msg: msg,
 			buttons: Ext.Msg.YESNO,
+			defaultFocus: me.dangerous ? 'no' : 'yes',
 			callback: function(btn) {
 			    if (btn !== 'yes') {
 				return;
