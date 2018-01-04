@@ -64,15 +64,16 @@ Ext.define('Proxmox.button.Button', {
 
 	me.callParent();
 
+	var grid;
 	if (!me.selModel && me.selModel !== null) {
-	    var grid = me.up('grid');
+	    grid = me.up('grid');
 	    if (grid && grid.selModel) {
 		me.selModel = grid.selModel;
 	    }
 	}
 
 	if (me.waitMsgTarget === true) {
-	    var grid = me.up('grid');
+	    grid = me.up('grid');
 	    if (grid) {
 		me.waitMsgTarget = grid;
 	    } else {
