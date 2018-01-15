@@ -61,11 +61,25 @@ Ext.define('Proxmox.Utils', { utilities: {
     groupText: gettext('Group'),
 
     language_map: {
+	zh_CN: 'Chinese',
+	ca: 'Catalan',
+	da: 'Danish',
 	en: 'English',
+	eu: 'Euskera (Basque)',
 	fr: 'French',
 	de: 'German',
 	it: 'Italian',
-	es: 'Spanish'
+	es: 'Spanish',
+	ja: 'Japanese',
+	nb: 'Norwegian (Bokmal)',
+	nn: 'Norwegian (Nynorsk)',
+	fa: 'Persian (Farsi)',
+	pl: 'Polish',
+	pt_BR: 'Portuguese (Brazil)',
+	ru: 'Russian',
+	sl: 'Slovenian',
+	sv: 'Swedish',
+	tr: 'Turkish'
     },
 
     render_language: function (value) {
