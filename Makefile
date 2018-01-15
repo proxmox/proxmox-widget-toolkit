@@ -81,7 +81,7 @@ upload: ${DEB}
 distclean: clean
 
 clean:
-	rm -rf ./build *.deb *.changes *.buildinfo
+	rm -rf ./build *.deb *.changes *.buildinfo proxmoxlib.js
 	find . -name '*~' -exec rm {} ';'
 
 .PHONY: dinstall
