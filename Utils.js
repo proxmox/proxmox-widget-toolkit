@@ -283,7 +283,11 @@ Ext.define('Proxmox.Utils', { utilities: {
 	    Ext.apply(newopts, {
 		success: function(response, options) {
 		    if (options.waitMsgTarget) {
-			options.waitMsgTarget.setLoading(false);
+			if (Proxmox.Utils.toolkit === 'touch') {
+			    options.waitMsgTarget.setMasked(false);
+			} else {
+			    options.waitMsgTarget.setLoading(false);
+			}
 		    }
 		    var result = Ext.decode(response.responseText);
 		    response.result = result;
@@ -298,7 +302,11 @@ Ext.define('Proxmox.Utils', { utilities: {
 		},
 		failure: function(response, options) {
 		    if (options.waitMsgTarget) {
-			options.waitMsgTarget.setLoading(false);
+			if (Proxmox.Utils.toolkit === 'touch') {
+			    options.waitMsgTarget.setMasked(false);
+			} else {
+			    options.waitMsgTarget.setLoading(false);
+			}
 		    }
 		    response.result = {};
 		    try {
@@ -323,8 +331,12 @@ Ext.define('Proxmox.Utils', { utilities: {
 
 	var target = newopts.waitMsgTarget;
 	if (target) {
-	    // Note: ExtJS bug - this does not work when component is not rendered
-	    target.setLoading(newopts.waitMsg);
+	    if (Proxmox.Utils.toolkit === 'touch') {
+		target.setMasked({ xtype: 'loadmask', message: newopts.waitMsg} );
+	    } else {
+		// Note: ExtJS bug - this does not work when component is not rendered
+		target.setLoading(newopts.waitMsg);
+	    }
 	}
 	Ext.Ajax.request(newopts);
     },
