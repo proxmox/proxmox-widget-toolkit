@@ -407,9 +407,83 @@ Ext.define('Proxmox.Utils', { utilities: {
 	    Proxmox.Utils.unknownText;
     },
 
-    // you can override this to provide nicer task descriptions
+    task_desc_table: {
+	diskinit: [ 'Disk', gettext('Initialize Disk with GPT') ],
+	vncproxy: [ 'VM/CT', gettext('Console') ],
+	spiceproxy: [ 'VM/CT', gettext('Console') + ' (Spice)' ],
+	vncshell: [ '', gettext('Shell') ],
+	spiceshell: [ '', gettext('Shell')  + ' (Spice)' ],
+	qmsnapshot: [ 'VM', gettext('Snapshot') ],
+	qmrollback: [ 'VM', gettext('Rollback') ],
+	qmdelsnapshot: [ 'VM', gettext('Delete Snapshot') ],
+	qmcreate: [ 'VM', gettext('Create') ],
+	qmrestore: [ 'VM', gettext('Restore') ],
+	qmdestroy: [ 'VM', gettext('Destroy') ],
+	qmigrate: [ 'VM', gettext('Migrate') ],
+	qmclone: [ 'VM', gettext('Clone') ],
+	qmmove: [ 'VM', gettext('Move disk') ],
+	qmtemplate: [ 'VM', gettext('Convert to template') ],
+	qmstart: [ 'VM', gettext('Start') ],
+	qmstop: [ 'VM', gettext('Stop') ],
+	qmreset: [ 'VM', gettext('Reset') ],
+	qmshutdown: [ 'VM', gettext('Shutdown') ],
+	qmsuspend: [ 'VM', gettext('Suspend') ],
+	qmresume: [ 'VM', gettext('Resume') ],
+	qmconfig: [ 'VM', gettext('Configure') ],
+	vzsnapshot: [ 'CT', gettext('Snapshot') ],
+	vzrollback: [ 'CT', gettext('Rollback') ],
+	vzdelsnapshot: [ 'CT', gettext('Delete Snapshot') ],
+	vzcreate: ['CT', gettext('Create') ],
+	vzrestore: ['CT', gettext('Restore') ],
+	vzdestroy: ['CT', gettext('Destroy') ],
+	vzmigrate: [ 'CT', gettext('Migrate') ],
+	vzclone: [ 'CT', gettext('Clone') ],
+	vztemplate: [ 'CT', gettext('Convert to template') ],
+	vzstart: ['CT', gettext('Start') ],
+	vzstop: ['CT', gettext('Stop') ],
+	vzmount: ['CT', gettext('Mount') ],
+	vzumount: ['CT', gettext('Unmount') ],
+	vzshutdown: ['CT', gettext('Shutdown') ],
+	vzsuspend: [ 'CT', gettext('Suspend') ],
+	vzresume: [ 'CT', gettext('Resume') ],
+	hamigrate: [ 'HA', gettext('Migrate') ],
+	hastart: [ 'HA', gettext('Start') ],
+	hastop: [ 'HA', gettext('Stop') ],
+	srvstart: ['SRV', gettext('Start') ],
+	srvstop: ['SRV', gettext('Stop') ],
+	srvrestart: ['SRV', gettext('Restart') ],
+	srvreload: ['SRV', gettext('Reload') ],
+	cephcreatemon: ['Ceph Monitor', gettext('Create') ],
+	cephdestroymon: ['Ceph Monitor', gettext('Destroy') ],
+	cephcreateosd: ['Ceph OSD', gettext('Create') ],
+	cephdestroyosd: ['Ceph OSD', gettext('Destroy') ],
+	cephcreatepool: ['Ceph Pool', gettext('Create') ],
+	cephdestroypool: ['Ceph Pool', gettext('Destroy') ],
+	imgcopy: ['', gettext('Copy data') ],
+	imgdel: ['', gettext('Erase data') ],
+	download: ['', gettext('Download') ],
+	vzdump: ['', gettext('Backup') ],
+	aptupdate: ['', gettext('Update package database') ],
+	startall: [ '', gettext('Start all VMs and Containers') ],
+	stopall: [ '', gettext('Stop all VMs and Containers') ],
+	migrateall: [ '', gettext('Migrate all VMs and Containers') ]
+    },
+
     format_task_description: function(type, id) {
-	return type + ' ' + id;
+	var farray = Proxmox.Utils.task_desc_table[type];
+	if (!farray) {
+	    var text = type;
+	    if (id) {
+		type += ' ' + id;
+	    }
+	    return text;
+	}
+	var prefix = farray[0];
+	var text = farray[1];
+	if (prefix) {
+	    return prefix + ' ' + id + ' - ' + text;
+	}
+	return text;
     },
 
     format_size: function(size) {
