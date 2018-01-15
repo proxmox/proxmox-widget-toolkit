@@ -158,26 +158,6 @@ Ext.define('Proxmox.Utils', { utilities: {
 	}
     },
 
-    format_duration_short: function(ut) {
-
-	if (ut < 60) {
-	    return ut.toString() + 's';
-	}
-
-	if (ut < 3600) {
-	    var mins = ut / 60;
-	    return mins.toFixed(0) + 'm';
-	}
-
-	if (ut < 86400) {
-	    var hours = ut / 3600;
-	    return hours.toFixed(0) + 'h';
-	}
-
-	var days = ut / 86400;
-	return days.toFixed(0) + 'd';
-    },
-
     format_subscription_level: function(level) {
 	if (level === 'c') {
 	    return 'Community';
