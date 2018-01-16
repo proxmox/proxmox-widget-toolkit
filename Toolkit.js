@@ -77,11 +77,6 @@ Ext.apply(Ext.form.field.VTypes, {
 		       gettext("Maximum characters") + ": 21" + "<br />" +
 		       gettext("Must start with") + ": 'a-z'",
 
-    QemuStartDate: function(v) {
-	return (/^(now|\d{4}-\d{1,2}-\d{1,2}(T\d{1,2}:\d{1,2}:\d{1,2})?)$/).test(v);
-    },
-    QemuStartDateText: gettext('Format') + ': "now" or "2006-06-17T16:01:21" or "2006-06-17"',
-
     StorageId:  function(v) {
         return (/^[a-z][a-z0-9\-\_\.]*[a-z0-9]$/i).test(v);
     },
