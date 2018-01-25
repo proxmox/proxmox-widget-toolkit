@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (1.0-10) unstable; urgency=medium
+
+  * port fixes and features from pve-manager since fork
+
+  * add all languages from pve
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 25 Jan 2018 10:19:23 +0100
+
 proxmox-widget-toolkit (1.0-9) unstable; urgency=medium
 
   * add Xtermjs popup helper
