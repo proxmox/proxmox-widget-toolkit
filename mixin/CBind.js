@@ -41,6 +41,19 @@ Ext.define('Proxmox.Mixin.CBind', {
 		    if (match[1]) cvalue = !cvalue;
 		    obj[prop] = cvalue;
 		    found = true;
+		} else if (match = /^\{(!)?([a-z_][a-z0-9_]*(\.[a-z_][a-z0-9_]*)+)\}$/i.exec(cdata)) {
+		    var keys = match[2].split('.');
+		    var cvalue = getConfigValue(keys.shift());
+		    keys.forEach(function(k) {
+			if (k in cvalue) {
+			    cvalue = cvalue[k];
+			} else {
+			    throw "unable to get cbind data for '" + match[2] + "'";
+			}
+		    });
+		    if (match[1]) cvalue = !cvalue;
+		    obj[prop] = cvalue;
+		    found = true;
 		} else {
 		    obj[prop] = cdata.replace(/{([a-z_][a-z0-9_]*)\}/ig, function(match, cname) {
 			var cvalue = getConfigValue(cname);
