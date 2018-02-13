@@ -5,12 +5,12 @@ Ext.define('Proxmox.panel.InputPanel', {
 	activate: function() {
 	    // notify owning container that it should display a help button
 	    if (this.onlineHelp) {
-		Ext.GlobalEvents.fireEvent('pveShowHelp', this.onlineHelp);
+		Ext.GlobalEvents.fireEvent('proxmoxShowHelp', this.onlineHelp);
 	    }
 	},
 	deactivate: function() {
 	    if (this.onlineHelp) {
-		Ext.GlobalEvents.fireEvent('pveHideHelp', this.onlineHelp);
+		Ext.GlobalEvents.fireEvent('proxmoxHideHelp', this.onlineHelp);
 	    }
 	}
     },
