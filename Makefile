@@ -1,6 +1,6 @@
 PACKAGE=proxmox-widget-toolkit
 PKGVER=1.0
-PKGREL=10
+PKGREL=11
 
 DEB=${PACKAGE}_${PKGVER}-${PKGREL}_all.deb
 
