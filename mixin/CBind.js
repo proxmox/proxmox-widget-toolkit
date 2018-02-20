@@ -133,7 +133,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 		el = me[prop];
 		if (el === undefined || el === null) continue;
 		if (typeof(el) === 'object' && el.constructor == Object) {
-		    if (el.xtype) {
+		    if (el.xtype && prop != 'config') {
 			me[prop] = cloneTemplateObject(el);
 		    }
 		} else if (el.constructor == Array) {
