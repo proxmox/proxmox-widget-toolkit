@@ -1,10 +1,6 @@
 Ext.ns('Proxmox');
 Ext.ns('Proxmox.Setup');
 
-if (!Ext.isFunction(gettext)) {
-    function gettext(buf) { return buf; }
-}
-
 if (!Ext.isDefined(Proxmox.Setup.auth_cookie_name)) {
     throw "Proxmox library not initialized";
 }
