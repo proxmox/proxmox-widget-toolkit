@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (1.0-13) unstable; urgency=medium
+
+  * remove gettext definition in Utils.js
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 08 Mar 2018 11:37:56 +0100
+
 proxmox-widget-toolkit (1.0-12) unstable; urgency=medium
 
   * skip config property for cbind mixin
