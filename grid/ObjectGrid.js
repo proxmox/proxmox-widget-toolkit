@@ -38,6 +38,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		fieldDefaults: {
+		    labelWidth: opts.labelWidth || 100
+		},
 		items: {
 		    xtype: 'proxmoxKVComboBox',
 		    name: name,
@@ -67,6 +70,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		fieldDefaults: {
+		    labelWidth: opts.labelWidth || 100
+		},
 		items: {
 		    xtype: 'proxmoxtextfield',
 		    name: name,
@@ -95,6 +101,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		fieldDefaults: {
+		    labelWidth: opts.labelWidth || 100
+		},
 		items: {
 		    xtype: 'proxmoxcheckbox',
 		    name: name,
@@ -124,6 +133,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		fieldDefaults: {
+		    labelWidth: opts.labelWidth || 100
+		},
 		items: {
 		    xtype: 'proxmoxintegerfield',
 		    name: name,
