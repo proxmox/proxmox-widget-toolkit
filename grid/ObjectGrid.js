@@ -120,6 +120,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    required: true,
 	    defaultValue: opts.defaultValue,
 	    header: text,
+	    renderer: opts.renderer,
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
