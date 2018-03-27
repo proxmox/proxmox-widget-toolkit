@@ -40,6 +40,10 @@ Ext.define('Proxmox.window.Edit', {
 
     showTaskViewer: false,
 
+    // gets called if we have a progress bar or taskview and it detected that
+    // the task finished. function(success)
+    taskDone: Ext.emptyFn,
+
     // assign a reference from docs, to add a help button docked to the
     // bottom of the window. If undefined we magically fall back to the
     // onlineHelp of our first item, if set.
@@ -144,6 +148,7 @@ Ext.define('Proxmox.window.Edit', {
 		    var viewerClass = me.showTaskViewer ? 'Viewer' : 'Progress';
 		    var win = Ext.create('Proxmox.window.Task' + viewerClass, {
 			upid: upid,
+			taskDone: me.taskDone,
 			listeners: {
 			    destroy: function () {
 				me.close();

@@ -2,6 +2,8 @@ Ext.define('Proxmox.window.TaskProgress', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxTaskProgress',
 
+    taskDone: Ext.emptyFn,
+
     initComponent: function() {
         var me = this;
 
@@ -44,6 +46,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 		    me.close();
 		    Ext.Msg.alert('Task failed', exitstatus);
 		}
+		me.taskDone(exitstatus == 'OK');
 	    }
 	});
 
@@ -61,6 +64,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 		    text: gettext('Details'),
 		    handler: function() {			
 			var win = Ext.create('Proxmox.window.TaskViewer', { 
+			    taskDone: me.taskDone,
 			    upid: me.upid
 			});
 			win.show();
@@ -86,6 +90,8 @@ Ext.define('Proxmox.window.TaskViewer', {
     alias: 'widget.proxmoxTaskViewer',
 
     extraTitle: '', // string to prepend after the generic task title
+
+    taskDone: Ext.emptyFn,
 
     initComponent: function() {
         var me = this;
@@ -195,6 +201,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 		logView.requestUpdate(undefined, true);
 		logView.scrollToEnd = false;
 		statstore.stopUpdate();
+		me.taskDone(statgrid.getObjectValue('exitstatus') == 'OK');
 	    }
 
 	    stop_btn1.setDisabled(status !== 'running');
