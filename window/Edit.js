@@ -38,6 +38,8 @@ Ext.define('Proxmox.window.Edit', {
 
     showProgress: false,
 
+    showTaskViewer: false,
+
     // assign a reference from docs, to add a help button docked to the
     // bottom of the window. If undefined we magically fall back to the
     // onlineHelp of our first item, if set.
@@ -130,7 +132,7 @@ Ext.define('Proxmox.window.Edit', {
 		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 	    },
 	    success: function(response, options) {
-		var hasProgressBar = (me.backgroundDelay || me.showProgress) &&
+		var hasProgressBar = (me.backgroundDelay || me.showProgress || me.showTaskViewer) &&
 		    response.result.data ? true : false;
 
 		if (hasProgressBar) {
@@ -139,7 +141,8 @@ Ext.define('Proxmox.window.Edit', {
 		    me.hide();
 
 		    var upid = response.result.data;
-		    var win = Ext.create('Proxmox.window.TaskProgress', {
+		    var viewerClass = me.showTaskViewer ? 'Viewer' : 'Progress';
+		    var win = Ext.create('Proxmox.window.Task' + viewerClass, {
 			upid: upid,
 			listeners: {
 			    destroy: function () {
