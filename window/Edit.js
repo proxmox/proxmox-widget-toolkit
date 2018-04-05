@@ -274,6 +274,23 @@ Ext.define('Proxmox.window.Edit', {
 	    var dirty = form.isDirty();
 	    submitBtn.setDisabled(!valid || !(dirty || me.isCreate));
 	    resetBtn.setDisabled(!dirty);
+
+	    if (inputPanel && inputPanel.hasAdvanced) {
+		// we want to show the advanced options
+		// as soon as some of it is not valid
+		var advancedItems = me.down('#advancedContainer').query('field');
+		var valid = true;
+		advancedItems.forEach(function(field) {
+		    if (!field.isValid()) {
+			valid = false;
+		    }
+		});
+
+		if (!valid) {
+		    inputPanel.setAdvancedVisible(true);
+		    me.down('#advancedcb').setValue(true);
+		}
+	    }
 	};
 
 	form.on('dirtychange', set_button_status);
@@ -295,6 +312,28 @@ Ext.define('Proxmox.window.Edit', {
 		me.buttons = [ submitBtn ] ;
 	} else {
 		me.buttons = [ submitBtn, resetBtn ];
+	}
+
+	if (inputPanel && inputPanel.hasAdvanced) {
+	    var sp = Ext.state.Manager.getProvider();
+	    var advchecked = sp.get('proxmox-advanced-cb');
+	    inputPanel.setAdvancedVisible(advchecked);
+	    me.buttons.unshift(
+	       {
+		   xtype: 'proxmoxcheckbox',
+		   itemId: 'advancedcb',
+		   boxLabelAlign: 'before',
+		   boxLabel: gettext('Advanced'),
+		   stateId: 'proxmox-advanced-cb',
+		   value: advchecked,
+		   listeners: {
+		       change: function(cb, val) {
+			   inputPanel.setAdvancedVisible(val);
+			   sp.set('proxmox-advanced-cb', val);
+		       }
+		   }
+	       }
+	    );
 	}
 
 	var onlineHelp = me.onlineHelp;
