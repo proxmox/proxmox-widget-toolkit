@@ -1,3 +1,17 @@
+proxmox-widget-toolkit (1.0-14) unstable; urgency=medium
+
+  * fix #1223: add touchscreen override for extjs
+
+  * task view, progress: add taskDone callback
+
+  * window/Edit: allow showing TaskViewer instead of TaskProgress
+
+  * add labelWidth to the fieldDefaults in add_*_row
+
+  * add an optional renderer for integer rows in ObjectGrid
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 05 Apr 2018 12:18:49 +0200
+
 proxmox-widget-toolkit (1.0-13) unstable; urgency=medium
 
   * remove gettext definition in Utils.js
