@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (1.0-15) unstable; urgency=medium
+
+  * allow pressing enter in ObjectGrids to edit a field
+
+  * better default focus selection
+
+  * add a checkbox to edit windows for advanced options
+
+  * add advanced options to the input panel
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 06 Apr 2018 13:47:56 +0200
+
 proxmox-widget-toolkit (1.0-14) unstable; urgency=medium
 
   * fix #1223: add touchscreen override for extjs
