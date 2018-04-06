@@ -20,6 +20,7 @@ Ext.define('Proxmox.node.DNSView', {
 	    url: "/api2/json/nodes/" + me.nodename + "/dns",
 	    cwidth1: 130,
 	    interval: 1000,
+	    run_editor: run_editor,
 	    rows: {
 		search: { header: 'Search domain', required: true },
 		dns1: { header: gettext('DNS server') + " 1", required: true },

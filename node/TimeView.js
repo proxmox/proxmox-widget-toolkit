@@ -26,6 +26,7 @@ Ext.define('Proxmox.node.TimeView', {
 	    url: "/api2/json/nodes/" + me.nodename + "/time",
 	    cwidth1: 150,
 	    interval: 1000,
+	    run_editor: run_editor,
 	    rows: {
 		timezone: { 
 		    header: gettext('Time zone'), 

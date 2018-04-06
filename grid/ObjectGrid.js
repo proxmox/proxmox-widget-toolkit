@@ -224,6 +224,14 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	return value;
     },
 
+    listeners: {
+	itemkeyup: function(view, record, item, index, e) {
+	    if (e.getKey() === e.ENTER) {
+		this.run_editor();
+	    }
+	}
+    },
+
     initComponent : function() {
 	var me = this;
 
