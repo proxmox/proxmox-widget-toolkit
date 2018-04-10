@@ -6,8 +6,14 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	var me = this;
 	var rec = me.store.getById(key);
 	if (rec) {
-	    var value = (pending && Ext.isDefined(rec.data.pending) && (rec.data.pending !== '')) ? 
-		rec.data.pending : rec.data.value;
+	    var value = rec.data.value;
+	    if (pending) {
+		if (Ext.isDefined(rec.data.pending) && rec.data.pending !== '') {
+		    value = rec.data.pending;
+		} else if (rec.data['delete'] === 1) {
+		    value = defaultValue;
+		}
+	    }
 
             if (Ext.isDefined(value) && (value !== '')) {
 		return value;
@@ -27,7 +33,10 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 
 	Ext.Array.each(keys, function(k) {
 	    var rec = me.store.getById(k);
-	    if (rec && rec.data && Ext.isDefined(rec.data.pending) && (rec.data.pending !== '')) {
+	    if (rec && rec.data && (
+		    (Ext.isDefined(rec.data.pending) && rec.data.pending !== '') ||
+		    rec.data['delete'] === 1
+	    )) {
 		pending = true;
 		return false; // break
 	    }
@@ -60,11 +69,23 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	}
 
 	if (record.data['delete']) {
-	    pendingdelete = '<div style="text-decoration: line-through;">'+ current +'</div>';
+	    var delete_all = true;
+	    if (rowdef.multiKey) {
+		Ext.Array.each(rowdef.multiKey, function(k) {
+		    var rec = me.store.getById(k);
+		    if (rec && rec.data && rec.data['delete'] !== 1) {
+			delete_all = false;
+			return false; // break
+		    }
+		});
+	    }
+	    if (delete_all) {
+		pending = '<div style="text-decoration: line-through;">'+ current +'</div>';
+	    }
 	}
 
-	if (pending || pendingdelete) {
-	    return current + '<div style="color:red">' + (pending || '') + pendingdelete + '</div>';
+	if (pending) {
+	    return current + '<div style="color:red">' + pending + '</div>';
 	} else {
 	    return current;
 	}
