@@ -44,6 +44,10 @@ Ext.define('Proxmox.window.Edit', {
     // the task finished. function(success)
     taskDone: Ext.emptyFn,
 
+    // gets called when the api call is finished, right at the beginning
+    // function(success, response, options)
+    apiCallDone: Ext.emptyFn,
+
     // assign a reference from docs, to add a help button docked to the
     // bottom of the window. If undefined we magically fall back to the
     // onlineHelp of our first item, if set.
@@ -130,6 +134,8 @@ Ext.define('Proxmox.window.Edit', {
 	    method: me.method || (me.backgroundDelay ? 'POST' : 'PUT'),
 	    params: values,
 	    failure: function(response, options) {
+		me.apiCallDone(false, response, options);
+
 		if (response.result && response.result.errors) {
 		    form.markInvalid(response.result.errors);
 		}
@@ -138,6 +144,8 @@ Ext.define('Proxmox.window.Edit', {
 	    success: function(response, options) {
 		var hasProgressBar = (me.backgroundDelay || me.showProgress || me.showTaskViewer) &&
 		    response.result.data ? true : false;
+
+		me.apiCallDone(true, response, options);
 
 		if (hasProgressBar) {
 		    // stay around so we can trigger our close events
