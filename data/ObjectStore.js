@@ -6,7 +6,7 @@
 Ext.define('Proxmox.data.ObjectStore',  {
     extend: 'Proxmox.data.UpdateStore',
 
-    returnCompleteRecord: function() {
+    getRecord: function() {
 	var me = this;
 	var record = Ext.create('Ext.data.Model');
 	me.getData().each(function(item) {
