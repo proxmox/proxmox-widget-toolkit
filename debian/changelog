@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (1.0-17) unstable; urgency=medium
+
+  * fix edit windows being reopened on key-up when closing them with the return
+    key
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 03 May 2018 08:26:34 +0200
+
 proxmox-widget-toolkit (1.0-16) unstable; urgency=medium
 
   * add getRecord to ObjectStore
