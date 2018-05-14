@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (1.0-18) unstable; urgency=medium
+
+  * add missing task description mappings
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 14 May 2018 11:06:33 +0200
+
 proxmox-widget-toolkit (1.0-17) unstable; urgency=medium
 
   * fix edit windows being reopened on key-up when closing them with the return
