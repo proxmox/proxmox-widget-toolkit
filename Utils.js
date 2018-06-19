@@ -405,7 +405,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	eth: gettext("Network Device"),
 	bridge: 'Linux Bridge',
 	bond: 'Linux Bond',
-	vlan: 'Linux Vlan Interface',
+	vlan: 'Linux VLAN',
 	OVSBridge: 'OVS Bridge',
 	OVSBond: 'OVS Bond',
 	OVSPort: 'OVS Port',
