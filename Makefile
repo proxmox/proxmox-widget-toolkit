@@ -45,6 +45,7 @@ JSSRC=					\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
 	node/DNSEdit.js			\
+	node/HostsView.js		\
 	node/DNSView.js			\
 	node/Tasks.js			\
 	node/ServiceView.js		\
