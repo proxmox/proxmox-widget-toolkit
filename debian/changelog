@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (1.0-20) unstable; urgency=medium
+
+  * add node/HostsView to show/edit /etc/hosts
+
+  * fixup: vlan type: use 'Linux VLAN'
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 14 Sep 2018 12:01:12 +0200
+
 proxmox-widget-toolkit (1.0-19) unstable; urgency=medium
 
   * add traditional Chinese to language map
