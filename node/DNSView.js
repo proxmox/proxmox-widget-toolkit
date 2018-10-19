@@ -22,10 +22,24 @@ Ext.define('Proxmox.node.DNSView', {
 	    interval: 1000,
 	    run_editor: run_editor,
 	    rows: {
-		search: { header: 'Search domain', required: true },
-		dns1: { header: gettext('DNS server') + " 1", required: true },
-		dns2: { header: gettext('DNS server') + " 2" },
-		dns3: { header: gettext('DNS server') + " 3" }
+		search: {
+		    header: 'Search domain',
+		    required: true,
+		    renderer: Ext.htmlEncode
+		},
+		dns1: {
+		    header: gettext('DNS server') + " 1",
+		    required: true,
+		    renderer: Ext.htmlEncode
+		},
+		dns2: {
+		    header: gettext('DNS server') + " 2",
+		    renderer: Ext.htmlEncode
+		},
+		dns3: {
+		    header: gettext('DNS server') + " 3",
+		    renderer: Ext.htmlEncode
+		}
 	    },
 	    tbar: [
 		{
