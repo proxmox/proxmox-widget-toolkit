@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (1.0-21) unstable; urgency=medium
+
+  * Utils: add some task descriptions
+
+  * node/DNS: render DNS fields htmlEncoded
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 22 Nov 2018 13:23:08 +0100
+
 proxmox-widget-toolkit (1.0-20) unstable; urgency=medium
 
   * add node/HostsView to show/edit /etc/hosts
