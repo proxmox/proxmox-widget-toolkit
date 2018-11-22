@@ -492,7 +492,11 @@ Ext.define('Proxmox.Utils', { utilities: {
 	aptupdate: ['', gettext('Update package database') ],
 	startall: [ '', gettext('Start all VMs and Containers') ],
 	stopall: [ '', gettext('Stop all VMs and Containers') ],
-	migrateall: [ '', gettext('Migrate all VMs and Containers') ]
+	migrateall: [ '', gettext('Migrate all VMs and Containers') ],
+	dircreate: [ gettext('Directory Storage'), gettext('Create') ],
+	lvmcreate: [ gettext('LVM Storage'), gettext('Create') ],
+	lvmthincreate: [ gettext('LVM-Thin Storage'), gettext('Create') ],
+	zfscreate: [ gettext('ZFS Storage'), gettext('Create') ]
     },
 
     format_task_description: function(type, id) {
