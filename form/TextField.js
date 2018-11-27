@@ -34,5 +34,9 @@ Ext.define('Proxmox.form.field.Textfield', {
 	}
 
 	return me.getSkipEmptyText() ? null: value;
+    },
+
+    setAllowBlank: function(allowBlank) {
+	this.allowBlank = allowBlank;
     }
 });
