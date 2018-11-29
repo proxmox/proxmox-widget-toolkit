@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (1.0-22) unstable; urgency=medium
+
+  * form: proxmox textfield: support binding 'allowBlank'
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 29 Nov 2018 12:45:28 +0100
+
 proxmox-widget-toolkit (1.0-21) unstable; urgency=medium
 
   * Utils: add some task descriptions (disk/storage management and ceph)
