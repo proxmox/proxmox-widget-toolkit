@@ -486,7 +486,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	cephdestroymds: ['Ceph Metadata Server', gettext('Destroy') ],
 	imgcopy: ['', gettext('Copy data') ],
 	imgdel: ['', gettext('Erase data') ],
-	unknownimgdel: ['', gettext('Destroy image from unkown guest') ],
+	unknownimgdel: ['', gettext('Destroy image from unknown guest') ],
 	download: ['', gettext('Download') ],
 	vzdump: ['', gettext('Backup') ],
 	aptupdate: ['', gettext('Update package database') ],
