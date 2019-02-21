@@ -586,7 +586,9 @@ Ext.define('Proxmox.Utils', { utilities: {
 	    node: nodename
 	});
 	var nw = window.open("?" + url, '_blank', 'toolbar=no,location=no,status=no,menubar=no,resizable=yes,width=800,height=420');
-	nw.focus();
+	if (nw) {
+	    nw.focus();
+	}
     }
 
 },
