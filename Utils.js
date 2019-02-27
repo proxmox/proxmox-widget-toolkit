@@ -577,13 +577,15 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return Ext.Date.format(servertime, 'Y-m-d H:i:s');
     },
 
-    openXtermJsViewer: function(vmtype, vmid, nodename, vmname) {
-	var url = Ext.urlEncode({
+    openXtermJsViewer: function(vmtype, vmid, nodename, vmname, cmd) {
+	var url = Ext.Object.toQueryString({
 	    console: vmtype, // kvm, lxc, upgrade or shell
 	    xtermjs: 1,
 	    vmid: vmid,
 	    vmname: vmname,
-	    node: nodename
+	    node: nodename,
+	    cmd: cmd,
+
 	});
 	var nw = window.open("?" + url, '_blank', 'toolbar=no,location=no,status=no,menubar=no,resizable=yes,width=800,height=420');
 	if (nw) {
