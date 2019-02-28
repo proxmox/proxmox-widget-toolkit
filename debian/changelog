@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (1.0-23) unstable; urgency=medium
+
+  * tasks: put vzdump into VM/CT category
+
+  * fix popup behaviour in firefox with touchscreens on desktop
+
+  * utils: xtermjs: allow to pass a cmd parameter to the terminal
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 28 Feb 2019 10:54:50 +0100
+
 proxmox-widget-toolkit (1.0-22) unstable; urgency=medium
 
   * form: proxmox textfield: support binding 'allowBlank'
