@@ -54,7 +54,7 @@ Ext.apply(Ext.form.field.VTypes, {
     MacAddressText: gettext('Example') + ': 01:23:45:67:89:ab',
 
     MacPrefix:  function(v) {
-	return (/^[a-f0-9]{2}(?::[a-f0-9]{2}){0,2}:?$/i).test(v);
+	return (/^[a-f0-9][02468ace](?::[a-f0-9]{2}){0,2}:?$/i).test(v);
     },
     MacPrefixMask: /[a-fA-F0-9:]/,
     MacPrefixText: gettext('Example') + ': 02:8f',
