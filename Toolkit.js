@@ -108,6 +108,17 @@ Ext.apply(Ext.form.field.VTypes, {
     },
     proxmoxMailText: gettext('Example') + ": user@example.com",
 
+    DnsOrIp: function(v) {
+	if (!Proxmox.Utils.DnsName_match.test(v) &&
+	    !Proxmox.Utils.IP64_match.test(v))
+	{
+	    return false;
+	}
+
+	return true;
+    },
+    DnsOrIpText: gettext('Not a valid DNS name or IP Address.'),
+
     HostList: function(v) {
 	var list = v.split(/[\ \,\;]+/);
 	var i;
