@@ -110,14 +110,13 @@ Ext.apply(Ext.form.field.VTypes, {
 
     DnsOrIp: function(v) {
 	if (!Proxmox.Utils.DnsName_match.test(v) &&
-	    !Proxmox.Utils.IP64_match.test(v))
-	{
+	    !Proxmox.Utils.IP64_match.test(v)) {
 	    return false;
 	}
 
 	return true;
     },
-    DnsOrIpText: gettext('Not a valid DNS name or IP Address.'),
+    DnsOrIpText: gettext('Not a valid DNS name or IP address.'),
 
     HostList: function(v) {
 	var list = v.split(/[\ \,\;]+/);
