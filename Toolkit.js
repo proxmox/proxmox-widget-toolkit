@@ -57,7 +57,7 @@ Ext.apply(Ext.form.field.VTypes, {
 	return (/^[a-f0-9][02468ace](?::[a-f0-9]{2}){0,2}:?$/i).test(v);
     },
     MacPrefixMask: /[a-fA-F0-9:]/,
-    MacPrefixText: gettext('Example') + ': 02:8f',
+    MacPrefixText: gettext('Example') + ': 02:8f - ' + gettext('only unicast addresses are allowed'),
 
     BridgeName: function(v) {
         return (/^vmbr\d{1,4}$/).test(v);
