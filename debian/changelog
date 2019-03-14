@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (1.0-24) unstable; urgency=medium
+
+  * add DnsOrIP vtype
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 14 Mar 2019 07:41:44 +0100
+
 proxmox-widget-toolkit (1.0-23) unstable; urgency=medium
 
   * tasks: put vzdump into VM/CT category
