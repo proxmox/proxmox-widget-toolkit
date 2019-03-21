@@ -30,9 +30,9 @@ Ext.apply(Ext.form.field.VTypes, {
 	var result = Proxmox.Utils.IP6_cidr_match.exec(v);
 	// limits according to JSON Schema see
 	// pve-common/src/PVE/JSONSchema.pm
-	return (result !== null && result[1] >= 8 && result[1] <= 120);
+	return (result !== null && result[1] >= 8 && result[1] <= 128);
     },
-    IP6CIDRAddressText:  gettext('Example') + ': 2001:DB8::42/64' + "<br>" + gettext('Valid CIDR Range') + ': 8-120',
+    IP6CIDRAddressText:  gettext('Example') + ': 2001:DB8::42/64' + "<br>" + gettext('Valid CIDR Range') + ': 8-128',
     IP6CIDRAddressMask:  /[A-Fa-f0-9:\/]/,
 
     IP6PrefixLength:  function(v) {
