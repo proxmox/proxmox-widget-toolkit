@@ -2,7 +2,7 @@ PACKAGE=proxmox-widget-toolkit
 PKGVER=1.0
 PKGREL=24
 
-BUILDDIR ?= build
+BUILDDIR ?= ${PACKAGE}-${PKGVER}
 GITVERSION:=$(shell git rev-parse HEAD)
 
 DEB=${PACKAGE}_${PKGVER}-${PKGREL}_all.deb
