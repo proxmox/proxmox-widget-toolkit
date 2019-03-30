@@ -2,7 +2,8 @@ Source: proxmox-widget-toolkit
 Section: web
 Priority: optional
 Maintainer: Proxmox Support Team <support@proxmox.com>
-Build-Depends: debhelper (>= 9)
+Build-Depends: debhelper (>= 10~),
+               rsync
 Standards-Version: 3.9.8
 Homepage: http://www.proxmox.com
 
