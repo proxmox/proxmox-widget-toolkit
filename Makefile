@@ -3,6 +3,7 @@ PKGVER=1.0
 PKGREL=24
 
 BUILDDIR ?= build
+GITVERSION:=$(shell git rev-parse HEAD)
 
 DEB=${PACKAGE}_${PKGVER}-${PKGREL}_all.deb
 DSC=${PACKAGE}_${PKGVER}-${PKGREL}.dsc
@@ -60,6 +61,7 @@ all:
 ${BUILDDIR}:
 	rm -rf ${BUILDDIR}
 	rsync -a * ${BUILDDIR}
+	echo "git clone git://git.proxmox.com/git/proxmox-widget-toolkit.git\\ngit checkout ${GITVERSION}" >  ${BUILDDIR}/debian/SOURCE
 
 .PHONY: deb
 deb: ${DEB}
