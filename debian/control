@@ -3,7 +3,7 @@ Section: web
 Priority: optional
 Maintainer: Proxmox Support Team <support@proxmox.com>
 Build-Depends: debhelper (>= 9)
-Standards-Version: 3.9.5
+Standards-Version: 3.9.8
 Homepage: http://www.proxmox.com
 
 Package: proxmox-widget-toolkit

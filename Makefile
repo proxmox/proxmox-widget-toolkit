@@ -2,7 +2,10 @@ PACKAGE=proxmox-widget-toolkit
 PKGVER=1.0
 PKGREL=24
 
+BUILDDIR ?= build
+
 DEB=${PACKAGE}_${PKGVER}-${PKGREL}_all.deb
+DSC=${PACKAGE}_${PKGVER}-${PKGREL}.dsc
 
 DESTDIR=
 
@@ -54,13 +57,21 @@ JSSRC=					\
 
 all:
 
+${BUILDDIR}:
+	rm -rf ${BUILDDIR}
+	rsync -a * ${BUILDDIR}
+
 .PHONY: deb
 deb: ${DEB}
-${DEB}:
-	rm -rf build
-	rsync -a * build
-	cd build; dpkg-buildpackage -b -us -uc
+${DEB}: ${BUILDDIR}
+	cd ${BUILDDIR}; dpkg-buildpackage -b -us -uc
 	lintian ${DEB}
+
+.PHONY: dsc
+dsc: ${DSC}
+${DSC}: ${BUILDDIR}
+	cd ${BUILDDIR}; dpkg-buildpackage -S -us -uc -d -nc
+	lintian ${DSC}
 
 .PHONY: lint
 lint: ${JSSRC}
@@ -83,7 +94,7 @@ upload: ${DEB}
 distclean: clean
 
 clean:
-	rm -rf ./build *.deb *.changes *.buildinfo proxmoxlib.js
+	rm -rf ${BUILDDIR} *.tar.gz *.dsc *.deb *.changes *.buildinfo proxmoxlib.js
 	find . -name '*~' -exec rm {} ';'
 
 .PHONY: dinstall
