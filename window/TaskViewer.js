@@ -198,8 +198,8 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    var status = statgrid.getObjectValue('status');
 	    
 	    if (status === 'stopped') {
-		logView.requestUpdate(undefined, true);
 		logView.scrollToEnd = false;
+		logView.requestUpdate();
 		statstore.stopUpdate();
 		me.taskDone(statgrid.getObjectValue('exitstatus') == 'OK');
 	    }
