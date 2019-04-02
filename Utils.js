@@ -179,11 +179,26 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return min < width ? width : min;
     },
 
+    setAuthData: function(data) {
+	Proxmox.CSRFPreventionToken = data.CSRFPreventionToken;
+	Proxmox.UserName = data.username;
+	Proxmox.LoggedOut = data.LoggedOut;
+	// creates a session cookie (expire = null)
+	// that way the cookie gets deleted after the browser window is closed
+	Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, data.ticket, null, '/', null, true);
+    },
+
     authOK: function() {
+	if (Proxmox.LoggedOut) {
+	    return undefined;
+	}
 	return (Proxmox.UserName !== '') && Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
     },
 
     authClear: function() {
+	if (Proxmox.LoggedOut) {
+	    return undefined;
+	}
 	Ext.util.Cookies.clear(Proxmox.Setup.auth_cookie_name);
     },
 
