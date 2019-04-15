@@ -413,6 +413,7 @@ Ext.define('Proxmox.data.TimezoneStore', {
 	    ['Pacific/Tarawa'],
 	    ['Pacific/Tongatapu'],
 	    ['Pacific/Wake'],
-	    ['Pacific/Wallis']
+	    ['Pacific/Wallis'],
+	    ['UTC']
 	]
 });
