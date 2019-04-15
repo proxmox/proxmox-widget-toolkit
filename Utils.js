@@ -620,10 +620,12 @@ Ext.define('Proxmox.Utils', { utilities: {
 	var IPV4_REGEXP = "(?:(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET + ")";
 	var IPV6_H16 = "(?:[0-9a-fA-F]{1,4})";
 	var IPV6_LS32 = "(?:(?:" + IPV6_H16 + ":" + IPV6_H16 + ")|" + IPV4_REGEXP + ")";
+	var IPV4_CIDR_MASK = "([0-9]{1,2})";
+	var IPV6_CIDR_MASK = "([0-9]{1,3})";
 
 
 	me.IP4_match = new RegExp("^(?:" + IPV4_REGEXP + ")$");
-	me.IP4_cidr_match = new RegExp("^(?:" + IPV4_REGEXP + ")\/([0-9]{1,2})$");
+	me.IP4_cidr_match = new RegExp("^(?:" + IPV4_REGEXP + ")\/" + IPV4_CIDR_MASK + "$");
 
 	var IPV6_REGEXP = "(?:" +
 	    "(?:(?:"                                                  + "(?:" + IPV6_H16 + ":){6})" + IPV6_LS32 + ")|" +
@@ -638,10 +640,11 @@ Ext.define('Proxmox.Utils', { utilities: {
 	    ")";
 
 	me.IP6_match = new RegExp("^(?:" + IPV6_REGEXP + ")$");
-	me.IP6_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + ")\/([0-9]{1,3})$");
+	me.IP6_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + ")\/" + IPV6_CIDR_MASK + "$");
 	me.IP6_bracket_match = new RegExp("^\\[(" + IPV6_REGEXP + ")\\]");
 
 	me.IP64_match = new RegExp("^(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + ")$");
+	me.IP64_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + "\/" + IPV6_CIDR_MASK + ")|(?:" + IPV4_REGEXP + "\/" + IPV4_CIDR_MASK + ")$");
 
 	var DnsName_REGEXP = "(?:(([a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*([A-Za-z0-9]([A-Za-z0-9\\-]*[A-Za-z0-9])?))";
 	me.DnsName_match = new RegExp("^" + DnsName_REGEXP + "$");

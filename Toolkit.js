@@ -47,6 +47,22 @@ Ext.apply(Ext.form.field.VTypes, {
     IP64AddressText:  gettext('Example') + ': 192.168.1.1 2001:DB8::42',
     IP64AddressMask: /[A-Fa-f0-9\.:]/,
 
+    IP64CIDRAddress: function(v) {
+	var result = Proxmox.Utils.IP64_cidr_match.exec(v);
+	if (result === null) {
+	    return false;
+	}
+	if (result[1] !== undefined) {
+	    return result[1] >= 8 && result[1] <= 128;
+	} else if (result[2] !== undefined) {
+	    return result[2] >= 8 && result[2] <= 32;
+	} else {
+	    return false;
+	}
+    },
+    IP64CIDRAddressText: gettext('Example') + ': 192.168.1.1/24 2001:DB8::42/64',
+    IP64CIDRAddressMask: /[A-Fa-f0-9\.:\/]/,
+
     MacAddress: function(v) {
 	return (/^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$/).test(v);
     },
