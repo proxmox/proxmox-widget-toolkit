@@ -19,8 +19,9 @@ Ext.define('Proxmox.node.TimeEdit', {
 	queryMode: 'local',
 	store: Ext.create('Proxmox.data.TimezoneStore'),
 	displayField: 'zone',
+	editable: true,
+	anyMatch: true,
 	forceSelection: true,
-	editable: false,
 	allowBlank: false
     },
 
