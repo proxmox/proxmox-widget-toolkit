@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (1.0-26) unstable; urgency=medium
+
+  * fix #1784: allow one to set UTC as Timezone
+
+  * allow one to filter and search for timezones in the nodes time editor
+
+  * add a combined "IPv6 or IPv4 CIDR" match vtype
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 16 Apr 2019 05:57:58 +0000
+
 proxmox-widget-toolkit (1.0-25) unstable; urgency=medium
 
   * MacPrefix: prevent multicast MacPrefixes
