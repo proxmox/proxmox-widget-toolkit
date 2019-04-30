@@ -73,6 +73,7 @@ Ext.define('Proxmox.panel.LogView', {
 
 	doLoad: function() {
 	    var me = this;
+	    me.running = true;
 	    var view = me.getView();
 	    var viewModel = me.getViewModel();
 	    Proxmox.Utils.API2Request({
@@ -94,6 +95,7 @@ Ext.define('Proxmox.panel.LogView', {
 
 		    lines.length = total;
 		    me.updateView(lines.join('<br>'), first - 1, total);
+		    me.running = false;
 		},
 		failure: function(response) {
 		    if (view.failCallback) {
@@ -102,6 +104,7 @@ Ext.define('Proxmox.panel.LogView', {
 			var msg = response.htmlStatus;
 			Proxmox.Utils.setErrorMask(me, msg);
 		    }
+		    me.running = false;
 		}
 	    });
 	},
@@ -153,7 +156,9 @@ Ext.define('Proxmox.panel.LogView', {
 		    }
 
 		    if (me.scrollPosBottom() <= 1) {
-			view.loadTask.delay(200);
+			if (!me.running) {
+			    view.loadTask.delay(200);
+			}
 		    }
 		},
 		interval: 1000
