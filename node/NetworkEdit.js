@@ -210,80 +210,28 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		{
 		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.isCreate,
-		    fieldLabel: gettext('IP address'),
-		    vtype: 'IPAddress',
-		    name: 'address'
+		    fieldLabel: 'IPv4/CIDR',
+		    vtype: 'IPCIDRAddress',
+		    name: 'cidr'
 		},
 		{
 		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.isCreate,
-		    fieldLabel: gettext('Subnet mask'),
-		    vtype: 'IPAddress',
-		    name: 'netmask',
-		    validator: function(value) {
-			/*jslint confusion: true */
-			if (!me.items) {
-			    return true;
-			}
-			var address = me.down('field[name=address]').getValue();
-			if (value !== '') {
-			    if (address === '') {
-				return "Subnet mask requires option 'IP address'";
-			    }
-			} else {
-			    if (address !== '') {
-				return "Option 'IP address' requires a subnet mask";
-			    }
-			}
-
-			return true;
-		    }
-		},
-		{
-		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.isCreate,
-		    fieldLabel: gettext('Gateway'),
+		    fieldLabel: gettext('Gateway') + ' (IPv4)',
 		    vtype: 'IPAddress',
 		    name: 'gateway'
 		},
 		{
 		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.isCreate,
-		    fieldLabel: gettext('IPv6 address'),
-		    vtype: 'IP6Address',
-		    name: 'address6'
+		    fieldLabel: 'IPv6/CIDR',
+		    vtype: 'IP6CIDRAddress',
+		    name: 'cidr6'
 		},
 		{
 		    xtype: 'proxmoxtextfield',
 		    deleteEmpty: !me.isCreate,
-		    fieldLabel: gettext('Prefix length'),
-		    vtype: 'IP6PrefixLength',
-		    name: 'netmask6',
-		    value: '',
-		    allowBlank: true,
-		    validator: function(value) {
-			/*jslint confusion: true */
-			if (!me.items) {
-			    return true;
-			}
-			var address = me.down('field[name=address6]').getValue();
-			if (value !== '') {
-			    if (address === '') {
-				return "IPv6 prefix length requires option 'IPv6 address'";
-			    }
-			} else {
-			    if (address !== '') {
-				return "Option 'IPv6 address' requires an IPv6 prefix length";
-			    }
-			}
-
-			return true;
-		    }
-		},
-		{
-		    xtype: 'proxmoxtextfield',
-		    deleteEmpty: !me.isCreate,
-		    fieldLabel: gettext('Gateway'),
+		    fieldLabel: gettext('Gateway') + ' (IPv6)',
 		    vtype: 'IP6Address',
 		    name: 'gateway6'
 		}
