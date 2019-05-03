@@ -5,6 +5,7 @@ Ext.define('proxmox-networks', {
 	'bridge_ports', 'slaves',
 	'address', 'netmask', 'gateway',
 	'address6', 'netmask6', 'gateway6',
+	'cidr', 'cidr6',
 	'comments'
     ],
     idProperty: 'iface'
@@ -224,6 +225,19 @@ Ext.define('Proxmox.node.NetworkView', {
 	    );
 	}
 
+	var renderer_generator = function(fieldname) {
+	    return function(val, metaData, rec) {
+		var tmp = [];
+		if (rec.data[fieldname]) {
+		    tmp.push(rec.data[fieldname]);
+		}
+		if (rec.data[fieldname + '6']) {
+		    tmp.push(rec.data[fieldname + '6']);
+		}
+		return tmp.join('<br>') || '';
+	    };
+	};
+
 	Ext.apply(me, {
 	    layout: 'border',
 	    tbar: [
@@ -314,37 +328,28 @@ Ext.define('Proxmox.node.NetworkView', {
 			    sortable: true,
 			    width: 120,
 			    dataIndex: 'address',
-			    renderer: function(value, metaData, rec) {
-				if (rec.data.address && rec.data.address6) {
-				    return rec.data.address + "<br>"
-				           + rec.data.address6 + '/' + rec.data.netmask6;
-				} else if (rec.data.address6) {
-				    return rec.data.address6 + '/' + rec.data.netmask6;
-				} else {
-				    return rec.data.address;
-				}
-			    }
+			    renderer: renderer_generator('address'),
 			},
 			{
 			    header: gettext('Subnet mask'),
 			    width: 120,
 			    sortable: true,
-			    dataIndex: 'netmask'
+			    dataIndex: 'netmask',
+			    renderer: renderer_generator('netmask'),
+			},
+			{
+			    header: gettext('CIDR'),
+			    width: 120,
+			    sortable: true,
+			    dataIndex: 'cidr',
+			    renderer: renderer_generator('cidr'),
 			},
 			{
 			    header: gettext('Gateway'),
 			    width: 120,
 			    sortable: true,
 			    dataIndex: 'gateway',
-			    renderer: function(value, metaData, rec) {
-				if (rec.data.gateway && rec.data.gateway6) {
-				    return rec.data.gateway + "<br>" + rec.data.gateway6;
-				} else if (rec.data.gateway6) {
-				    return rec.data.gateway6;
-				} else {
-				    return rec.data.gateway;
-				}
-			    }
+			    renderer: renderer_generator('gateway'),
 			},
 			{
 			    header: gettext('Comment'),
