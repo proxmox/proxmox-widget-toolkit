@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (1.0-27) unstable; urgency=medium
+
+  * wait for syslog API calls to complete before creating new ones
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 07 May 2019 14:22:28 +0000
+
 proxmox-widget-toolkit (1.0-26) unstable; urgency=medium
 
   * fix #1784: allow one to set UTC as Timezone
