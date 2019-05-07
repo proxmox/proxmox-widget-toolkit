@@ -1,8 +1,8 @@
 proxmox-widget-toolkit (1.0-27) unstable; urgency=medium
 
-  * wait for syslog API calls to complete before creating new ones
+  * wait for syslog API calls to complete before requesting new ones
 
- -- Proxmox Support Team <support@proxmox.com>  Tue, 07 May 2019 14:22:28 +0000
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 07 May 2019 15:13:52 +0000
 
 proxmox-widget-toolkit (1.0-26) unstable; urgency=medium
 
