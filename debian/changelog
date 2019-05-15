@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (1.0-28) unstable; urgency=medium
+
+  * show IP/CIDR in host network view
+
+  * change nodes host network input from address/netmask to IP/CIDR
+
+  * add panel/JournalView for new mini-journalreader
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 15 May 2019 13:36:50 +0200
+
 proxmox-widget-toolkit (1.0-27) unstable; urgency=medium
 
   * wait for syslog API calls to complete before requesting new ones
