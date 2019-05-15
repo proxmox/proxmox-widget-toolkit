@@ -287,8 +287,12 @@ Ext.define('Proxmox.panel.JournalView', {
 		]
 	    },
 	    {
+		xtype: 'box',
+		bind: { disabled: '{livemode}' },
+		autoEl: { cn: gettext('Since') + ':' }
+	    },
+	    {
 		xtype: 'datefield',
-		fieldLabel: gettext('Since'),
 		name: 'since_date',
 		reference: 'since',
 		format: 'Y-m-d',
@@ -299,8 +303,12 @@ Ext.define('Proxmox.panel.JournalView', {
 		}
 	    },
 	    {
+		xtype: 'box',
+		bind: { disabled: '{livemode}' },
+		autoEl: { cn: gettext('Until') + ':' }
+	    },
+	    {
 		xtype: 'datefield',
-		fieldLabel: gettext('Until'),
 		name: 'until_date',
 		reference: 'until',
 		format: 'Y-m-d',
