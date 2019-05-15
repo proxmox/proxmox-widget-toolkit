@@ -78,7 +78,11 @@ Ext.define('Proxmox.panel.JournalView', {
 	    var text = lines.map(Ext.htmlEncode).join('<br>');
 
 	    if (!livemode) {
-		view.content = num ? text : 'no content';
+		if (num) {
+		    view.content = text;
+		} else {
+		    view.content = 'nothing logged or no timespan selected';
+		}
 	    } else {
 		// update content
 		if (top && num) {
