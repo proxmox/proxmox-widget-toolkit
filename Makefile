@@ -40,6 +40,7 @@ JSSRC=					\
 	grid/PendingObjectGrid.js	\
 	panel/InputPanel.js		\
 	panel/LogView.js		\
+	panel/JournalView.js		\
 	panel/RRDChart.js		\
 	panel/GaugeWidget.js		\
 	window/Edit.js			\
