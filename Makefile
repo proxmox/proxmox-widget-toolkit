@@ -1,12 +1,12 @@
-PACKAGE=proxmox-widget-toolkit
-PKGVER=1.0
-PKGREL=28
+include /usr/share/dpkg/pkg-info.mk
 
-BUILDDIR ?= ${PACKAGE}-${PKGVER}
+PACKAGE=proxmox-widget-toolkit
+
+BUILDDIR ?= ${PACKAGE}-${DEB_VERSION_UPSTREAM}
 GITVERSION:=$(shell git rev-parse HEAD)
 
-DEB=${PACKAGE}_${PKGVER}-${PKGREL}_all.deb
-DSC=${PACKAGE}_${PKGVER}-${PKGREL}.dsc
+DEB=${PACKAGE}_${DEB_VERSION_UPSTREAM_REVISION}_all.deb
+DSC=${PACKAGE}_${DEB_VERSION_UPSTREAM_REVISION}.dsc
 
 DESTDIR=
 
@@ -82,7 +82,7 @@ lint: ${JSSRC}
 
 proxmoxlib.js: ${JSSRC}
 	# add the version as comment in the file
-	echo "// ${PKGVER}-${PKGREL}" > $@.tmp
+	echo "// ${DEB_VERSION_UPSTREAM_REVISION}" > $@.tmp
 	cat ${JSSRC} >> $@.tmp
 	mv $@.tmp $@
 
@@ -95,7 +95,6 @@ upload: ${DEB}
 	tar cf - ${DEB} | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg --dist stretch
 
 distclean: clean
-
 clean:
 	rm -rf ${BUILDDIR} *.tar.gz *.dsc *.deb *.changes *.buildinfo proxmoxlib.js
 	find . -name '*~' -exec rm {} ';'
