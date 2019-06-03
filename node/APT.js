@@ -55,8 +55,8 @@ Ext.define('Proxmox.node.APT', {
 	    model: 'apt-pkglist',
 	    groupField: 'Origin',
 	    proxy: {
-                type: 'proxmox',
-                url: "/api2/json/nodes/" + me.nodename + "/apt/update"
+		type: 'proxmox',
+		url: "/api2/json/nodes/" + me.nodename + "/apt/update"
 	    },
 	    sorters: [
 		{
@@ -73,15 +73,15 @@ Ext.define('Proxmox.node.APT', {
 
 	var rowBodyFeature = Ext.create('Ext.grid.feature.RowBody', {
             getAdditionalData: function (data, rowIndex, record, orig) {
-                var headerCt = this.view.headerCt;
-                var colspan = headerCt.getColumnCount();
-                return {
-                    rowBody: '<div style="padding: 1em">' +
+		var headerCt = this.view.headerCt;
+		var colspan = headerCt.getColumnCount();
+		return {
+		    rowBody: '<div style="padding: 1em">' +
 			Ext.String.htmlEncode(data.Description) +
 			'</div>',
 		    rowBodyCls: me.full_description ? '' : Ext.baseCSSPrefix + 'grid-row-body-hidden',
-                    rowBodyColspan: colspan
-                };
+		    rowBodyColspan: colspan
+		};
 	    }
 	});
 
@@ -114,7 +114,7 @@ Ext.define('Proxmox.node.APT', {
 
 	var update_btn = new Ext.Button({
 	    text: gettext('Refresh'),
-	    handler: function(){
+	    handler: function() {
 		Proxmox.Utils.checked_command(function() { apt_command('update'); });
 	    }
 	});
