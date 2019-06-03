@@ -75,11 +75,11 @@ Ext.define('Proxmox.node.APT', {
             getAdditionalData: function (data, rowIndex, record, orig) {
                 var headerCt = this.view.headerCt;
                 var colspan = headerCt.getColumnCount();
-                // Usually you would style the my-body-class in CSS file
                 return {
                     rowBody: '<div style="padding: 1em">' +
 			Ext.String.htmlEncode(data.Description) +
 			'</div>',
+		    rowBodyCls: me.full_description ? '' : Ext.baseCSSPrefix + 'grid-row-body-hidden',
                     rowBodyColspan: colspan
                 };
 	    }
@@ -178,10 +178,21 @@ Ext.define('Proxmox.node.APT', {
 	    }
 	});
 
+	var verbose_desc_checkbox = new Ext.form.field.Checkbox({
+	    boxLabel: gettext('Show details'),
+	    value: false,
+	    listeners: {
+		change: (f, val) => {
+		    me.full_description = val;
+		    me.getView().refresh();
+		}
+	    }
+	});
+
 	if (me.upgradeBtn) {
-	    me.tbar =  [ update_btn, me.upgradeBtn, changelog_btn ];
+	    me.tbar =  [ update_btn, me.upgradeBtn, changelog_btn, '->', verbose_desc_checkbox ];
 	} else {
-	    me.tbar =  [ update_btn, changelog_btn ];
+	    me.tbar =  [ update_btn, changelog_btn, '->', verbose_desc_checkbox ];
 	}
 
 	Ext.apply(me, {
