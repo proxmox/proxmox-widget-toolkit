@@ -68,23 +68,15 @@ Ext.define('Proxmox.form.NetworkSelector', {
 	listeners: {
 	    load: function(store, records, successfull) {
 
-		if(successfull) {
+		if (successfull) {
 		    records.forEach(function(record) {
-			if(record.data.cidr && record.data.cidr6) {
-			    var tempcopy = record.copy(null);
-			    tempcopy.data.cidr = tempcopy.data.cidr6;
-			    delete tempcopy.data.cidr6;
-			    tempcopy.data.comment = tempcopy.data.comments6;
-			    delete tempcopy.data.comments6;
-			    store.add(tempcopy);
-			}
-
-			if(!record.data.cidr && record.data.cidr6) {
-			    record.data.cidr = record.data.cidr6;
+			if (record.data.cidr6) {
+			    let dest = (record.data.cidr) ? record.copy(null) : record;
+			    dest.data.cidr = record.data.cidr6;
 			    delete record.data.cidr6;
-			    record.data.comments = record.data.comments6;
+			    dest.data.comments = record.data.comments6;
 			    delete record.data.comments6;
-			    store.add(record);
+			    store.add(dest);
 			}
 		    });
 		}
