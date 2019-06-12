@@ -95,35 +95,32 @@ Ext.define('Proxmox.form.NetworkSelector', {
 	width: 600,
 	columns: [
 	    {
+
+		header: gettext('CIDR'),
+		dataIndex: 'cidr',
+		hideable: false,
+		flex: 1
+	    },
+	    {
 		header: gettext('Interface'),
-		sortable: true,
-		flex:1,
+		width: 90,
 		dataIndex: 'iface'
 	    },
 	    {
 		header: gettext('Active'),
-		sortable: true,
-		flex:1,
+		renderer: Proxmox.Utils.format_boolean,
+		width: 60,
 		dataIndex: 'active'
 	    },
 	    {
-
-		header: gettext('CIDR'),
-		dataIndex: 'cidr',
-		sortable: true,
-		hideable: false,
-		flex:1
-	    },
-	    {
 		header: gettext('Type'),
-		sortable: true,
-		flex:1,
+		width: 80,
+		hidden: true,
 		dataIndex: 'type'
 	    },
 	    {
 		header: gettext('Comment'),
-		sortable: true,
-		flex:1,
+		flex: 2,
 		dataIndex: 'comments'
 	    }
 	]
