@@ -34,6 +34,7 @@ JSSRC=					\
 	form/ComboGrid.js		\
 	form/RRDTypeSelector.js		\
 	form/BondModeSelector.js	\
+	form/NetworkSelector.js		\
 	button/Button.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
