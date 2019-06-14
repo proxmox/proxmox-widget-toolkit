@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (2.0-2) pve pmg; urgency=medium
+
+  * add network selector widget
+
+  * node/apt updates: show full package description conditionally
+
+  * backport fix for ExtJS pie chart tooltip for 0% entries
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 14 Jun 2019 20:47:53 +0200
+
 proxmox-widget-toolkit (2.0-1) pve pmg; urgency=medium
 
   * bump version for Debian Buster / PVE 6
