@@ -41,25 +41,11 @@ Ext.define('Proxmox.button.Help', {
 	}
     },
 
-    getOnlineHelpInfo: function (ref) {
-	var helpMap;
-	if (typeof proxmoxOnlineHelpInfo !== 'undefined') {
-	    helpMap = proxmoxOnlineHelpInfo;
-	} else if (typeof pveOnlineHelpInfo !== 'undefined') {
-	    // be backward compatible with older pve-doc-generators
-	    helpMap = pveOnlineHelpInfo;
-	} else {
-	    throw "no global OnlineHelpInfo map declared";
-	}
-
-	return helpMap[ref];
-    },
-
     // this sets the link and the tooltip text
     setOnlineHelp:function(blockid) {
 	var me = this;
 
-	var info = me.getOnlineHelpInfo(blockid);
+	var info = Proxmox.Utils.get_help_info(blockid);
 	if (info) {
 	    me.onlineHelp = blockid;
 	    var title = info.title;
@@ -81,10 +67,7 @@ Ext.define('Proxmox.button.Help', {
 	var docsURI;
 
 	if (me.onlineHelp) {
-	    var info = me.getOnlineHelpInfo(me.onlineHelp);
-	    if (info) {
-		docsURI = window.location.origin + info.link;
-	    }
+	    docsURI = Proxmox.Utils.get_help_link(me.onlineHelp);
 	}
 
 	if (docsURI) {

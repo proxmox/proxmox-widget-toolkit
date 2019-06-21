@@ -593,6 +593,29 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return Ext.Date.format(servertime, 'Y-m-d H:i:s');
     },
 
+    get_help_info: function(section) {
+	var helpMap;
+	if (typeof proxmoxOnlineHelpInfo !== 'undefined') {
+	    helpMap = proxmoxOnlineHelpInfo;
+	} else if (typeof pveOnlineHelpInfo !== 'undefined') {
+	    // be backward compatible with older pve-doc-generators
+	    helpMap = pveOnlineHelpInfo;
+	} else {
+	    throw "no global OnlineHelpInfo map declared";
+	}
+
+	return helpMap[section];
+    },
+
+    get_help_link: function(section) {
+	var info = Proxmox.Utils.get_help_info(section);
+	if (!info) {
+	    return;
+	}
+
+	return window.location.origin + info.link;
+    },
+
     openXtermJsViewer: function(vmtype, vmid, nodename, vmname, cmd) {
 	var url = Ext.Object.toQueryString({
 	    console: vmtype, // kvm, lxc, upgrade or shell
