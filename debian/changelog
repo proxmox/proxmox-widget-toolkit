@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (2.0-3) pve pmg; urgency=medium
+
+  * refactor info/link extraction from onlinehelp to utils
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 24 Jun 2019 17:54:42 +0200
+
 proxmox-widget-toolkit (2.0-2) pve pmg; urgency=medium
 
   * add network selector widget
