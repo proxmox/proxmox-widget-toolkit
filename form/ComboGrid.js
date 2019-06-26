@@ -51,6 +51,11 @@ Ext.define('Proxmox.form.ComboGrid', {
 	}
     },
 
+    setAllowBlank: function(allowBlank) {
+	this.allowBlank = allowBlank;
+	this.validate();
+    },
+
 // override ExtJS protected method
     onBindStore: function(store, initial) {
         var me = this,
