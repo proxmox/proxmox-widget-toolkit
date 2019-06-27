@@ -18,6 +18,8 @@ Ext.define('Proxmox.data.NetworkSelector', {
 	{name: 'active'},
 	{name: 'cidr'},
 	{name: 'cidr6'},
+	{name: 'address'},
+	{name: 'address6'},
 	{name: 'comments'},
 	{name: 'iface'},
 	{name: 'slaves'},
@@ -29,8 +31,9 @@ Ext.define('Proxmox.form.NetworkSelector', {
     extend: 'Proxmox.form.ComboGrid',
     alias: 'widget.proxmoxNetworkSelector',
 
-    nodename: 'localhost',
     controller: 'proxmoxNetworkSelectorController',
+
+    nodename: 'localhost',
     setNodename: function(nodename) {
 	this.nodename = nodename;
 	var networkSelectorStore = this.getStore();
@@ -73,6 +76,7 @@ Ext.define('Proxmox.form.NetworkSelector', {
 			if (record.data.cidr6) {
 			    let dest = (record.data.cidr) ? record.copy(null) : record;
 			    dest.data.cidr = record.data.cidr6;
+			    dest.data.address = record.data.address6;
 			    delete record.data.cidr6;
 			    dest.data.comments = record.data.comments6;
 			    delete record.data.comments6;
@@ -92,6 +96,12 @@ Ext.define('Proxmox.form.NetworkSelector', {
 		dataIndex: 'cidr',
 		hideable: false,
 		flex: 1
+	    },
+	    {
+
+		header: gettext('IP'),
+		dataIndex: 'address',
+		hidden: true,
 	    },
 	    {
 		header: gettext('Interface'),
