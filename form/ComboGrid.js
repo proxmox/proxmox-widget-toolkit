@@ -27,6 +27,11 @@ Ext.define('Proxmox.form.ComboGrid', {
         me.callParent(arguments);
     },
 
+    config: {
+	skipEmptyText: false,
+	deleteEmpty: false,
+    },
+
     // needed to trigger onKeyUp etc.
     enableKeyEvents: true,
 
@@ -49,6 +54,34 @@ Ext.define('Proxmox.form.ComboGrid', {
 	} else {
 	    return me.callParent();
 	}
+    },
+
+    getSubmitData: function() {
+	var me = this;
+
+	let data = null;
+	if (!me.disabled && me.submitValue) {
+	    let val = me.getSubmitValue();
+	    if (val !== null) {
+		data = {};
+		data[me.getName()] = val;
+	    } else if (me.getDeleteEmpty()) {
+		data = {};
+		data['delete'] = me.getName();
+	    }
+	}
+	return data;
+   },
+
+    getSubmitValue: function() {
+	var me = this;
+
+	var value = me.callParent();
+	if (value !== '') {
+	    return value;
+	}
+
+	return me.getSkipEmptyText() ? null: value;
     },
 
     setAllowBlank: function(allowBlank) {
