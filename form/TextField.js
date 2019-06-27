@@ -38,5 +38,6 @@ Ext.define('Proxmox.form.field.Textfield', {
 
     setAllowBlank: function(allowBlank) {
 	this.allowBlank = allowBlank;
+	this.validate();
     }
 });
