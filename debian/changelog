@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (2.0-4) pve pmg; urgency=medium
+
+  * network selector: allow to select IP too
+
+  * combogrid: add deleteEmpty and skipEmptyText
+
+  * textfield: validate after allowBlank
+
+  * combo grid: add setAllowBlank to help bindings
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 28 Jun 2019 20:30:37 +0200
+
 proxmox-widget-toolkit (2.0-3) pve pmg; urgency=medium
 
   * refactor info/link extraction from onlinehelp to utils
