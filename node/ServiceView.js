@@ -45,10 +45,11 @@ Ext.define('Proxmox.node.ServiceView', {
 	    var win = Ext.create('Ext.window.Window', {
 		title: gettext('Syslog') + ': ' + rec.data.service,
 		modal: true,
+		width: 800,
+		height: 400,
+		layout: 'fit',
 		items: {
 		    xtype: 'proxmoxLogView',
-		    width: 800,
-		    height: 400,
 		    url: "/api2/extjs/nodes/" + me.nodename + "/syslog?service=" +
 			rec.data.service,
 		    log_select_timespan: 1
