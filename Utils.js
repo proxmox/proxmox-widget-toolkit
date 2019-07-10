@@ -105,13 +105,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	'lacp-balance-tcp': 'LACP (balance-tcp)',
     },
 
-    render_bond_mode: function(value) {
-	var val = Proxmox.Utils.bond_mode_gettext_map[value];
-	if (!val) {
-	    val = value || '';
-	}
-	return val;
-    },
+    render_bond_mode: value => Proxmox.Utils.bond_mode_gettext_map[value] || value || '',
 
     bond_mode_array: function(modes) {
 	return modes.map(mode => [mode, Proxmox.Utils.render_bond_mode(mode)]);
