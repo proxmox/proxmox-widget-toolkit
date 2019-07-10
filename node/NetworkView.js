@@ -324,6 +324,16 @@ Ext.define('Proxmox.node.NetworkView', {
 			    renderer: render_ports
 			},
 			{
+			    header: gettext('Bond Mode'),
+			    dataIndex: 'bond_mode',
+			    renderer: Proxmox.Utils.render_bond_mode,
+			},
+			{
+			    header: gettext('Hash Policy'),
+			    hidden: true,
+			    dataIndex: 'bond_xmit_hash_policy',
+			},
+			{
 			    header: gettext('IP address'),
 			    sortable: true,
 			    width: 120,
