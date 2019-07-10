@@ -8,22 +8,22 @@ Ext.define('Proxmox.form.BondModeSelector', {
 	var me = this;
 
 	if (me.openvswitch) {
-           me.comboItems = [
-	       ['active-backup', 'active-backup'],
-	       ['balance-slb', 'balance-slb'],
-	       ['lacp-balance-slb', 'LACP (balance-slb)'],
-	       ['lacp-balance-tcp', 'LACP (balance-tcp)']
-	   ];
+	    me.comboItems = Proxmox.Utils.bond_mode_array([
+	       'active-backup',
+	       'balance-slb',
+	       'lacp-balance-slb',
+	       'lacp-balance-tcp',
+	    ]);
 	} else {
-            me.comboItems = [
-		['balance-rr', 'balance-rr'],
-		['active-backup', 'active-backup'],
-		['balance-xor', 'balance-xor'],
-		['broadcast', 'broadcast'],
-		['802.3ad', 'LACP (802.3ad)'],
-		['balance-tlb', 'balance-tlb'],
-		['balance-alb', 'balance-alb']
-	    ];
+	    me.comboItems = Proxmox.Utils.bond_mode_array([
+		'balance-rr',
+		'active-backup',
+		'balance-xor',
+		'broadcast',
+		'802.3ad',
+		'balance-tlb',
+		'balance-alb',
+	    ]);
 	}
 
 	me.callParent();

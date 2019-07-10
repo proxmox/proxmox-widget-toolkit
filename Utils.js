@@ -99,6 +99,29 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return data;
     },
 
+    bond_mode_gettext_map: {
+	'802.3ad': 'LACP (802.3ad)',
+	'lacp-balance-slb': 'LACP (balance-slb)',
+	'lacp-balance-tcp': 'LACP (balance-tcp)',
+    },
+
+    render_bond_mode: function(value) {
+	var val = Proxmox.Utils.bond_mode_gettext_map[value];
+	if (!val) {
+	    val = value || '';
+	}
+	return val;
+    },
+
+    bond_mode_array: function(modes) {
+	var arr = [];
+	var i;
+	for (i = 0; i < modes.length; i++) {
+	    arr.push([modes[i], Proxmox.Utils.render_bond_mode(modes[i])]);
+	}
+	return arr;
+    },
+
     getNoSubKeyHtml: function(url) {
 	// url http://www.proxmox.com/products/proxmox-ve/subscription-service-plans
 	return Ext.String.format('You do not have a valid subscription for this server. Please visit <a target="_blank" href="{0}">www.proxmox.com</a> to get a list of available options.', url || 'https://www.proxmox.com');
