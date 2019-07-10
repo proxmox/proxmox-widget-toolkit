@@ -114,12 +114,7 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     bond_mode_array: function(modes) {
-	var arr = [];
-	var i;
-	for (i = 0; i < modes.length; i++) {
-	    arr.push([modes[i], Proxmox.Utils.render_bond_mode(modes[i])]);
-	}
-	return arr;
+	return modes.map(mode => [mode, Proxmox.Utils.render_bond_mode(mode)]);
     },
 
     getNoSubKeyHtml: function(url) {
