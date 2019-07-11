@@ -439,6 +439,12 @@ Ext.define(null, {
 
 });
 
+// add '@' to the valid id
+Ext.define('Proxmox.validIdReOverride', {
+    override: 'Ext.Component',
+    validIdRe: /^[a-z_][a-z0-9\-_\@]*$/i,
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
