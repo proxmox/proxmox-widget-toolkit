@@ -71,5 +71,12 @@ Ext.define('Proxmox.form.KVComboBox', {
 	}
 
 	me.callParent();
+    },
+
+    setComboItems: function(items) {
+	var me = this;
+
+	me.getStore().setData(items);
     }
+
 });
