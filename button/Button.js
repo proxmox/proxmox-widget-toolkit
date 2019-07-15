@@ -104,6 +104,9 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
     disabled: true,
 
+    // time to wait for removal task to finish
+    delay: undefined,
+
     config: {
 	baseurl: undefined
     },
@@ -130,9 +133,11 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
     handler: function(btn, event, rec) {
 	var me = this;
+	var url = me.getUrl(rec);
+	if (typeof me.delay !== 'undefined') url += "?delay=" + me.delay;
 
 	Proxmox.Utils.API2Request({
-	    url: me.getUrl(rec),
+	    url: url,
 	    method: 'DELETE',
 	    waitMsgTarget: me.waitMsgTarget,
 	    callback: function(options, success, response) {
