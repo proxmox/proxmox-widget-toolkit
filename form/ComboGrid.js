@@ -382,7 +382,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 			def = rec.data[me.valueField];
 			me.setValue(def, true);
 		    } else {
-			me.setValue(me.editable ? def : '', true);
+			me.setValue(def);
 		    }
 		}
 	    }
