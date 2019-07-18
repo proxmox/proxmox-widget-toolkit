@@ -29,6 +29,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 
     config: {
 	skipEmptyText: false,
+	notFoundIsValid: false,
 	deleteEmpty: false,
     },
 
@@ -291,6 +292,43 @@ Ext.define('Proxmox.form.ComboGrid', {
         return picker;
     },
 
+    isValueInStore: function(value) {
+	var me = this;
+	var store = me.store;
+	var found = false;
+
+	if (!store) {
+	    return found;
+	}
+
+	if (Ext.isArray(value)) {
+	    Ext.Array.each(value, function(v) {
+		if (store.findRecord(me.valueField, v)) {
+		    found = true;
+		    return false; // break
+		}
+	    });
+	} else {
+	    found = !!store.findRecord(me.valueField, value);
+	}
+
+	return found;
+    },
+
+    validator: function (value) {
+	var me = this;
+
+	if (!value) {
+	    return true; // handled later by allowEmpty in the getErrors call chain
+	}
+
+	if (!(me.notFoundIsValid || me.isValueInStore(value))) {
+	    return gettext('Invalid Value');
+	}
+
+	return true;
+    },
+
     initComponent: function() {
 	var me = this;
 
@@ -364,16 +402,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 		}
 		var found = false;
 		if (def) {
-		    if (Ext.isArray(def)) {
-			Ext.Array.each(def, function(v) {
-			    if (store.findRecord(me.valueField, v)) {
-				found = true;
-				return false; // break
-			    }
-			});
-		    } else {
-			found = store.findRecord(me.valueField, def);
-		    }
+		    found = me.isValueInStore(def);
 		}
 
 		if (!found) {
@@ -383,6 +412,9 @@ Ext.define('Proxmox.form.ComboGrid', {
 			me.setValue(def, true);
 		    } else {
 			me.setValue(def);
+			if (!me.notFoundIsValid) {
+			    me.markInvalid(gettext('Invalid Value'));
+			}
 		    }
 		}
 	    }
