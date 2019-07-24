@@ -1,6 +1,6 @@
 include ../defines.mk
 
-CSS=
+CSS=ext6-pmx.css
 
 all:
 

@@ -38,6 +38,24 @@ Ext.define('Proxmox.form.ComboGrid', {
 
     editable: false,
 
+    triggers: {
+	clear: {
+	    cls: 'pmx-clear-trigger',
+	    weight: -1,
+	    hidden: true,
+	    handler: function() {
+		var me = this;
+		me.setValue('');
+	    }
+	}
+    },
+
+    setValue: function(value) {
+	var me = this;
+	me.triggers.clear.setVisible(!!value && me.allowBlank);
+	return me.callParent([value]);
+    },
+
     // override ExtJS method
     // if the field has multiSelect enabled, the store is not loaded, and
     // the displayfield == valuefield, it saves the rawvalue as an array

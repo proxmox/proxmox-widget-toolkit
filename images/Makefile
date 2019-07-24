@@ -1,6 +1,6 @@
 include ../defines.mk
 
-IMAGES=
+IMAGES=pmx-clear-trigger.png
 
 all:
 
