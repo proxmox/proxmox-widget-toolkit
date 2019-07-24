@@ -1,18 +1,8 @@
 include /usr/share/dpkg/pkg-info.mk
 
-PACKAGE=proxmox-widget-toolkit
+include defines.mk
 
-BUILDDIR ?= ${PACKAGE}-${DEB_VERSION_UPSTREAM}
-GITVERSION:=$(shell git rev-parse HEAD)
-
-DEB=${PACKAGE}_${DEB_VERSION_UPSTREAM_REVISION}_all.deb
-DSC=${PACKAGE}_${DEB_VERSION_UPSTREAM_REVISION}.dsc
-
-DESTDIR=
-
-DOCDIR=${DESTDIR}/usr/share/doc/${PACKAGE}
-
-WWWBASEDIR=${DESTDIR}/usr/share/javascript/${PACKAGE}
+SUBDIRS= css images
 
 JSSRC=					\
 	Utils.js			\
@@ -58,7 +48,8 @@ JSSRC=					\
 	node/TimeEdit.js		\
 	node/TimeView.js
 
-all:
+all: ${SUBDIRS}
+	set -e && for i in ${SUBDIRS}; do ${MAKE} -C $$i; done
 
 ${BUILDDIR}:
 	rm -rf ${BUILDDIR}
@@ -90,6 +81,7 @@ proxmoxlib.js: ${JSSRC}
 install: proxmoxlib.js
 	install -d -m 755 ${WWWBASEDIR}
 	install -m 0644 proxmoxlib.js ${WWWBASEDIR}
+	set -e && for i in ${SUBDIRS}; do ${MAKE} -C $$i $@; done
 
 .PHONY: upload
 upload: ${DEB}
