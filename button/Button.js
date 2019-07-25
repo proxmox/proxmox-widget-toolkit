@@ -133,8 +133,12 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
     handler: function(btn, event, rec) {
 	var me = this;
+
 	var url = me.getUrl(rec);
-	if (typeof me.delay !== 'undefined') url += "?delay=" + me.delay;
+
+	if (typeof me.delay !== 'undefined' && me .delay >= 0) {
+	    url += "?delay=" + me.delay;
+	}
 
 	Proxmox.Utils.API2Request({
 	    url: url,
