@@ -1,3 +1,18 @@
+proxmox-widget-toolkit (2.0-6) pve pmg; urgency=medium
+
+  * combogrid: always set the initial value, even if not found
+
+  * combogrid: add handling for historic set values currently not
+    available
+
+  * Fix #582: allow to move those task which supports it to the
+    background if they're triggered by a standard button
+
+  * ComboGrid: add trigger to delete value from ComboGrid if it allows
+    blank values
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 13 Aug 2019 15:56:56 +0200
+
 proxmox-widget-toolkit (2.0-5) pve pmg; urgency=medium
 
   * fix syslog panel resizing
