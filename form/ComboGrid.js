@@ -340,6 +340,13 @@ Ext.define('Proxmox.form.ComboGrid', {
 	    return true; // handled later by allowEmpty in the getErrors call chain
 	}
 
+	// we normally get here the displayField as value, but if a valueField
+	// is configured we need to get the "actual" value, to ensure it is in
+	// the store. Below check is copied from ExtJS 6.0.2 ComboBox source
+	if (me.valueField && me.valueField !== me.displayField) {
+	    value = me.getValue();
+	}
+
 	if (!(me.notFoundIsValid || me.isValueInStore(value))) {
 	    return gettext('Invalid Value');
 	}
