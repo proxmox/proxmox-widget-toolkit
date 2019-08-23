@@ -76,7 +76,8 @@ Ext.define('Proxmox.Utils', { utilities: {
 	ru: 'Russian',
 	sl: 'Slovenian',
 	sv: 'Swedish',
-	tr: 'Turkish'
+	tr: 'Turkish',
+	he: 'Hebrew',
     },
 
     render_language: function (value) {
