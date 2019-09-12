@@ -475,6 +475,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	qmstop: [ 'VM', gettext('Stop') ],
 	qmreset: [ 'VM', gettext('Reset') ],
 	qmshutdown: [ 'VM', gettext('Shutdown') ],
+	qmreboot: [ 'VM', gettext('Reboot') ],
 	qmsuspend: [ 'VM', gettext('Hibernate') ],
 	qmpause: [ 'VM', gettext('Pause') ],
 	qmresume: [ 'VM', gettext('Resume') ],
