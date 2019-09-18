@@ -1,12 +1,12 @@
 /* A reader to store a single JSON Object (hash) into a storage.
- * Also accepts an array containing a single hash. 
+ * Also accepts an array containing a single hash.
  *
  * So it can read:
  *
- * example1: {data1: "xyz", data2: "abc"} 
+ * example1: {data1: "xyz", data2: "abc"}
  * returns [{key: "data1", value: "xyz"}, {key: "data2", value: "abc"}]
  *
- * example2: [ {data1: "xyz", data2: "abc"} ] 
+ * example2: [ {data1: "xyz", data2: "abc"} ]
  * returns [{key: "data1", value: "xyz"}, {key: "data2", value: "abc"}]
  *
  * If you set 'readArray', the reader expexts the object as array:
@@ -30,7 +30,7 @@
 Ext.define('Proxmox.data.reader.JsonObject', {
     extend: 'Ext.data.reader.Json',
     alias : 'reader.jsonobject',
-    
+
     readArray: false,
 
     rows: undefined,
@@ -82,9 +82,9 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 			}
 		    });
 		}
-		
-	    } else { 
-		
+
+	    } else {
+
 		var org_root = root;
 
 		if (Ext.isArray(org_root)) {

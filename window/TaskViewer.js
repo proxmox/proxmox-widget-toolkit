@@ -22,7 +22,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 	    }
 	});
 
-	me.on('destroy', statstore.stopUpdate);	
+	me.on('destroy', statstore.stopUpdate);
 
 	var getObjectValue = function(key, defaultValue) {
 	    var rec = statstore.getById(key);
@@ -60,10 +60,10 @@ Ext.define('Proxmox.window.TaskProgress', {
 	    bodyPadding: 5,
 	    items: pbar,
 	    buttons: [
-		{ 
+		{
 		    text: gettext('Details'),
-		    handler: function() {			
-			var win = Ext.create('Proxmox.window.TaskViewer', { 
+		    handler: function() {
+			var win = Ext.create('Proxmox.window.TaskViewer', {
 			    taskDone: me.taskDone,
 			    upid: me.upid
 			});
@@ -118,7 +118,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 		    }
 		}
 	    },
-	    exitstatus: { 
+	    exitstatus: {
 		visible: false
 	    },
 	    type: {
@@ -127,11 +127,11 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    },
 	    user: {
 		header: gettext('User name'),
-		required: true 
+		required: true
 	    },
 	    node: {
 		header: gettext('Node'),
-		required: true 
+		required: true
 	    },
 	    pid: {
 		header: gettext('Process ID'),
@@ -139,7 +139,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    },
 	    starttime: {
 		header: gettext('Start Time'),
-		required: true, 
+		required: true,
 		renderer: Proxmox.Utils.render_timestamp
 	    },
 	    upid: {
@@ -153,7 +153,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    rows: rows
 	});
 
-	me.on('destroy', statstore.stopUpdate);	
+	me.on('destroy', statstore.stopUpdate);
 
 	var stop_task = function() {
 	    Proxmox.Utils.API2Request({
@@ -196,7 +196,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 
 	me.mon(statstore, 'load', function() {
 	    var status = statgrid.getObjectValue('status');
-	    
+
 	    if (status === 'stopped') {
 		logView.scrollToEnd = false;
 		logView.requestUpdate();

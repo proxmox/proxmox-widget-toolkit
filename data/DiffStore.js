@@ -23,7 +23,7 @@ Ext.define('Proxmox.data.DiffStore', {
     alias: 'store.diff',
 
     sortAfterUpdate: false,
-    
+
     constructor: function(config) {
 	var me = this;
 
@@ -58,7 +58,7 @@ Ext.define('Proxmox.data.DiffStore', {
 		    }
 		});
 		olditem.endEdit(true);
-		olditem.commit(); 
+		olditem.commit();
 	    } else {
 		var newrec = Ext.create(me.model, data);
 		var pos = (me.appendAtStart && !first_load) ? 0 : me.data.length;

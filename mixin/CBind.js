@@ -9,11 +9,11 @@ Ext.define('Proxmox.Mixin.CBind', {
 
     cloneTemplates: function() {
 	var me = this;
-	
+
  	if (typeof(me.cbindData) == "function") {
 	    me.cbindData = me.cbindData(me.initialConfig) || {};
 	}
-	
+
 	var getConfigValue = function(cname) {
 
 	    if (cname in me.initialConfig) {
@@ -21,13 +21,13 @@ Ext.define('Proxmox.Mixin.CBind', {
 	    }
 	    if (cname in me.cbindData) {
 		return me.cbindData[cname];
-	    }	    
+	    }
 	    if (cname in me) {
 		return me[cname];
 	    }
 	    throw "unable to get cbind data for '" + cname + "'";
 	};
-	
+
 	var applyCBind = function(obj) {
 	    var cbind = obj.cbind, prop, cdata, cvalue, match, found;
 	    if (!cbind) return;
@@ -71,7 +71,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 	if (me.cbind) {
 	    applyCBind(me);
 	}
-	
+
 	var cloneTemplateArray = function(org) {
 	    var copy, i, found, el, elcopy, arrayLength;
 
@@ -105,7 +105,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 	    }
 	    return copy;
 	};
-	
+
 	var cloneTemplateObject = function(org) {
 	    var res = {}, prop, el, copy;
 	    for (prop in org) {
@@ -128,7 +128,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 
 	var condCloneProperties = function() {
 	    var prop, el, i, tmp;
-	
+
 	    for (prop in me) {
 		el = me[prop];
 		if (el === undefined || el === null) continue;

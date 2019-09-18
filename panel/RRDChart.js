@@ -3,7 +3,7 @@ Ext.define('Proxmox.widget.RRDChart', {
     alias: 'widget.proxmoxRRDChart',
 
     unit: undefined, // bytes, bytespersecond, percent
-    
+
     controller: {
 	xclass: 'Ext.app.ViewController',
 
@@ -17,10 +17,10 @@ Ext.define('Proxmox.widget.RRDChart', {
 
 	    // javascript floating point weirdness
 	    value = Ext.Number.correctFloat(value);
-	    
+
 	    // limit to 2 decimal points
 	    value = Ext.util.Format.number(value, "0.##");
-	    
+
 	    return value.toString() + " " + units[si];
 	},
 
@@ -32,9 +32,9 @@ Ext.define('Proxmox.widget.RRDChart', {
 
 	onSeriesTooltipRender: function(tooltip, record, item) {
 	    var me = this.getView();
-	    
+
 	    var suffix = '';
-	    
+
 	    if (me.unit === 'percent') {
 		suffix = '%';
 	    } else if (me.unit === 'bytes') {
@@ -42,7 +42,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    } else if (me.unit === 'bytespersecond') {
 		suffix = 'B/s';
 	    }
-	    
+
 	    var prefix = item.field;
 	    if (me.fieldTitles && me.fieldTitles[me.fields.indexOf(item.field)]) {
 		prefix = me.fieldTitles[me.fields.indexOf(item.field)];
@@ -60,7 +60,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    ourUndoZoomButton.setDisabled(undoButton.isDisabled());
 	}
     },
-    
+
     width: 770,
     height: 300,
     animation: false,

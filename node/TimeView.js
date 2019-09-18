@@ -28,17 +28,17 @@ Ext.define('Proxmox.node.TimeView', {
 	    interval: 1000,
 	    run_editor: run_editor,
 	    rows: {
-		timezone: { 
-		    header: gettext('Time zone'), 
+		timezone: {
+		    header: gettext('Time zone'),
 		    required: true
 		},
-		localtime: { 
-		    header: gettext('Server time'), 
-		    required: true, 
-		    renderer: renderlocaltime 
+		localtime: {
+		    header: gettext('Server time'),
+		    required: true,
+		    renderer: renderlocaltime
 		}
 	    },
-	    tbar: [ 
+	    tbar: [
 		{
 		    text: gettext("Edit"),
 		    handler: run_editor

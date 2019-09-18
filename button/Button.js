@@ -80,7 +80,7 @@ Ext.define('Proxmox.button.Button', {
 		throw "unable to find waitMsgTarget";
 	    }
 	}
-	
+
 	if (me.selModel) {
 
 	    me.mon(me.selModel, "selectionchange", function() {
@@ -113,7 +113,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
     getUrl: function(rec) {
 	var me = this;
-	
+
 	return me.baseurl + '/' + rec.getId();
     },
 
