@@ -310,6 +310,18 @@ Ext.define('Proxmox.form.ComboGrid', {
         return picker;
     },
 
+    clearLocalFilter: function() {
+        var me = this,
+            filter = me.queryFilter;
+
+        if (filter) {
+            me.queryFilter = null;
+            me.changingFilters = true;
+            me.store.removeFilter(filter, true);
+            me.changingFilters = false;
+        }
+    },
+
     isValueInStore: function(value) {
 	var me = this;
 	var store = me.store;
@@ -317,6 +329,13 @@ Ext.define('Proxmox.form.ComboGrid', {
 
 	if (!store) {
 	    return found;
+	}
+
+	// Make sure the current filter is removed before checking the store
+	// to prevent false negative results when iterating over a filtered store.
+	// All store.find*() method's operate on the filtered store.
+	if (me.queryFilter && me.queryMode === 'local' && me.clearFilterOnBlur) {
+	    me.clearLocalFilter();
 	}
 
 	if (Ext.isArray(value)) {
