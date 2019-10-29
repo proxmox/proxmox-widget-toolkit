@@ -20,6 +20,8 @@ Ext.define('Proxmox.node.NetworkView', {
     // order is always the same
     types: ['bridge', 'bond', 'ovs'],
 
+    showApplyBtn: false,
+
     initComponent : function() {
 	var me = this;
 
@@ -45,6 +47,7 @@ Ext.define('Proxmox.node.NetworkView', {
 
 	var reload = function() {
 	    var changeitem = me.down('#changes');
+	    var apply_btn = me.down('#apply');
 	    Proxmox.Utils.API2Request({
 		url: baseUrl,
 		failure: function(response, opts) {
@@ -60,9 +63,11 @@ Ext.define('Proxmox.node.NetworkView', {
 		    if (changes === undefined || changes === '') {
 			changes = gettext("No changes");
 			changeitem.setHidden(true);
+			apply_btn.setDisabled(true);
 		    } else {
 			changeitem.update("<pre>" + Ext.htmlEncode(changes) + "</pre>");
 			changeitem.setHidden(false);
+			apply_btn.setDisabled(false);
 		    }
 		}
 	    });
@@ -110,6 +115,32 @@ Ext.define('Proxmox.node.NetworkView', {
 		    waitMsgTarget: me,
 		    callback: function() {
 			reload();
+		    },
+		    failure: function(response, opts) {
+			Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+		    }
+		});
+	    }
+	});
+
+	var apply_btn = Ext.create('Proxmox.button.Button', {
+	    text: gettext('Apply Configuration'),
+	    itemId: 'apply',
+	    disabled: true,
+	    hidden: !me.showApplyBtn,
+	    handler: function() {
+		Proxmox.Utils.API2Request({
+		    url: baseUrl,
+		    method: 'PUT',
+		    waitMsgTarget: me,
+		    success: function(response, opts) {
+			var upid = response.result.data;
+
+			var win = Ext.create('Proxmox.window.TaskProgress', {
+			    taskDone: reload,
+			    upid: upid
+			});
+			win.show();
 		    },
 		    failure: function(response, opts) {
 			Ext.Msg.alert(gettext('Error'), response.htmlStatus);
@@ -265,7 +296,9 @@ Ext.define('Proxmox.node.NetworkView', {
 		    }
 		},
 		edit_btn,
-		del_btn
+		del_btn,
+		' ',
+		apply_btn
 	    ],
 	    items: [
 		{
@@ -383,7 +416,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    itemId: 'changes',
 		    tbar: [
 			gettext('Pending changes') + ' (' +
-			    gettext('Please reboot to activate changes') + ')'
+			    gettext('Please reboot or apply to activate changes') + ')'
 		    ],
 		    split: true,
 		    bodyPadding: 5,
