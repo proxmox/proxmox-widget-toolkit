@@ -494,6 +494,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	vzmount: ['CT', gettext('Mount') ],
 	vzumount: ['CT', gettext('Unmount') ],
 	vzshutdown: ['CT', gettext('Shutdown') ],
+	vzreboot: ['CT', gettext('Reboot') ],
 	vzsuspend: [ 'CT', gettext('Suspend') ],
 	vzresume: [ 'CT', gettext('Resume') ],
 	hamigrate: [ 'HA', gettext('Migrate') ],
