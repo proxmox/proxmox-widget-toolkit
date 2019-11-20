@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.0-9) pve pmg; urgency=medium
+
+  * fix comboBox validation when forceSelection is true
+
+  * add reboot for containers into task description table
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 20 Nov 2019 20:28:12 +0100
+
 proxmox-widget-toolkit (2.0-8) pve pmg; urgency=medium
 
   * add hebrew to list of languages
