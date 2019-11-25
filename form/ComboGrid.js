@@ -362,7 +362,11 @@ Ext.define('Proxmox.form.ComboGrid', {
 	// we normally get here the displayField as value, but if a valueField
 	// is configured we need to get the "actual" value, to ensure it is in
 	// the store. Below check is copied from ExtJS 6.0.2 ComboBox source
-	if (me.valueField && me.valueField !== me.displayField) {
+	//
+	// we also have to get the 'real' value if the we have a mulitSelect
+	// Field but got a non array value
+	if ((me.valueField && me.valueField !== me.displayField) ||
+	    (me.multiSelect && !Ext.isArray(value))) {
 	    value = me.getValue();
 	}
 
