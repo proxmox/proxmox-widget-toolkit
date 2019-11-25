@@ -52,7 +52,8 @@ Ext.define('Proxmox.form.ComboGrid', {
 
     setValue: function(value) {
 	var me = this;
-	me.triggers.clear.setVisible(!!value && me.allowBlank);
+	let empty = Ext.isArray(value) ? !value.length : !value;
+	me.triggers.clear.setVisible(!empty && me.allowBlank);
 	return me.callParent([value]);
     },
 
@@ -458,7 +459,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 		    if (me.autoSelect && rec && rec.data) {
 			def = rec.data[me.valueField];
 			me.setValue(def, true);
-		    } else {
+		    } else if (!me.allowBlank && ((Ext.isArray(def) && def.length) || def)) {
 			me.setValue(def);
 			if (!me.notFoundIsValid) {
 			    me.markInvalid(gettext('Invalid Value'));
