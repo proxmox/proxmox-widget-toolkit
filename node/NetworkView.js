@@ -48,6 +48,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	var reload = function() {
 	    var changeitem = me.down('#changes');
 	    var apply_btn = me.down('#apply');
+	    var revert_btn = me.down('#revert');
 	    Proxmox.Utils.API2Request({
 		url: baseUrl,
 		failure: function(response, opts) {
@@ -64,10 +65,12 @@ Ext.define('Proxmox.node.NetworkView', {
 			changes = gettext("No changes");
 			changeitem.setHidden(true);
 			apply_btn.setDisabled(true);
+			revert_btn.setDisabled(true);
 		    } else {
 			changeitem.update("<pre>" + Ext.htmlEncode(changes) + "</pre>");
 			changeitem.setHidden(false);
 			apply_btn.setDisabled(false);
+			revert_btn.setDisabled(false);
 		    }
 		}
 	    });
@@ -282,6 +285,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		}, '-',
 		{
 		    text: gettext('Revert'),
+		    itemId: 'revert',
 		    handler: function() {
 			Proxmox.Utils.API2Request({
 			    url: baseUrl,
