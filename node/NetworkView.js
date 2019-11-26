@@ -421,7 +421,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    itemId: 'changes',
 		    tbar: [
 			gettext('Pending changes') + ' (' +
-			    gettext('Please reboot or apply to activate changes') + ')'
+			    gettext("Either reboot or use 'Apply Configuration' (needs ifupdown2) to activate") + ')'
 		    ],
 		    split: true,
 		    bodyPadding: 5,
