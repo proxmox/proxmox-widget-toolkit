@@ -279,7 +279,7 @@ Ext.define('Proxmox.node.NetworkView', {
 			plain: true,
 			items: menu_items
 		    }
-		}, ' ',
+		}, '-',
 		{
 		    text: gettext('Revert'),
 		    handler: function() {
@@ -298,7 +298,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		},
 		edit_btn,
 		del_btn,
-		' ',
+		'-',
 		apply_btn
 	    ],
 	    items: [
