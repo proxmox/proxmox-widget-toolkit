@@ -127,6 +127,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	    text: gettext('Apply Configuration'),
 	    itemId: 'apply',
 	    disabled: true,
+	    confirmMsg: 'Do you want to apply pending network changes?',
 	    hidden: !me.showApplyBtn,
 	    handler: function() {
 		Proxmox.Utils.API2Request({
