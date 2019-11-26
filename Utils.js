@@ -381,7 +381,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 		    Ext.Msg.show({
 			title: gettext('No valid subscription'),
 			icon: Ext.Msg.WARNING,
-			msg: Proxmox.Utils.getNoSubKeyHtml(data.url),
+			message: Proxmox.Utils.getNoSubKeyHtml(data.url),
 			buttons: Ext.Msg.OK,
 			callback: function(btn) {
 			    if (btn !== 'ok') {

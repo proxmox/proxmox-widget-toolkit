@@ -46,7 +46,7 @@ Ext.define('Proxmox.button.Button', {
 		    Ext.Msg.show({
 			title: gettext('Confirm'),
 			icon: me.dangerous ? Ext.Msg.WARNING : Ext.Msg.QUESTION,
-			msg: msg,
+			message: msg,
 			buttons: Ext.Msg.YESNO,
 			defaultFocus: me.dangerous ? 'no' : 'yes',
 			callback: function(btn) {
