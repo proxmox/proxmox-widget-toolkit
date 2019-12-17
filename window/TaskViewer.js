@@ -137,6 +137,9 @@ Ext.define('Proxmox.window.TaskViewer', {
 		header: gettext('Process ID'),
 		required: true
 	    },
+	    task_id: {
+		header: gettext('Task ID'),
+	    },
 	    starttime: {
 		header: gettext('Start Time'),
 		required: true,
