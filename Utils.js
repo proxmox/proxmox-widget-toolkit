@@ -589,17 +589,20 @@ Ext.define('Proxmox.Utils', { utilities: {
     parse_task_upid: function(upid) {
 	var task = {};
 
-	var res = upid.match(/^UPID:(\S+):([0-9A-Fa-f]{8}):([0-9A-Fa-f]{8,9}):([0-9A-Fa-f]{8}):([^:\s]+):([^:\s]*):([^:\s]+):$/);
+	var res = upid.match(/^UPID:([^\s:]+):([0-9A-Fa-f]{8}):([0-9A-Fa-f]{8,9}):(([0-9A-Fa-f]{8,16}):)?([0-9A-Fa-f]{8}):([^:\s]+):([^:\s]*):([^:\s]+):$/);
 	if (!res) {
 	    throw "unable to parse upid '" + upid + "'";
 	}
 	task.node = res[1];
 	task.pid = parseInt(res[2], 16);
 	task.pstart = parseInt(res[3], 16);
-	task.starttime = parseInt(res[4], 16);
-	task.type = res[5];
-	task.id = res[6];
-	task.user = res[7];
+	if (res[5] !== undefined) {
+	    task.task_id = parseInt(res[5], 16);
+	}
+	task.starttime = parseInt(res[6], 16);
+	task.type = res[7];
+	task.id = res[8];
+	task.user = res[9];
 
 	task.desc = Proxmox.Utils.format_task_description(task.type, task.id);
 
