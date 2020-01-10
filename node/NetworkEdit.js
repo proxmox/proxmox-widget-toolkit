@@ -250,6 +250,14 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    fieldLabel: gettext('Gateway') + ' (IPv6)',
 		    vtype: 'IP6Address',
 		    name: 'gateway6'
+		},
+		{
+		    xtype: 'proxmoxintegerfield',
+		    minValue: 1280,
+		    maxValue: 65520,
+		    deleteEmpty: !me.isCreate,
+		    fieldLabel: 'MTU',
+		    name: 'mtu'
 		}
 	    );
 	}
