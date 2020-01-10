@@ -110,6 +110,13 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		disabled: true
 	    });
 
+	    var primaryfield = Ext.createWidget('textfield', {
+		fieldLabel: gettext('bond-primary'),
+		name: 'bond-primary',
+		value: '',
+		disabled: true
+	    });
+
 	    column2.push({
 		xtype: 'bondModeSelector',
 		fieldLabel: gettext('Mode'),
@@ -120,9 +127,17 @@ Ext.define('Proxmox.node.NetworkEdit', {
 			if (value === 'balance-xor' ||
 			    value === '802.3ad') {
 			    policySelector.setDisabled(false);
+			    primaryfield.setDisabled(true);
+			    primaryfield.setValue('');
+			} else if (value === 'active-backup') {
+			    primaryfield.setDisabled(false);
+			    policySelector.setDisabled(true);
+			    policySelector.setValue('');
 			} else {
 			    policySelector.setDisabled(true);
 			    policySelector.setValue('');
+			    primaryfield.setDisabled(true);
+			    primaryfield.setValue('');
 			}
 		    }
 		},
@@ -130,6 +145,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    });
 
 	    column2.push(policySelector);
+	    column2.push(primaryfield);
 
 	} else if (me.iftype === 'OVSBond') {
 	    column2.push({
