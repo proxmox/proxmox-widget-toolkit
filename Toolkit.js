@@ -3,6 +3,11 @@
  // do not send '_dc' parameter
 Ext.Ajax.disableCaching = false;
 
+// FIXME: HACK! Makes scrolling in number spinner work again. fixed in ExtJS >= 6.1
+if (Ext.isFirefox) {
+    Ext.$eventNameMap.DOMMouseScroll = 'DOMMouseScroll';
+}
+
 // custom Vtypes
 Ext.apply(Ext.form.field.VTypes, {
     IPAddress:  function(v) {
