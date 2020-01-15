@@ -110,6 +110,10 @@ Ext.define('Proxmox.Mixin.CBind', {
 	    var res = {}, prop, el, copy;
 	    for (prop in org) {
 		el = org[prop];
+		if (el === undefined || el === null) {
+		    res[prop] = el;
+		    continue;
+		}
 		if (el.constructor == Object && el.xtype) {
 		    copy = cloneTemplateObject(el);
 		    if (copy.cbind) {
