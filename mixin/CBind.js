@@ -11,8 +11,9 @@ Ext.define('Proxmox.Mixin.CBind', {
 	var me = this;
 
  	if (typeof(me.cbindData) == "function") {
-	    me.cbindData = me.cbindData(me.initialConfig) || {};
+	    me.cbindData = me.cbindData(me.initialConfig);
 	}
+	me.cbindData = me.cbindData || {};
 
 	var getConfigValue = function(cname) {
 
