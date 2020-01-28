@@ -696,5 +696,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	me.HostPort_match = new RegExp("^(" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")(:\\d+)?$");
 	me.HostPortBrackets_match = new RegExp("^\\[(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")\\](:\\d+)?$");
 	me.IP6_dotnotation_match = new RegExp("^" + IPV6_REGEXP + "(\\.\\d+)?$");
+        me.Vlan_match = new RegExp('^vlan(\\d+)');
+        me.VlanInterface_match = new RegExp('(\\w+)\\.(\\d+)');
     }
 });

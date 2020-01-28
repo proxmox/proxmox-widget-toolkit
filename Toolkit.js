@@ -83,6 +83,14 @@ Ext.apply(Ext.form.field.VTypes, {
     BridgeName: function(v) {
         return (/^vmbr\d{1,4}$/).test(v);
     },
+    VlanName: function(v) {
+       if (Proxmox.Utils.VlanInterface_match.test(v)) {
+         return true;
+       } else if (Proxmox.Utils.Vlan_match.test(v)) {
+         return true;
+       }
+       return true;
+    },
     BridgeNameText: gettext('Format') + ': vmbr<b>N</b>, where 0 <= <b>N</b> <= 9999',
 
     BondName: function(v) {

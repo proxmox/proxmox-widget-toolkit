@@ -18,7 +18,7 @@ Ext.define('Proxmox.node.NetworkView', {
 
     // defines what types of network devices we want to create
     // order is always the same
-    types: ['bridge', 'bond', 'ovs'],
+    types: ['bridge', 'bond', 'vlan', 'ovs'],
 
     showApplyBtn: false,
 
@@ -209,6 +209,21 @@ Ext.define('Proxmox.node.NetworkView', {
 			nodename: me.nodename,
 			iftype: 'bond',
 			iface_default: find_next_iface_id('bond')
+		    });
+		    win.on('destroy', reload);
+		    win.show();
+		}
+	    });
+	}
+
+	if (me.types.indexOf('vlan') !== -1) {
+	    menu_items.push({
+		text: Proxmox.Utils.render_network_iface_type('vlan'),
+		handler: function() {
+		    var win = Ext.create('Proxmox.node.NetworkEdit', {
+			nodename: me.nodename,
+			iftype: 'vlan',
+			iface_default: 'interfaceX.1'
 		    });
 		    win.on('destroy', reload);
 		    win.show();

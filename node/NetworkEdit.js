@@ -23,8 +23,8 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    iface_vtype = 'BondName';
 	} else if (me.iftype === 'eth' && !me.isCreate) {
 	    iface_vtype = 'InterfaceName';
-	} else if (me.iftype === 'vlan' && !me.isCreate) {
-	    iface_vtype = 'InterfaceName';
+	} else if (me.iftype === 'vlan') {
+	    iface_vtype = 'VlanName';
 	} else if (me.iftype === 'OVSBridge') {
 	    iface_vtype = 'BridgeName';
 	} else if (me.iftype === 'OVSBond') {
@@ -96,6 +96,49 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		fieldLabel: gettext('OVS options'),
 		name: 'ovs_options'
 	    });
+	} else if (me.iftype === 'vlan') {
+
+	    if(!me.isCreate) {
+
+                me.disablevlanid = false;
+                me.disablevlanrawdevice = false;
+                me.vlanrawdevicevalue = '';
+                me.vlanidvalue = '';
+
+                if (Proxmox.Utils.VlanInterface_match.test(me.iface)) {
+                   me.disablevlanid = true;
+                   me.disablevlanrawdevice = true;
+                   var arr = Proxmox.Utils.VlanInterface_match.exec(me.iface);
+                   me.vlanrawdevicevalue = arr[1];
+                   me.vlanidvalue = arr[2];
+
+                } else if (Proxmox.Utils.Vlan_match.test(me.iface)) {
+                   me.disablevlanid = true;
+                   var arr = Proxmox.Utils.Vlan_match.exec(me.iface);
+                   me.vlanidvalue = arr[1];
+                }
+           } else {
+
+                me.disablevlanid = true;
+                me.disablevlanrawdevice = true;
+           }
+
+	    column2.push({
+		xtype: 'textfield',
+		fieldLabel: gettext('Vlan raw device'),
+		name: 'vlan-raw-device',
+                value: me.vlanrawdevicevalue,
+		disabled: me.disablevlanrawdevice
+	    });
+
+	    column2.push({
+		xtype: 'pveVlanField',
+		name: 'vlan-id',
+                value: me.vlanidvalue,
+		disabled: me.disablevlanid
+
+	    });
+
 	} else if (me.iftype === 'bond') {
 	    column2.push({
 		xtype: 'textfield',
@@ -200,7 +243,25 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		name: 'iface',
 		value: me.iface,
 		vtype: iface_vtype,
-		allowBlank: false
+		allowBlank: false,
+                listeners: {
+                    change: function(f, value) {
+                        if (me.isCreate && iface_vtype === 'VlanName') {
+                           var vlanidField = me.down('field[name=vlan-id]');
+                           var vlanrawdeviceField = me.down('field[name=vlan-raw-device]');
+                           if (Proxmox.Utils.VlanInterface_match.test(value)) {
+                               vlanidField.setDisabled(true);
+                               vlanrawdeviceField.setDisabled(true);
+                           } else if (Proxmox.Utils.Vlan_match.test(value)) {
+                               vlanidField.setDisabled(true);
+                               vlanrawdeviceField.setDisabled(false);
+                           } else {
+                               vlanidField.setDisabled(false);
+                               vlanrawdeviceField.setDisabled(false);
+                           }
+                        }
+                    }
+                }
 	    }
 	];
 
