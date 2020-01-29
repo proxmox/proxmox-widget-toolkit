@@ -459,10 +459,10 @@ Ext.define('Proxmox.form.ComboGrid', {
 		    if (me.autoSelect && rec && rec.data) {
 			def = rec.data[me.valueField];
 			me.setValue(def, true);
-		    } else if (!me.allowBlank && ((Ext.isArray(def) && def.length) || def)) {
+		    } else if (!me.allowBlank && !(Ext.isArray(def) ? def.length : def)) {
 			me.setValue(def);
 			if (!me.notFoundIsValid) {
-			    me.markInvalid(gettext('Invalid Value'));
+			    me.markInvalid(me.blankText);
 			}
 		    }
 		}
