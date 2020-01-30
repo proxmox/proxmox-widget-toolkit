@@ -40,10 +40,12 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	me.subject = Proxmox.Utils.render_network_iface_type(me.iftype);
 
-	var column2 = [];
+	let column1 = [],
+	    column2 = [],
+	    advancedColumn1 = [],
+	    advancedColumn2 = [];
 
-	if (!(me.iftype === 'OVSIntPort' || me.iftype === 'OVSPort' ||
-	      me.iftype === 'OVSBond')) {
+	if (!(me.iftype === 'OVSIntPort' || me.iftype === 'OVSPort' || me.iftype === 'OVSBond')) {
 	    column2.push({
 		xtype: 'proxmoxcheckbox',
 		fieldLabel: gettext('Autostart'),
@@ -231,7 +233,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    method = 'PUT';
 	}
 
-	var column1 = [{
+	column1.push({
 	    xtype: 'hiddenfield',
 	    name: 'type',
 	    value: me.iftype
@@ -261,7 +263,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    }
 		}
 	    }
-	}];
+	});
 
 	if (me.iftype === 'OVSBond') {
 	    column1.push(
@@ -310,14 +312,17 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    vtype: 'IP6Address',
 		    name: 'gateway6'
 		},
+	    );
+	    advancedColumn1. push(
 		{
 		    xtype: 'proxmoxintegerfield',
 		    minValue: 1280,
 		    maxValue: 65520,
 		    deleteEmpty: !me.isCreate,
+		    emptyText: 1500,
 		    fieldLabel: 'MTU',
 		    name: 'mtu'
-		}
+		},
 	    );
 	}
 
@@ -327,7 +332,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    items: {
                 xtype: 'inputpanel',
 		column1: column1,
-		column2: column2
+		column2: column2,
+		advancedColumn1: advancedColumn1,
+		advancedColumn2: advancedColumn2,
 	    }
 	});
 
