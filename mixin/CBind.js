@@ -37,7 +37,10 @@ Ext.define('Proxmox.Mixin.CBind', {
 		cdata = cbind[prop];
 
 		found = false;
-		if (match = /^\{(!)?([a-z_][a-z0-9_]*)\}$/i.exec(cdata)) {
+		if (typeof cdata === 'function') {
+		    obj[prop] = cdata(getConfigValue, prop);
+		    found = true;
+		} else if (match = /^\{(!)?([a-z_][a-z0-9_]*)\}$/i.exec(cdata)) {
 		    var cvalue = getConfigValue(match[2]);
 		    if (match[1]) cvalue = !cvalue;
 		    obj[prop] = cvalue;
