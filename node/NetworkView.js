@@ -193,7 +193,8 @@ Ext.define('Proxmox.node.NetworkView', {
 		    var win = Ext.create('Proxmox.node.NetworkEdit', {
 			nodename: me.nodename,
 			iftype: 'bridge',
-			iface_default: find_next_iface_id('vmbr')
+			iface_default: find_next_iface_id('vmbr'),
+			onlineHelp: 'sysadmin_network_configuration',
 		    });
 		    win.on('destroy', reload);
 		    win.show();
@@ -208,7 +209,8 @@ Ext.define('Proxmox.node.NetworkView', {
 		    var win = Ext.create('Proxmox.node.NetworkEdit', {
 			nodename: me.nodename,
 			iftype: 'bond',
-			iface_default: find_next_iface_id('bond')
+			iface_default: find_next_iface_id('bond'),
+			onlineHelp: 'sysadmin_network_configuration',
 		    });
 		    win.on('destroy', reload);
 		    win.show();
@@ -223,7 +225,8 @@ Ext.define('Proxmox.node.NetworkView', {
 		    var win = Ext.create('Proxmox.node.NetworkEdit', {
 			nodename: me.nodename,
 			iftype: 'vlan',
-			iface_default: 'interfaceX.1'
+			iface_default: 'interfaceX.1',
+			onlineHelp: 'sysadmin_network_configuration',
 		    });
 		    win.on('destroy', reload);
 		    win.show();
