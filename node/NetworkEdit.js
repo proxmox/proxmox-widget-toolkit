@@ -42,6 +42,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	let column1 = [],
 	    column2 = [],
+	    columnB = [],
 	    advancedColumn1 = [],
 	    advancedColumn2 = [];
 
@@ -138,7 +139,12 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		name: 'vlan-id',
 		value: me.vlanidvalue,
 		disabled: me.disablevlanid
+	    });
 
+	    columnB.push({
+		xtype: 'label',
+		userCls: 'pmx-hint',
+		text: 'Either add the VLAN number to an existing interface name, or choose your own name and set the VLAN raw device (for the latter ifupdown1 supports vlanXY naming only)',
 	    });
 
 	} else if (me.iftype === 'bond') {
@@ -333,6 +339,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
                 xtype: 'inputpanel',
 		column1: column1,
 		column2: column2,
+		columnB: columnB,
 		advancedColumn1: advancedColumn1,
 		advancedColumn2: advancedColumn2,
 	    }
