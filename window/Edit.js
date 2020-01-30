@@ -100,6 +100,10 @@ Ext.define('Proxmox.window.Edit', {
 	});
     },
 
+    setSubmitText: function(text) {
+	this.lookup('submitbutton').setText(text);
+    },
+
     submit: function() {
 	var me = this;
 
