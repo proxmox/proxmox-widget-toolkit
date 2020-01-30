@@ -88,11 +88,11 @@ Ext.define('Proxmox.window.Edit', {
 	Ext.iterate(values, function(fieldId, val) {
 	    var field = form.findField(fieldId);
 	    if (field && !field.up('inputpanel')) {
-               field.setValue(val);
-                if (form.trackResetOnLoad) {
-                    field.resetOriginalValue();
-                }
-            }
+	        field.setValue(val);
+		if (form.trackResetOnLoad) {
+		    field.resetOriginalValue();
+		}
+	    }
 	});
 
 	Ext.Array.each(me.query('inputpanel'), function(panel) {

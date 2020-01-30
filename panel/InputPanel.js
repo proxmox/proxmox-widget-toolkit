@@ -42,8 +42,8 @@ Ext.define('Proxmox.panel.InputPanel', {
 	var values = {};
 
 	Ext.Array.each(me.query('[isFormField]'), function(field) {
-            if (!dirtyOnly || field.isDirty()) {
-                Proxmox.Utils.assemble_field_data(values, field.getSubmitData());
+	    if (!dirtyOnly || field.isDirty()) {
+		Proxmox.Utils.assemble_field_data(values, field.getSubmitData());
 	    }
 	});
 
@@ -67,10 +67,10 @@ Ext.define('Proxmox.panel.InputPanel', {
 	    var field = me.query('[isFormField][name=' + fieldId + ']')[0];
             if (field) {
 		field.setValue(val);
-                if (form.trackResetOnLoad) {
-                    field.resetOriginalValue();
-                }
-            }
+		if (form.trackResetOnLoad) {
+		    field.resetOriginalValue();
+		}
+	    }
 	});
     },
 
