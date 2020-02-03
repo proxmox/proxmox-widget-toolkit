@@ -378,6 +378,13 @@ Ext.define('Proxmox.form.ComboGrid', {
 	return true;
     },
 
+    // validate after enabling a field, otherwise blank fields with !allowBlank
+    // are sometimes not marked as invalid
+    setDisabled: function(value) {
+	this.callParent([value]);
+	this.validate();
+    },
+
     initComponent: function() {
 	var me = this;
 
@@ -461,7 +468,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 			me.setValue(def, true);
 		    } else if (!me.allowBlank && !(Ext.isArray(def) ? def.length : def)) {
 			me.setValue(def);
-			if (!me.notFoundIsValid) {
+			if (!me.notFoundIsValid && !me.isDisabled()) {
 			    me.markInvalid(me.blankText);
 			}
 		    }
