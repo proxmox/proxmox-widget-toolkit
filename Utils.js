@@ -42,6 +42,7 @@ Ext.define('Proxmox.Utils', { utilities: {
     enabledText: gettext('Enabled'),
     disabledText: gettext('Disabled'),
     noneText: gettext('none'),
+    NoneText: gettext('None'),
     errorText: gettext('Error'),
     unknownText: gettext('Unknown'),
     defaultText: gettext('Default'),
