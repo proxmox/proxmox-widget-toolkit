@@ -58,6 +58,7 @@ Ext.define('Proxmox.Utils', { utilities: {
     groupText: gettext('Group'),
 
     language_map: {
+	ar: 'Arabic',
 	ca: 'Catalan',
 	da: 'Danish',
 	de: 'German',
