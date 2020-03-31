@@ -15,6 +15,7 @@ JSSRC=					\
 	data/ObjectStore.js		\
 	data/RRDStore.js		\
 	data/TimezoneStore.js		\
+	form/ExpireDate.js		\
 	form/IntegerField.js		\
 	form/TextField.js		\
 	form/DateTimeField.js		\
