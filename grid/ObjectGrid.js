@@ -38,6 +38,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
 		    labelWidth: opts.labelWidth || 100
 		},
@@ -70,6 +71,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
 		    labelWidth: opts.labelWidth || 100
 		},
@@ -101,6 +103,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
 		    labelWidth: opts.labelWidth || 100
 		},
@@ -133,6 +136,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    editor: {
 		xtype: 'proxmoxWindowEdit',
 		subject: text,
+		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
 		    labelWidth: opts.labelWidth || 100
 		},
