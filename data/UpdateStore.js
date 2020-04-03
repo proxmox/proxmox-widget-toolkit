@@ -1,11 +1,11 @@
-/* Extends the Ext.data.Store type
- * with  startUpdate() and stopUpdate() methods
- * to refresh the store data in the background
- * Components using this store directly will flicker
- * due to the redisplay of the element ater 'config.interval' ms
+/*
+ * Extends the Ext.data.Store type with  startUpdate() and stopUpdate() methods
+ * to refresh the store data in the background.
+ * Components using this store directly will flicker due to the redisplay of
+ * the element ater 'config.interval' ms.
  *
- * Note that you have to call yourself startUpdate() for the background load
- * to begin
+ * Note that you have to set 'autoStart' or call startUpdate() once yourself
+ * for the background load to begin.
  */
 Ext.define('Proxmox.data.UpdateStore', {
     extend: 'Ext.data.Store',
@@ -16,13 +16,13 @@ Ext.define('Proxmox.data.UpdateStore', {
     autoStart: false,
 
     destroy: function() {
-	var me = this;
+	let me = this;
 	me.stopUpdate();
 	me.callParent();
     },
 
     constructor: function(config) {
-	var me = this;
+	let me = this;
 
 	config = config || {};
 
@@ -34,18 +34,18 @@ Ext.define('Proxmox.data.UpdateStore', {
 	    throw "no storeid specified";
 	}
 
-	var load_task = new Ext.util.DelayedTask();
+	let load_task = new Ext.util.DelayedTask();
 
-	var run_load_task = function() {
+	let run_load_task = function() {
 	    if (me.isStopped) {
 		return;
 	    }
 
 	    if (Proxmox.Utils.authOK()) {
-		var start = new Date();
+		let start = new Date();
 		me.load(function() {
-		    var runtime = (new Date()) - start;
-		    var interval = config.interval + runtime*2;
+		    let runtime = (new Date()) - start;
+		    let interval = config.interval + runtime*2;
 		    load_task.delay(interval, run_load_task);
 		});
 	    } else {
