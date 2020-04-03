@@ -11,9 +11,13 @@ Ext.define('Proxmox.data.UpdateStore', {
     extend: 'Ext.data.Store',
     alias: 'store.update',
 
-    isStopped: true,
+    config: {
+	interval: 3000,
 
-    autoStart: false,
+	isStopped: true,
+
+	autoStart: false,
+    },
 
     destroy: function() {
 	let me = this;
@@ -26,10 +30,6 @@ Ext.define('Proxmox.data.UpdateStore', {
 
 	config = config || {};
 
-	if (!config.interval) {
-	    config.interval = 3000;
-	}
-
 	if (!config.storeid) {
 	    throw "no storeid specified";
 	}
@@ -37,7 +37,7 @@ Ext.define('Proxmox.data.UpdateStore', {
 	let load_task = new Ext.util.DelayedTask();
 
 	let run_load_task = function() {
-	    if (me.isStopped) {
+	    if (me.getIsStopped()) {
 		return;
 	    }
 
@@ -45,7 +45,7 @@ Ext.define('Proxmox.data.UpdateStore', {
 		let start = new Date();
 		me.load(function() {
 		    let runtime = (new Date()) - start;
-		    let interval = config.interval + runtime*2;
+		    let interval = me.getInterval() + runtime*2;
 		    load_task.delay(interval, run_load_task);
 		});
 	    } else {
@@ -55,12 +55,12 @@ Ext.define('Proxmox.data.UpdateStore', {
 
 	Ext.apply(config, {
 	    startUpdate: function() {
-		me.isStopped = false;
+		me.setIsStopped(false);
 		// run_load_task(); this makes problems with chrome
 		load_task.delay(1, run_load_task);
 	    },
 	    stopUpdate: function() {
-		me.isStopped = true;
+		me.setIsStopped(true);
 		load_task.cancel();
 	    }
 	});
@@ -69,7 +69,7 @@ Ext.define('Proxmox.data.UpdateStore', {
 
 	me.load_task = load_task;
 
-	if (me.autoStart) {
+	if (me.getAutoStart()) {
 	    me.startUpdate();
 	}
     }
