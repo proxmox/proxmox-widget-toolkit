@@ -466,6 +466,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	acmerenew: [ 'SRV', gettext('Renew Certificate') ],
 	acmerevoke: [ 'SRV', gettext('Revoke Certificate') ],
 	'auth-realm-sync': [ gettext('Realm'), gettext('Sync') ],
+	'auth-realm-sync-test': [ gettext('Realm'), gettext('Sync Preview')],
 	'move_volume': [ 'CT', gettext('Move Volume') ],
 	clustercreate: [ '', gettext('Create Cluster') ],
 	clusterjoin: [ '', gettext('Join Cluster') ],
