@@ -233,7 +233,7 @@ Ext.define('Proxmox.window.Edit', {
 	    url: me.url,
 	    method: me.method || 'PUT',
 	    trackResetOnLoad: true,
-	    bodyPadding: 10,
+	    bodyPadding: me.bodyPadding !== undefined ? me.bodyPadding : 10,
 	    border: false,
 	    defaults: Ext.apply({}, me.defaults, {
 		border: false
