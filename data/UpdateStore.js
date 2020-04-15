@@ -29,6 +29,9 @@ Ext.define('Proxmox.data.UpdateStore', {
 	let me = this;
 
 	config = config || {};
+	if (config.interval === undefined) {
+	    delete config.interval;
+	}
 
 	if (!config.storeid) {
 	    throw "no storeid specified";
