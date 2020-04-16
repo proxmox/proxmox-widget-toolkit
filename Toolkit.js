@@ -333,7 +333,36 @@ Ext.define('Proxmox.form.ComboBox', {
 	    me.clearValue();
 	    me.setValue(me.originalValue);
 	}
-    }
+    },
+
+    // we also want to open the trigger on editable comboboxes by default
+    initComponent: function() {
+	let me = this;
+	me.callParent();
+
+	if (me.editable) {
+	    // The trigger.picker causes first a focus event on the field then
+	    // toggles the selection picker. Thus skip expanding in this case,
+	    // else our focus listener expands and the picker.trigger then
+	    // collapses it directly afterwards.
+	    Ext.override(me.triggers.picker, {
+		onMouseDown: function(e) {
+		    // copied "should we focus" check from Ext.form.trigger.Trigger
+		    if (e.pointerType !== 'touch' && !this.field.owns(Ext.Element.getActiveElement())) {
+			me.skip_expand_on_focus = true;
+		    }
+		    this.callParent(arguments);
+		}
+	    });
+
+	    me.on("focus", function(combobox) {
+		if (!combobox.isExpanded && !combobox.skip_expand_on_focus) {
+		    combobox.expand();
+		}
+		combobox.skip_expand_on_focus = false;
+	    });
+	}
+    },
 });
 
 // when refreshing a grid/tree view, restoring the focus moves the view back to
