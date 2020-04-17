@@ -2,6 +2,29 @@ Ext.define('Proxmox.window.LanguageEditWindow', {
     extend: 'Ext.window.Window',
     alias: 'widget.pmxLanguageEditWindow',
 
+    viewModel: {
+	parent: null,
+	data: {
+	    language: '__default__',
+	},
+    },
+    controller: {
+	xclass: 'Ext.app.ViewController',
+	init: function(view) {
+	    let language = Ext.util.Cookies.get(view.cookieName) || '__default__';
+	    this.getViewModel().set('language', language);
+	},
+	applyLanguage: function(button) {
+	    let view = this.getView();
+	    let vm = this.getViewModel();
+
+	    let expire = Ext.Date.add(new Date(), Ext.Date.YEAR, 10);
+	    Ext.util.Cookies.set(view.cookieName, vm.get('language'), expire);
+	    view.mask(gettext('Please wait...'), 'x-mask-loading');
+	    window.location.reload();
+	},
+    },
+
     cookieName: 'PVELangCookie',
 
     title: gettext('Language'),
@@ -11,33 +34,15 @@ Ext.define('Proxmox.window.LanguageEditWindow', {
 	{
 	    xtype: 'proxmoxLanguageSelector',
 	    fieldLabel: gettext('Language'),
+	    bind: {
+		value: '{language}',
+	    },
 	},
     ],
-
     buttons: [
 	{
-	    text: gettext('OK'),
-	    handler: function() {
-		let me = this;
-		let win = this.up('window');
-		let value = win.down('proxmoxLanguageSelector').getValue();
-		let dt = Ext.Date.add(new Date(), Ext.Date.YEAR, 10);
-		Ext.util.Cookies.set(win.cookieName, value, dt);
-		win.mask(gettext('Please wait...'), 'x-mask-loading');
-		window.location.reload();
-	    }
+	    text: gettext('Apply'),
+	    handler: 'applyLanguage',
 	},
     ],
-
-    initComponent: function() {
-	let me = this;
-
-	if (!me.cookieName) {
-	    throw "no cookie name given";
-	}
-
-	me.callParent();
-	me.down('proxmoxLanguageSelector')
-	    .setValue(Ext.util.Cookies.get(me.cookieName) || '__default__');
-    },
 });
