@@ -114,7 +114,11 @@ Ext.define('Proxmox.button.StdRemoveButton', {
     getUrl: function(rec) {
 	var me = this;
 
-	return me.baseurl + '/' + rec.getId();
+	if (me.selModel) {
+	    return me.baseurl + '/' + rec.getId();
+	} else {
+	    return me.baseurl;
+	}
     },
 
     // also works with names scopes
