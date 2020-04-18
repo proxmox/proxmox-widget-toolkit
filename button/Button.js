@@ -10,7 +10,9 @@ Ext.define('Proxmox.button.Button', {
     selModel: undefined,
 
     // if 'false' handler will not be called (button disabled)
-    enableFn: function(record) { },
+    enableFn: function(record) {
+	// return undefined by default
+    },
 
     // function(record) or text
     confirmMsg: false,
@@ -19,12 +21,9 @@ Ext.define('Proxmox.button.Button', {
     dangerous: false,
 
     initComponent: function() {
-	/*jslint confusion: true */
-
         var me = this;
 
 	if (me.handler) {
-
 	    // Note: me.realHandler may be a string (see named scopes)
 	    var realHandler = me.handler;
 
@@ -32,7 +31,7 @@ Ext.define('Proxmox.button.Button', {
 		var rec, msg;
 		if (me.selModel) {
 		    rec = me.selModel.getSelection()[0];
-		    if (!rec || (me.enableFn(rec) === false)) {
+		    if (!rec || me.enableFn(rec) === false) {
 			return;
 		    }
 		}
@@ -54,7 +53,7 @@ Ext.define('Proxmox.button.Button', {
 				return;
 			    }
 			    Ext.callback(realHandler, me.scope, [button, event, rec], 0, me);
-			}
+			},
 		    });
 		} else {
 		    Ext.callback(realHandler, me.scope, [button, event, rec], 0, me);
@@ -82,17 +81,16 @@ Ext.define('Proxmox.button.Button', {
 	}
 
 	if (me.selModel) {
-
 	    me.mon(me.selModel, "selectionchange", function() {
 		var rec = me.selModel.getSelection()[0];
-		if (!rec || (me.enableFn(rec) === false)) {
+		if (!rec || me.enableFn(rec) === false) {
 		    me.setDisabled(true);
-		} else  {
+		} else {
 		    me.setDisabled(false);
 		}
 	    });
 	}
-    }
+    },
 });
 
 
@@ -108,7 +106,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
     delay: undefined,
 
     config: {
-	baseurl: undefined
+	baseurl: undefined,
     },
 
     getUrl: function(rec) {
@@ -122,17 +120,17 @@ Ext.define('Proxmox.button.StdRemoveButton', {
     },
 
     // also works with names scopes
-    callback: function(options, success, response) {},
+    callback: function(options, success, response) {
+	// do nothing by default
+    },
 
-    getRecordName: function(rec) { return rec.getId() },
+    getRecordName: (rec) => rec.getId(),
 
-    confirmMsg: function (rec) {
+    confirmMsg: function(rec) {
 	var me = this;
 
 	var name = me.getRecordName(rec);
-	return Ext.String.format(
-	    gettext('Are you sure you want to remove entry {0}'),
-	    "'" + name + "'");
+	return Ext.String.format(gettext('Are you sure you want to remove entry {0}'), `'${name}'`);
     },
 
     handler: function(btn, event, rec) {
@@ -140,7 +138,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
 	var url = me.getUrl(rec);
 
-	if (typeof me.delay !== 'undefined' && me .delay >= 0) {
+	if (typeof me.delay !== 'undefined' && me.delay >= 0) {
 	    url += "?delay=" + me.delay;
 	}
 
@@ -151,17 +149,17 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 	    callback: function(options, success, response) {
 		Ext.callback(me.callback, me.scope, [options, success, response], 0, me);
 	    },
-	    failure: function (response, opts) {
+	    failure: function(response, opts) {
 		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-	    }
+	    },
 	});
     },
     initComponent: function() {
 	let me = this;
 
 	// enable by default if no seleModel is there and disabled not set
-	if (me.initialConfig.disabled === undefined
-	    && (me.selModel === null || me.selModel === false)) {
+	if (me.initialConfig.disabled === undefined &&
+	    (me.selModel === null || me.selModel === false)) {
 	    me.disabled = false;
 	}
 
