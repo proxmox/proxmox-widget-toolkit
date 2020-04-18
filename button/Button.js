@@ -65,7 +65,7 @@ Ext.define('Proxmox.button.Button', {
 	me.callParent();
 
 	var grid;
-	if (!me.selModel && me.selModel !== null) {
+	if (!me.selModel && me.selModel !== null && me.selModel !== false) {
 	    grid = me.up('grid');
 	    if (grid && grid.selModel) {
 		me.selModel = grid.selModel;
