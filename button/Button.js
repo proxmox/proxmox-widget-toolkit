@@ -155,5 +155,16 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 	    }
 	});
-    }
+    },
+    initComponent: function() {
+	let me = this;
+
+	// enable by default if no seleModel is there and disabled not set
+	if (me.initialConfig.disabled === undefined
+	    && (me.selModel === null || me.selModel === false)) {
+	    me.disabled = false;
+	}
+
+	me.callParent();
+    },
 });
