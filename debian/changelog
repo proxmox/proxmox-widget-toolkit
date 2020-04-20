@@ -1,3 +1,17 @@
+proxmox-widget-toolkit (2.1-5) pve pmg; urgency=medium
+
+  * add LanguageEditWindow
+
+  * window/Edit: accept bodyPadding from config
+
+  * button: don't auto set selection model if explicitly set to false
+
+  * StdRemoveButton: getUrl: fallback to baseurl if no selModel is set
+
+  * StdRemoveButton: enable button by default if no selection model is set
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 20 Apr 2020 10:44:21 +0200
+
 proxmox-widget-toolkit (2.1-4) pve pmg; urgency=medium
 
   * ComboGrid: fix validation for !allowBlank disabled fields
