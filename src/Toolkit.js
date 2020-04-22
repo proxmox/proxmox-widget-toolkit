@@ -493,6 +493,13 @@ Ext.define('Proxmox.validIdReOverride', {
     validIdRe: /^[a-z_][a-z0-9\-_@]*$/i,
 });
 
+// use whole checkbox cell to multiselect, not only the checkbox
+Ext.define('Proxmox.selection.CheckboxModel', {
+    override: 'Ext.selection.CheckboxModel',
+
+    checkSelector: '.x-grid-cell-row-checker',
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
