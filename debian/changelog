@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.1-6) pve pmg; urgency=medium
+
+  * DateTimeField: implement setMaxValue and setMinValue
+
+  * monStoreErrors: refactor out and render param exception errors
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 24 Apr 2020 18:47:21 +0200
+
 proxmox-widget-toolkit (2.1-5) pve pmg; urgency=medium
 
   * add LanguageEditWindow
