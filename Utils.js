@@ -235,6 +235,23 @@ Ext.define('Proxmox.Utils', { utilities: {
 	}
     },
 
+    getResponseErrorMessage: (err) => {
+	if (!err.statusText) {
+	    return gettext('Connection error');
+	}
+	let msg = `${err.statusText} (${err.status})`;
+	if (err.response && err.response.responseText) {
+	    let txt = err.response.responseText;
+	    try {
+		let res = JSON.parse(txt)
+		for (let [key, value] of Object.entries(res.errors)) {
+		    msg += `<br>${key}: ${value}`;
+		}
+	    } catch (e) { /* TODO? */ }
+	}
+	return msg;
+    },
+
     monStoreErrors: function(me, store, clearMaskBeforeLoad) {
 	if (clearMaskBeforeLoad) {
 	    me.mon(store, 'beforeload', function(s, operation, eOpts) {
@@ -258,15 +275,8 @@ Ext.define('Proxmox.Utils', { utilities: {
 		return;
 	    }
 
-	    var msg;
-	    /*jslint nomen: true */
-	    var operation = request._operation;
-	    var error = operation.getError();
-	    if (error.statusText) {
-		msg = error.statusText + ' (' + error.status + ')';
-	    } else {
-		msg = gettext('Connection error');
-	    }
+	    let error = request._operation.getError();
+	    let msg = Proxmox.Utils.getResponseErrorMessage(error);
 	    Proxmox.Utils.setErrorMask(me, msg);
 	});
     },

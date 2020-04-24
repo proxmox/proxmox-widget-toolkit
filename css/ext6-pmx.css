@@ -5,3 +5,7 @@
 .pmx-hint {
     background-color: LightYellow;
 }
+
+.x-mask-msg-text {
+    text-align: center;
+}
