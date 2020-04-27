@@ -30,6 +30,7 @@ Ext.define('Proxmox.window.LanguageEditWindow', {
     title: gettext('Language'),
     modal: true,
     bodyPadding: 10,
+    resizable: false,
     items: [
 	{
 	    xtype: 'proxmoxLanguageSelector',
