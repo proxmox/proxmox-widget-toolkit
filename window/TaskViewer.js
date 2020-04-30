@@ -127,6 +127,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    },
 	    user: {
 		header: gettext('User name'),
+		renderer: Ext.String.htmlEncode,
 		required: true
 	    },
 	    node: {
@@ -146,7 +147,8 @@ Ext.define('Proxmox.window.TaskViewer', {
 		renderer: Proxmox.Utils.render_timestamp
 	    },
 	    upid: {
-		header: gettext('Unique task ID')
+		header: gettext('Unique task ID'),
+		renderer: Ext.String.htmlEncode,
 	    }
 	};
 
