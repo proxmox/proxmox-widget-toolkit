@@ -25,8 +25,6 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 	hideLabel: true
     },
 
-    //setValue: me.callParent();
-
     initComponent: function() {
 	let me = this;
 
