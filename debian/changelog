@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (2.1-7) pve pmg; urgency=medium
+
+  * Utils: add auth-realm-sync-test to task descriptions
+
+  * cbind: allow methods in cbindData
+
+  * add missing htmlEncodes userid renderers
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 06 May 2020 17:14:21 +0200
+
 proxmox-widget-toolkit (2.1-6) pve pmg; urgency=medium
 
   * DateTimeField: implement setMaxValue and setMinValue
