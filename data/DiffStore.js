@@ -24,6 +24,20 @@ Ext.define('Proxmox.data.DiffStore', {
 
     sortAfterUpdate: false,
 
+    // if set to true, destroy rstore on destruction
+    autoDestroyRstore: false,
+
+    onDestroy: function() {
+	let me = this;
+	if (me.autoDestroyRstore) {
+	    if (Ext.isFunction(me.rstore.destroy)) {
+		me.rstore.destroy();
+	    }
+	    delete me.rstore;
+	}
+	me.callParent();
+    },
+
     constructor: function(config) {
 	var me = this;
 
@@ -45,6 +59,8 @@ Ext.define('Proxmox.data.DiffStore', {
 	});
 
 	me.callParent([config]);
+
+	me.rstore = rstore;
 
 	var first_load = true;
 
@@ -80,13 +96,13 @@ Ext.define('Proxmox.data.DiffStore', {
 
 	    // remove vanished items
 	    allItems.each(function(olditem) {
-		var item = rstore.getById(olditem.getId());
+		var item = me.rstore.getById(olditem.getId());
 		if (!item) {
 		    me.remove(olditem);
 		}
 	    });
 
-	    rstore.each(function(item) {
+	    me.rstore.each(function(item) {
 		cond_add_item(item.data, item.getId());
 	    });
 
@@ -103,12 +119,12 @@ Ext.define('Proxmox.data.DiffStore', {
 	    me.fireEvent('datachanged', me);
 	};
 
-	if (rstore.isLoaded()) {
+	if (me.rstore.isLoaded()) {
 	    // if store is already loaded,
 	    // insert items instantly
-	    loadFn(rstore, [], true);
+	    loadFn(me.rstore, [], true);
 	}
 
-	me.mon(rstore, 'load', loadFn);
+	me.mon(me.rstore, 'load', loadFn);
     }
 });
