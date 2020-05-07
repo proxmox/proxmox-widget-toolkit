@@ -51,7 +51,14 @@ Ext.define('Proxmox.data.DiffStore', {
 	    throw "no rstore model specified";
 	}
 
-	var rstore = config.rstore;
+	let rstore;
+	if (config.rstore.isInstance) {
+	    rstore = config.rstore;
+	} else if (config.rstore.type) {
+	    rstore = Ext.create(`store.${config.rstore.type}`, config.rstore);
+	} else {
+	    throw 'rstore is not an instance, and cannot autocreate without "type"';
+	}
 
 	Ext.apply(config, {
 	    model: rstore.model,
