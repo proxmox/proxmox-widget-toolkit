@@ -24,7 +24,8 @@ Ext.define('Proxmox.data.DiffStore', {
 
     sortAfterUpdate: false,
 
-    // if set to true, destroy rstore on destruction
+    // if true, destroy rstore on destruction. Defaults to true if a rstore
+    // config is passed instead of an existing rstore instance
     autoDestroyRstore: false,
 
     onDestroy: function() {
@@ -55,6 +56,9 @@ Ext.define('Proxmox.data.DiffStore', {
 	if (config.rstore.isInstance) {
 	    rstore = config.rstore;
 	} else if (config.rstore.type) {
+	    Ext.applyIf(config.rstore, {
+		autoDestroyRstore: true,
+	    });
 	    rstore = Ext.create(`store.${config.rstore.type}`, config.rstore);
 	} else {
 	    throw 'rstore is not an instance, and cannot autocreate without "type"';
