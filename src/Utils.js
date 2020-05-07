@@ -39,6 +39,10 @@ Ext.Ajax.on('beforerequest', function(conn, options) {
 	}
 	options.headers.CSRFPreventionToken = Proxmox.CSRFPreventionToken;
     }
+    let storedUser = Proxmox.Utils.getStoredUser();
+    if (storedUser.token) {
+	options.headers.Authorization = storedUser.token;
+    }
 });
 
 Ext.define('Proxmox.Utils', { // a singleton
@@ -238,22 +242,34 @@ utilities: {
 	return min < width ? width : min;
     },
 
+    getStoredAuth: function() {
+	let storedAuth = JSON.parse(window.localStorage.getItem('ProxmoxUser'));
+	return storedAuth || {};
+    },
+
     setAuthData: function(data) {
-	Proxmox.CSRFPreventionToken = data.CSRFPreventionToken;
 	Proxmox.UserName = data.username;
 	Proxmox.LoggedOut = data.LoggedOut;
 	// creates a session cookie (expire = null)
 	// that way the cookie gets deleted after the browser window is closed
-	Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, data.ticket, null, '/', null, true);
+	if (data.ticket) {
+	    Proxmox.CSRFPreventionToken = data.CSRFPreventionToken;
+	    Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, data.ticket, null, '/', null, true);
+	}
+
+	if (data.token) {
+	    window.localStorage.setItem('ProxmoxUser', JSON.stringify(data));
+	}
     },
 
     authOK: function() {
 	if (Proxmox.LoggedOut) {
 	    return undefined;
 	}
+	let storedAuth = Proxmox.Utils.getStoredUser();
 	let cookie = Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
-	if (Proxmox.UserName !== '' && cookie && !cookie.startsWith("PVE:tfa!")) {
-	    return cookie;
+	if ((Proxmox.UserName !== '' && cookie && !cookie.startsWith("PVE:tfa!")) || storedAuth.token) {
+	    return cookie || storedAuth.token;
 	} else {
 	    return false;
 	}
@@ -264,6 +280,7 @@ utilities: {
 	    return;
 	}
 	Ext.util.Cookies.clear(Proxmox.Setup.auth_cookie_name);
+	window.localStorage.removeItem("ProxmoxUser");
     },
 
     // comp.setLoading() is buggy in ExtJS 4.0.7, so we
