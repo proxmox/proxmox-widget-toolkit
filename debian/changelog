@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.2-1) pve pmg; urgency=medium
+
+  * diff-store: allow to also auto-create real-store with schematic config only
+
+  * diff-store: allow to request propagation of destroy to real-store
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 07 May 2020 16:59:59 +0200
+
 proxmox-widget-toolkit (2.1-7) pve pmg; urgency=medium
 
   * Utils: add auth-realm-sync-test to task descriptions
