@@ -16,6 +16,7 @@ JSSRC=					\
 	data/ObjectStore.js		\
 	data/RRDStore.js		\
 	data/TimezoneStore.js		\
+	data/model/Realm.js		\
 	form/DisplayEdit.js		\
 	form/ExpireDate.js		\
 	form/IntegerField.js		\
@@ -28,6 +29,7 @@ JSSRC=					\
 	form/RRDTypeSelector.js		\
 	form/BondModeSelector.js	\
 	form/NetworkSelector.js		\
+	form/RealmComboBox.js		\
 	button/Button.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
