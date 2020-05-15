@@ -7,6 +7,7 @@ SUBDIRS= css images
 JSSRC=					\
 	Utils.js			\
 	Toolkit.js			\
+	Logo.js				\
 	mixin/CBind.js			\
 	data/reader/JsonObject.js	\
 	data/ProxmoxProxy.js		\
