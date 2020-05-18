@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (2.2-2) pve pmg; urgency=medium
+
+  * add common proxmoxlogo class definition
+
+  * add authentication realm data model and combo box
+
+  * edit window: read digest also from top level API response
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 18 May 2020 17:26:04 +0200
+
 proxmox-widget-toolkit (2.2-1) pve pmg; urgency=medium
 
   * diff-store: allow to also auto-create real-store with schematic config only
