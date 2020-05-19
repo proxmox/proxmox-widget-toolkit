@@ -1,10 +1,12 @@
 Ext.define('Proxmox.form.field.DisplayEdit', {
     extend: 'Ext.form.FieldContainer',
-    alias: ['widget.pmxDisplayEditField'],
+    alias: 'widget.pmxDisplayEditField',
 
     viewModel: {
+	parent: null,
 	data: {
 	    editable: false,
+	    value: undefined,
 	},
     },
 
@@ -30,24 +32,29 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 
 	let displayConfig = {
 	    xtype: me.displayType,
-	    bind: {
-		hidden: '{editable}',
-		disabled: '{editable}',
-	    },
+	    bind: {},
 	};
 	Ext.applyIf(displayConfig, me.initialConfig);
 	delete displayConfig.editConfig;
 	delete displayConfig.editable;
 
-	let editConfig = Ext.apply({}, me.editConfig); // clone, not reference!
+	let editConfig = Ext.apply({}, me.editConfig);
 	Ext.applyIf(editConfig, {
 	    xtype: 'textfield',
-	    bind: {
-		hidden: '{!editable}',
-		disabled: '{!editable}',
-	    },
+	    bind: {},
 	});
 	Ext.applyIf(editConfig, displayConfig);
+
+	Ext.applyIf(displayConfig.bind, {
+	    hidden: '{editable}',
+	    disabled: '{editable}',
+	    value: '{value}',
+	});
+	Ext.applyIf(editConfig.bind, {
+	    hidden: '{!editable}',
+	    disabled: '{!editable}',
+	    value: '{value}',
+	});
 
 	// avoid glitch, start off correct even before viewmodel fixes it
 	editConfig.disabled = editConfig.hidden = !me.editable;
@@ -57,8 +64,8 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 
 	Ext.apply(me, {
 	    items: [
-		displayConfig,
 		editConfig,
+		displayConfig,
 	    ],
 	});
 
