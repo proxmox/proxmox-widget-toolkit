@@ -30,6 +30,7 @@ JSSRC=					\
 	form/BondModeSelector.js	\
 	form/NetworkSelector.js		\
 	form/RealmComboBox.js		\
+	form/RoleSelector.js		\
 	button/Button.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
