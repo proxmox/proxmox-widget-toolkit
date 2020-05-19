@@ -64,11 +64,13 @@ Ext.define('Proxmox.panel.InputPanel', {
 	var form = me.up('form');
 
         Ext.iterate(values, function(fieldId, val) {
-	    var field = me.query('[isFormField][name=' + fieldId + ']')[0];
-            if (field) {
-		field.setValue(val);
-		if (form.trackResetOnLoad) {
-		    field.resetOriginalValue();
+	    let fields = me.query('[isFormField][name=' + fieldId + ']');
+	    for (const field of fields) {
+		if (field) {
+		    field.setValue(val);
+		    if (form.trackResetOnLoad) {
+			field.resetOriginalValue();
+		    }
 		}
 	    }
 	});
