@@ -1,13 +1,14 @@
 Ext.define('Proxmox.window.PasswordEdit', {
     extend: 'Proxmox.window.Edit',
     alias: 'proxmoxWindowPasswordEdit',
+    mixins: ['Proxmox.Mixin.CBind'],
 
     subject: gettext('Password'),
 
     url: '/api2/extjs/access/password',
 
     fieldDefaults: {
-	labelWidth: 120
+	labelWidth: 120,
     },
 
     items: [
@@ -19,13 +20,9 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	    allowBlank: false,
 	    name: 'password',
 	    listeners: {
-                change: function(field){
-		    field.next().validate();
-                },
-                blur: function(field){
-		    field.next().validate();
-                }
-	    }
+		change: (field) => field.next().validate(),
+		blur: (field) => field.next().validate(),
+	    },
 	},
 	{
 	    xtype: 'textfield',
@@ -35,22 +32,14 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	    allowBlank: false,
 	    vtype: 'password',
 	    initialPassField: 'password',
-	    submitValue: false
+	    submitValue: false,
 	},
 	{
 	    xtype: 'hiddenfield',
-	    name: 'userid'
-	}
+	    name: 'userid',
+	    cbind: {
+		value: '{userid}',
+	    },
+	},
     ],
-
-    initComponent : function() {
-	var me = this;
-
-	if (!me.userid) {
-	    throw "no userid specified";
-	}
-
-	me.callParent();
-	me.down('[name=userid]').setValue(me.userid);
-    }
 });
