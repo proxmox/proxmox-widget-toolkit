@@ -85,7 +85,7 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	}
 
 	if (pending) {
-	    return current + '<div style="color:red">' + pending + '</div>';
+	    return current + '<div style="color:darkorange">' + pending + '</div>';
 	} else {
 	    return current;
 	}
