@@ -54,18 +54,18 @@ Ext.define('Proxmox.window.Edit', {
     onlineHelp: undefined,
 
     isValid: function() {
-	var me = this;
+	let me = this;
 
-	var form = me.formPanel.getForm();
+	let form = me.formPanel.getForm();
 	return form.isValid();
     },
 
     getValues: function(dirtyOnly) {
-	var me = this;
+	let me = this;
 
-        var values = {};
+        let values = {};
 
-	var form = me.formPanel.getForm();
+	let form = me.formPanel.getForm();
 
         form.getFields().each(function(field) {
             if (!field.up('inputpanel') && (!dirtyOnly || field.isDirty())) {
@@ -81,9 +81,9 @@ Ext.define('Proxmox.window.Edit', {
     },
 
     setValues: function(values) {
-	var me = this;
+	let me = this;
 
-	var form = me.formPanel.getForm();
+	let form = me.formPanel.getForm();
 	let formfields = form.getFields();
 
 	Ext.iterate(values, function(id, val) {
@@ -108,14 +108,14 @@ Ext.define('Proxmox.window.Edit', {
     },
 
     submit: function() {
-	var me = this;
+	let me = this;
 
-	var form = me.formPanel.getForm();
+	let form = me.formPanel.getForm();
 
-	var values = me.getValues();
+	let values = me.getValues();
 	Ext.Object.each(values, function(name, val) {
-	    if (values.hasOwnProperty(name)) {
-                if (Ext.isArray(val) && !val.length) {
+	    if (Object.prototype.hasOwnProperty.call(values, name)) {
+		if (Ext.isArray(val) && !val.length) {
 		    values[name] = '';
 		}
 	    }
@@ -129,7 +129,7 @@ Ext.define('Proxmox.window.Edit', {
 	    values.background_delay = me.backgroundDelay;
 	}
 
-	var url =  me.url;
+	let url = me.url;
 	if (me.method === 'DELETE') {
 	    url = url + "?" + Ext.Object.toQueryString(values);
 	    values = undefined;
@@ -149,8 +149,9 @@ Ext.define('Proxmox.window.Edit', {
 		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 	    },
 	    success: function(response, options) {
-		var hasProgressBar = (me.backgroundDelay || me.showProgress || me.showTaskViewer) &&
-		    response.result.data ? true : false;
+		let hasProgressBar =
+		    (me.backgroundDelay || me.showProgress || me.showTaskViewer) &&
+		    response.result.data;
 
 		me.apiCallDone(true, response, options);
 
@@ -159,37 +160,37 @@ Ext.define('Proxmox.window.Edit', {
 		    // when background action is completed
 		    me.hide();
 
-		    var upid = response.result.data;
-		    var viewerClass = me.showTaskViewer ? 'Viewer' : 'Progress';
-		    var win = Ext.create('Proxmox.window.Task' + viewerClass, {
+		    let upid = response.result.data;
+		    let viewerClass = me.showTaskViewer ? 'Viewer' : 'Progress';
+		    Ext.create('Proxmox.window.Task' + viewerClass, {
+			autoShow: true,
 			upid: upid,
 			taskDone: me.taskDone,
 			listeners: {
-			    destroy: function () {
+			    destroy: function() {
 				me.close();
-			    }
-			}
+			    },
+			},
 		    });
-		    win.show();
 		} else {
 		    me.close();
 		}
-	    }
+	    },
 	});
     },
 
     load: function(options) {
-	var me = this;
+	let me = this;
 
-	var form = me.formPanel.getForm();
+	let form = me.formPanel.getForm();
 
 	options = options || {};
 
-	var newopts = Ext.apply({
-	    waitMsgTarget: me
+	let newopts = Ext.apply({
+	    waitMsgTarget: me,
 	}, options);
 
-	var createWrapper = function(successFn) {
+	let createWrapper = function(successFn) {
 	    Ext.apply(newopts, {
 		url: me.url,
 		method: 'GET',
@@ -210,7 +211,7 @@ Ext.define('Proxmox.window.Edit', {
 		    Ext.Msg.alert(gettext('Error'), response.htmlStatus, function() {
 			me.close();
 		    });
-		}
+		},
 	    });
 	};
 
@@ -219,8 +220,8 @@ Ext.define('Proxmox.window.Edit', {
 	Proxmox.Utils.API2Request(newopts);
     },
 
-    initComponent : function() {
-	var me = this;
+    initComponent: function() {
+	let me = this;
 
 	if (!me.url) {
 	    throw "no url specified";
@@ -228,7 +229,7 @@ Ext.define('Proxmox.window.Edit', {
 
 	if (me.create) {throw "deprecated parameter, use isCreate";}
 
-	var items = Ext.isArray(me.items) ? me.items : [ me.items ];
+	let items = Ext.isArray(me.items) ? me.items : [me.items];
 
 	me.items = undefined;
 
@@ -239,20 +240,20 @@ Ext.define('Proxmox.window.Edit', {
 	    bodyPadding: me.bodyPadding !== undefined ? me.bodyPadding : 10,
 	    border: false,
 	    defaults: Ext.apply({}, me.defaults, {
-		border: false
+		border: false,
 	    }),
 	    fieldDefaults: Ext.apply({}, me.fieldDefaults, {
 		labelWidth: 100,
-		anchor: '100%'
+		anchor: '100%',
             }),
-	    items: items
+	    items: items,
 	});
 
-	var inputPanel = me.formPanel.down('inputpanel');
+	let inputPanel = me.formPanel.down('inputpanel');
 
-	var form = me.formPanel.getForm();
+	let form = me.formPanel.getForm();
 
-	var submitText;
+	let submitText;
 	if (me.isCreate) {
 	    if (me.submitText) {
 		submitText = me.submitText;
@@ -267,41 +268,41 @@ Ext.define('Proxmox.window.Edit', {
 	    submitText = me.submitText || gettext('OK');
 	}
 
-	var submitBtn = Ext.create('Ext.Button', {
+	let submitBtn = Ext.create('Ext.Button', {
 	    reference: 'submitbutton',
 	    text: submitText,
 	    disabled: !me.isCreate,
 	    handler: function() {
 		me.submit();
-	    }
+	    },
 	});
 
-	var resetBtn = Ext.create('Ext.Button', {
+	let resetBtn = Ext.create('Ext.Button', {
 	    text: 'Reset',
 	    disabled: true,
-	    handler: function(){
+	    handler: function() {
 		form.reset();
-	    }
+	    },
 	});
 
-	var set_button_status = function() {
-	    var valid = form.isValid();
-	    var dirty = form.isDirty();
+	let set_button_status = function() {
+	    let valid = form.isValid();
+	    let dirty = form.isDirty();
 	    submitBtn.setDisabled(!valid || !(dirty || me.isCreate));
 	    resetBtn.setDisabled(!dirty);
 
 	    if (inputPanel && inputPanel.hasAdvanced) {
 		// we want to show the advanced options
 		// as soon as some of it is not valid
-		var advancedItems = me.down('#advancedContainer').query('field');
-		var valid = true;
+		let advancedItems = me.down('#advancedContainer').query('field');
+		let allAdvancedValid = true;
 		advancedItems.forEach(function(field) {
 		    if (!field.isValid()) {
-			valid = false;
+			allAdvancedValid = false;
 		    }
 		});
 
-		if (!valid) {
+		if (!allAdvancedValid) {
 		    inputPanel.setAdvancedVisible(true);
 		    me.down('#advancedcb').setValue(true);
 		}
@@ -311,27 +312,26 @@ Ext.define('Proxmox.window.Edit', {
 	form.on('dirtychange', set_button_status);
 	form.on('validitychange', set_button_status);
 
-	var colwidth = 300;
+	let colwidth = 300;
 	if (me.fieldDefaults && me.fieldDefaults.labelWidth) {
 	    colwidth += me.fieldDefaults.labelWidth - 100;
 	}
 
-	var twoColumn = inputPanel &&
-	    (inputPanel.column1 || inputPanel.column2);
+	let twoColumn = inputPanel && (inputPanel.column1 || inputPanel.column2);
 
 	if (me.subject && !me.title) {
 	    me.title = Proxmox.Utils.dialog_title(me.subject, me.isCreate, me.isAdd);
 	}
 
 	if (me.isCreate) {
-		me.buttons = [ submitBtn ] ;
+		me.buttons = [submitBtn];
 	} else {
-		me.buttons = [ submitBtn, resetBtn ];
+		me.buttons = [submitBtn, resetBtn];
 	}
 
 	if (inputPanel && inputPanel.hasAdvanced) {
-	    var sp = Ext.state.Manager.getProvider();
-	    var advchecked = sp.get('proxmox-advanced-cb');
+	    let sp = Ext.state.Manager.getProvider();
+	    let advchecked = sp.get('proxmox-advanced-cb');
 	    inputPanel.setAdvancedVisible(advchecked);
 	    me.buttons.unshift(
 	       {
@@ -345,19 +345,19 @@ Ext.define('Proxmox.window.Edit', {
 		       change: function(cb, val) {
 			   inputPanel.setAdvancedVisible(val);
 			   sp.set('proxmox-advanced-cb', val);
-		       }
-		   }
-	       }
+		       },
+		   },
+	       },
 	    );
 	}
 
-	var onlineHelp = me.onlineHelp;
+	let onlineHelp = me.onlineHelp;
 	if (!onlineHelp && inputPanel && inputPanel.onlineHelp) {
 	    onlineHelp = inputPanel.onlineHelp;
 	}
 
 	if (onlineHelp) {
-	    var helpButton = Ext.create('Proxmox.button.Help');
+	    let helpButton = Ext.create('Proxmox.button.Help');
 	    me.buttons.unshift(helpButton, '->');
 	    Ext.GlobalEvents.fireEvent('proxmoxShowHelp', onlineHelp);
 	}
@@ -366,7 +366,7 @@ Ext.define('Proxmox.window.Edit', {
 	    modal: true,
 	    width: twoColumn ? colwidth*2 : colwidth,
 	    border: false,
-	    items: [ me.formPanel ]
+	    items: [me.formPanel],
 	});
 
 	me.callParent();
@@ -386,5 +386,5 @@ Ext.define('Proxmox.window.Edit', {
 	if (me.autoLoad) {
 	    me.load();
 	}
-    }
+    },
 });
