@@ -124,7 +124,7 @@ Ext.define('Proxmox.node.Tasks', {
 		{
 		    header: gettext("Start Time"),
 		    dataIndex: 'starttime',
-		    width: 100,
+		    width: 130,
 		    renderer: function(value) {
 			return Ext.Date.format(value, "M d H:i:s");
 		    },
@@ -132,7 +132,7 @@ Ext.define('Proxmox.node.Tasks', {
 		{
 		    header: gettext("End Time"),
 		    dataIndex: 'endtime',
-		    width: 100,
+		    width: 130,
 		    renderer: function(value, metaData, record) {
 			if (!value) {
 			    metaData.tdCls = "x-grid-row-loading";
@@ -144,7 +144,7 @@ Ext.define('Proxmox.node.Tasks', {
 		{
 		    header: gettext("Node"),
 		    dataIndex: 'node',
-		    width: 100,
+		    width: 120,
 		},
 		{
 		    header: gettext("User name"),
