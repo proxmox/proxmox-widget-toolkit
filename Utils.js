@@ -584,8 +584,9 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     render_upid: function(value, metaData, record) {
-	var type = record.data.type;
-	var id = record.data.id;
+	let task = record.data;
+	let type = task.type || task.worker_type;
+	let id = task.id || task.worker_id;
 
 	return Proxmox.Utils.format_task_description(type, id);
     },
