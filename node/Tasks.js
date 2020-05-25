@@ -8,14 +8,14 @@ Ext.define('Proxmox.node.Tasks', {
     sortableColumns: false,
     vmidFilter: 0,
 
-    initComponent : function() {
-	var me = this;
+    initComponent: function() {
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
 	}
 
-	var store = Ext.create('Ext.data.BufferedStore', {
+	let store = Ext.create('Ext.data.BufferedStore', {
 	    pageSize: 500,
 	    autoLoad: true,
 	    remoteFilter: true,
@@ -24,16 +24,16 @@ Ext.define('Proxmox.node.Tasks', {
                 type: 'proxmox',
 		startParam: 'start',
 		limitParam: 'limit',
-                url: "/api2/json/nodes/" + me.nodename + "/tasks"
-	    }
+                url: "/api2/json/nodes/" + me.nodename + "/tasks",
+	    },
 	});
 
-	var userfilter = '';
-	var filter_errors = 0;
+	let userfilter = '';
+	let filter_errors = 0;
 
-	var updateProxyParams = function() {
-	    var params = {
-		errors: filter_errors
+	let updateProxyParams = function() {
+	    let params = {
+		errors: filter_errors,
 	    };
 	    if (userfilter) {
 		params.userfilter = userfilter;
@@ -46,28 +46,28 @@ Ext.define('Proxmox.node.Tasks', {
 
 	updateProxyParams();
 
-	var reload_task = Ext.create('Ext.util.DelayedTask',function() {
+	let reload_task = Ext.create('Ext.util.DelayedTask', function() {
 	    updateProxyParams();
 	    store.reload();
 	});
 
-	var run_task_viewer = function() {
-	    var sm = me.getSelectionModel();
-	    var rec = sm.getSelection()[0];
+	let run_task_viewer = function() {
+	    let sm = me.getSelectionModel();
+	    let rec = sm.getSelection()[0];
 	    if (!rec) {
 		return;
 	    }
 
-	    var win = Ext.create('Proxmox.window.TaskViewer', {
-		upid: rec.data.upid
+	    let win = Ext.create('Proxmox.window.TaskViewer', {
+		upid: rec.data.upid,
 	    });
 	    win.show();
 	};
 
-	var view_btn = new Ext.Button({
+	let view_btn = new Ext.Button({
 	    text: gettext('View'),
 	    disabled: true,
-	    handler: run_task_viewer
+	    handler: run_task_viewer,
 	});
 
 	Proxmox.Utils.monStoreErrors(me, store, true);
@@ -79,12 +79,13 @@ Ext.define('Proxmox.node.Tasks', {
 		stripeRows: false, // does not work with getRowClass()
 
 		getRowClass: function(record, index) {
-		    var status = record.get('status');
+		    let status = record.get('status');
 
-		    if (status && status != 'OK') {
+		    if (status && status !== 'OK') {
 			return "proxmox-invalid-row";
 		    }
-		}
+		    return '';
+		},
 	    },
 	    tbar: [
 		view_btn,
@@ -104,8 +105,8 @@ Ext.define('Proxmox.node.Tasks', {
 			keyup: function(field, e) {
 			    userfilter = field.getValue();
 			    reload_task.delay(500);
-			}
-		    }
+			},
+		    },
 		}, ' ', gettext('Only Errors') + ':', ' ',
 		{
 		    xtype: 'checkbox',
@@ -115,9 +116,9 @@ Ext.define('Proxmox.node.Tasks', {
 			change: function(field, checked) {
 			    filter_errors = checked ? 1 : 0;
 			    reload_task.delay(10);
-			}
-		    }
-		}, ' '
+			},
+		    },
+		}, ' ',
 	    ],
 	    columns: [
 		{
@@ -126,7 +127,7 @@ Ext.define('Proxmox.node.Tasks', {
 		    width: 100,
 		    renderer: function(value) {
 			return Ext.Date.format(value, "M d H:i:s");
-		    }
+		    },
 		},
 		{
 		    header: gettext("End Time"),
@@ -138,39 +139,39 @@ Ext.define('Proxmox.node.Tasks', {
 			    return '';
 			}
 			return Ext.Date.format(value, "M d H:i:s");
-		    }
+		    },
 		},
 		{
 		    header: gettext("Node"),
 		    dataIndex: 'node',
-		    width: 100
+		    width: 100,
 		},
 		{
 		    header: gettext("User name"),
 		    dataIndex: 'user',
-		    width: 150
+		    width: 150,
 		},
 		{
 		    header: gettext("Description"),
 		    dataIndex: 'upid',
 		    flex: 1,
-		    renderer: Proxmox.Utils.render_upid
+		    renderer: Proxmox.Utils.render_upid,
 		},
 		{
 		    header: gettext("Status"),
 		    dataIndex: 'status',
 		    width: 200,
 		    renderer: function(value, metaData, record) {
-			if (value == 'OK') {
+			if (value === 'OK') {
 			    return 'OK';
 			}
 			if (value === undefined && !record.data.endtime) {
-			    metaData.tdCls =  "x-grid-row-loading";
+			    metaData.tdCls = "x-grid-row-loading";
 			    return '';
 			}
 			return "ERROR: " + value;
-		    }
-		}
+		    },
+		},
 	    ],
 	    listeners: {
 		itemdblclick: run_task_viewer,
@@ -178,11 +179,10 @@ Ext.define('Proxmox.node.Tasks', {
 		    view_btn.setDisabled(!(selections && selections[0]));
 		},
 		show: function() { reload_task.delay(10); },
-		destroy: function() { reload_task.cancel(); }
-	    }
+		destroy: function() { reload_task.cancel(); },
+	    },
 	});
 
 	me.callParent();
-
-    }
+    },
 });
