@@ -560,16 +560,18 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     format_task_description: function(type, id) {
-	var farray = Proxmox.Utils.task_desc_table[type];
-	var text;
+	let farray = Proxmox.Utils.task_desc_table[type];
+	let text;
 	if (!farray) {
 	    text = type;
 	    if (id) {
 		type += ' ' + id;
 	    }
 	    return text;
+	} else if (Ext.isFunction(farray)) {
+	    return farray(type, id);
 	}
-	var prefix = farray[0];
+	let prefix = farray[0];
 	text = farray[1];
 	if (prefix) {
 	    return prefix + ' ' + id + ' - ' + text;
