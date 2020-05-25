@@ -208,7 +208,11 @@ Ext.define('Proxmox.Utils', { utilities: {
 	    return undefined;
 	}
 	let cookie = Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
-	return (Proxmox.UserName !== '') && (cookie && !cookie.startsWith("PVE:tfa!"));
+	if (Proxmox.UserName !== '' && cookie && !cookie.startsWith("PVE:tfa!")) {
+	    return cookie;
+	} else {
+	    return false;
+	}
     },
 
     authClear: function() {
