@@ -1,3 +1,19 @@
+proxmox-widget-toolkit (2.2-4) pve pmg; urgency=medium
+
+  * fix #2758: detect half-logged-in 'TFA' cookies and avoid treating them like
+    regular login tickets
+
+  * improve default column layout of network and node task history viewer
+
+  * utils: task descriptions: allow to add/override entries and to specify a
+    function
+
+  * render_upid: fallback to worker_id and worker_type
+
+  * ui: task history: add basic handling for currently running tasks
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 25 May 2020 19:04:10 +0200
+
 proxmox-widget-toolkit (2.2-3) pve pmg; urgency=medium
 
   * pending object grid: mark pending changes as darkorange to avoid
