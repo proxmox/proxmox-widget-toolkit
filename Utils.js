@@ -552,6 +552,13 @@ Ext.define('Proxmox.Utils', { utilities: {
 	zfscreate: [ gettext('ZFS Storage'), gettext('Create') ]
     },
 
+    // to add or change existing for product specific ones
+    override_task_descriptions: function(extra) {
+	for (const [key, value] of Object.entries(extra)) {
+	    Proxmox.Utils.task_desc_table[key] = value;
+	}
+    },
+
     format_task_description: function(type, id) {
 	var farray = Proxmox.Utils.task_desc_table[type];
 	var text;
