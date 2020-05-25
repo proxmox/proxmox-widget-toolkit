@@ -416,14 +416,14 @@ Ext.define('Proxmox.node.NetworkView', {
 			},
 			{
 			    header: gettext('CIDR'),
-			    width: 120,
+			    width: 150,
 			    sortable: true,
 			    dataIndex: 'cidr',
 			    renderer: renderer_generator('cidr'),
 			},
 			{
 			    header: gettext('Gateway'),
-			    width: 120,
+			    width: 150,
 			    sortable: true,
 			    dataIndex: 'gateway',
 			    renderer: renderer_generator('gateway'),
