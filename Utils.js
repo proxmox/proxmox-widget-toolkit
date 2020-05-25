@@ -207,7 +207,8 @@ Ext.define('Proxmox.Utils', { utilities: {
 	if (Proxmox.LoggedOut) {
 	    return undefined;
 	}
-	return (Proxmox.UserName !== '') && Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
+	let cookie = Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
+	return (Proxmox.UserName !== '') && (cookie && !cookie.startsWith("PVE:tfa!"));
     },
 
     authClear: function() {
