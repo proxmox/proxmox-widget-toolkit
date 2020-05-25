@@ -1,12 +1,21 @@
 Ext.define('proxmox-networks', {
     extend: 'Ext.data.Model',
     fields: [
-	'iface', 'type', 'active', 'autostart',
-	'bridge_ports', 'slaves',
-	'address', 'netmask', 'gateway',
-	'address6', 'netmask6', 'gateway6',
-	'cidr', 'cidr6',
-	'comments'
+	'active',
+	'address',
+	'address6',
+	'autostart',
+	'bridge_ports',
+	'cidr',
+	'cidr6',
+	'comments',
+	'gateway',
+	'gateway6',
+	'iface',
+	'netmask',
+	'netmask6',
+	'slaves',
+	'type',
     ],
     idProperty: 'iface'
 });
