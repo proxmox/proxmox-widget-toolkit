@@ -87,7 +87,14 @@ Ext.define('Proxmox.node.Tasks', {
 		}
 	    },
 	    tbar: [
-		view_btn, '->', gettext('User name') +':', ' ',
+		view_btn,
+		{
+		    text: gettext('Refresh'), // FIXME: smart-auto-refresh store
+		    handler: () => store.reload(),
+		},
+		'->',
+		gettext('User name') +':',
+		' ',
 		{
 		    xtype: 'textfield',
 		    width: 200,
@@ -126,7 +133,11 @@ Ext.define('Proxmox.node.Tasks', {
 		    dataIndex: 'endtime',
 		    width: 100,
 		    renderer: function(value, metaData, record) {
-			return Ext.Date.format(value,"M d H:i:s");
+			if (!value) {
+			    metaData.tdCls = "x-grid-row-loading";
+			    return '';
+			}
+			return Ext.Date.format(value, "M d H:i:s");
 		    }
 		},
 		{
@@ -153,7 +164,10 @@ Ext.define('Proxmox.node.Tasks', {
 			if (value == 'OK') {
 			    return 'OK';
 			}
-			// metaData.attr = 'style="color:red;"';
+			if (value === undefined && !record.data.endtime) {
+			    metaData.tdCls =  "x-grid-row-loading";
+			    return '';
+			}
 			return "ERROR: " + value;
 		    }
 		}
