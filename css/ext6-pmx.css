@@ -9,3 +9,7 @@
 .x-mask-msg-text {
     text-align: center;
 }
+
+.proxmox-invalid-row {
+    background-color: #f3d6d7;
+}
