@@ -244,17 +244,22 @@ Ext.define('Proxmox.Utils', { utilities: {
 	if (!err.statusText) {
 	    return gettext('Connection error');
 	}
-	let msg = `${err.statusText} (${err.status})`;
+	let msg = [`${err.statusText} (${err.status})`];
 	if (err.response && err.response.responseText) {
 	    let txt = err.response.responseText;
 	    try {
 		let res = JSON.parse(txt)
-		for (let [key, value] of Object.entries(res.errors)) {
-		    msg += `<br>${key}: ${value}`;
+		if (res.errors && typeof res.errors === 'object') {
+		    for (let [key, value] of Object.entries(res.errors)) {
+			msg.push(Ext.String.htmlEncode(`${key}: ${value}`));
+		    }
 		}
-	    } catch (e) { /* TODO? */ }
+	    } catch (e) {
+		// fallback to string
+		msg.push(Ext.String.htmlEncode(txt));
+	    }
 	}
-	return msg;
+	return msg.join('<br>');
     },
 
     monStoreErrors: function(me, store, clearMaskBeforeLoad) {
