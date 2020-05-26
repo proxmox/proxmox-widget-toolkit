@@ -62,7 +62,7 @@ Ext.define('Proxmox.panel.JournalView', {
 	    var me = this;
 	    var view = me.getView();
 	    var viewmodel = me.getViewModel();
-	    if (viewmodel.get('livemode') !== livemode) {
+	    if (!viewmodel || viewmodel.get('livemode') !== livemode) {
 		return; // we switched mode, do not update the content
 	    }
 	    var contentEl = me.lookup('content');
