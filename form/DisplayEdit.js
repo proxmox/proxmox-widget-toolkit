@@ -22,7 +22,7 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 	vm.set('editable', editable);
     },
 
-    layout: 'hbox',
+    layout: 'fit',
     defaults: {
 	hideLabel: true
     },
