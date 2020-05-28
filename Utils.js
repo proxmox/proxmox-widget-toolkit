@@ -145,6 +145,26 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return Ext.Date.format(date, "Y-m-d");
     },
 
+    format_duration_short: function(ut) {
+
+	if (ut < 60) {
+	    return ut.toFixed(1) + 's';
+	}
+
+	if (ut < 3600) {
+	    var mins = ut / 60;
+	    return mins.toFixed(1) + 'm';
+	}
+
+	if (ut < 86400) {
+	    var hours = ut / 3600;
+	    return hours.toFixed(1) + 'h';
+	}
+
+	var days = ut / 86400;
+	return days.toFixed(1) + 'd';
+    },
+
     format_duration_long: function(ut) {
 
 	var days = Math.floor(ut / 86400);
@@ -641,6 +661,13 @@ Ext.define('Proxmox.Utils', { utilities: {
 	task.desc = Proxmox.Utils.format_task_description(task.type, task.id);
 
 	return task;
+    },
+
+    render_duration: function(value) {
+	if (value === undefined) {
+	    return '-';
+	}
+	return Proxmox.Utils.format_duration_short(value);
     },
 
     render_timestamp: function(value, metaData, record, rowIndex, colIndex, store) {
