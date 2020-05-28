@@ -145,28 +145,46 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return Ext.Date.format(date, "Y-m-d");
     },
 
-    format_duration_short: function(ut) {
+    // somewhat like a human would tell durations, omit zero values and do not
+    // give seconds precision if we talk days already
+    format_duration_human: function(ut) {
+	let seconds = 0, minutes = 0, hours = 0, days = 0;
 
-	if (ut < 60) {
-	    return ut.toFixed(1) + 's';
+	if (ut <= 0) {
+	    return '0s';
 	}
 
-	if (ut < 3600) {
-	    var mins = ut / 60;
-	    return mins.toFixed(1) + 'm';
+	let remaining = ut;
+	seconds = +((remaining % 60).toFixed(1));
+	remaining = Math.trunc(remaining / 60);
+	if (remaining > 0) {
+	    minutes = remaining % 60;
+	    remaining = Math.trunc(remaining / 60);
+	    if (remaining > 0) {
+		hours = remaining % 24;
+		remaining = Math.trunc(remaining / 24);
+		if (remaining > 0) {
+		    days = remaining;
+		}
+	    }
 	}
 
-	if (ut < 86400) {
-	    var hours = ut / 3600;
-	    return hours.toFixed(1) + 'h';
-	}
+	let res = [];
+	let add = (t, unit) => {
+	    if (t > 0) res.push(t + unit);
+	    return t > 0;
+	};
 
-	var days = ut / 86400;
-	return days.toFixed(1) + 'd';
+	let addSeconds = !add(days, 'd');
+	add(hours, 'h');
+	add(minutes, 'm');
+	if (addSeconds) {
+	    add(seconds, 's');
+	}
+	return res.join(' ');
     },
 
     format_duration_long: function(ut) {
-
 	var days = Math.floor(ut / 86400);
 	ut -= days*86400;
 	var hours = Math.floor(ut / 3600);
@@ -667,7 +685,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	if (value === undefined) {
 	    return '-';
 	}
-	return Proxmox.Utils.format_duration_short(value);
+	return Proxmox.Utils.format_duration_human(value);
     },
 
     render_timestamp: function(value, metaData, record, rowIndex, colIndex, store) {
