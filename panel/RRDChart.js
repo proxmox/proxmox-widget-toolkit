@@ -70,7 +70,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 	},
     ],
     legend: {
-	docked: 'bottom'
+	padding: 0,
     },
     axes: [
 	{
@@ -121,8 +121,12 @@ Ext.define('Proxmox.widget.RRDChart', {
 
 	me.axes[0].setTitle(axisTitle);
 
+	me.updateHeader();
+	me.header.padding = '4 9 4';
+	me.header.add(me.legend);
+
 	if (!me.noTool) {
-	    me.addTool([{
+	    me.addTool({
 		type: 'minus',
 		disabled: true,
 		tooltip: gettext('Undo Zoom'),
@@ -132,15 +136,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 			undoButton.handler();
 		    }
 		}
-	    },{
-		type: 'restore',
-		tooltip: gettext('Toggle Legend'),
-		handler: function(){
-		    if (me.legend) {
-			me.legend.setVisible(!me.legend.isVisible());
-		    }
-		}
-	    }]);
+	    });
 	}
 
 	// add a series for each field we get
