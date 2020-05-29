@@ -10,6 +10,8 @@ Ext.define('Proxmox.widget.RRDChart', {
 	convertToUnits: function(value) {
 	    var units = ['', 'k','M','G','T', 'P'];
 	    var si = 0;
+	    let format = '0.##';
+	    if (value < 0.1) format += '#';
 	    while(value >= 1000  && si < (units.length -1)){
 		value = value / 1000;
 		si++;
@@ -18,15 +20,14 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    // javascript floating point weirdness
 	    value = Ext.Number.correctFloat(value);
 
-	    // limit to 2 decimal points
-	    value = Ext.util.Format.number(value, "0.##");
+	    // limit decimal points
+	    value = Ext.util.Format.number(value, format);
 
 	    return value.toString() + " " + units[si];
 	},
 
 	leftAxisRenderer: function(axis, label, layoutContext) {
 	    var me = this;
-
 	    return me.convertToUnits(label);
 	},
 
