@@ -48,15 +48,14 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    if (me.fieldTitles && me.fieldTitles[me.fields.indexOf(item.field)]) {
 		prefix = me.fieldTitles[me.fields.indexOf(item.field)];
 	    }
-            tooltip.setHtml(prefix + ': ' + this.convertToUnits(record.get(item.field)) + suffix +
-			    '<br>' + new Date(record.get('time')));
+	    let v = this.convertToUnits(record.get(item.field));
+	    let t = new Date(record.get('time'));
+	    tooltip.setHtml(`${prefix}: ${v}${suffix}<br>${t}`);
 	},
 
 	onAfterAnimation: function(chart, eopts) {
-	    // if the undobuton is disabled,
-	    // disable our tool
-
-	    var ourUndoZoomButton = chart.tools[0];
+	    // if the undo button is disabled, disable our tool
+	    var ourUndoZoomButton = chart.header.tools[0];
 	    var undoButton = chart.interactions[0].getUndoButton();
 	    ourUndoZoomButton.setDisabled(undoButton.isDisabled());
 	}
@@ -65,29 +64,32 @@ Ext.define('Proxmox.widget.RRDChart', {
     width: 770,
     height: 300,
     animation: false,
-    interactions: [{
-	type: 'crosszoom'
-    }],
-    axes: [{
-	type: 'numeric',
-	position: 'left',
-	grid: true,
-	renderer: 'leftAxisRenderer',
-	//renderer: function(axis, label) { return label; },
-	minimum: 0
-    }, {
-	type: 'time',
-	position: 'bottom',
-	grid: true,
-	fields: ['time']
-    }],
+    interactions: [
+	{
+	    type: 'crosszoom'
+	},
+    ],
     legend: {
 	docked: 'bottom'
     },
+    axes: [
+	{
+	    type: 'numeric',
+	    position: 'left',
+	    grid: true,
+	    renderer: 'leftAxisRenderer',
+	    minimum: 0
+	},
+	{
+	    type: 'time',
+	    position: 'bottom',
+	    grid: true,
+	    fields: ['time']
+	},
+    ],
     listeners: {
 	animationend: 'onAfterAnimation'
     },
-
 
     initComponent: function() {
 	var me = this;
