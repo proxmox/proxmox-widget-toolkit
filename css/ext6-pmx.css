@@ -38,3 +38,13 @@
 .critical {
     color: #FF6C59;
 }
+
+/* reduce chart legend space usage to something more sane */
+.x-legend-item {
+	padding: 0.4em 0.8em 0.4em 1.8em;
+}
+
+.x-legend-item-marker {
+	left: 0.5em;
+	top: 0.6em;
+}
