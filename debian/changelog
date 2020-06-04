@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.2-7) pve pmg; urgency=medium
+
+  * button: make xtype of parent configurable
+
+  * fix RRD charts if there's no data legend or no title header
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 04 Jun 2020 18:20:16 +0200
+
 proxmox-widget-toolkit (2.2-6) pve pmg; urgency=medium
 
   * improve RRD charts
