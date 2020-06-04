@@ -20,6 +20,9 @@ Ext.define('Proxmox.button.Button', {
     // take special care in confirm box (select no as default).
     dangerous: false,
 
+    // is used to get the parent container for its selection model
+    parentXType: 'grid',
+
     initComponent: function() {
         var me = this;
 
@@ -65,9 +68,9 @@ Ext.define('Proxmox.button.Button', {
 
 	var grid;
 	if (!me.selModel && me.selModel !== null && me.selModel !== false) {
-	    grid = me.up('grid');
-	    if (grid && grid.selModel) {
-		me.selModel = grid.selModel;
+	    parent = me.up(me.parentXType);
+	    if (parent && parent.selModel) {
+		me.selModel = parent.selModel;
 	    }
 	}
 
