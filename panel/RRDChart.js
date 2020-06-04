@@ -122,8 +122,11 @@ Ext.define('Proxmox.widget.RRDChart', {
 	me.axes[0].setTitle(axisTitle);
 
 	me.updateHeader();
-	me.header.padding = '4 9 4';
-	me.header.add(me.legend);
+
+	if (me.header && me.legend) {
+	    me.header.padding = '4 9 4';
+	    me.header.add(me.legend);
+	}
 
 	if (!me.noTool) {
 	    me.addTool({
