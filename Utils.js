@@ -646,7 +646,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	}
 	let prefix = farray[0];
 	text = farray[1];
-	if (prefix) {
+	if (prefix && id !== undefined) {
 	    return prefix + ' ' + id + ' - ' + text;
 	}
 	return text;
