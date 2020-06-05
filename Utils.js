@@ -614,7 +614,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	imgdel: ['', gettext('Erase data') ],
 	unknownimgdel: ['', gettext('Destroy image from unknown guest') ],
 	download: ['', gettext('Download') ],
-	vzdump: ['VM/CT', gettext('Backup') ],
+	vzdump: (type, id) => id ? `VM/CT ${id} - ${gettext('Backup')}` : gettext('Backup Job'),
 	aptupdate: ['', gettext('Update package database') ],
 	startall: [ '', gettext('Start all VMs and Containers') ],
 	stopall: [ '', gettext('Stop all VMs and Containers') ],
