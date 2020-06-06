@@ -12,7 +12,6 @@ Ext.define('Proxmox.RestProxy', {
 
     afterRequest: function(request, success) {
 	this.fireEvent('afterload', this, request, success);
-	return;
     },
 
     constructor: function(config) {

@@ -10,7 +10,7 @@ Ext.define('Proxmox.Mixin.CBind', {
     cloneTemplates: function() {
 	var me = this;
 
- 	if (typeof me.cbindData == "function") {
+	if (typeof me.cbindData === "function") {
 	    me.cbindData = me.cbindData(me.initialConfig);
 	}
 	me.cbindData = me.cbindData || {};
@@ -21,7 +21,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 	    }
 	    if (cname in me.cbindData) {
 		let res = me.cbindData[cname];
-		if (typeof res == "function") {
+		if (typeof res === "function") {
 		    return res(me.initialConfig);
 		} else {
 		    return res;

@@ -261,9 +261,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    });
 	}
 
-	var rstore = me.rstore;
-
-	var store = Ext.create('Proxmox.data.DiffStore', { rstore: rstore,
+	let rstore = me.rstore;
+	let store = Ext.create('Proxmox.data.DiffStore', {
+	    rstore: rstore,
 	    sorters: [],
 	    filters: [],
 	});
