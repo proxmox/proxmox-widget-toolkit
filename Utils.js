@@ -15,9 +15,17 @@ Ext.enableAriaPanels = false;
 // avoid errors when running without development tools
 if (!Ext.isDefined(Ext.global.console)) {
     var console = {
-	dir: function() {},
-	log: function() {},
+	dir: function() {
+	    // do nothing
+	},
+	log: function() {
+	    // do nothing
+	},
+	warn: function() {
+	    // do nothing
+	},
     };
+    Ext.global.console = console;
 }
 
 Ext.Ajax.defaultHeaders = {
@@ -33,9 +41,8 @@ Ext.Ajax.on('beforerequest', function(conn, options) {
     }
 });
 
-Ext.define('Proxmox.Utils', { utilities: {
-
-    // this singleton contains miscellaneous utilities
+Ext.define('Proxmox.Utils', { // a singleton
+utilities: {
 
     yesText: gettext('Yes'),
     noText: gettext('No'),
@@ -155,7 +162,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	}
 
 	let remaining = ut;
-	seconds = +((remaining % 60).toFixed(1));
+	seconds = Number((remaining % 60).toFixed(1));
 	remaining = Math.trunc(remaining / 60);
 	if (remaining > 0) {
 	    minutes = remaining % 60;
@@ -254,7 +261,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 
     authClear: function() {
 	if (Proxmox.LoggedOut) {
-	    return undefined;
+	    return;
 	}
 	Ext.util.Cookies.clear(Proxmox.Setup.auth_cookie_name);
     },
@@ -297,32 +304,32 @@ Ext.define('Proxmox.Utils', { utilities: {
 	return msg.join('<br>');
     },
 
-    monStoreErrors: function(me, store, clearMaskBeforeLoad) {
+    monStoreErrors: function(component, store, clearMaskBeforeLoad) {
 	if (clearMaskBeforeLoad) {
-	    me.mon(store, 'beforeload', function(s, operation, eOpts) {
-		Proxmox.Utils.setErrorMask(me, false);
+	    component.mon(store, 'beforeload', function(s, operation, eOpts) {
+		Proxmox.Utils.setErrorMask(component, false);
 	    });
 	} else {
-	    me.mon(store, 'beforeload', function(s, operation, eOpts) {
-		if (!me.loadCount) {
-		    me.loadCount = 0; // make sure it is numeric
-		    Proxmox.Utils.setErrorMask(me, true);
+	    component.mon(store, 'beforeload', function(s, operation, eOpts) {
+		if (!component.loadCount) {
+		    component.loadCount = 0; // make sure it is nucomponent.ic
+		    Proxmox.Utils.setErrorMask(component, true);
 		}
 	    });
 	}
 
 	// only works with 'proxmox' proxy
-	me.mon(store.proxy, 'afterload', function(proxy, request, success) {
-	    me.loadCount++;
+	component.mon(store.proxy, 'afterload', function(proxy, request, success) {
+	    component.loadCount++;
 
 	    if (success) {
-		Proxmox.Utils.setErrorMask(me, false);
+		Proxmox.Utils.setErrorMask(component, false);
 		return;
 	    }
 
 	    let error = request._operation.getError();
 	    let msg = Proxmox.Utils.getResponseErrorMessage(error);
-	    Proxmox.Utils.setErrorMask(me, msg);
+	    Proxmox.Utils.setErrorMask(component, msg);
 	});
     },
 
@@ -392,7 +399,9 @@ Ext.define('Proxmox.Utils', { utilities: {
 		    response.result = {};
 		    try {
 			response.result = Ext.decode(response.responseText);
-		    } catch (e) {}
+		    } catch (e) {
+			// ignore
+		    }
 		    var msg = gettext('Connection error') + ' - server offline?';
 		    if (response.aborted) {
 			msg = gettext('Connection error') + ' - aborted.';
@@ -426,13 +435,11 @@ Ext.define('Proxmox.Utils', { utilities: {
 	Proxmox.Utils.API2Request({
 	    url: '/nodes/localhost/subscription',
 	    method: 'GET',
-	    //waitMsgTarget: me,
 	    failure: function(response, opts) {
 		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 	    },
 	    success: function(response, opts) {
-		var data = response.result.data;
-
+		let data = response.result.data;
 		if (data.status !== 'Active') {
 		    Ext.Msg.show({
 			title: gettext('No valid subscription'),
@@ -454,23 +461,24 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     assemble_field_data: function(values, data) {
-        if (Ext.isObject(data)) {
-	    Ext.Object.each(data, function(name, val) {
-		if (values.hasOwnProperty(name)) {
-                    var bucket = values[name];
-                    if (!Ext.isArray(bucket)) {
-                        bucket = values[name] = [bucket];
-                    }
-                    if (Ext.isArray(val)) {
-                        values[name] = bucket.concat(val);
-                    } else {
-                        bucket.push(val);
-                    }
-                } else {
-		    values[name] = val;
-                }
-            });
+        if (!Ext.isObject(data)) {
+	    return;
 	}
+	Ext.Object.each(data, function(name, val) {
+	    if (Object.prototype.hasOwnProperty.call(values, name)) {
+		let bucket = values[name];
+		if (!Ext.isArray(bucket)) {
+		    bucket = values[name] = [bucket];
+		}
+		if (Ext.isArray(val)) {
+		    values[name] = bucket.concat(val);
+		} else {
+		    bucket.push(val);
+		}
+	    } else {
+		values[name] = val;
+	    }
+	});
     },
 
     updateColumnWidth: function(container) {
@@ -548,7 +556,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	vncproxy: ['VM/CT', gettext('Console')],
 	spiceproxy: ['VM/CT', gettext('Console') + ' (Spice)'],
 	vncshell: ['', gettext('Shell')],
-	spiceshell: ['', gettext('Shell')  + ' (Spice)'],
+	spiceshell: ['', gettext('Shell') + ' (Spice)'],
 	qmsnapshot: ['VM', gettext('Snapshot')],
 	qmrollback: ['VM', gettext('Rollback')],
 	qmdelsnapshot: ['VM', gettext('Delete Snapshot')],
@@ -654,11 +662,11 @@ Ext.define('Proxmox.Utils', { utilities: {
 	var units = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
 	var num = 0;
 
-	while (size >= 1024 && ((num++)+1) < units.length) {
+	while (size >= 1024 && num++ <= units.length) {
 	    size = size / 1024;
 	}
 
-	return size.toFixed((num > 0)?2:0) + " " + units[num] + "B";
+	return size.toFixed(num > 0?2:0) + " " + units[num] + "B";
     },
 
     render_upid: function(value, metaData, record) {
@@ -721,10 +729,10 @@ Ext.define('Proxmox.Utils', { utilities: {
     get_help_info: function(section) {
 	var helpMap;
 	if (typeof proxmoxOnlineHelpInfo !== 'undefined') {
-	    helpMap = proxmoxOnlineHelpInfo;
+	    helpMap = proxmoxOnlineHelpInfo; // eslint-disable-line no-undef
 	} else if (typeof pveOnlineHelpInfo !== 'undefined') {
 	    // be backward compatible with older pve-doc-generators
-	    helpMap = pveOnlineHelpInfo;
+	    helpMap = pveOnlineHelpInfo; // eslint-disable-line no-undef
 	} else {
 	    throw "no global OnlineHelpInfo map declared";
 	}
@@ -735,9 +743,8 @@ Ext.define('Proxmox.Utils', { utilities: {
     get_help_link: function(section) {
 	var info = Proxmox.Utils.get_help_info(section);
 	if (!info) {
-	    return;
+	    return undefined;
 	}
-
 	return window.location.origin + info.link;
     },
 
@@ -773,8 +780,9 @@ Ext.define('Proxmox.Utils', { utilities: {
 
 
 	me.IP4_match = new RegExp("^(?:" + IPV4_REGEXP + ")$");
-	me.IP4_cidr_match = new RegExp("^(?:" + IPV4_REGEXP + ")\/" + IPV4_CIDR_MASK + "$");
+	me.IP4_cidr_match = new RegExp("^(?:" + IPV4_REGEXP + ")/" + IPV4_CIDR_MASK + "$");
 
+	/* eslint-disable no-useless-concat,no-multi-spaces */
 	var IPV6_REGEXP = "(?:" +
 	    "(?:(?:"                                                  + "(?:" + IPV6_H16 + ":){6})" + IPV6_LS32 + ")|" +
 	    "(?:(?:"                                         +   "::" + "(?:" + IPV6_H16 + ":){5})" + IPV6_LS32 + ")|" +
@@ -786,13 +794,14 @@ Ext.define('Proxmox.Utils', { utilities: {
 	    "(?:(?:(?:(?:" + IPV6_H16 + ":){0,5}" + IPV6_H16 + ")?::" +                         ")" + IPV6_H16  + ")|" +
 	    "(?:(?:(?:(?:" + IPV6_H16 + ":){0,7}" + IPV6_H16 + ")?::" +                         ")"             + ")"  +
 	    ")";
+	/* eslint-enable no-useless-concat,no-multi-spaces */
 
 	me.IP6_match = new RegExp("^(?:" + IPV6_REGEXP + ")$");
-	me.IP6_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + ")\/" + IPV6_CIDR_MASK + "$");
+	me.IP6_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + ")/" + IPV6_CIDR_MASK + "$");
 	me.IP6_bracket_match = new RegExp("^\\[(" + IPV6_REGEXP + ")\\]");
 
 	me.IP64_match = new RegExp("^(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + ")$");
-	me.IP64_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + "\/" + IPV6_CIDR_MASK + ")|(?:" + IPV4_REGEXP + "\/" + IPV4_CIDR_MASK + ")$");
+	me.IP64_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + "/" + IPV6_CIDR_MASK + ")|(?:" + IPV4_REGEXP + "/" + IPV4_CIDR_MASK + ")$");
 
 	var DnsName_REGEXP = "(?:(([a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*([A-Za-z0-9]([A-Za-z0-9\\-]*[A-Za-z0-9])?))";
 	me.DnsName_match = new RegExp("^" + DnsName_REGEXP + "$");
@@ -800,7 +809,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	me.HostPort_match = new RegExp("^(" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")(:\\d+)?$");
 	me.HostPortBrackets_match = new RegExp("^\\[(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")\\](:\\d+)?$");
 	me.IP6_dotnotation_match = new RegExp("^" + IPV6_REGEXP + "(\\.\\d+)?$");
-        me.Vlan_match = new RegExp('^vlan(\\d+)');
-        me.VlanInterface_match = new RegExp('(\\w+)\\.(\\d+)');
-    }
+	me.Vlan_match = /^vlan(\\d+)/;
+	me.VlanInterface_match = /(\\w+)\\.(\\d+)/;
+    },
 });
