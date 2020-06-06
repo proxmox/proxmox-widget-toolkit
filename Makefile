@@ -1,4 +1,5 @@
 include /usr/share/dpkg/pkg-info.mk
+export DEB_VERSION_UPSTREAM_REVISION
 
 export PACKAGE=proxmox-widget-toolkit
 BUILDDIR ?= ${PACKAGE}-${DEB_VERSION_UPSTREAM}
