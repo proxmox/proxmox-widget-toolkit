@@ -1,6 +1,6 @@
 Ext.define('Timezone', {
     extend: 'Ext.data.Model',
-    fields: ['zone']
+    fields: ['zone'],
 });
 
 Ext.define('Proxmox.data.TimezoneStore', {
@@ -414,6 +414,6 @@ Ext.define('Proxmox.data.TimezoneStore', {
 	    ['Pacific/Tongatapu'],
 	    ['Pacific/Wake'],
 	    ['Pacific/Wallis'],
-	    ['UTC']
-	]
+	    ['UTC'],
+	],
 });

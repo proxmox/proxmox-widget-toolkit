@@ -17,7 +17,7 @@ Ext.define('proxmox-networks', {
 	'slaves',
 	'type',
     ],
-    idProperty: 'iface'
+    idProperty: 'iface',
 });
 
 Ext.define('Proxmox.node.NetworkView', {
@@ -31,7 +31,7 @@ Ext.define('Proxmox.node.NetworkView', {
 
     showApplyBtn: false,
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	if (!me.nodename) {
@@ -44,14 +44,14 @@ Ext.define('Proxmox.node.NetworkView', {
 	    model: 'proxmox-networks',
 	    proxy: {
                 type: 'proxmox',
-                url: '/api2/json' + baseUrl
+                url: '/api2/json' + baseUrl,
 	    },
 	    sorters: [
 		{
-		    property : 'iface',
-		    direction: 'ASC'
-		}
-	    ]
+		    property: 'iface',
+		    direction: 'ASC',
+		},
+	    ],
 	});
 
 	var reload = function() {
@@ -81,7 +81,7 @@ Ext.define('Proxmox.node.NetworkView', {
 			apply_btn.setDisabled(false);
 			revert_btn.setDisabled(false);
 		    }
-		}
+		},
 	    });
 	};
 
@@ -96,7 +96,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	    var win = Ext.create('Proxmox.node.NetworkEdit', {
 		nodename: me.nodename,
 		iface: rec.data.iface,
-		iftype: rec.data.type
+		iftype: rec.data.type,
 	    });
 	    win.show();
 	    win.on('destroy', reload);
@@ -105,13 +105,13 @@ Ext.define('Proxmox.node.NetworkView', {
 	var edit_btn = new Ext.Button({
 	    text: gettext('Edit'),
 	    disabled: true,
-	    handler: run_editor
+	    handler: run_editor,
 	});
 
 	var del_btn = new Ext.Button({
 	    text: gettext('Remove'),
 	    disabled: true,
-	    handler: function(){
+	    handler: function() {
 		var grid = me.down('gridpanel');
 		var sm = grid.getSelectionModel();
 		var rec = sm.getSelection()[0];
@@ -130,9 +130,9 @@ Ext.define('Proxmox.node.NetworkView', {
 		    },
 		    failure: function(response, opts) {
 			Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		    }
+		    },
 		});
-	    }
+	    },
 	});
 
 	var apply_btn = Ext.create('Proxmox.button.Button', {
@@ -151,15 +151,15 @@ Ext.define('Proxmox.node.NetworkView', {
 
 			var win = Ext.create('Proxmox.window.TaskProgress', {
 			    taskDone: reload,
-			    upid: upid
+			    upid: upid,
 			});
 			win.show();
 		    },
 		    failure: function(response, opts) {
 			Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		    }
+		    },
 		});
-	    }
+	    },
 	});
 
 	var set_button_status = function() {
@@ -207,7 +207,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    });
 		    win.on('destroy', reload);
 		    win.show();
-		}
+		},
 	    });
 	}
 
@@ -223,7 +223,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    });
 		    win.on('destroy', reload);
 		    win.show();
-		}
+		},
 	    });
 	}
 
@@ -239,7 +239,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    });
 		    win.on('destroy', reload);
 		    win.show();
-		}
+		},
 	    });
 	}
 
@@ -255,11 +255,11 @@ Ext.define('Proxmox.node.NetworkView', {
 			var win = Ext.create('Proxmox.node.NetworkEdit', {
 			    nodename: me.nodename,
 			    iftype: 'OVSBridge',
-			    iface_default: find_next_iface_id('vmbr')
+			    iface_default: find_next_iface_id('vmbr'),
 			});
 			win.on('destroy', reload);
 			win.show();
-		    }
+		    },
 		},
 		{
 		    text: Proxmox.Utils.render_network_iface_type('OVSBond'),
@@ -267,23 +267,23 @@ Ext.define('Proxmox.node.NetworkView', {
 			var win = Ext.create('Proxmox.node.NetworkEdit', {
 			    nodename: me.nodename,
 			    iftype: 'OVSBond',
-			    iface_default: find_next_iface_id('bond')
+			    iface_default: find_next_iface_id('bond'),
 			});
 			win.on('destroy', reload);
 			win.show();
-		    }
+		    },
 		},
 		{
 		    text: Proxmox.Utils.render_network_iface_type('OVSIntPort'),
 		    handler: function() {
 			var win = Ext.create('Proxmox.node.NetworkEdit', {
 			    nodename: me.nodename,
-			    iftype: 'OVSIntPort'
+			    iftype: 'OVSIntPort',
 			});
 			win.on('destroy', reload);
 			win.show();
-		    }
-		}
+		    },
+		},
 	    );
 	}
 
@@ -307,8 +307,8 @@ Ext.define('Proxmox.node.NetworkView', {
 		    text: gettext('Create'),
 		    menu: {
 			plain: true,
-			items: menu_items
-		    }
+			items: menu_items,
+		    },
 		}, '-',
 		{
 		    text: gettext('Revert'),
@@ -323,14 +323,14 @@ Ext.define('Proxmox.node.NetworkView', {
 			    },
 			    failure: function(response, opts) {
 				Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-			    }
+			    },
 			});
-		    }
+		    },
 		},
 		edit_btn,
 		del_btn,
 		'-',
-		apply_btn
+		apply_btn,
 	    ],
 	    items: [
 		{
@@ -344,14 +344,14 @@ Ext.define('Proxmox.node.NetworkView', {
 			{
 			    header: gettext('Name'),
 			    sortable: true,
-			    dataIndex: 'iface'
+			    dataIndex: 'iface',
 			},
 			{
 			    header: gettext('Type'),
 			    sortable: true,
 			    width: 120,
 			    renderer: Proxmox.Utils.render_network_iface_type,
-			    dataIndex: 'type'
+			    dataIndex: 'type',
 			},
 			{
 			    xtype: 'booleancolumn',
@@ -371,7 +371,7 @@ Ext.define('Proxmox.node.NetworkView', {
 			    dataIndex: 'autostart',
 			    trueText: Proxmox.Utils.yesText,
 			    falseText: Proxmox.Utils.noText,
-			    undefinedText: Proxmox.Utils.noText
+			    undefinedText: Proxmox.Utils.noText,
 			},
 			{
 			    xtype: 'booleancolumn',
@@ -381,12 +381,12 @@ Ext.define('Proxmox.node.NetworkView', {
 			    dataIndex: 'bridge_vlan_aware',
 			    trueText: Proxmox.Utils.yesText,
 			    falseText: Proxmox.Utils.noText,
-			    undefinedText: Proxmox.Utils.noText
+			    undefinedText: Proxmox.Utils.noText,
 			},
 			{
 			    header: gettext('Ports/Slaves'),
 			    dataIndex: 'type',
-			    renderer: render_ports
+			    renderer: render_ports,
 			},
 			{
 			    header: gettext('Bond Mode'),
@@ -432,13 +432,13 @@ Ext.define('Proxmox.node.NetworkView', {
 			    header: gettext('Comment'),
 			    dataIndex: 'comments',
 			    flex: 1,
-			    renderer: Ext.String.htmlEncode
-			}
+			    renderer: Ext.String.htmlEncode,
+			},
 		    ],
 		    listeners: {
 			selectionchange: set_button_status,
-			itemdblclick: run_editor
-		    }
+			itemdblclick: run_editor,
+		    },
 		},
 		{
 		    border: false,
@@ -448,17 +448,17 @@ Ext.define('Proxmox.node.NetworkView', {
 		    itemId: 'changes',
 		    tbar: [
 			gettext('Pending changes') + ' (' +
-			    gettext("Either reboot or use 'Apply Configuration' (needs ifupdown2) to activate") + ')'
+			    gettext("Either reboot or use 'Apply Configuration' (needs ifupdown2) to activate") + ')',
 		    ],
 		    split: true,
 		    bodyPadding: 5,
 		    flex: 0.6,
-		    html: gettext("No changes")
-		}
+		    html: gettext("No changes"),
+		},
 	    ],
 	});
 
 	me.callParent();
 	reload();
-    }
+    },
 });

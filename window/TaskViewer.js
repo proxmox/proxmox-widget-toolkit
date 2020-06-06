@@ -18,8 +18,8 @@ Ext.define('Proxmox.window.TaskProgress', {
 	    interval: 1000,
 	    rows: {
 		status: { defaultValue: 'unknown' },
-		exitstatus: { defaultValue: 'unknown' }
-	    }
+		exitstatus: { defaultValue: 'unknown' },
+	    },
 	});
 
 	me.on('destroy', statstore.stopUpdate);
@@ -65,13 +65,13 @@ Ext.define('Proxmox.window.TaskProgress', {
 		    handler: function() {
 			var win = Ext.create('Proxmox.window.TaskViewer', {
 			    taskDone: me.taskDone,
-			    upid: me.upid
+			    upid: me.upid,
 			});
 			win.show();
 			me.close();
-		    }
-		}
-	    ]
+		    },
+		},
+	    ],
 	});
 
 	me.callParent();
@@ -79,7 +79,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 	statstore.startUpdate();
 
 	pbar.wait();
-    }
+    },
 });
 
 // fixme: how can we avoid those lint errors?
@@ -116,27 +116,27 @@ Ext.define('Proxmox.window.TaskViewer', {
 		    if (es) {
 			return value + ': ' + es;
 		    }
-		}
+		},
 	    },
 	    exitstatus: {
-		visible: false
+		visible: false,
 	    },
 	    type: {
 		header: gettext('Task type'),
-		required: true
+		required: true,
 	    },
 	    user: {
 		header: gettext('User name'),
 		renderer: Ext.String.htmlEncode,
-		required: true
+		required: true,
 	    },
 	    node: {
 		header: gettext('Node'),
-		required: true
+		required: true,
 	    },
 	    pid: {
 		header: gettext('Process ID'),
-		required: true
+		required: true,
 	    },
 	    task_id: {
 		header: gettext('Task ID'),
@@ -144,18 +144,18 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    starttime: {
 		header: gettext('Start Time'),
 		required: true,
-		renderer: Proxmox.Utils.render_timestamp
+		renderer: Proxmox.Utils.render_timestamp,
 	    },
 	    upid: {
 		header: gettext('Unique task ID'),
 		renderer: Ext.String.htmlEncode,
-	    }
+	    },
 	};
 
 	var statstore = Ext.create('Proxmox.data.ObjectStore', {
             url: "/api2/json/nodes/" + task.node + "/tasks/" + me.upid + "/status",
 	    interval: 1000,
-	    rows: rows
+	    rows: rows,
 	});
 
 	me.on('destroy', statstore.stopUpdate);
@@ -167,36 +167,36 @@ Ext.define('Proxmox.window.TaskViewer', {
 		method: 'DELETE',
 		failure: function(response, opts) {
 		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		}
+		},
 	    });
 	};
 
 	var stop_btn1 = new Ext.Button({
 	    text: gettext('Stop'),
 	    disabled: true,
-	    handler: stop_task
+	    handler: stop_task,
 	});
 
 	var stop_btn2 = new Ext.Button({
 	    text: gettext('Stop'),
 	    disabled: true,
-	    handler: stop_task
+	    handler: stop_task,
 	});
 
 	statgrid = Ext.create('Proxmox.grid.ObjectGrid', {
 	    title: gettext('Status'),
 	    layout: 'fit',
-	    tbar: [ stop_btn1 ],
+	    tbar: [stop_btn1],
 	    rstore: statstore,
 	    rows: rows,
-	    border: false
+	    border: false,
 	});
 
 	var logView = Ext.create('Proxmox.panel.LogView', {
 	    title: gettext('Output'),
-	    tbar: [ stop_btn2 ],
+	    tbar: [stop_btn2],
 	    border: false,
-	    url: "/api2/extjs/nodes/" + task.node + "/tasks/" + me.upid + "/log"
+	    url: "/api2/extjs/nodes/" + task.node + "/tasks/" + me.upid + "/log",
 	});
 
 	me.mon(statstore, 'load', function() {
@@ -224,13 +224,13 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    items: [{
 		xtype: 'tabpanel',
 		region: 'center',
-		items: [ logView, statgrid ]
-	    }]
+		items: [logView, statgrid],
+	    }],
         });
 
 	me.callParent();
 
 	logView.fireEvent('show', logView);
-    }
+    },
 });
 

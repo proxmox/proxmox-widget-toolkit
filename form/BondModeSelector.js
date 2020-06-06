@@ -27,7 +27,7 @@ Ext.define('Proxmox.form.BondModeSelector', {
 	}
 
 	me.callParent();
-    }
+    },
 });
 
 Ext.define('Proxmox.form.BondPolicySelector', {
@@ -36,7 +36,7 @@ Ext.define('Proxmox.form.BondPolicySelector', {
     comboItems: [
 	    ['layer2', 'layer2'],
 	    ['layer2+3', 'layer2+3'],
-	    ['layer3+4', 'layer3+4']
-    ]
+	    ['layer3+4', 'layer3+4'],
+    ],
 });
 

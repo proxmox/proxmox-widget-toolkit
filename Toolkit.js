@@ -10,46 +10,46 @@ if (Ext.isFirefox) {
 
 // custom Vtypes
 Ext.apply(Ext.form.field.VTypes, {
-    IPAddress:  function(v) {
+    IPAddress: function(v) {
 	return Proxmox.Utils.IP4_match.test(v);
     },
-    IPAddressText:  gettext('Example') + ': 192.168.1.1',
+    IPAddressText: gettext('Example') + ': 192.168.1.1',
     IPAddressMask: /[\d\.]/i,
 
-    IPCIDRAddress:  function(v) {
+    IPCIDRAddress: function(v) {
 	var result = Proxmox.Utils.IP4_cidr_match.exec(v);
 	// limits according to JSON Schema see
 	// pve-common/src/PVE/JSONSchema.pm
-	return (result !== null && result[1] >= 8 && result[1] <= 32);
+	return result !== null && result[1] >= 8 && result[1] <= 32;
     },
-    IPCIDRAddressText:  gettext('Example') + ': 192.168.1.1/24' + "<br>" + gettext('Valid CIDR Range') + ': 8-32',
+    IPCIDRAddressText: gettext('Example') + ': 192.168.1.1/24' + "<br>" + gettext('Valid CIDR Range') + ': 8-32',
     IPCIDRAddressMask: /[\d\.\/]/i,
 
-    IP6Address:  function(v) {
+    IP6Address: function(v) {
         return Proxmox.Utils.IP6_match.test(v);
     },
-    IP6AddressText:  gettext('Example') + ': 2001:DB8::42',
+    IP6AddressText: gettext('Example') + ': 2001:DB8::42',
     IP6AddressMask: /[A-Fa-f0-9:]/,
 
-    IP6CIDRAddress:  function(v) {
+    IP6CIDRAddress: function(v) {
 	var result = Proxmox.Utils.IP6_cidr_match.exec(v);
 	// limits according to JSON Schema see
 	// pve-common/src/PVE/JSONSchema.pm
-	return (result !== null && result[1] >= 8 && result[1] <= 128);
+	return result !== null && result[1] >= 8 && result[1] <= 128;
     },
-    IP6CIDRAddressText:  gettext('Example') + ': 2001:DB8::42/64' + "<br>" + gettext('Valid CIDR Range') + ': 8-128',
-    IP6CIDRAddressMask:  /[A-Fa-f0-9:\/]/,
+    IP6CIDRAddressText: gettext('Example') + ': 2001:DB8::42/64' + "<br>" + gettext('Valid CIDR Range') + ': 8-128',
+    IP6CIDRAddressMask: /[A-Fa-f0-9:\/]/,
 
-    IP6PrefixLength:  function(v) {
+    IP6PrefixLength: function(v) {
 	return v >= 0 && v <= 128;
     },
-    IP6PrefixLengthText:  gettext('Example') + ': X, where 0 <= X <= 128',
-    IP6PrefixLengthMask:  /[0-9]/,
+    IP6PrefixLengthText: gettext('Example') + ': X, where 0 <= X <= 128',
+    IP6PrefixLengthMask: /[0-9]/,
 
-    IP64Address:  function(v) {
+    IP64Address: function(v) {
         return Proxmox.Utils.IP64_match.test(v);
     },
-    IP64AddressText:  gettext('Example') + ': 192.168.1.1 2001:DB8::42',
+    IP64AddressText: gettext('Example') + ': 192.168.1.1 2001:DB8::42',
     IP64AddressMask: /[A-Fa-f0-9\.:]/,
 
     IP64CIDRAddress: function(v) {
@@ -74,7 +74,7 @@ Ext.apply(Ext.form.field.VTypes, {
     MacAddressMask: /[a-fA-F0-9:]/,
     MacAddressText: gettext('Example') + ': 01:23:45:67:89:ab',
 
-    MacPrefix:  function(v) {
+    MacPrefix: function(v) {
 	return (/^[a-f0-9][02468ace](?::[a-f0-9]{2}){0,2}:?$/i).test(v);
     },
     MacPrefixMask: /[a-fA-F0-9:]/,
@@ -106,7 +106,7 @@ Ext.apply(Ext.form.field.VTypes, {
 		       gettext("Maximum characters") + ": 21" + "<br />" +
 		       gettext("Must start with") + ": 'a-z'",
 
-    StorageId:  function(v) {
+    StorageId: function(v) {
         return (/^[a-z][a-z0-9\-\_\.]*[a-z0-9]$/i).test(v);
     },
     StorageIdText: gettext("Allowed characters") + ":  'A-Z', 'a-z', '0-9', '-', '_', '.'" + "<br />" +
@@ -114,14 +114,14 @@ Ext.apply(Ext.form.field.VTypes, {
 		   gettext("Must start with") + ": 'A-Z', 'a-z'<br />" +
 		   gettext("Must end with") + ": 'A-Z', 'a-z', '0-9'<br />",
 
-    ConfigId:  function(v) {
+    ConfigId: function(v) {
         return (/^[a-z][a-z0-9\_]+$/i).test(v);
     },
     ConfigIdText: gettext("Allowed characters") + ": 'A-Z', 'a-z', '0-9', '_'" + "<br />" +
 		  gettext("Minimum characters") + ": 2" + "<br />" +
 		  gettext("Must start with") + ": " + gettext("letter"),
 
-    HttpProxy:  function(v) {
+    HttpProxy: function(v) {
         return (/^http:\/\/.*$/).test(v);
     },
     HttpProxyText: gettext('Example') + ": http://username:password&#64;host:port/",
@@ -170,19 +170,19 @@ Ext.apply(Ext.form.field.VTypes, {
         if (field.initialPassField) {
             var pwd = field.up('form').down(
 		'[name=' + field.initialPassField + ']');
-            return (val == pwd.getValue());
+            return val == pwd.getValue();
         }
         return true;
     },
 
-    passwordText: gettext('Passwords do not match')
+    passwordText: gettext('Passwords do not match'),
 });
 
 // Firefox 52+ Touchscreen bug
 // see https://www.sencha.com/forum/showthread.php?336762-Examples-don-t-work-in-Firefox-52-touchscreen/page2
 // and https://bugzilla.proxmox.com/show_bug.cgi?id=1223
 Ext.define('EXTJS_23846.Element', {
-    override: 'Ext.dom.Element'
+    override: 'Ext.dom.Element',
 }, function(Element) {
     var supports = Ext.supports,
         proto = Element.prototype,
@@ -211,7 +211,7 @@ Ext.define('EXTJS_23846.Element', {
 });
 
 Ext.define('EXTJS_23846.Gesture', {
-    override: 'Ext.event.publisher.Gesture'
+    override: 'Ext.event.publisher.Gesture',
 }, function(Gesture) {
     var me = Gesture.instance;
 
@@ -225,7 +225,7 @@ Ext.define('EXTJS_18900.Pie', {
     override: 'Ext.chart.series.Pie',
 
     // from 6.0.2
-    betweenAngle: function (x, a, b) {
+    betweenAngle: function(x, a, b) {
         var pp = Math.PI * 2,
             offset = this.rotationOffset;
 
@@ -264,7 +264,7 @@ Ext.define('EXTJS_18900.Pie', {
 // we always want the number in x.y format and never in, e.g., x,y
 Ext.define('PVE.form.field.Number', {
     override: 'Ext.form.field.Number',
-    submitLocaleSeparator: false
+    submitLocaleSeparator: false,
 });
 
 // ExtJs 5-6 has an issue with caching
@@ -272,7 +272,7 @@ Ext.define('PVE.form.field.Number', {
 Ext.define('Proxmox.UnderlayPool', {
     override: 'Ext.dom.UnderlayPool',
 
-    checkOut: function () {
+    checkOut: function() {
         var cache = this.cache,
             len = cache.length,
             el;
@@ -297,7 +297,7 @@ Ext.define('Proxmox.UnderlayPool', {
 	}
 
         return el;
-    }
+    },
 });
 
 // 'Enter' in Textareas and aria multiline fields should not activate the
@@ -311,7 +311,7 @@ Ext.define('PVE.panel.Panel', {
 	    return true;
 	}
 	return this.callParent(arguments);
-    }
+    },
 });
 
 // if the order of the values are not the same in originalValue and value
@@ -352,7 +352,7 @@ Ext.define('Proxmox.form.ComboBox', {
 			me.skip_expand_on_focus = true;
 		    }
 		    this.callParent(arguments);
-		}
+		},
 	    });
 
 	    me.on("focus", function(combobox) {
@@ -403,7 +403,6 @@ Ext.define(null, {
             return function() {
                 // If we still have data, attempt to refocus in the same mode.
                 if (store.getCount()) {
-
                     // Adjust expectations of where we are able to refocus according to what kind of destruction
                     // might have been wrought on this view's DOM during focus save.
                     refocusRow = Math.min(focusPosition.rowIdx, me.all.getCount() - 1);
@@ -424,7 +423,7 @@ Ext.define(null, {
                         navModel.setPosition(focusPosition, null, null, null, true);
 
 			if (!me.jumpToFocus) {
-			    me.scrollTo(x,y);
+			    me.scrollTo(x, y);
 			}
                     }
                 }
@@ -435,14 +434,14 @@ Ext.define(null, {
             };
         }
         return Ext.emptyFn;
-    }
+    },
 });
 
 // should be fixed with ExtJS 6.0.2, see:
 // https://www.sencha.com/forum/showthread.php?307244-Bug-with-datefield-in-window-with-scroll
 Ext.define('Proxmox.Datepicker', {
     override: 'Ext.picker.Date',
-    hideMode: 'visibility'
+    hideMode: 'visibility',
 });
 
 // ExtJS 6.0.1 has no setSubmitValue() (although you find it in the docs).
@@ -464,9 +463,9 @@ Ext.define(null, {
     createWheelListener: function() {
 	var me = this;
 	if (Ext.isFirefox) {
-	    me.wheelListener = me.layout.innerCt.on('wheel', me.onMouseWheelFirefox, me, {destroyable: true});
+	    me.wheelListener = me.layout.innerCt.on('wheel', me.onMouseWheelFirefox, me, { destroyable: true });
 	} else {
-	    me.wheelListener = me.layout.innerCt.on('mousewheel', me.onMouseWheel, me, {destroyable: true});
+	    me.wheelListener = me.layout.innerCt.on('mousewheel', me.onMouseWheel, me, { destroyable: true });
 	}
     },
 
@@ -477,7 +476,7 @@ Ext.define(null, {
 	e.stopEvent();
 	var delta = e.browserEvent.deltaY || 0;
 	this.scrollBy(delta * this.wheelIncrement, false);
-    }
+    },
 
 });
 
@@ -501,12 +500,12 @@ Ext.onReady(function() {
 		    icon: this.ERROR,
 		    buttons: this.OK,
 		    fn: fn,
-		    scope : scope,
-		    minWidth: this.minWidth
+		    scope: scope,
+		    minWidth: this.minWidth,
 		};
 	    return this.show(config);
 	    }
-	}
+	},
     });
 /*jslint confusion: false */
 });
@@ -520,17 +519,17 @@ Ext.define('Ext.ux.IFrame', {
     src: 'about:blank',
 
     renderTpl: [
-        '<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>'
+        '<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>',
     ],
     childEls: ['iframeEl'],
 
-    initComponent: function () {
+    initComponent: function() {
         this.callParent();
 
         this.frameName = this.frameName || this.id + '-frame';
     },
 
-    initEvents : function() {
+    initEvents: function() {
         var me = this;
         me.callParent();
         me.iframeEl.on('load', me.onLoad, me);
@@ -539,7 +538,7 @@ Ext.define('Ext.ux.IFrame', {
     initRenderData: function() {
         return Ext.apply(this.callParent(), {
             src: this.src,
-            frameName: this.frameName
+            frameName: this.frameName,
         });
     },
 
@@ -570,12 +569,12 @@ Ext.define('Ext.ux.IFrame', {
         return me.iframeEl.dom;
     },
 
-    beforeDestroy: function () {
+    beforeDestroy: function() {
         this.cleanupListeners(true);
         this.callParent();
     },
 
-    cleanupListeners: function(destroying){
+    cleanupListeners: function(destroying) {
         var doc, prop;
 
         if (this.rendered) {
@@ -593,7 +592,7 @@ Ext.define('Ext.ux.IFrame', {
                         }
                     }
                 }
-            } catch(e) { }
+            } catch (e) { }
         }
     },
 
@@ -614,14 +613,14 @@ Ext.define('Ext.ux.IFrame', {
                     me._docListeners = {
                         mousedown: fn, // menu dismisal (MenuManager) and Window onMouseDown (toFront)
                         mousemove: fn, // window resize drag detection
-                        mouseup: fn,   // window resize termination
-                        click: fn,     // not sure, but just to be safe
-                        dblclick: fn,  // not sure again
-                        scope: me
-                    }
+                        mouseup: fn, // window resize termination
+                        click: fn, // not sure, but just to be safe
+                        dblclick: fn, // not sure again
+                        scope: me,
+                    },
                 );
 		/*jslint nomen: false*/
-            } catch(e) {
+            } catch (e) {
                 // cannot do this xss
             }
 
@@ -630,17 +629,13 @@ Ext.define('Ext.ux.IFrame', {
 
             this.el.unmask();
             this.fireEvent('load', this);
-
         } else if (me.src) {
-
             this.el.unmask();
             this.fireEvent('error', this);
         }
-
-
     },
 
-    onRelayedEvent: function (event) {
+    onRelayedEvent: function(event) {
         // relay event from the iframe's document to the document that owns the iframe...
 
         var iframeEl = this.iframeEl,
@@ -663,7 +658,7 @@ Ext.define('Ext.ux.IFrame', {
         event.xy = originalEventXY; // restore the original XY (just for safety)
     },
 
-    load: function (src) {
+    load: function(src) {
         var me = this,
             text = me.loadMask,
             frame = me.getFrame();
@@ -673,7 +668,7 @@ Ext.define('Ext.ux.IFrame', {
                 me.el.mask(text);
             }
 
-            frame.src = me.src = (src || me.src);
+            frame.src = me.src = src || me.src;
         }
-    }
+    },
 });

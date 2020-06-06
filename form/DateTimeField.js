@@ -37,7 +37,7 @@ Ext.define('Proxmox.DateTimeField', {
 	    editable: false,
 	    reference: 'dateentry',
 	    flex: 1,
-	    format: 'Y-m-d'
+	    format: 'Y-m-d',
 	},
 	{
 	    xtype: 'timefield',
@@ -45,8 +45,8 @@ Ext.define('Proxmox.DateTimeField', {
 	    format: 'H:i',
 	    width: 80,
 	    value: '00:00',
-	    increment: 60
-	}
+	    increment: 60,
+	},
     ],
 
     setMinValue: function(value) {
@@ -83,7 +83,7 @@ Ext.define('Proxmox.DateTimeField', {
 
 	// current time is smaller than the time part of the new minimum
 	// so we have to add 1 to the day
-	if ((minhours*60+minminutes) > (hours*60+minutes)) {
+	if (minhours*60+minminutes > hours*60+minutes) {
 	    value.setDate(value.getDate()+1);
 	}
 	me.lookup('dateentry').setMinValue(value);
@@ -120,7 +120,7 @@ Ext.define('Proxmox.DateTimeField', {
 
 	// current time is biger than the time part of the new maximum
 	// so we have to subtract 1 to the day
-	if ((maxhours*60+maxminutes) < (hours*60+minutes)) {
+	if (maxhours*60+maxminutes < hours*60+minutes) {
 	    value.setDate(value.getDate()-1);
 	}
 
@@ -147,5 +147,5 @@ Ext.define('Proxmox.DateTimeField', {
 
 	me.relayEvents(me.lookupReference('dateentry'), ['change']);
 	me.relayEvents(me.lookupReference('timeentry'), ['change']);
-    }
+    },
 });

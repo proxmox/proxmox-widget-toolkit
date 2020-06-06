@@ -20,7 +20,7 @@ Ext.define('Proxmox.data.RRDStore', {
     },
 
     proxy: {
-	type: 'proxmox'
+	type: 'proxmox',
     },
 
     timeframe: 'hour',
@@ -39,7 +39,7 @@ Ext.define('Proxmox.data.RRDStore', {
 
 	// set a new storeid
 	if (!config.storeid) {
-	    config.storeid = 'rrdstore-' + (++Ext.idSeed);
+	    config.storeid = 'rrdstore-' + ++Ext.idSeed;
 	}
 
 	// rrdurl is required
@@ -52,7 +52,7 @@ Ext.define('Proxmox.data.RRDStore', {
 	var stateinit = sp.get(stateid);
 
         if (stateinit) {
-	    if(stateinit.timeframe !== me.timeframe || stateinit.cf !== me.rrdcffn){
+	    if (stateinit.timeframe !== me.timeframe || stateinit.cf !== me.rrdcffn) {
 		me.timeframe = stateinit.timeframe;
 		me.rrdcffn = stateinit.cf;
 	    }
@@ -61,7 +61,7 @@ Ext.define('Proxmox.data.RRDStore', {
 	me.callParent([config]);
 
 	me.setRRDUrl();
-	me.mon(sp, 'statechange', function(prov, key, state){
+	me.mon(sp, 'statechange', function(prov, key, state) {
 	    if (key === stateid) {
 		if (state && state.id) {
 		    if (state.timeframe !== me.timeframe || state.cf !== me.cf) {
@@ -73,5 +73,5 @@ Ext.define('Proxmox.data.RRDStore', {
 		}
 	    }
 	});
-    }
+    },
 });

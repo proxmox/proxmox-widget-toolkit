@@ -10,7 +10,7 @@ Ext.define('Proxmox.form.KVComboBox', {
     alias: 'widget.proxmoxKVComboBox',
 
     config: {
-	deleteEmpty: true
+	deleteEmpty: true,
     },
 
     comboItems: undefined,
@@ -30,7 +30,7 @@ Ext.define('Proxmox.form.KVComboBox', {
                 data[me.getName()] = val;
             } else if (me.getDeleteEmpty()) {
                 data = {};
-                data['delete'] = me.getName();
+                data.delete = me.getName();
             }
         }
         return data;
@@ -63,7 +63,7 @@ Ext.define('Proxmox.form.KVComboBox', {
 
 	me.store = Ext.create('Ext.data.ArrayStore', {
 	    model: 'KeyValue',
-	    data : me.comboItems
+	    data: me.comboItems,
 	});
 
 	if (me.initialConfig.editable === undefined) {
@@ -77,6 +77,6 @@ Ext.define('Proxmox.form.KVComboBox', {
 	var me = this;
 
 	me.getStore().setData(items);
-    }
+    },
 
 });

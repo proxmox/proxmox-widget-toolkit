@@ -58,7 +58,7 @@ Ext.define('Proxmox.panel.LogView', {
 	    viewModel.set('data', {
 		first: first,
 		total: total,
-		textlen: text.length
+		textlen: text.length,
 	    });
 
 	    var scrollPos = me.scrollPosBottom();
@@ -117,7 +117,7 @@ Ext.define('Proxmox.panel.LogView', {
 			me.requested = false;
 			view.loadTask.delay(200);
 		    }
-		}
+		},
 	    });
 	},
 
@@ -135,7 +135,7 @@ Ext.define('Proxmox.panel.LogView', {
 	    var viewStart = Math.max(parseInt(line - 1 - view.viewBuffer, 10), 0);
 	    var viewEnd = parseInt(line + viewLines + 1 + view.viewBuffer, 10);
 
-	    if (viewStart < start || viewEnd > (start+limit)) {
+	    if (viewStart < start || viewEnd > start+limit) {
 		viewModel.set('params.start',
 		    Math.max(parseInt(line - limit/2 + 10, 10), 0));
 		view.loadTask.delay(200);
@@ -171,9 +171,9 @@ Ext.define('Proxmox.panel.LogView', {
 			view.loadTask.delay(200);
 		    }
 		},
-		interval: 1000
+		interval: 1000,
 	    });
-	}
+	},
     },
 
     onDestroy: function() {
@@ -196,13 +196,13 @@ Ext.define('Proxmox.panel.LogView', {
 	    data: {
 		start: 0,
 		total: 0,
-		textlen: 0
+		textlen: 0,
 	    },
 	    params: {
 		start: 0,
 		limit: 500,
-	    }
-	}
+	    },
+	},
     },
 
     layout: 'auto',
@@ -218,17 +218,17 @@ Ext.define('Proxmox.panel.LogView', {
 		fn: function(scroller, x, y) {
 		    var controller = this.component.getController();
 		    if (controller) { // on destroy, controller can be gone
-			controller.onScroll(x,y);
+			controller.onScroll(x, y);
 		    }
 		},
-		buffer: 200
+		buffer: 200,
 	    },
-	}
+	},
     },
 
     tbar: {
 	bind: {
-	    hidden: '{hide_timespan}'
+	    hidden: '{hide_timespan}',
 	},
 	items: [
 	    '->',
@@ -240,8 +240,8 @@ Ext.define('Proxmox.panel.LogView', {
 		format: 'Y-m-d',
 		bind: {
 		    value: '{since}',
-		    maxValue: '{until}'
-		}
+		    maxValue: '{until}',
+		},
 	    },
 	    'Until: ',
 	    {
@@ -251,14 +251,14 @@ Ext.define('Proxmox.panel.LogView', {
 		format: 'Y-m-d',
 		bind: {
 		    value: '{until}',
-		    minValue: '{since}'
-		}
+		    minValue: '{since}',
+		},
 	    },
 	    {
 		xtype: 'button',
 		text: 'Update',
-		handler: 'updateParams'
-	    }
+		handler: 'updateParams',
+	    },
 	],
     },
 
@@ -268,8 +268,8 @@ Ext.define('Proxmox.panel.LogView', {
 	    reference: 'content',
 	    style: {
 		font: 'normal 11px tahoma, arial, verdana, sans-serif',
-		'white-space': 'pre'
+		'white-space': 'pre',
 	    },
-	}
-    ]
+	},
+    ],
 });

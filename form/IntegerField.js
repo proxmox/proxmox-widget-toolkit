@@ -1,9 +1,9 @@
-Ext.define('Proxmox.form.field.Integer',{
+Ext.define('Proxmox.form.field.Integer', {
     extend: 'Ext.form.field.Number',
     alias: 'widget.proxmoxintegerfield',
 
     config: {
-	deleteEmpty: false
+	deleteEmpty: false,
     },
 
     allowDecimals: false,
@@ -21,10 +21,10 @@ Ext.define('Proxmox.form.field.Integer',{
                 data[me.getName()] = val;
             } else if (me.getDeleteEmpty()) {
 		data = {};
-                data['delete'] = me.getName();
+                data.delete = me.getName();
 	    }
         }
         return data;
-    }
+    },
 
 });

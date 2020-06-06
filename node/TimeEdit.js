@@ -9,7 +9,7 @@ Ext.define('Proxmox.node.TimeEdit', {
     autoLoad: true,
 
     fieldDefaults: {
-	labelWidth: 70
+	labelWidth: 70,
     },
 
     items: {
@@ -22,10 +22,10 @@ Ext.define('Proxmox.node.TimeEdit', {
 	editable: true,
 	anyMatch: true,
 	forceSelection: true,
-	allowBlank: false
+	allowBlank: false,
     },
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	if (!me.nodename) {
@@ -34,5 +34,5 @@ Ext.define('Proxmox.node.TimeEdit', {
 	me.url = "/api2/extjs/nodes/" + me.nodename + "/time";
 
 	me.callParent();
-    }
+    },
 });

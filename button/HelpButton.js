@@ -23,8 +23,8 @@ Ext.define('Proxmox.button.Help', {
 	listen: {
 	    global: {
 		proxmoxShowHelp: 'onProxmoxShowHelp',
-		proxmoxHideHelp: 'onProxmoxHideHelp'
-	    }
+		proxmoxHideHelp: 'onProxmoxHideHelp',
+	    },
 	},
 	onProxmoxShowHelp: function(helpLink) {
 	    var me = this.getView();
@@ -38,11 +38,11 @@ Ext.define('Proxmox.button.Help', {
 	    if (me.listenToGlobalEvent === true) {
 		me.hide();
 	    }
-	}
+	},
     },
 
     // this sets the link and the tooltip text
-    setOnlineHelp:function(blockid) {
+    setOnlineHelp: function(blockid) {
 	var me = this;
 
 	var info = Proxmox.Utils.get_help_info(blockid);
@@ -83,8 +83,8 @@ Ext.define('Proxmox.button.Help', {
 
 	me.callParent();
 
-	if  (me.onlineHelp) {
+	if (me.onlineHelp) {
 	    me.setOnlineHelp(me.onlineHelp); // set tooltip
 	}
-    }
+    },
 });

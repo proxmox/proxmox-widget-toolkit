@@ -4,17 +4,17 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 
     defaults: {
 	style: {
-	    'text-align':'center'
-	}
+	    'text-align': 'center',
+	},
     },
     items: [
 	{
 	    xtype: 'box',
 	    itemId: 'title',
 	    data: {
-		title: ''
+		title: '',
 	    },
-	    tpl: '<h3>{title}</h3>'
+	    tpl: '<h3>{title}</h3>',
 	},
 	{
 	    xtype: 'polar',
@@ -28,7 +28,7 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 		sectors: [0],
 		donut: 90,
 		needleLength: 100,
-		totalAngle: Math.PI
+		totalAngle: Math.PI,
 	    }],
 	    sprites: [{
 		id: 'valueSprite',
@@ -38,13 +38,13 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 		textBaseline: 'bottom',
 		x: 125,
 		y: 110,
-		fontSize: 30
-	    }]
+		fontSize: 30,
+	    }],
 	},
 	{
 	    xtype: 'box',
-	    itemId: 'text'
-	}
+	    itemId: 'text',
+	},
     ],
 
     header: false,
@@ -93,10 +93,10 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 	me.callParent();
 
 	if (me.title) {
-	    me.getComponent('title').update({title: me.title});
+	    me.getComponent('title').update({ title: me.title });
 	}
 	me.text = me.getComponent('text');
 	me.chart = me.getComponent('chart');
 	me.valueSprite = me.chart.getSurface('chart').get('valueSprite');
-    }
+    },
 });

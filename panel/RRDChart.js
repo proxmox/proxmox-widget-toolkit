@@ -8,11 +8,11 @@ Ext.define('Proxmox.widget.RRDChart', {
 	xclass: 'Ext.app.ViewController',
 
 	convertToUnits: function(value) {
-	    var units = ['', 'k','M','G','T', 'P'];
+	    var units = ['', 'k', 'M', 'G', 'T', 'P'];
 	    var si = 0;
 	    let format = '0.##';
 	    if (value < 0.1) format += '#';
-	    while(value >= 1000  && si < (units.length -1)){
+	    while (value >= 1000 && si < units.length -1) {
 		value = value / 1000;
 		si++;
 	    }
@@ -58,7 +58,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    var ourUndoZoomButton = chart.header.tools[0];
 	    var undoButton = chart.interactions[0].getUndoButton();
 	    ourUndoZoomButton.setDisabled(undoButton.isDisabled());
-	}
+	},
     },
 
     width: 770,
@@ -66,7 +66,7 @@ Ext.define('Proxmox.widget.RRDChart', {
     animation: false,
     interactions: [
 	{
-	    type: 'crosszoom'
+	    type: 'crosszoom',
 	},
     ],
     legend: {
@@ -78,17 +78,17 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    position: 'left',
 	    grid: true,
 	    renderer: 'leftAxisRenderer',
-	    minimum: 0
+	    minimum: 0,
 	},
 	{
 	    type: 'time',
 	    position: 'bottom',
 	    grid: true,
-	    fields: ['time']
+	    fields: ['time'],
 	},
     ],
     listeners: {
-	animationend: 'onAfterAnimation'
+	animationend: 'onAfterAnimation',
     },
 
     initComponent: function() {
@@ -133,17 +133,17 @@ Ext.define('Proxmox.widget.RRDChart', {
 		type: 'minus',
 		disabled: true,
 		tooltip: gettext('Undo Zoom'),
-		handler: function(){
+		handler: function() {
 		    var undoButton = me.interactions[0].getUndoButton();
 		    if (undoButton.handler) {
 			undoButton.handler();
 		    }
-		}
+		},
 	    });
 	}
 
 	// add a series for each field we get
-	me.fields.forEach(function(item, index){
+	me.fields.forEach(function(item, index) {
 	    var title = item;
 	    if (me.fieldTitles && me.fieldTitles[index]) {
 		title = me.fieldTitles[index];
@@ -157,32 +157,32 @@ Ext.define('Proxmox.widget.RRDChart', {
 		    fill: true,
 		    style: {
 			lineWidth: 1.5,
-			opacity: 0.60
+			opacity: 0.60,
 		    },
 		    marker: {
 			opacity: 0,
 			scaling: 0.01,
 			fx: {
 			    duration: 200,
-			    easing: 'easeOut'
-			}
+			    easing: 'easeOut',
+			},
 		    },
 		    highlightCfg: {
 			opacity: 1,
-			scaling: 1.5
+			scaling: 1.5,
 		    },
 		    tooltip: {
 			trackMouse: true,
-			renderer: 'onSeriesTooltipRender'
-		    }
+			renderer: 'onSeriesTooltipRender',
+		    },
 		},
-		me.seriesConfig
+		me.seriesConfig,
 	    ));
 	});
 
 	// enable animation after the store is loaded
 	me.store.onAfter('load', function() {
 	    me.setAnimation(true);
-	}, this, {single: true});
-    }
+	}, this, { single: true });
+    },
 });

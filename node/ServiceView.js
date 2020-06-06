@@ -1,7 +1,7 @@
 Ext.define('proxmox-services', {
     extend: 'Ext.data.Model',
-    fields: [ 'service', 'name', 'desc', 'state' ],
-    idProperty: 'service'
+    fields: ['service', 'name', 'desc', 'state'],
+    idProperty: 'service',
 });
 
 Ext.define('Proxmox.node.ServiceView', {
@@ -11,7 +11,7 @@ Ext.define('Proxmox.node.ServiceView', {
 
     startOnlyServices: {},
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	if (!me.nodename) {
@@ -24,8 +24,8 @@ Ext.define('Proxmox.node.ServiceView', {
 	    model: 'proxmox-services',
 	    proxy: {
                 type: 'proxmox',
-                url: "/api2/json/nodes/" + me.nodename + "/services"
-	    }
+                url: "/api2/json/nodes/" + me.nodename + "/services",
+	    },
 	});
 
 	var store = Ext.create('Proxmox.data.DiffStore', {
@@ -33,10 +33,10 @@ Ext.define('Proxmox.node.ServiceView', {
 	    sortAfterUpdate: true,
 	    sorters: [
 		{
-		    property : 'name',
-		    direction: 'ASC'
-		}
-	    ]
+		    property: 'name',
+		    direction: 'ASC',
+		},
+	    ],
 	});
 
 	var view_service_log = function() {
@@ -52,8 +52,8 @@ Ext.define('Proxmox.node.ServiceView', {
 		    xtype: 'proxmoxLogView',
 		    url: "/api2/extjs/nodes/" + me.nodename + "/syslog?service=" +
 			rec.data.service,
-		    log_select_timespan: 1
-		}
+		    log_select_timespan: 1,
+		},
 	    });
 	    win.show();
 	};
@@ -73,41 +73,41 @@ Ext.define('Proxmox.node.ServiceView', {
 		    var upid = response.result.data;
 
 		    var win = Ext.create('Proxmox.window.TaskProgress', {
-			upid: upid
+			upid: upid,
 		    });
 		    win.show();
-		}
+		},
 	    });
 	};
 
 	var start_btn = new Ext.Button({
 	    text: gettext('Start'),
 	    disabled: true,
-	    handler: function(){
+	    handler: function() {
 		service_cmd("start");
-	    }
+	    },
 	});
 
 	var stop_btn = new Ext.Button({
 	    text: gettext('Stop'),
 	    disabled: true,
-	    handler: function(){
+	    handler: function() {
 		service_cmd("stop");
-	    }
+	    },
 	});
 
 	var restart_btn = new Ext.Button({
 	    text: gettext('Restart'),
 	    disabled: true,
-	    handler: function(){
+	    handler: function() {
 		service_cmd("restart");
-	    }
+	    },
 	});
 
 	var syslog_btn = new Ext.Button({
 	    text: gettext('Syslog'),
 	    disabled: true,
-	    handler: view_service_log
+	    handler: view_service_log,
 	});
 
 	var set_button_status = function() {
@@ -135,8 +135,7 @@ Ext.define('Proxmox.node.ServiceView', {
 		    restart_btn.disable();
 		}
 		stop_btn.disable();
-	    } else {
-		if (state == 'running') {
+	    } else if (state == 'running') {
 		    start_btn.disable();
 		    restart_btn.enable();
 		    stop_btn.enable();
@@ -145,7 +144,6 @@ Ext.define('Proxmox.node.ServiceView', {
 		    restart_btn.disable();
 		    stop_btn.disable();
 		}
-	    }
 	};
 
 	me.mon(store, 'refresh', set_button_status);
@@ -155,35 +153,35 @@ Ext.define('Proxmox.node.ServiceView', {
 	Ext.apply(me, {
 	    store: store,
 	    stateful: false,
-	    tbar: [ start_btn, stop_btn, restart_btn, syslog_btn ],
+	    tbar: [start_btn, stop_btn, restart_btn, syslog_btn],
 	    columns: [
 		{
 		    header: gettext('Name'),
 		    flex: 1,
 		    sortable: true,
-		    dataIndex: 'name'
+		    dataIndex: 'name',
 		},
 		{
 		    header: gettext('Status'),
 		    width: 100,
 		    sortable: true,
-		    dataIndex: 'state'
+		    dataIndex: 'state',
 		},
 		{
 		    header: gettext('Description'),
 		    renderer: Ext.String.htmlEncode,
 		    dataIndex: 'desc',
-		    flex: 2
-		}
+		    flex: 2,
+		},
 	    ],
 	    listeners: {
 		selectionchange: set_button_status,
 		itemdblclick: view_service_log,
 		activate: rstore.startUpdate,
-		destroy: rstore.stopUpdate
-	    }
+		destroy: rstore.stopUpdate,
+	    },
 	});
 
 	me.callParent();
-    }
+    },
 });

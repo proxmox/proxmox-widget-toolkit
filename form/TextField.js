@@ -19,7 +19,7 @@ Ext.define('Proxmox.form.field.Textfield', {
                 data[me.getName()] = val;
             } else if (me.getDeleteEmpty()) {
 		data = {};
-                data['delete'] = me.getName();
+                data.delete = me.getName();
 	    }
         }
         return data;
@@ -39,5 +39,5 @@ Ext.define('Proxmox.form.field.Textfield', {
     setAllowBlank: function(allowBlank) {
 	this.allowBlank = allowBlank;
 	this.validate();
-    }
+    },
 });

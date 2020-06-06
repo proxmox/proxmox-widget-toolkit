@@ -3,26 +3,25 @@ Ext.define('Proxmox.Mixin.CBind', {
 
     mixinConfig: {
         before: {
-            initComponent: 'cloneTemplates'
-        }
+            initComponent: 'cloneTemplates',
+        },
     },
 
     cloneTemplates: function() {
 	var me = this;
 
- 	if (typeof(me.cbindData) == "function") {
+ 	if (typeof me.cbindData == "function") {
 	    me.cbindData = me.cbindData(me.initialConfig);
 	}
 	me.cbindData = me.cbindData || {};
 
 	var getConfigValue = function(cname) {
-
 	    if (cname in me.initialConfig) {
 		return me.initialConfig[cname];
 	    }
 	    if (cname in me.cbindData) {
 		let res = me.cbindData[cname];
-		if (typeof(res) == "function") {
+		if (typeof res == "function") {
 		    return res(me.initialConfig);
 		} else {
 		    return res;
@@ -73,7 +72,6 @@ Ext.define('Proxmox.Mixin.CBind', {
 		if (!found) {
 		    throw "unable to parse cbind template '" + cdata + "'";
 		}
-
 	    }
 	};
 
@@ -145,7 +143,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 	    for (prop in me) {
 		el = me[prop];
 		if (el === undefined || el === null) continue;
-		if (typeof(el) === 'object' && el.constructor == Object) {
+		if (typeof el === 'object' && el.constructor == Object) {
 		    if (el.xtype && prop != 'config') {
 			me[prop] = cloneTemplateObject(el);
 		    }
@@ -157,5 +155,5 @@ Ext.define('Proxmox.Mixin.CBind', {
 	};
 
 	condCloneProperties();
-    }
+    },
 });

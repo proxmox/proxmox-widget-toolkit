@@ -5,7 +5,7 @@ Ext.define('Proxmox.form.Checkbox', {
     config: {
 	defaultValue: undefined,
 	deleteDefaultValue: false,
-	deleteEmpty: false
+	deleteEmpty: false,
     },
 
     inputValue: '1',
@@ -18,14 +18,14 @@ Ext.define('Proxmox.form.Checkbox', {
             val = me.getSubmitValue();
             if (val !== null) {
                 data = {};
-		if ((val == me.getDefaultValue()) && me.getDeleteDefaultValue()) {
-		    data['delete'] = me.getName();
+		if (val == me.getDefaultValue() && me.getDeleteDefaultValue()) {
+		    data.delete = me.getName();
 		} else {
                     data[me.getName()] = val;
 		}
             } else if (me.getDeleteEmpty()) {
                data = {};
-               data['delete'] = me.getName();
+               data.delete = me.getName();
 	    }
         }
         return data;
@@ -40,6 +40,6 @@ Ext.define('Proxmox.form.Checkbox', {
 	} else {
             me.callParent([value]);
 	}
-    }
+    },
 
 });

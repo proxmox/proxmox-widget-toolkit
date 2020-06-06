@@ -3,7 +3,7 @@
 *
 * Designed to work with the KeyValue model and the JsonObject data reader
 */
-Ext.define('Proxmox.data.ObjectStore',  {
+Ext.define('Proxmox.data.ObjectStore', {
     extend: 'Proxmox.data.UpdateStore',
 
     getRecord: function() {
@@ -22,7 +22,7 @@ Ext.define('Proxmox.data.ObjectStore',  {
         config = config || {};
 
 	if (!config.storeid) {
-	    config.storeid =  'proxmox-store-' + (++Ext.idSeed);
+	    config.storeid = 'proxmox-store-' + ++Ext.idSeed;
 	}
 
         Ext.applyIf(config, {
@@ -35,11 +35,11 @@ Ext.define('Proxmox.data.ObjectStore',  {
 		    type: 'jsonobject',
 		    rows: config.rows,
 		    readArray: config.readArray,
-		    rootProperty: config.root || 'data'
-		}
-            }
+		    rootProperty: config.root || 'data',
+		},
+            },
         });
 
         me.callParent([config]);
-    }
+    },
 });

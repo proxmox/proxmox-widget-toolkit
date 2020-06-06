@@ -9,22 +9,22 @@ Ext.define('Proxmox.form.NetworkSelectorController', {
 	    throw "missing custom view config: nodename";
 	}
 	view.getStore().getProxy().setUrl('/api2/json/nodes/'+ view.nodename + '/network');
-    }
+    },
 });
 
 Ext.define('Proxmox.data.NetworkSelector', {
     extend: 'Ext.data.Model',
     fields: [
-	{name: 'active'},
-	{name: 'cidr'},
-	{name: 'cidr6'},
-	{name: 'address'},
-	{name: 'address6'},
-	{name: 'comments'},
-	{name: 'iface'},
-	{name: 'slaves'},
-	{name: 'type'}
-    ]
+	{ name: 'active' },
+	{ name: 'cidr' },
+	{ name: 'cidr6' },
+	{ name: 'address' },
+	{ name: 'address6' },
+	{ name: 'comments' },
+	{ name: 'iface' },
+	{ name: 'slaves' },
+	{ name: 'type' },
+    ],
 });
 
 Ext.define('Proxmox.form.NetworkSelector', {
@@ -55,26 +55,25 @@ Ext.define('Proxmox.form.NetworkSelector', {
 	autoLoad: true,
 	model: 'Proxmox.data.NetworkSelector',
 	proxy: {
-	    type: 'proxmox'
+	    type: 'proxmox',
 	},
 	sorters: [
 	    {
-		property : 'iface',
-		direction: 'ASC'
-	    }
+		property: 'iface',
+		direction: 'ASC',
+	    },
 	],
 	filters: [
 	    function(item) {
 		return item.data.cidr;
-	    }
+	    },
 	],
 	listeners: {
 	    load: function(store, records, successfull) {
-
 		if (successfull) {
 		    records.forEach(function(record) {
 			if (record.data.cidr6) {
-			    let dest = (record.data.cidr) ? record.copy(null) : record;
+			    let dest = record.data.cidr ? record.copy(null) : record;
 			    dest.data.cidr = record.data.cidr6;
 			    dest.data.address = record.data.address6;
 			    delete record.data.cidr6;
@@ -84,8 +83,8 @@ Ext.define('Proxmox.form.NetworkSelector', {
 			}
 		    });
 		}
-	    }
-	}
+	    },
+	},
     },
     listConfig: {
 	width: 600,
@@ -95,7 +94,7 @@ Ext.define('Proxmox.form.NetworkSelector', {
 		header: gettext('CIDR'),
 		dataIndex: 'cidr',
 		hideable: false,
-		flex: 1
+		flex: 1,
 	    },
 	    {
 
@@ -106,25 +105,25 @@ Ext.define('Proxmox.form.NetworkSelector', {
 	    {
 		header: gettext('Interface'),
 		width: 90,
-		dataIndex: 'iface'
+		dataIndex: 'iface',
 	    },
 	    {
 		header: gettext('Active'),
 		renderer: Proxmox.Utils.format_boolean,
 		width: 60,
-		dataIndex: 'active'
+		dataIndex: 'active',
 	    },
 	    {
 		header: gettext('Type'),
 		width: 80,
 		hidden: true,
-		dataIndex: 'type'
+		dataIndex: 'type',
 	    },
 	    {
 		header: gettext('Comment'),
 		flex: 2,
-		dataIndex: 'comments'
-	    }
-	]
-    }
+		dataIndex: 'comments',
+	    },
+	],
+    },
 });

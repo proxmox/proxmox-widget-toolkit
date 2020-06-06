@@ -2,22 +2,22 @@ Ext.define('Proxmox.node.TimeView', {
     extend: 'Proxmox.grid.ObjectGrid',
     alias: ['widget.proxmoxNodeTimeView'],
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
 	}
 
-	var tzoffset = (new Date()).getTimezoneOffset()*60000;
+	var tzoffset = new Date().getTimezoneOffset()*60000;
 	var renderlocaltime = function(value) {
-	    var servertime = new Date((value * 1000) + tzoffset);
+	    var servertime = new Date(value * 1000 + tzoffset);
 	    return Ext.Date.format(servertime, 'Y-m-d H:i:s');
 	};
 
 	var run_editor = function() {
 	    var win = Ext.create('Proxmox.node.TimeEdit', {
-		nodename: me.nodename
+		nodename: me.nodename,
 	    });
 	    win.show();
 	};
@@ -30,23 +30,23 @@ Ext.define('Proxmox.node.TimeView', {
 	    rows: {
 		timezone: {
 		    header: gettext('Time zone'),
-		    required: true
+		    required: true,
 		},
 		localtime: {
 		    header: gettext('Server time'),
 		    required: true,
-		    renderer: renderlocaltime
-		}
+		    renderer: renderlocaltime,
+		},
 	    },
 	    tbar: [
 		{
 		    text: gettext("Edit"),
-		    handler: run_editor
-		}
+		    handler: run_editor,
+		},
 	    ],
 	    listeners: {
-		itemdblclick: run_editor
-	    }
+		itemdblclick: run_editor,
+	    },
 	});
 
 	me.callParent();
@@ -54,5 +54,5 @@ Ext.define('Proxmox.node.TimeView', {
 	me.on('activate', me.rstore.startUpdate);
 	me.on('deactivate', me.rstore.stopUpdate);
 	me.on('destroy', me.rstore.stopUpdate);
-    }
+    },
 });

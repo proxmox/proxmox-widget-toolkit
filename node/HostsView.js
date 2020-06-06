@@ -17,7 +17,7 @@ Ext.define('Proxmox.node.HostsView', {
 		Proxmox.Utils.API2Request({
 		    params: {
 			digest: me.digest,
-			data: me.down('#hostsfield').getValue()
+			data: me.down('#hostsfield').getValue(),
 		    },
 		    method: 'POST',
 		    url: '/nodes/' + me.nodename + '/hosts',
@@ -27,9 +27,9 @@ Ext.define('Proxmox.node.HostsView', {
 		    },
 		    failure: function(response, opts) {
 			Ext.Msg.alert('Error', response.htmlStatus);
-		    }
+		    },
 		});
-	    }
+	    },
 	},
 	{
 	    text: gettext('Revert'),
@@ -38,8 +38,8 @@ Ext.define('Proxmox.node.HostsView', {
 	    handler: function() {
 		var me = this.up('panel');
 		me.down('#hostsfield').reset();
-	    }
-	}
+	    },
+	},
     ],
 
 	    layout: 'fit',
@@ -50,19 +50,19 @@ Ext.define('Proxmox.node.HostsView', {
 	    itemId: 'hostsfield',
 	    fieldStyle: {
 		'font-family': 'monospace',
-		'white-space': 'pre'
+		'white-space': 'pre',
 	    },
 	    listeners: {
 		dirtychange: function(ta, dirty) {
 		    var me = this.up('panel');
 		    me.down('#savebtn').setDisabled(!dirty);
 		    me.down('#resetbtn').setDisabled(!dirty);
-		}
-	    }
-	}
+		},
+	    },
+	},
     ],
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	if (!me.nodename) {
@@ -73,7 +73,7 @@ Ext.define('Proxmox.node.HostsView', {
 	    proxy: {
 		type: 'proxmox',
 		url: "/api2/json/nodes/" + me.nodename + "/hosts",
-	    }
+	    },
 	});
 
 	me.callParent();
@@ -91,5 +91,5 @@ Ext.define('Proxmox.node.HostsView', {
 	});
 
 	me.reload();
-    }
+    },
 });

@@ -10,12 +10,12 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	    if (pending) {
 		if (Ext.isDefined(rec.data.pending) && rec.data.pending !== '') {
 		    value = rec.data.pending;
-		} else if (rec.data['delete'] === 1) {
+		} else if (rec.data.delete === 1) {
 		    value = defaultValue;
 		}
 	    }
 
-            if (Ext.isDefined(value) && (value !== '')) {
+            if (Ext.isDefined(value) && value !== '') {
 		return value;
             } else {
 		return defaultValue;
@@ -27,15 +27,15 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
     hasPendingChanges: function(key) {
 	var me = this;
 	var rows = me.rows;
-	var rowdef = (rows && rows[key]) ?  rows[key] : {};
-	var keys = rowdef.multiKey ||  [ key ];
+	var rowdef = rows && rows[key] ? rows[key] : {};
+	var keys = rowdef.multiKey || [key];
 	var pending = false;
 
 	Ext.Array.each(keys, function(k) {
 	    var rec = me.store.getById(k);
 	    if (rec && rec.data && (
-		    (Ext.isDefined(rec.data.pending) && rec.data.pending !== '') ||
-		    rec.data['delete'] === 1
+		    Ext.isDefined(rec.data.pending) && rec.data.pending !== '' ||
+		    rec.data.delete === 1
 	    )) {
 		pending = true;
 		return false; // break
@@ -49,7 +49,7 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	var me = this;
 	var rows = me.rows;
 	var key = record.data.key;
-	var rowdef = (rows && rows[key]) ?  rows[key] : {};
+	var rowdef = rows && rows[key] ? rows[key] : {};
 	var renderer = rowdef.renderer;
 	var current = '';
 	var pendingdelete = '';
@@ -68,12 +68,12 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	    pending = record.data.pending;
 	}
 
-	if (record.data['delete']) {
+	if (record.data.delete) {
 	    var delete_all = true;
 	    if (rowdef.multiKey) {
 		Ext.Array.each(rowdef.multiKey, function(k) {
 		    var rec = me.store.getById(k);
-		    if (rec && rec.data && rec.data['delete'] !== 1) {
+		    if (rec && rec.data && rec.data.delete !== 1) {
 			delete_all = false;
 			return false; // break
 		    }
@@ -91,7 +91,7 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	}
     },
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	var rows = me.rows;
@@ -107,10 +107,10 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 		url: me.url,
 		interval: me.interval,
 		extraParams: me.extraParams,
-		rows: me.rows
+		rows: me.rows,
 	    });
 	}
 
 	me.callParent();
-   }
+   },
 });

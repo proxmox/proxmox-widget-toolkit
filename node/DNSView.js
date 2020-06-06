@@ -2,7 +2,7 @@ Ext.define('Proxmox.node.DNSView', {
     extend: 'Proxmox.grid.ObjectGrid',
     alias: ['widget.proxmoxNodeDNSView'],
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	if (!me.nodename) {
@@ -11,7 +11,7 @@ Ext.define('Proxmox.node.DNSView', {
 
 	var run_editor = function() {
 	    var win = Ext.create('Proxmox.node.DNSEdit', {
-		nodename: me.nodename
+		nodename: me.nodename,
 	    });
 	    win.show();
 	};
@@ -25,31 +25,31 @@ Ext.define('Proxmox.node.DNSView', {
 		search: {
 		    header: 'Search domain',
 		    required: true,
-		    renderer: Ext.htmlEncode
+		    renderer: Ext.htmlEncode,
 		},
 		dns1: {
 		    header: gettext('DNS server') + " 1",
 		    required: true,
-		    renderer: Ext.htmlEncode
+		    renderer: Ext.htmlEncode,
 		},
 		dns2: {
 		    header: gettext('DNS server') + " 2",
-		    renderer: Ext.htmlEncode
+		    renderer: Ext.htmlEncode,
 		},
 		dns3: {
 		    header: gettext('DNS server') + " 3",
-		    renderer: Ext.htmlEncode
-		}
+		    renderer: Ext.htmlEncode,
+		},
 	    },
 	    tbar: [
 		{
 		    text: gettext("Edit"),
-		    handler: run_editor
-		}
+		    handler: run_editor,
+		},
 	    ],
 	    listeners: {
-		itemdblclick: run_editor
-	    }
+		itemdblclick: run_editor,
+	    },
 	});
 
 	me.callParent();
@@ -57,5 +57,5 @@ Ext.define('Proxmox.node.DNSView', {
 	me.on('activate', me.rstore.startUpdate);
 	me.on('deactivate', me.rstore.stopUpdate);
 	me.on('destroy', me.rstore.stopUpdate);
-    }
+    },
 });

@@ -29,7 +29,7 @@
 
 Ext.define('Proxmox.data.reader.JsonObject', {
     extend: 'Ext.data.reader.Json',
-    alias : 'reader.jsonobject',
+    alias: 'reader.jsonobject',
 
     readArray: false,
 
@@ -53,7 +53,6 @@ Ext.define('Proxmox.data.reader.JsonObject', {
         var root = result[me.getRootProperty()];
 
 	    if (me.readArray) {
-
 		var rec_hash = {};
 		Ext.Array.each(root, function(rec) {
 		    if (Ext.isDefined(rec.key)) {
@@ -70,9 +69,9 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 			    }
 			    data.push(rec);
 			} else if (Ext.isDefined(rowdef.defaultValue)) {
-			    data.push({key: key, value: rowdef.defaultValue} );
+			    data.push({ key: key, value: rowdef.defaultValue });
 			} else if (rowdef.required) {
-			    data.push({key: key, value: undefined });
+			    data.push({ key: key, value: undefined });
 			}
 		    });
 		} else {
@@ -82,9 +81,7 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 			}
 		    });
 		}
-
 	    } else {
-
 		var org_root = root;
 
 		if (Ext.isArray(org_root)) {
@@ -98,30 +95,29 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 		if (me.rows) {
 		    Ext.Object.each(me.rows, function(key, rowdef) {
 			if (Ext.isDefined(root[key])) {
-			    data.push({key: key, value: root[key]});
+			    data.push({ key: key, value: root[key] });
 			} else if (Ext.isDefined(rowdef.defaultValue)) {
-			    data.push({key: key, value: rowdef.defaultValue});
+			    data.push({ key: key, value: rowdef.defaultValue });
 			} else if (rowdef.required) {
-			    data.push({key: key, value: undefined});
+			    data.push({ key: key, value: undefined });
 			}
 		    });
 		} else {
 		    Ext.Object.each(root, function(key, value) {
-			data.push({key: key, value: value });
+			data.push({ key: key, value: value });
 		    });
 		}
 	    }
-	}
-        catch (ex) {
+	} catch (ex) {
             Ext.Error.raise({
                 response: response,
                 json: response.responseText,
                 parseError: ex,
-                msg: 'Unable to parse the JSON returned by the server: ' + ex.toString()
+                msg: 'Unable to parse the JSON returned by the server: ' + ex.toString(),
             });
         }
 
 	return data;
-    }
+    },
 });
 

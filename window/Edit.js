@@ -88,7 +88,7 @@ Ext.define('Proxmox.window.Edit', {
 
 	Ext.iterate(values, function(id, val) {
 	    let fields = formfields.filterBy((f) =>
-	        (f.id === id || f.name === id || f.dataIndex === id) && !f.up('inputpanel')
+	        (f.id === id || f.name === id || f.dataIndex === id) && !f.up('inputpanel'),
 	    );
 	    fields.each((field) => {
 		field.setValue(val);

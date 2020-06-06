@@ -24,7 +24,7 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 
     layout: 'fit',
     defaults: {
-	hideLabel: true
+	hideLabel: true,
     },
 
     initComponent: function() {

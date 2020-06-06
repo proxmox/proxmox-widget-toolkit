@@ -46,8 +46,8 @@ Ext.define('Proxmox.form.ComboGrid', {
 	    handler: function() {
 		var me = this;
 		me.setValue('');
-	    }
-	}
+	    },
+	},
     },
 
     setValue: function(value) {
@@ -87,7 +87,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 		data[me.getName()] = val;
 	    } else if (me.getDeleteEmpty()) {
 		data = {};
-		data['delete'] = me.getName();
+		data.delete = me.getName();
 	    }
 	}
 	return data;
@@ -142,8 +142,8 @@ Ext.define('Proxmox.form.ComboGrid', {
             extraKeySpec = {
                 byValue: {
                     rootProperty: 'data',
-                    unique: false
-                }
+                    unique: false,
+                },
             };
             extraKeySpec.byValue.property = me.valueField;
             store.setExtraKeys(extraKeySpec);
@@ -153,7 +153,7 @@ Ext.define('Proxmox.form.ComboGrid', {
             } else {
                 extraKeySpec.byText = {
                     rootProperty: 'data',
-                    unique: false
+                    unique: false,
                 };
                 extraKeySpec.byText.property = me.displayField;
                 store.setExtraKeys(extraKeySpec);
@@ -165,20 +165,20 @@ Ext.define('Proxmox.form.ComboGrid', {
                 rootProperty: 'data',
                 extraKeys: {
                     byInternalId: {
-                        property: 'internalId'
+                        property: 'internalId',
                     },
                     byValue: {
                         property: me.valueField,
-                        rootProperty: 'data'
-                    }
+                        rootProperty: 'data',
+                    },
                 },
                 // Whenever this collection is changed by anyone, whether by this field adding to it,
                 // or the BoundList operating, we must refresh our value.
                 listeners: {
                     beginupdate: me.onValueCollectionBeginUpdate,
                     endupdate: me.onValueCollectionEndUpdate,
-                    scope: me
-                }
+                    scope: me,
+                },
             };
 
             // This becomes our collection of selected records for the Field.
@@ -203,8 +203,8 @@ Ext.define('Proxmox.form.ComboGrid', {
                 store: store,
                 listeners: {
                     scope: me,
-                    lastselectedchanged: me.updateBindSelection
-                }
+                    lastselectedchanged: me.updateBindSelection,
+                },
             });
 
             if (!initial) {
@@ -238,7 +238,7 @@ Ext.define('Proxmox.form.ComboGrid', {
                 pageSize: me.pageSize,
                 tpl: me.tpl,
                 selModel: me.pickerSelectionModel,
-                focusOnToFront: false
+                focusOnToFront: false,
             }, me.listConfig, me.defaultListConfig);
 
         picker = me.picker || Ext.widget(pickerCfg);
@@ -265,21 +265,21 @@ Ext.define('Proxmox.form.ComboGrid', {
         if (!picker.initialConfig.maxHeight) {
             picker.on({
                 beforeshow: me.onBeforePickerShow,
-                scope: me
+                scope: me,
             });
         }
         picker.getSelectionModel().on({
             beforeselect: me.onBeforeSelect,
             beforedeselect: me.onBeforeDeselect,
             focuschange: me.onFocusChange,
-            selectionChange: function (sm, selectedRecords) {
+            selectionChange: function(sm, selectedRecords) {
                 var me = this;
                 if (selectedRecords.length) {
                     me.setValue(selectedRecords);
                     me.fireEvent('select', me, selectedRecords);
                 }
             },
-            scope: me
+            scope: me,
         });
 
 	// hack for extjs6
@@ -287,7 +287,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	// it does not select the item
 	// instead we hide the picker
 	if (!me.multiSelect) {
-	    picker.on('itemclick', function (sm,record) {
+	    picker.on('itemclick', function(sm, record) {
 		if (picker.getSelection()[0] === record) {
 		    picker.hide();
 		}
@@ -353,7 +353,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	return found;
     },
 
-    validator: function (value) {
+    validator: function(value) {
 	var me = this;
 
 	if (!value) {
@@ -366,8 +366,8 @@ Ext.define('Proxmox.form.ComboGrid', {
 	//
 	// we also have to get the 'real' value if the we have a mulitSelect
 	// Field but got a non array value
-	if ((me.valueField && me.valueField !== me.displayField) ||
-	    (me.multiSelect && !Ext.isArray(value))) {
+	if (me.valueField && me.valueField !== me.displayField ||
+	    me.multiSelect && !Ext.isArray(value)) {
 	    value = me.getValue();
 	}
 
@@ -390,10 +390,10 @@ Ext.define('Proxmox.form.ComboGrid', {
 
 	Ext.apply(me, {
 	    queryMode: 'local',
-	    matchFieldWidth: false
+	    matchFieldWidth: false,
 	});
 
-	Ext.applyIf(me, { value: ''}); // hack: avoid ExtJS validate() bug
+	Ext.applyIf(me, { value: '' }); // hack: avoid ExtJS validate() bug
 
 	Ext.applyIf(me.listConfig, { width: 400 });
 
@@ -452,5 +452,5 @@ Ext.define('Proxmox.form.ComboGrid', {
 		}
 	    }
 	});
-    }
+    },
 });

@@ -29,7 +29,7 @@ Ext.define('Proxmox.panel.JournalView', {
 		false,
 		false,
 		Ext.Date.format(since, "U"),
-		Ext.Date.format(until, "U")
+		Ext.Date.format(until, "U"),
 	    ]);
 	},
 
@@ -120,7 +120,7 @@ Ext.define('Proxmox.panel.JournalView', {
 	    if (livemode) {
 		if (!top && view.startcursor) {
 		    params = {
-			startcursor: view.startcursor
+			startcursor: view.startcursor,
 		    };
 		} else if (view.endcursor) {
 		    params.endcursor = view.endcursor;
@@ -128,13 +128,13 @@ Ext.define('Proxmox.panel.JournalView', {
 	    } else {
 		params = {
 		    since: since,
-		    until: until
+		    until: until,
 		};
 	    }
 	    Proxmox.Utils.API2Request({
 		url: view.url,
 		params: params,
-		waitMsgTarget: (!livemode) ? view : undefined,
+		waitMsgTarget: !livemode ? view : undefined,
 		method: 'GET',
 		success: function(response) {
 		    Proxmox.Utils.setErrorMask(me, false);
@@ -154,7 +154,7 @@ Ext.define('Proxmox.panel.JournalView', {
 			me.requested = false;
 			view.loadTask.delay(200);
 		    }
-		}
+		},
 	    });
 	},
 
@@ -203,7 +203,7 @@ Ext.define('Proxmox.panel.JournalView', {
 			view.loadTask.delay(200, undefined, undefined, [true, false]);
 		    }
 		},
-		interval: 1000
+		interval: 1000,
 	    });
 	},
 
@@ -222,7 +222,7 @@ Ext.define('Proxmox.panel.JournalView', {
 	    var me = this;
 	    me.getViewModel().set('livemode', false);
 	    me.updateView([], false);
-	}
+	},
     },
 
     onDestroy: function() {
@@ -242,8 +242,8 @@ Ext.define('Proxmox.panel.JournalView', {
 	data: {
 	    livemode: true,
 	    until: null,
-	    since: null
-	}
+	    since: null,
+	},
     },
 
     layout: 'auto',
@@ -259,12 +259,12 @@ Ext.define('Proxmox.panel.JournalView', {
 		fn: function(scroller, x, y) {
 		    var controller = this.component.getController();
 		    if (controller) { // on destroy, controller can be gone
-			controller.onScroll(x,y);
+			controller.onScroll(x, y);
 		    }
 		},
-		buffer: 200
+		buffer: 200,
 	    },
-	}
+	},
     },
 
     tbar: {
@@ -277,23 +277,23 @@ Ext.define('Proxmox.panel.JournalView', {
 		    {
 			text: gettext('Live Mode'),
 			bind: {
-			    pressed: '{livemode}'
+			    pressed: '{livemode}',
 			},
 			handler: 'onLiveMode',
 		    },
 		    {
 			text: gettext('Select Timespan'),
 			bind: {
-			    pressed: '{!livemode}'
+			    pressed: '{!livemode}',
 			},
 			handler: 'onTimespan',
-		    }
-		]
+		    },
+		],
 	    },
 	    {
 		xtype: 'box',
 		bind: { disabled: '{livemode}' },
-		autoEl: { cn: gettext('Since') + ':' }
+		autoEl: { cn: gettext('Since') + ':' },
 	    },
 	    {
 		xtype: 'datefield',
@@ -303,13 +303,13 @@ Ext.define('Proxmox.panel.JournalView', {
 		bind: {
 		    disabled: '{livemode}',
 		    value: '{since}',
-		    maxValue: '{until}'
-		}
+		    maxValue: '{until}',
+		},
 	    },
 	    {
 		xtype: 'box',
 		bind: { disabled: '{livemode}' },
-		autoEl: { cn: gettext('Until') + ':' }
+		autoEl: { cn: gettext('Until') + ':' },
 	    },
 	    {
 		xtype: 'datefield',
@@ -319,8 +319,8 @@ Ext.define('Proxmox.panel.JournalView', {
 		bind: {
 		    disabled: '{livemode}',
 		    value: '{until}',
-		    minValue: '{since}'
-		}
+		    minValue: '{since}',
+		},
 	    },
 	    {
 		xtype: 'button',
@@ -328,10 +328,10 @@ Ext.define('Proxmox.panel.JournalView', {
 		reference: 'updateBtn',
 		handler: 'updateParams',
 		bind: {
-		    disabled: '{livemode}'
-		}
-	    }
-	]
+		    disabled: '{livemode}',
+		},
+	    },
+	],
     },
 
     items: [
@@ -340,8 +340,8 @@ Ext.define('Proxmox.panel.JournalView', {
 	    reference: 'content',
 	    style: {
 		font: 'normal 11px tahoma, arial, verdana, sans-serif',
-		'white-space': 'pre'
+		'white-space': 'pre',
 	    },
-	}
-    ]
+	},
+    ],
 });

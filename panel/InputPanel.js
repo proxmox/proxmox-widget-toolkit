@@ -12,7 +12,7 @@ Ext.define('Proxmox.panel.InputPanel', {
 	    if (this.onlineHelp) {
 		Ext.GlobalEvents.fireEvent('proxmoxHideHelp', this.onlineHelp);
 	    }
-	}
+	},
     },
     border: false,
 
@@ -87,8 +87,8 @@ Ext.define('Proxmox.panel.InputPanel', {
 		{
 		    columnWidth: 1,
 		    layout: 'anchor',
-		    items: me.items
-		}
+		    items: me.items,
+		},
 	    ];
 	    me.items = undefined;
 	} else if (me.column4) {
@@ -98,33 +98,33 @@ Ext.define('Proxmox.panel.InputPanel', {
 		    columnWidth: 0.25,
 		    padding: '0 10 0 0',
 		    layout: 'anchor',
-		    items: me.column1
+		    items: me.column1,
 		},
 		{
 		    columnWidth: 0.25,
 		    padding: '0 10 0 0',
 		    layout: 'anchor',
-		    items: me.column2
+		    items: me.column2,
 		},
 		{
 		    columnWidth: 0.25,
 		    padding: '0 10 0 0',
 		    layout: 'anchor',
-		    items: me.column3
+		    items: me.column3,
 		},
 		{
 		    columnWidth: 0.25,
 		    padding: '0 0 0 10',
 		    layout: 'anchor',
-		    items: me.column4
-		}
+		    items: me.column4,
+		},
 	    ];
 	    if (me.columnB) {
 		items.push({
 		    columnWidth: 1,
 		    padding: '10 0 0 0',
 		    layout: 'anchor',
-		    items: me.columnB
+		    items: me.columnB,
 		});
 	    }
 	} else if (me.column1) {
@@ -134,21 +134,21 @@ Ext.define('Proxmox.panel.InputPanel', {
 		    columnWidth: 0.5,
 		    padding: '0 10 0 0',
 		    layout: 'anchor',
-		    items: me.column1
+		    items: me.column1,
 		},
 		{
 		    columnWidth: 0.5,
 		    padding: '0 0 0 10',
 		    layout: 'anchor',
-		    items: me.column2 || [] // allow empty column
-		}
+		    items: me.column2 || [], // allow empty column
+		},
 	    ];
 	    if (me.columnB) {
 		items.push({
 		    columnWidth: 1,
 		    padding: '10 0 0 0',
 		    layout: 'anchor',
-		    items: me.columnB
+		    items: me.columnB,
 		});
 	    }
 	} else {
@@ -161,8 +161,8 @@ Ext.define('Proxmox.panel.InputPanel', {
 		{
 		    columnWidth: 1,
 		    layout: 'anchor',
-		    items: me.advancedItems
-		}
+		    items: me.advancedItems,
+		},
 	    ];
 	    me.advancedItems = undefined;
 	} else if (me.advancedColumn1) {
@@ -171,14 +171,14 @@ Ext.define('Proxmox.panel.InputPanel', {
 		    columnWidth: 0.5,
 		    padding: '0 10 0 0',
 		    layout: 'anchor',
-		    items: me.advancedColumn1
+		    items: me.advancedColumn1,
 		},
 		{
 		    columnWidth: 0.5,
 		    padding: '0 0 0 10',
 		    layout: 'anchor',
-		    items: me.advancedColumn2 || [] // allow empty column
-		}
+		    items: me.advancedColumn2 || [], // allow empty column
+		},
 	    ];
 
 	    me.advancedColumn1 = undefined;
@@ -189,7 +189,7 @@ Ext.define('Proxmox.panel.InputPanel', {
 		    columnWidth: 1,
 		    padding: '10 0 0 0',
 		    layout: 'anchor',
-		    items: me.advancedColumnB
+		    items: me.advancedColumnB,
 		});
 		me.advancedColumnB = undefined;
 	    }
@@ -203,8 +203,8 @@ Ext.define('Proxmox.panel.InputPanel', {
 		hidden: false,
 		border: true,
 		autoEl: {
-		    tag: 'hr'
-		}
+		    tag: 'hr',
+		},
 	    });
 	    items.push({
 		columnWidth: 1,
@@ -213,9 +213,9 @@ Ext.define('Proxmox.panel.InputPanel', {
 		hidden: !me.showAdvanced,
 		layout: 'column',
 		defaults: {
-		    border: false
+		    border: false,
 		},
-		items: advItems
+		items: advItems,
 	    });
 	}
 
@@ -225,17 +225,17 @@ Ext.define('Proxmox.panel.InputPanel', {
 		items: Ext.apply(me.useFieldContainer, {
 		    layout: 'column',
 		    defaultType: 'container',
-		    items: items
-		})
+		    items: items,
+		}),
 	    });
 	} else {
 	    Ext.apply(me, {
 		layout: 'column',
 		defaultType: 'container',
-		items: items
+		items: items,
 	    });
 	}
 
 	me.callParent();
-    }
+    },
 });

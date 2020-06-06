@@ -2,7 +2,7 @@ Ext.define('Proxmox.node.DNSEdit', {
     extend: 'Proxmox.window.Edit',
     alias: ['widget.proxmoxNodeDNSEdit'],
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	if (!me.nodename) {
@@ -14,41 +14,41 @@ Ext.define('Proxmox.node.DNSEdit', {
 		xtype: 'textfield',
                 fieldLabel: gettext('Search domain'),
                 name: 'search',
-                allowBlank: false
+                allowBlank: false,
 	    },
 	    {
 		xtype: 'proxmoxtextfield',
                 fieldLabel: gettext('DNS server') + " 1",
 		vtype: 'IP64Address',
 		skipEmptyText: true,
-                name: 'dns1'
+                name: 'dns1',
 	    },
 	    {
 		xtype: 'proxmoxtextfield',
 		fieldLabel: gettext('DNS server') + " 2",
 		vtype: 'IP64Address',
 		skipEmptyText: true,
-                name: 'dns2'
+                name: 'dns2',
 	    },
 	    {
 		xtype: 'proxmoxtextfield',
                 fieldLabel: gettext('DNS server') + " 3",
 		vtype: 'IP64Address',
 		skipEmptyText: true,
-                name: 'dns3'
-	    }
+                name: 'dns3',
+	    },
 	];
 
 	Ext.applyIf(me, {
 	    subject: gettext('DNS'),
 	    url: "/api2/extjs/nodes/" + me.nodename + "/dns",
 	    fieldDefaults: {
-		labelWidth: 120
-	    }
+		labelWidth: 120,
+	    },
 	});
 
 	me.callParent();
 
 	me.load();
-    }
+    },
 });

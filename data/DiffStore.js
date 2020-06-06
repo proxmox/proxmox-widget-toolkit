@@ -66,7 +66,7 @@ Ext.define('Proxmox.data.DiffStore', {
 
 	Ext.apply(config, {
 	    model: rstore.model,
-	    proxy: { type: 'memory' }
+	    proxy: { type: 'memory' },
 	});
 
 	me.callParent([config]);
@@ -88,13 +88,12 @@ Ext.define('Proxmox.data.DiffStore', {
 		olditem.commit();
 	    } else {
 		var newrec = Ext.create(me.model, data);
-		var pos = (me.appendAtStart && !first_load) ? 0 : me.data.length;
+		var pos = me.appendAtStart && !first_load ? 0 : me.data.length;
 		me.insert(pos, newrec);
 	    }
 	};
 
 	var loadFn = function(s, records, success) {
-
 	    if (!success) {
 		return;
 	    }
@@ -137,5 +136,5 @@ Ext.define('Proxmox.data.DiffStore', {
 	}
 
 	me.mon(me.rstore, 'load', loadFn);
-    }
+    },
 });

@@ -40,20 +40,20 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		subject: text,
 		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
-		    labelWidth: opts.labelWidth || 100
+		    labelWidth: opts.labelWidth || 100,
 		},
 		items: {
 		    xtype: 'proxmoxKVComboBox',
 		    name: name,
 		    comboItems: opts.comboItems,
 		    value: opts.defaultValue,
-		    deleteEmpty: opts.deleteEmpty ? true : false,
+		    deleteEmpty: !!opts.deleteEmpty,
 		    emptyText: opts.defaultValue,
 		    labelWidth: Proxmox.Utils.compute_min_label_width(
 			text, opts.labelWidth),
-		    fieldLabel: text
-		}
-	    }
+		    fieldLabel: text,
+		},
+	    },
 	};
     },
 
@@ -73,19 +73,19 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		subject: text,
 		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
-		    labelWidth: opts.labelWidth || 100
+		    labelWidth: opts.labelWidth || 100,
 		},
 		items: {
 		    xtype: 'proxmoxtextfield',
 		    name: name,
-		    deleteEmpty: opts.deleteEmpty ? true : false,
+		    deleteEmpty: !!opts.deleteEmpty,
 		    emptyText: opts.defaultValue,
 		    labelWidth: Proxmox.Utils.compute_min_label_width(
 			text, opts.labelWidth),
 		    vtype: opts.vtype,
-		    fieldLabel: text
-		}
-	    }
+		    fieldLabel: text,
+		},
+	    },
 	};
     },
 
@@ -105,27 +105,27 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		subject: text,
 		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
-		    labelWidth: opts.labelWidth || 100
+		    labelWidth: opts.labelWidth || 100,
 		},
 		items: {
 		    xtype: 'proxmoxcheckbox',
 		    name: name,
 		    uncheckedValue: 0,
-		    defaultValue: opts.defaultValue  || 0,
-		    checked: opts.defaultValue ? true : false,
-		    deleteDefaultValue: opts.deleteDefaultValue ? true : false,
+		    defaultValue: opts.defaultValue || 0,
+		    checked: !!opts.defaultValue,
+		    deleteDefaultValue: !!opts.deleteDefaultValue,
 		    labelWidth: Proxmox.Utils.compute_min_label_width(
 			text, opts.labelWidth),
-		    fieldLabel: text
-		}
-	    }
+		    fieldLabel: text,
+		},
+	    },
 	};
     },
 
     add_integer_row: function(name, text, opts) {
 	var me = this;
 
-	opts = opts || {}
+	opts = opts || {};
 	me.rows = me.rows || {};
 
 	me.rows[name] = {
@@ -138,7 +138,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		subject: text,
 		onlineHelp: opts.onlineHelp,
 		fieldDefaults: {
-		    labelWidth: opts.labelWidth || 100
+		    labelWidth: opts.labelWidth || 100,
 		},
 		items: {
 		    xtype: 'proxmoxintegerfield',
@@ -146,13 +146,13 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    minValue: opts.minValue,
 		    maxValue: opts.maxValue,
 		    emptyText: gettext('Default'),
-		    deleteEmpty: opts.deleteEmpty ? true : false,
+		    deleteEmpty: !!opts.deleteEmpty,
 		    value: opts.defaultValue,
 		    labelWidth: Proxmox.Utils.compute_min_label_width(
 			text, opts.labelWidth),
-		    fieldLabel: text
-		}
-	    }
+		    fieldLabel: text,
+		},
+	    },
 	};
     },
 
@@ -178,12 +178,12 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	if (Ext.isString(rowdef.editor)) {
 	    config = Ext.apply({
 		confid: rec.data.key,
-	    },  me.editorConfig);
+	    }, me.editorConfig);
 	    win = Ext.create(rowdef.editor, config);
 	} else {
 	    config = Ext.apply({
 		confid: rec.data.key,
-	    },  me.editorConfig);
+	    }, me.editorConfig);
 	    Ext.apply(config, rowdef.editor);
 	    win = Ext.createWidget(rowdef.editor.xtype, config);
 	    win.load();
@@ -210,7 +210,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     renderKey: function(key, metaData, record, rowIndex, colIndex, store) {
 	var me = this;
 	var rows = me.rows;
-	var rowdef = (rows && rows[key]) ?  rows[key] : {};
+	var rowdef = rows && rows[key] ? rows[key] : {};
 	return rowdef.header || key;
     },
 
@@ -218,7 +218,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	var me = this;
 	var rows = me.rows;
 	var key = record.data.key;
-	var rowdef = (rows && rows[key]) ?  rows[key] : {};
+	var rowdef = rows && rows[key] ? rows[key] : {};
 
 	var renderer = rowdef.renderer;
 	if (renderer) {
@@ -240,10 +240,10 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    }
 
 	    this.pressedIndex = undefined;
-	}
+	},
     },
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	var rows = me.rows;
@@ -257,7 +257,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		url: me.url,
 		interval: me.interval,
 		extraParams: me.extraParams,
-		rows: me.rows
+		rows: me.rows,
 	    });
 	}
 
@@ -265,7 +265,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 
 	var store = Ext.create('Proxmox.data.DiffStore', { rstore: rstore,
 	    sorters: [],
-	    filters: []
+	    filters: [],
 	});
 
 	if (rows) {
@@ -280,7 +280,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 
 	if (me.sorterFn) {
 	    store.sorters.add(Ext.create('Ext.util.Sorter', {
-		sorterFn: me.sorterFn
+		sorterFn: me.sorterFn,
 	    }));
 	}
 
@@ -288,12 +288,12 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    filterFn: function(item) {
 		if (rows) {
 		    var rowdef = rows[item.data.key];
-		    if (!rowdef || (rowdef.visible === false)) {
+		    if (!rowdef || rowdef.visible === false) {
 			return false;
 		    }
 		}
 		return true;
-	    }
+	    },
 	}));
 
 	Proxmox.Utils.monStoreErrors(me, rstore);
@@ -306,15 +306,15 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    header: gettext('Name'),
 		    width: me.cwidth1 || 200,
 		    dataIndex: 'key',
-		    renderer: me.renderKey
+		    renderer: me.renderKey,
 		},
 		{
 		    flex: 1,
 		    header: gettext('Value'),
 		    dataIndex: 'value',
-		    renderer: me.renderValue
-		}
-	    ]
+		    renderer: me.renderValue,
+		},
+	    ],
 	});
 
 	me.callParent();
@@ -322,5 +322,5 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	if (me.monStoreErrors) {
 	    Proxmox.Utils.monStoreErrors(me, me.store);
 	}
-   }
+   },
 });
