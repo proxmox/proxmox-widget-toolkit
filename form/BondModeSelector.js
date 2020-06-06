@@ -5,7 +5,7 @@ Ext.define('Proxmox.form.BondModeSelector', {
     openvswitch: false,
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (me.openvswitch) {
 	    me.comboItems = Proxmox.Utils.bond_mode_array([

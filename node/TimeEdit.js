@@ -26,7 +26,7 @@ Ext.define('Proxmox.node.TimeEdit', {
     },
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";

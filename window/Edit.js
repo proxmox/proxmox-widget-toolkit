@@ -1,5 +1,4 @@
 // fixme: how can we avoid those lint errors?
-/*jslint confusion: true */
 Ext.define('Proxmox.window.Edit', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxWindowEdit',

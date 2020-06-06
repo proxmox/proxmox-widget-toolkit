@@ -11,7 +11,7 @@ Ext.define('Proxmox.form.field.Integer', {
     step: 1,
 
    getSubmitData: function() {
-        var me = this,
+        let me = this,
             data = null,
             val;
         if (!me.disabled && me.submitValue && !me.isFileUpload()) {

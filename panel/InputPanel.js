@@ -33,13 +33,13 @@ Ext.define('Proxmox.panel.InputPanel', {
     },
 
     getValues: function(dirtyOnly) {
-	var me = this;
+	let me = this;
 
 	if (Ext.isFunction(me.onGetValues)) {
 	    dirtyOnly = false;
 	}
 
-	var values = {};
+	let values = {};
 
 	Ext.Array.each(me.query('[isFormField]'), function(field) {
 	    if (!dirtyOnly || field.isDirty()) {
@@ -51,17 +51,17 @@ Ext.define('Proxmox.panel.InputPanel', {
     },
 
     setAdvancedVisible: function(visible) {
-	var me = this;
-	var advItems = me.getComponent('advancedContainer');
+	let me = this;
+	let advItems = me.getComponent('advancedContainer');
 	if (advItems) {
 	    advItems.setVisible(visible);
 	}
     },
 
     setValues: function(values) {
-	var me = this;
+	let me = this;
 
-	var form = me.up('form');
+	let form = me.up('form');
 
         Ext.iterate(values, function(fieldId, val) {
 	    let fields = me.query('[isFormField][name=' + fieldId + ']');
@@ -77,9 +77,9 @@ Ext.define('Proxmox.panel.InputPanel', {
     },
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
-	var items;
+	let items;
 
 	if (me.items) {
 	    me.columns = 1;
@@ -155,7 +155,7 @@ Ext.define('Proxmox.panel.InputPanel', {
 	    throw "unsupported config";
 	}
 
-	var advItems;
+	let advItems;
 	if (me.advancedItems) {
 	    advItems = [
 		{

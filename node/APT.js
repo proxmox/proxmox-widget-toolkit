@@ -45,13 +45,13 @@ Ext.define('Proxmox.node.APT', {
     ],
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
 	}
 
-	var store = Ext.create('Ext.data.Store', {
+	let store = Ext.create('Ext.data.Store', {
 	    model: 'apt-pkglist',
 	    groupField: 'Origin',
 	    proxy: {
@@ -66,15 +66,15 @@ Ext.define('Proxmox.node.APT', {
 	    ],
 	});
 
-	var groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
+	let groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
             groupHeaderTpl: '{[ "Origin: " + values.name ]} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
 	    enableGroupingMenu: false,
 	});
 
-	var rowBodyFeature = Ext.create('Ext.grid.feature.RowBody', {
+	let rowBodyFeature = Ext.create('Ext.grid.feature.RowBody', {
             getAdditionalData: function(data, rowIndex, record, orig) {
-		var headerCt = this.view.headerCt;
-		var colspan = headerCt.getColumnCount();
+		let headerCt = this.view.headerCt;
+		let colspan = headerCt.getColumnCount();
 		return {
 		    rowBody: '<div style="padding: 1em">' +
 			Ext.String.htmlEncode(data.Description) +
@@ -85,13 +85,13 @@ Ext.define('Proxmox.node.APT', {
 	    },
 	});
 
-	var reload = function() {
+	let reload = function() {
 	    store.load();
 	};
 
 	Proxmox.Utils.monStoreErrors(me, store, true);
 
-	var apt_command = function(cmd) {
+	let apt_command = function(cmd) {
 	    Proxmox.Utils.API2Request({
 		url: "/nodes/" + me.nodename + "/apt/" + cmd,
 		method: 'POST',
@@ -99,9 +99,9 @@ Ext.define('Proxmox.node.APT', {
 		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 		},
 		success: function(response, opts) {
-		    var upid = response.result.data;
+		    let upid = response.result.data;
 
-		    var win = Ext.create('Proxmox.window.TaskViewer', {
+		    let win = Ext.create('Proxmox.window.TaskViewer', {
 			upid: upid,
 		    });
 		    win.show();
@@ -110,21 +110,21 @@ Ext.define('Proxmox.node.APT', {
 	    });
 	};
 
-	var sm = Ext.create('Ext.selection.RowModel', {});
+	let sm = Ext.create('Ext.selection.RowModel', {});
 
-	var update_btn = new Ext.Button({
+	let update_btn = new Ext.Button({
 	    text: gettext('Refresh'),
 	    handler: function() {
 		Proxmox.Utils.checked_command(function() { apt_command('update'); });
 	    },
 	});
 
-	var show_changelog = function(rec) {
+	let show_changelog = function(rec) {
 	    if (!rec || !rec.data || !(rec.data.ChangeLogUrl && rec.data.Package)) {
 		return;
 	    }
 
-	    var view = Ext.createWidget('component', {
+	    let view = Ext.createWidget('component', {
 		autoScroll: true,
 		style: {
 		    'background-color': 'white',
@@ -134,7 +134,7 @@ Ext.define('Proxmox.node.APT', {
 		},
 	    });
 
-	    var win = Ext.create('Ext.window.Window', {
+	    let win = Ext.create('Ext.window.Window', {
 		title: gettext('Changelog') + ": " + rec.data.Package,
 		width: 800,
 		height: 400,
@@ -162,7 +162,7 @@ Ext.define('Proxmox.node.APT', {
 	    });
 	};
 
-	var changelog_btn = new Proxmox.button.Button({
+	let changelog_btn = new Proxmox.button.Button({
 	    text: gettext('Changelog'),
 	    selModel: sm,
 	    disabled: true,
@@ -177,7 +177,7 @@ Ext.define('Proxmox.node.APT', {
 	    },
 	});
 
-	var verbose_desc_checkbox = new Ext.form.field.Checkbox({
+	let verbose_desc_checkbox = new Ext.form.field.Checkbox({
 	    boxLabel: gettext('Show details'),
 	    value: false,
 	    listeners: {

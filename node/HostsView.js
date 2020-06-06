@@ -3,7 +3,7 @@ Ext.define('Proxmox.node.HostsView', {
     xtype: 'proxmoxNodeHostsView',
 
     reload: function() {
-	var me = this;
+	let me = this;
 	me.store.load();
     },
 
@@ -13,17 +13,17 @@ Ext.define('Proxmox.node.HostsView', {
 	    disabled: true,
 	    itemId: 'savebtn',
 	    handler: function() {
-		var me = this.up('panel');
+		let view = this.up('panel');
 		Proxmox.Utils.API2Request({
 		    params: {
-			digest: me.digest,
-			data: me.down('#hostsfield').getValue(),
+			digest: view.digest,
+			data: view.down('#hostsfield').getValue(),
 		    },
 		    method: 'POST',
-		    url: '/nodes/' + me.nodename + '/hosts',
-		    waitMsgTarget: me,
+		    url: '/nodes/' + view.nodename + '/hosts',
+		    waitMsgTarget: view,
 		    success: function(response, opts) {
-			me.reload();
+			view.reload();
 		    },
 		    failure: function(response, opts) {
 			Ext.Msg.alert('Error', response.htmlStatus);
@@ -36,8 +36,8 @@ Ext.define('Proxmox.node.HostsView', {
 	    disabled: true,
 	    itemId: 'resetbtn',
 	    handler: function() {
-		var me = this.up('panel');
-		me.down('#hostsfield').reset();
+		let view = this.up('panel');
+		view.down('#hostsfield').reset();
 	    },
 	},
     ],
@@ -54,16 +54,16 @@ Ext.define('Proxmox.node.HostsView', {
 	    },
 	    listeners: {
 		dirtychange: function(ta, dirty) {
-		    var me = this.up('panel');
-		    me.down('#savebtn').setDisabled(!dirty);
-		    me.down('#resetbtn').setDisabled(!dirty);
+		    let view = this.up('panel');
+		    view.down('#savebtn').setDisabled(!dirty);
+		    view.down('#resetbtn').setDisabled(!dirty);
 		},
 	    },
 	},
     ],
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
@@ -85,7 +85,7 @@ Ext.define('Proxmox.node.HostsView', {
 		return;
 	    }
 	    me.digest = records[0].data.digest;
-	    var data = records[0].data.data;
+	    let data = records[0].data.data;
 	    me.down('#hostsfield').setValue(data);
 	    me.down('#hostsfield').resetOriginalValue();
 	});

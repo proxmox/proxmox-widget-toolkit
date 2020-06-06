@@ -11,14 +11,14 @@ Ext.define('Proxmox.form.Checkbox', {
     inputValue: '1',
 
     getSubmitData: function() {
-        var me = this,
+        let me = this,
             data = null,
             val;
         if (!me.disabled && me.submitValue) {
             val = me.getSubmitValue();
             if (val !== null) {
                 data = {};
-		if (val == me.getDefaultValue() && me.getDeleteDefaultValue()) {
+		if (val === me.getDefaultValue() && me.getDeleteDefaultValue()) {
 		    data.delete = me.getName();
 		} else {
                     data[me.getName()] = val;
@@ -33,7 +33,7 @@ Ext.define('Proxmox.form.Checkbox', {
 
     // also accept integer 1 as true
     setRawValue: function(value) {
-	var me = this;
+	let me = this;
 
 	if (value === 1) {
             me.callParent([true]);

@@ -9,24 +9,24 @@ Ext.define('Proxmox.DateTimeField', {
     submitFormat: 'U',
 
     getValue: function() {
-	var me = this;
-	var d = me.lookupReference('dateentry').getValue();
+	let me = this;
+	let d = me.lookupReference('dateentry').getValue();
 
 	if (d === undefined || d === null) { return null; }
 
-	var t = me.lookupReference('timeentry').getValue();
+	let t = me.lookupReference('timeentry').getValue();
 
 	if (t === undefined || t === null) { return null; }
 
-	var offset = (t.getHours()*3600+t.getMinutes()*60)*1000;
+	let offset = (t.getHours() * 3600 + t.getMinutes() * 60) * 1000;
 
 	return new Date(d.getTime() + offset);
     },
 
     getSubmitValue: function() {
-        var me = this;
-        var format = me.submitFormat;
-        var value = me.getValue();
+        let me = this;
+        let format = me.submitFormat;
+        let value = me.getValue();
 
         return value ? Ext.Date.format(value, format) : null;
     },
@@ -128,11 +128,11 @@ Ext.define('Proxmox.DateTimeField', {
     },
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	me.callParent();
 
-	var value = me.value || new Date();
+	let value = me.value || new Date();
 
 	me.lookupReference('dateentry').setValue(value);
 	me.lookupReference('timeentry').setValue(value);

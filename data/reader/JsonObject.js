@@ -18,7 +18,7 @@
  *
  * Additional feature: specify allowed properties with default values with 'rows' object
  *
- * var rows = {
+ * let rows = {
  *   memory: {
  *     required: true,
  *     defaultValue: 512
@@ -36,7 +36,7 @@ Ext.define('Proxmox.data.reader.JsonObject', {
     rows: undefined,
 
     constructor: function(config) {
-        var me = this;
+        let me = this;
 
         Ext.apply(me, config || {});
 
@@ -44,16 +44,16 @@ Ext.define('Proxmox.data.reader.JsonObject', {
     },
 
     getResponseData: function(response) {
-	var me = this;
+	let me = this;
 
-	var data = [];
+	let data = [];
         try {
-        var result = Ext.decode(response.responseText);
+        let result = Ext.decode(response.responseText);
         // get our data items inside the server response
-        var root = result[me.getRootProperty()];
+        let root = result[me.getRootProperty()];
 
 	    if (me.readArray) {
-		var rec_hash = {};
+		let rec_hash = {};
 		Ext.Array.each(root, function(rec) {
 		    if (Ext.isDefined(rec.key)) {
 			rec_hash[rec.key] = rec;
@@ -62,7 +62,7 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 
 		if (me.rows) {
 		    Ext.Object.each(me.rows, function(key, rowdef) {
-			var rec = rec_hash[key];
+			let rec = rec_hash[key];
 			if (Ext.isDefined(rec)) {
 			    if (!Ext.isDefined(rec.value)) {
 				rec.value = rowdef.defaultValue;
@@ -82,10 +82,10 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 		    });
 		}
 	    } else {
-		var org_root = root;
+		let org_root = root;
 
 		if (Ext.isArray(org_root)) {
-		    if (root.length == 1) {
+		    if (root.length === 1) {
 			root = org_root[0];
 		    } else {
 			root = {};

@@ -20,7 +20,7 @@ Ext.define('Proxmox.form.KVComboBox', {
 
     // overide framework function to implement deleteEmpty behaviour
     getSubmitData: function() {
-        var me = this,
+        let me = this,
             data = null,
             val;
         if (!me.disabled && me.submitValue) {
@@ -37,15 +37,15 @@ Ext.define('Proxmox.form.KVComboBox', {
     },
 
     validator: function(val) {
-	var me = this;
+	let me = this;
 
 	if (me.editable || val === null || val === '') {
 	    return true;
 	}
 
 	if (me.store.getCount() > 0) {
-	    var values = me.multiSelect ? val.split(me.delimiter) : [val];
-	    var items = me.store.getData().collect('value', 'data');
+	    let values = me.multiSelect ? val.split(me.delimiter) : [val];
+	    let items = me.store.getData().collect('value', 'data');
 	    if (Ext.Array.every(values, function(value) {
 		return Ext.Array.contains(items, value);
 	    })) {
@@ -54,12 +54,11 @@ Ext.define('Proxmox.form.KVComboBox', {
 	}
 
 	// returns a boolean or string
-	/*jslint confusion: true */
 	return "value '" + val + "' not allowed!";
     },
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	me.store = Ext.create('Ext.data.ArrayStore', {
 	    model: 'KeyValue',
@@ -74,7 +73,7 @@ Ext.define('Proxmox.form.KVComboBox', {
     },
 
     setComboItems: function(items) {
-	var me = this;
+	let me = this;
 
 	me.getStore().setData(items);
     },

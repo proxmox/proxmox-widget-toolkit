@@ -40,7 +40,7 @@ Ext.define('Proxmox.data.DiffStore', {
     },
 
     constructor: function(config) {
-	var me = this;
+	let me = this;
 
 	config = config || {};
 
@@ -73,10 +73,10 @@ Ext.define('Proxmox.data.DiffStore', {
 
 	me.rstore = rstore;
 
-	var first_load = true;
+	let first_load = true;
 
-	var cond_add_item = function(data, id) {
-	    var olditem = me.getById(id);
+	let cond_add_item = function(data, id) {
+	    let olditem = me.getById(id);
 	    if (olditem) {
 		olditem.beginEdit();
 		Ext.Array.each(me.model.prototype.fields, function(field) {
@@ -87,13 +87,13 @@ Ext.define('Proxmox.data.DiffStore', {
 		olditem.endEdit(true);
 		olditem.commit();
 	    } else {
-		var newrec = Ext.create(me.model, data);
-		var pos = me.appendAtStart && !first_load ? 0 : me.data.length;
+		let newrec = Ext.create(me.model, data);
+		let pos = me.appendAtStart && !first_load ? 0 : me.data.length;
 		me.insert(pos, newrec);
 	    }
 	};
 
-	var loadFn = function(s, records, success) {
+	let loadFn = function(s, records, success) {
 	    if (!success) {
 		return;
 	    }
@@ -102,11 +102,11 @@ Ext.define('Proxmox.data.DiffStore', {
 
 	    // getSource returns null if data is not filtered
 	    // if it is filtered it returns all records
-	    var allItems = me.getData().getSource() || me.getData();
+	    let allItems = me.getData().getSource() || me.getData();
 
 	    // remove vanished items
 	    allItems.each(function(olditem) {
-		var item = me.rstore.getById(olditem.getId());
+		let item = me.rstore.getById(olditem.getId());
 		if (!item) {
 		    me.remove(olditem);
 		}

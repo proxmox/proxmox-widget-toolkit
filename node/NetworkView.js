@@ -32,15 +32,15 @@ Ext.define('Proxmox.node.NetworkView', {
     showApplyBtn: false,
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
 	}
 
-	var baseUrl = '/nodes/' + me.nodename + '/network';
+	let baseUrl = '/nodes/' + me.nodename + '/network';
 
-	var store = Ext.create('Ext.data.Store', {
+	let store = Ext.create('Ext.data.Store', {
 	    model: 'proxmox-networks',
 	    proxy: {
                 type: 'proxmox',
@@ -54,10 +54,10 @@ Ext.define('Proxmox.node.NetworkView', {
 	    ],
 	});
 
-	var reload = function() {
-	    var changeitem = me.down('#changes');
-	    var apply_btn = me.down('#apply');
-	    var revert_btn = me.down('#revert');
+	let reload = function() {
+	    let changeitem = me.down('#changes');
+	    let apply_btn = me.down('#apply');
+	    let revert_btn = me.down('#revert');
 	    Proxmox.Utils.API2Request({
 		url: baseUrl,
 		failure: function(response, opts) {
@@ -67,9 +67,9 @@ Ext.define('Proxmox.node.NetworkView', {
 		    changeitem.setHidden(true);
 		},
 		success: function(response, opts) {
-		    var result = Ext.decode(response.responseText);
+		    let result = Ext.decode(response.responseText);
 		    store.loadData(result.data);
-		    var changes = result.changes;
+		    let changes = result.changes;
 		    if (changes === undefined || changes === '') {
 			changes = gettext("No changes");
 			changeitem.setHidden(true);
@@ -85,15 +85,15 @@ Ext.define('Proxmox.node.NetworkView', {
 	    });
 	};
 
-	var run_editor = function() {
-	    var grid = me.down('gridpanel');
-	    var sm = grid.getSelectionModel();
-	    var rec = sm.getSelection()[0];
+	let run_editor = function() {
+	    let grid = me.down('gridpanel');
+	    let sm = grid.getSelectionModel();
+	    let rec = sm.getSelection()[0];
 	    if (!rec) {
 		return;
 	    }
 
-	    var win = Ext.create('Proxmox.node.NetworkEdit', {
+	    let win = Ext.create('Proxmox.node.NetworkEdit', {
 		nodename: me.nodename,
 		iface: rec.data.iface,
 		iftype: rec.data.type,
@@ -102,24 +102,24 @@ Ext.define('Proxmox.node.NetworkView', {
 	    win.on('destroy', reload);
 	};
 
-	var edit_btn = new Ext.Button({
+	let edit_btn = new Ext.Button({
 	    text: gettext('Edit'),
 	    disabled: true,
 	    handler: run_editor,
 	});
 
-	var del_btn = new Ext.Button({
+	let del_btn = new Ext.Button({
 	    text: gettext('Remove'),
 	    disabled: true,
 	    handler: function() {
-		var grid = me.down('gridpanel');
-		var sm = grid.getSelectionModel();
-		var rec = sm.getSelection()[0];
+		let grid = me.down('gridpanel');
+		let sm = grid.getSelectionModel();
+		let rec = sm.getSelection()[0];
 		if (!rec) {
 		    return;
 		}
 
-		var iface = rec.data.iface;
+		let iface = rec.data.iface;
 
 		Proxmox.Utils.API2Request({
 		    url: baseUrl + '/' + iface,
@@ -135,7 +135,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	    },
 	});
 
-	var apply_btn = Ext.create('Proxmox.button.Button', {
+	let apply_btn = Ext.create('Proxmox.button.Button', {
 	    text: gettext('Apply Configuration'),
 	    itemId: 'apply',
 	    disabled: true,
@@ -147,9 +147,9 @@ Ext.define('Proxmox.node.NetworkView', {
 		    method: 'PUT',
 		    waitMsgTarget: me,
 		    success: function(response, opts) {
-			var upid = response.result.data;
+			let upid = response.result.data;
 
-			var win = Ext.create('Proxmox.window.TaskProgress', {
+			let win = Ext.create('Proxmox.window.TaskProgress', {
 			    taskDone: reload,
 			    upid: upid,
 			});
@@ -162,16 +162,16 @@ Ext.define('Proxmox.node.NetworkView', {
 	    },
 	});
 
-	var set_button_status = function() {
-	    var grid = me.down('gridpanel');
-	    var sm = grid.getSelectionModel();
-	    var rec = sm.getSelection()[0];
+	let set_button_status = function() {
+	    let grid = me.down('gridpanel');
+	    let sm = grid.getSelectionModel();
+	    let rec = sm.getSelection()[0];
 
 	    edit_btn.setDisabled(!rec);
 	    del_btn.setDisabled(!rec);
 	};
 
-	var render_ports = function(value, metaData, record) {
+	let render_ports = function(value, metaData, record) {
 	    if (value === 'bridge') {
 		return record.data.bridge_ports;
 	    } else if (value === 'bond') {
@@ -181,10 +181,11 @@ Ext.define('Proxmox.node.NetworkView', {
 	    } else if (value === 'OVSBond') {
 		return record.data.ovs_bonds;
 	    }
+	    return '';
 	};
 
-	var find_next_iface_id = function(prefix) {
-	    var next;
+	let find_next_iface_id = function(prefix) {
+	    let next;
 	    for (next = 0; next <= 9999; next++) {
 		if (!store.getById(prefix + next.toString())) {
 		    break;
@@ -193,13 +194,13 @@ Ext.define('Proxmox.node.NetworkView', {
 	    return prefix + next.toString();
 	};
 
-	var menu_items = [];
+	let menu_items = [];
 
 	if (me.types.indexOf('bridge') !== -1) {
 	    menu_items.push({
 		text: Proxmox.Utils.render_network_iface_type('bridge'),
 		handler: function() {
-		    var win = Ext.create('Proxmox.node.NetworkEdit', {
+		    let win = Ext.create('Proxmox.node.NetworkEdit', {
 			nodename: me.nodename,
 			iftype: 'bridge',
 			iface_default: find_next_iface_id('vmbr'),
@@ -215,7 +216,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	    menu_items.push({
 		text: Proxmox.Utils.render_network_iface_type('bond'),
 		handler: function() {
-		    var win = Ext.create('Proxmox.node.NetworkEdit', {
+		    let win = Ext.create('Proxmox.node.NetworkEdit', {
 			nodename: me.nodename,
 			iftype: 'bond',
 			iface_default: find_next_iface_id('bond'),
@@ -231,7 +232,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	    menu_items.push({
 		text: Proxmox.Utils.render_network_iface_type('vlan'),
 		handler: function() {
-		    var win = Ext.create('Proxmox.node.NetworkEdit', {
+		    let win = Ext.create('Proxmox.node.NetworkEdit', {
 			nodename: me.nodename,
 			iftype: 'vlan',
 			iface_default: 'interfaceX.1',
@@ -252,7 +253,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		{
 		    text: Proxmox.Utils.render_network_iface_type('OVSBridge'),
 		    handler: function() {
-			var win = Ext.create('Proxmox.node.NetworkEdit', {
+			let win = Ext.create('Proxmox.node.NetworkEdit', {
 			    nodename: me.nodename,
 			    iftype: 'OVSBridge',
 			    iface_default: find_next_iface_id('vmbr'),
@@ -264,7 +265,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		{
 		    text: Proxmox.Utils.render_network_iface_type('OVSBond'),
 		    handler: function() {
-			var win = Ext.create('Proxmox.node.NetworkEdit', {
+			let win = Ext.create('Proxmox.node.NetworkEdit', {
 			    nodename: me.nodename,
 			    iftype: 'OVSBond',
 			    iface_default: find_next_iface_id('bond'),
@@ -276,7 +277,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		{
 		    text: Proxmox.Utils.render_network_iface_type('OVSIntPort'),
 		    handler: function() {
-			var win = Ext.create('Proxmox.node.NetworkEdit', {
+			let win = Ext.create('Proxmox.node.NetworkEdit', {
 			    nodename: me.nodename,
 			    iftype: 'OVSIntPort',
 			});
@@ -287,9 +288,9 @@ Ext.define('Proxmox.node.NetworkView', {
 	    );
 	}
 
-	var renderer_generator = function(fieldname) {
+	let renderer_generator = function(fieldname) {
 	    return function(val, metaData, rec) {
-		var tmp = [];
+		let tmp = [];
 		if (rec.data[fieldname]) {
 		    tmp.push(rec.data[fieldname]);
 		}

@@ -59,8 +59,7 @@ Ext.define('Proxmox.RestProxy', {
 	    {
 		name: 'id',
 		convert: function(value, record) {
-		    var info = record.data;
-		    var text;
+		    let info = record.data;
 
 		    if (value) {
 			return value;

@@ -3,14 +3,14 @@ Ext.define('Proxmox.node.DNSView', {
     alias: ['widget.proxmoxNodeDNSView'],
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
 	}
 
-	var run_editor = function() {
-	    var win = Ext.create('Proxmox.node.DNSEdit', {
+	let run_editor = function() {
+	    let win = Ext.create('Proxmox.node.DNSEdit', {
 		nodename: me.nodename,
 	    });
 	    win.show();

@@ -14,16 +14,16 @@ Ext.apply(Ext.form.field.VTypes, {
 	return Proxmox.Utils.IP4_match.test(v);
     },
     IPAddressText: gettext('Example') + ': 192.168.1.1',
-    IPAddressMask: /[\d\.]/i,
+    IPAddressMask: /[\d.]/i,
 
     IPCIDRAddress: function(v) {
-	var result = Proxmox.Utils.IP4_cidr_match.exec(v);
+	let result = Proxmox.Utils.IP4_cidr_match.exec(v);
 	// limits according to JSON Schema see
 	// pve-common/src/PVE/JSONSchema.pm
 	return result !== null && result[1] >= 8 && result[1] <= 32;
     },
-    IPCIDRAddressText: gettext('Example') + ': 192.168.1.1/24' + "<br>" + gettext('Valid CIDR Range') + ': 8-32',
-    IPCIDRAddressMask: /[\d\.\/]/i,
+    IPCIDRAddressText: gettext('Example') + ': 192.168.1.1/24<br>' + gettext('Valid CIDR Range') + ': 8-32',
+    IPCIDRAddressMask: /[\d./]/i,
 
     IP6Address: function(v) {
         return Proxmox.Utils.IP6_match.test(v);
@@ -32,13 +32,13 @@ Ext.apply(Ext.form.field.VTypes, {
     IP6AddressMask: /[A-Fa-f0-9:]/,
 
     IP6CIDRAddress: function(v) {
-	var result = Proxmox.Utils.IP6_cidr_match.exec(v);
+	let result = Proxmox.Utils.IP6_cidr_match.exec(v);
 	// limits according to JSON Schema see
 	// pve-common/src/PVE/JSONSchema.pm
 	return result !== null && result[1] >= 8 && result[1] <= 128;
     },
-    IP6CIDRAddressText: gettext('Example') + ': 2001:DB8::42/64' + "<br>" + gettext('Valid CIDR Range') + ': 8-128',
-    IP6CIDRAddressMask: /[A-Fa-f0-9:\/]/,
+    IP6CIDRAddressText: gettext('Example') + ': 2001:DB8::42/64<br>' + gettext('Valid CIDR Range') + ': 8-128',
+    IP6CIDRAddressMask: /[A-Fa-f0-9:/]/,
 
     IP6PrefixLength: function(v) {
 	return v >= 0 && v <= 128;
@@ -50,10 +50,10 @@ Ext.apply(Ext.form.field.VTypes, {
         return Proxmox.Utils.IP64_match.test(v);
     },
     IP64AddressText: gettext('Example') + ': 192.168.1.1 2001:DB8::42',
-    IP64AddressMask: /[A-Fa-f0-9\.:]/,
+    IP64AddressMask: /[A-Fa-f0-9.:]/,
 
     IP64CIDRAddress: function(v) {
-	var result = Proxmox.Utils.IP64_cidr_match.exec(v);
+	let result = Proxmox.Utils.IP64_cidr_match.exec(v);
 	if (result === null) {
 	    return false;
 	}
@@ -66,7 +66,7 @@ Ext.apply(Ext.form.field.VTypes, {
 	}
     },
     IP64CIDRAddressText: gettext('Example') + ': 192.168.1.1/24 2001:DB8::42/64',
-    IP64CIDRAddressMask: /[A-Fa-f0-9\.:\/]/,
+    IP64CIDRAddressMask: /[A-Fa-f0-9.:/]/,
 
     MacAddress: function(v) {
 	return (/^([a-fA-F0-9]{2}:){5}[a-fA-F0-9]{2}$/).test(v);
@@ -101,24 +101,24 @@ Ext.apply(Ext.form.field.VTypes, {
     InterfaceName: function(v) {
         return (/^[a-z][a-z0-9_]{1,20}$/).test(v);
     },
-    InterfaceNameText: gettext("Allowed characters") + ": 'a-z', '0-9', '_'" + "<br />" +
-		       gettext("Minimum characters") + ": 2" + "<br />" +
-		       gettext("Maximum characters") + ": 21" + "<br />" +
+    InterfaceNameText: gettext("Allowed characters") + ": 'a-z', '0-9', '_'<br />" +
+		       gettext("Minimum characters") + ": 2<br />" +
+		       gettext("Maximum characters") + ": 21<br />" +
 		       gettext("Must start with") + ": 'a-z'",
 
     StorageId: function(v) {
-        return (/^[a-z][a-z0-9\-\_\.]*[a-z0-9]$/i).test(v);
+        return (/^[a-z][a-z0-9\-_.]*[a-z0-9]$/i).test(v);
     },
-    StorageIdText: gettext("Allowed characters") + ":  'A-Z', 'a-z', '0-9', '-', '_', '.'" + "<br />" +
-		   gettext("Minimum characters") + ": 2" + "<br />" +
+    StorageIdText: gettext("Allowed characters") + ":  'A-Z', 'a-z', '0-9', '-', '_', '.'<br />" +
+		   gettext("Minimum characters") + ": 2<br />" +
 		   gettext("Must start with") + ": 'A-Z', 'a-z'<br />" +
 		   gettext("Must end with") + ": 'A-Z', 'a-z', '0-9'<br />",
 
     ConfigId: function(v) {
-        return (/^[a-z][a-z0-9\_]+$/i).test(v);
+        return (/^[a-z][a-z0-9_]+$/i).test(v);
     },
-    ConfigIdText: gettext("Allowed characters") + ": 'A-Z', 'a-z', '0-9', '_'" + "<br />" +
-		  gettext("Minimum characters") + ": 2" + "<br />" +
+    ConfigIdText: gettext("Allowed characters") + ": 'A-Z', 'a-z', '0-9', '_'<br />" +
+		  gettext("Minimum characters") + ": 2<br />" +
 		  gettext("Must start with") + ": " + gettext("letter"),
 
     HttpProxy: function(v) {
@@ -133,7 +133,7 @@ Ext.apply(Ext.form.field.VTypes, {
 
     // workaround for https://www.sencha.com/forum/showthread.php?302150
     proxmoxMail: function(v) {
-        return (/^(\w+)([\-+.][\w]+)*@(\w[\-\w]*\.){1,5}([A-Za-z]){2,63}$/).test(v);
+        return (/^(\w+)([-+.][\w]+)*@(\w[-\w]*\.){1,5}([A-Za-z]){2,63}$/).test(v);
     },
     proxmoxMailText: gettext('Example') + ": user@example.com",
 
@@ -148,10 +148,10 @@ Ext.apply(Ext.form.field.VTypes, {
     DnsOrIpText: gettext('Not a valid DNS name or IP address.'),
 
     HostList: function(v) {
-	var list = v.split(/[\ \,\;]+/);
-	var i;
+	let list = v.split(/[ ,;]+/);
+	let i;
 	for (i = 0; i < list.length; i++) {
-	    if (list[i] == "") {
+	    if (list[i] === '') {
 		continue;
 	    }
 
@@ -168,9 +168,8 @@ Ext.apply(Ext.form.field.VTypes, {
 
     password: function(val, field) {
         if (field.initialPassField) {
-            var pwd = field.up('form').down(
-		'[name=' + field.initialPassField + ']');
-            return val == pwd.getValue();
+            let pwd = field.up('form').down(`[name=${field.initialPassField}]`);
+            return val === pwd.getValue();
         }
         return true;
     },
@@ -184,7 +183,7 @@ Ext.apply(Ext.form.field.VTypes, {
 Ext.define('EXTJS_23846.Element', {
     override: 'Ext.dom.Element',
 }, function(Element) {
-    var supports = Ext.supports,
+    let supports = Ext.supports,
         proto = Element.prototype,
         eventMap = proto.eventMap,
         additiveEvents = proto.additiveEvents;
@@ -213,11 +212,11 @@ Ext.define('EXTJS_23846.Element', {
 Ext.define('EXTJS_23846.Gesture', {
     override: 'Ext.event.publisher.Gesture',
 }, function(Gesture) {
-    var me = Gesture.instance;
+    let gestures = Gesture.instance;
 
     if (Ext.supports.TouchEvents && !Ext.isWebKit && Ext.os.is.Desktop) {
-        me.handledDomEvents.push('mousedown', 'mousemove', 'mouseup');
-        me.registerEvents();
+        gestures.handledDomEvents.push('mousedown', 'mousemove', 'mouseup');
+        gestures.registerEvents();
     }
 });
 
@@ -226,7 +225,7 @@ Ext.define('EXTJS_18900.Pie', {
 
     // from 6.0.2
     betweenAngle: function(x, a, b) {
-        var pp = Math.PI * 2,
+        let pp = Math.PI * 2,
             offset = this.rotationOffset;
 
         if (a === b) {
@@ -273,7 +272,7 @@ Ext.define('Proxmox.UnderlayPool', {
     override: 'Ext.dom.UnderlayPool',
 
     checkOut: function() {
-        var cache = this.cache,
+        let cache = this.cache,
             len = cache.length,
             el;
 
@@ -324,12 +323,13 @@ Ext.define('Proxmox.form.ComboBox', {
 
     reset: function() {
 	// copied from combobox
-	var me = this;
+	let me = this;
 	me.callParent();
 
 	// clear and set when not the same
-	var value = me.getValue();
-	if (Ext.isArray(me.originalValue) && Ext.isArray(value) && !Ext.Array.equals(value, me.originalValue)) {
+	let value = me.getValue();
+	if (Ext.isArray(me.originalValue) && Ext.isArray(value) &&
+	    !Ext.Array.equals(value, me.originalValue)) {
 	    me.clearValue();
 	    me.setValue(me.originalValue);
 	}
@@ -373,67 +373,66 @@ Ext.define(null, {
     jumpToFocus: false,
 
     saveFocusState: function() {
-        var me = this,
-            store = me.dataSource,
-            actionableMode = me.actionableMode,
-            navModel = me.getNavigationModel(),
-            focusPosition = actionableMode ? me.actionPosition : navModel.getPosition(true),
-            refocusRow, refocusCol;
+	let me = this,
+	    store = me.dataSource,
+	    actionableMode = me.actionableMode,
+	    navModel = me.getNavigationModel(),
+	    focusPosition = actionableMode ? me.actionPosition : navModel.getPosition(true),
+	    refocusRow, refocusCol;
 
-        if (focusPosition) {
-            // Separate this from the instance that the nav model is using.
-            focusPosition = focusPosition.clone();
+	if (focusPosition) {
+	    // Separate this from the instance that the nav model is using.
+	    focusPosition = focusPosition.clone();
 
-            // Exit actionable mode.
-            // We must inform any Actionables that they must relinquish control.
-            // Tabbability must be reset.
-            if (actionableMode) {
-                me.ownerGrid.setActionableMode(false);
-            }
+	    // Exit actionable mode.
+	    // We must inform any Actionables that they must relinquish control.
+	    // Tabbability must be reset.
+	    if (actionableMode) {
+		me.ownerGrid.setActionableMode(false);
+	    }
 
-            // Blur the focused descendant, but do not trigger focusLeave.
-            me.el.dom.focus();
+	    // Blur the focused descendant, but do not trigger focusLeave.
+	    me.el.dom.focus();
 
-            // Exiting actionable mode navigates to the owning cell, so in either focus mode we must
-            // clear the navigation position
-            navModel.setPosition();
+	    // Exiting actionable mode navigates to the owning cell, so in either focus mode we must
+	    // clear the navigation position
+	    navModel.setPosition();
 
-            // The following function will attempt to refocus back in the same mode to the same cell
-            // as it was at before based upon the previous record (if it's still inthe store), or the row index.
-            return function() {
-                // If we still have data, attempt to refocus in the same mode.
-                if (store.getCount()) {
-                    // Adjust expectations of where we are able to refocus according to what kind of destruction
-                    // might have been wrought on this view's DOM during focus save.
-                    refocusRow = Math.min(focusPosition.rowIdx, me.all.getCount() - 1);
-                    refocusCol = Math.min(focusPosition.colIdx, me.getVisibleColumnManager().getColumns().length - 1);
-                    focusPosition = new Ext.grid.CellContext(me).setPosition(
-                            store.contains(focusPosition.record) ? focusPosition.record : refocusRow, refocusCol);
+	    // The following function will attempt to refocus back in the same mode to the same cell
+	    // as it was at before based upon the previous record (if it's still inthe store), or the row index.
+	    return function() {
+		// If we still have data, attempt to refocus in the same mode.
+		if (store.getCount()) {
+		    // Adjust expectations of where we are able to refocus according to what kind of destruction
+		    // might have been wrought on this view's DOM during focus save.
+		    refocusRow = Math.min(focusPosition.rowIdx, me.all.getCount() - 1);
+		    refocusCol = Math.min(focusPosition.colIdx,
+					  me.getVisibleColumnManager().getColumns().length - 1);
+		    refocusRow = store.contains(focusPosition.record) ? focusPosition.record : refocusRow;
+		    focusPosition = new Ext.grid.CellContext(me).setPosition(refocusRow, refocusCol);
 
-                    if (actionableMode) {
-                        me.ownerGrid.setActionableMode(true, focusPosition);
-                    } else {
-                        me.cellFocused = true;
+		    if (actionableMode) {
+			me.ownerGrid.setActionableMode(true, focusPosition);
+		    } else {
+			me.cellFocused = true;
 
 			// we sometimes want to scroll back to where we were
-			var x = me.getScrollX();
-			var y = me.getScrollY();
+			let x = me.getScrollX();
+			let y = me.getScrollY();
 
-                        // Pass "preventNavigation" as true so that that does not cause selection.
-                        navModel.setPosition(focusPosition, null, null, null, true);
+			// Pass "preventNavigation" as true so that that does not cause selection.
+			navModel.setPosition(focusPosition, null, null, null, true);
 
 			if (!me.jumpToFocus) {
 			    me.scrollTo(x, y);
 			}
-                    }
-                }
-                // No rows - focus associated column header
-                else {
-                    focusPosition.column.focus();
-                }
-            };
-        }
-        return Ext.emptyFn;
+		    }
+		} else { // No rows - focus associated column header
+		    focusPosition.column.focus();
+		}
+	    };
+	}
+	return Ext.emptyFn;
     },
 });
 
@@ -461,7 +460,7 @@ Ext.define(null, {
     override: 'Ext.layout.container.boxOverflow.Scroller',
 
     createWheelListener: function() {
-	var me = this;
+	let me = this;
 	if (Ext.isFirefox) {
 	    me.wheelListener = me.layout.innerCt.on('wheel', me.onMouseWheelFirefox, me, { destroyable: true });
 	} else {
@@ -474,7 +473,7 @@ Ext.define(null, {
     // because it is already
     onMouseWheelFirefox: function(e) {
 	e.stopEvent();
-	var delta = e.browserEvent.deltaY || 0;
+	let delta = e.browserEvent.deltaY || 0;
 	this.scrollBy(delta * this.wheelIncrement, false);
     },
 
@@ -483,7 +482,7 @@ Ext.define(null, {
 // add '@' to the valid id
 Ext.define('Proxmox.validIdReOverride', {
     override: 'Ext.Component',
-    validIdRe: /^[a-z_][a-z0-9\-_\@]*$/i,
+    validIdRe: /^[a-z_][a-z0-9\-_@]*$/i,
 });
 
 // force alert boxes to be rendered with an Error Icon
@@ -492,9 +491,9 @@ Ext.define('Proxmox.validIdReOverride', {
 Ext.onReady(function() {
 /*jslint confusion: true */
     Ext.override(Ext.Msg, {
-	alert: function(title, message, fn, scope) {
+	alert: function(title, message, fn, scope) { // eslint-disable-line consistent-return
 	    if (Ext.isString(title)) {
-		var config = {
+		let config = {
 		    title: title,
 		    message: message,
 		    icon: this.ERROR,
@@ -530,7 +529,7 @@ Ext.define('Ext.ux.IFrame', {
     },
 
     initEvents: function() {
-        var me = this;
+        let me = this;
         me.callParent();
         me.iframeEl.on('load', me.onLoad, me);
     },
@@ -543,7 +542,7 @@ Ext.define('Ext.ux.IFrame', {
     },
 
     getBody: function() {
-        var doc = this.getDoc();
+        let doc = this.getDoc();
         return doc.body || doc.documentElement;
     },
 
@@ -556,7 +555,7 @@ Ext.define('Ext.ux.IFrame', {
     },
 
     getWin: function() {
-        var me = this,
+        let me = this,
             name = me.frameName,
             win = Ext.isIE
                 ? me.iframeEl.dom.contentWindow
@@ -565,7 +564,7 @@ Ext.define('Ext.ux.IFrame', {
     },
 
     getFrame: function() {
-        var me = this;
+        let me = this;
         return me.iframeEl.dom;
     },
 
@@ -575,29 +574,29 @@ Ext.define('Ext.ux.IFrame', {
     },
 
     cleanupListeners: function(destroying) {
-        var doc, prop;
+        let doc, prop;
 
         if (this.rendered) {
             try {
                 doc = this.getDoc();
                 if (doc) {
-		    /*jslint nomen: true*/
                     Ext.get(doc).un(this._docListeners);
-		    /*jslint nomen: false*/
                     if (destroying && doc.hasOwnProperty) {
                         for (prop in doc) {
-                            if (doc.hasOwnProperty(prop)) {
+                            if (Object.prototype.hasOwnProperty.call(doc, prop)) {
                                 delete doc[prop];
                             }
                         }
                     }
                 }
-            } catch (e) { }
+            } catch (e) {
+                // do nothing
+            }
         }
     },
 
     onLoad: function() {
-        var me = this,
+        let me = this,
             doc = me.getDoc(),
             fn = me.onRelayedEvent;
 
@@ -638,7 +637,7 @@ Ext.define('Ext.ux.IFrame', {
     onRelayedEvent: function(event) {
         // relay event from the iframe's document to the document that owns the iframe...
 
-        var iframeEl = this.iframeEl,
+        let iframeEl = this.iframeEl,
 
             // Get the left-based iframe position
             iframeXY = iframeEl.getTrueXY(),
@@ -659,7 +658,7 @@ Ext.define('Ext.ux.IFrame', {
     },
 
     load: function(src) {
-        var me = this,
+        let me = this,
             text = me.loadMask,
             frame = me.getFrame();
 

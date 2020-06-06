@@ -8,8 +8,8 @@ Ext.define('Proxmox.widget.RRDChart', {
 	xclass: 'Ext.app.ViewController',
 
 	convertToUnits: function(value) {
-	    var units = ['', 'k', 'M', 'G', 'T', 'P'];
-	    var si = 0;
+	    let units = ['', 'k', 'M', 'G', 'T', 'P'];
+	    let si = 0;
 	    let format = '0.##';
 	    if (value < 0.1) format += '#';
 	    while (value >= 1000 && si < units.length -1) {
@@ -27,26 +27,25 @@ Ext.define('Proxmox.widget.RRDChart', {
 	},
 
 	leftAxisRenderer: function(axis, label, layoutContext) {
-	    var me = this;
+	    let me = this;
 	    return me.convertToUnits(label);
 	},
 
 	onSeriesTooltipRender: function(tooltip, record, item) {
-	    var me = this.getView();
+	    let view = this.getView();
 
-	    var suffix = '';
-
-	    if (me.unit === 'percent') {
+	    let suffix = '';
+	    if (view.unit === 'percent') {
 		suffix = '%';
-	    } else if (me.unit === 'bytes') {
+	    } else if (view.unit === 'bytes') {
 		suffix = 'B';
-	    } else if (me.unit === 'bytespersecond') {
+	    } else if (view.unit === 'bytespersecond') {
 		suffix = 'B/s';
 	    }
 
-	    var prefix = item.field;
-	    if (me.fieldTitles && me.fieldTitles[me.fields.indexOf(item.field)]) {
-		prefix = me.fieldTitles[me.fields.indexOf(item.field)];
+	    let prefix = item.field;
+	    if (view.fieldTitles && view.fieldTitles[view.fields.indexOf(item.field)]) {
+		prefix = view.fieldTitles[view.fields.indexOf(item.field)];
 	    }
 	    let v = this.convertToUnits(record.get(item.field));
 	    let t = new Date(record.get('time'));
@@ -55,8 +54,8 @@ Ext.define('Proxmox.widget.RRDChart', {
 
 	onAfterAnimation: function(chart, eopts) {
 	    // if the undo button is disabled, disable our tool
-	    var ourUndoZoomButton = chart.header.tools[0];
-	    var undoButton = chart.interactions[0].getUndoButton();
+	    let ourUndoZoomButton = chart.header.tools[0];
+	    let undoButton = chart.interactions[0].getUndoButton();
 	    ourUndoZoomButton.setDisabled(undoButton.isDisabled());
 	},
     },
@@ -92,8 +91,7 @@ Ext.define('Proxmox.widget.RRDChart', {
     },
 
     initComponent: function() {
-	var me = this;
-	var series = {};
+	let me = this;
 
 	if (!me.store) {
 	    throw "cannot work without store";
@@ -106,7 +104,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 	me.callParent();
 
 	// add correct label for left axis
-	var axisTitle = "";
+	let axisTitle = "";
 	if (me.unit === 'percent') {
 	    axisTitle = "%";
 	} else if (me.unit === 'bytes') {
@@ -134,7 +132,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 		disabled: true,
 		tooltip: gettext('Undo Zoom'),
 		handler: function() {
-		    var undoButton = me.interactions[0].getUndoButton();
+		    let undoButton = me.interactions[0].getUndoButton();
 		    if (undoButton.handler) {
 			undoButton.handler();
 		    }
@@ -144,7 +142,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 
 	// add a series for each field we get
 	me.fields.forEach(function(item, index) {
-	    var title = item;
+	    let title = item;
 	    if (me.fieldTitles && me.fieldTitles[index]) {
 		title = me.fieldTitles[index];
 	    }

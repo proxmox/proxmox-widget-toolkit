@@ -7,8 +7,8 @@ Ext.define('Proxmox.data.ObjectStore', {
     extend: 'Proxmox.data.UpdateStore',
 
     getRecord: function() {
-	var me = this;
-	var record = Ext.create('Ext.data.Model');
+	let me = this;
+	let record = Ext.create('Ext.data.Model');
 	me.getData().each(function(item) {
 	    record.set(item.data.key, item.data.value);
 	});
@@ -17,7 +17,7 @@ Ext.define('Proxmox.data.ObjectStore', {
     },
 
     constructor: function(config) {
-	var me = this;
+	let me = this;
 
         config = config || {};
 

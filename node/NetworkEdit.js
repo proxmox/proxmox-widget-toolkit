@@ -3,7 +3,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
     alias: ['widget.proxmoxNodeNetworkEdit'],
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
@@ -15,7 +15,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	me.isCreate = !me.iface;
 
-	var iface_vtype;
+	let iface_vtype;
 
 	if (me.iftype === 'bridge') {
 	    iface_vtype = 'BridgeName';
@@ -109,12 +109,12 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		if (Proxmox.Utils.VlanInterface_match.test(me.iface)) {
 		   me.disablevlanid = true;
 		   me.disablevlanrawdevice = true;
-		   var arr = Proxmox.Utils.VlanInterface_match.exec(me.iface);
+		   let arr = Proxmox.Utils.VlanInterface_match.exec(me.iface);
 		   me.vlanrawdevicevalue = arr[1];
 		   me.vlanidvalue = arr[2];
 		} else if (Proxmox.Utils.Vlan_match.test(me.iface)) {
 		   me.disablevlanid = true;
-		   var arr = Proxmox.Utils.Vlan_match.exec(me.iface);
+		   let arr = Proxmox.Utils.Vlan_match.exec(me.iface);
 		   me.vlanidvalue = arr[1];
 		}
 	    } else {
@@ -149,14 +149,14 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		name: 'slaves',
 	    });
 
-	    var policySelector = Ext.createWidget('bondPolicySelector', {
+	    let policySelector = Ext.createWidget('bondPolicySelector', {
 		fieldLabel: gettext('Hash policy'),
 		name: 'bond_xmit_hash_policy',
 		deleteEmpty: !me.isCreate,
 		disabled: true,
 	    });
 
-	    var primaryfield = Ext.createWidget('textfield', {
+	    let primaryfield = Ext.createWidget('textfield', {
 		fieldLabel: gettext('bond-primary'),
 		name: 'bond-primary',
 		value: '',
@@ -222,8 +222,8 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    name: 'comments',
 	});
 
-	var url;
-	var method;
+	let url;
+	let method;
 
 	if (me.isCreate) {
 	    url = "/api2/extjs/nodes/" + me.nodename + "/network";
@@ -248,8 +248,8 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    listeners: {
 		change: function(f, value) {
 		    if (me.isCreate && iface_vtype === 'VlanName') {
-			var vlanidField = me.down('field[name=vlan-id]');
-			var vlanrawdeviceField = me.down('field[name=vlan-raw-device]');
+			let vlanidField = me.down('field[name=vlan-id]');
+			let vlanrawdeviceField = me.down('field[name=vlan-raw-device]');
 			if (Proxmox.Utils.VlanInterface_match.test(value)) {
 			    vlanidField.setDisabled(true);
 			    vlanrawdeviceField.setDisabled(true);
@@ -345,9 +345,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	} else {
 	    me.load({
 		success: function(response, options) {
-		    var data = response.result.data;
+		    let data = response.result.data;
 		    if (data.type !== me.iftype) {
-			var msg = "Got unexpected device type";
+			let msg = "Got unexpected device type";
 			Ext.Msg.alert(gettext('Error'), msg, function() {
 			    me.close();
 			});

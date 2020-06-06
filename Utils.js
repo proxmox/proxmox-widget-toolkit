@@ -14,7 +14,7 @@ Ext.enableAriaPanels = false;
 
 // avoid errors when running without development tools
 if (!Ext.isDefined(Ext.global.console)) {
-    var console = {
+    let console = {
 	dir: function() {
 	    // do nothing
 	},
@@ -93,7 +93,7 @@ utilities: {
 	if (!value) {
 	    return Proxmox.Utils.defaultText + ' (English)';
 	}
-	var text = Proxmox.Utils.language_map[value];
+	let text = Proxmox.Utils.language_map[value];
 	if (text) {
 	    return text + ' (' + value + ')';
 	}
@@ -101,7 +101,7 @@ utilities: {
     },
 
     language_array: function() {
-	var data = [['__default__', Proxmox.Utils.render_language('')]];
+	let data = [['__default__', Proxmox.Utils.render_language('')]];
 	Ext.Object.each(Proxmox.Utils.language_map, function(key, value) {
 	    data.push([key, Proxmox.Utils.render_language(value)]);
 	});
@@ -192,22 +192,22 @@ utilities: {
     },
 
     format_duration_long: function(ut) {
-	var days = Math.floor(ut / 86400);
+	let days = Math.floor(ut / 86400);
 	ut -= days*86400;
-	var hours = Math.floor(ut / 3600);
+	let hours = Math.floor(ut / 3600);
 	ut -= hours*3600;
-	var mins = Math.floor(ut / 60);
+	let mins = Math.floor(ut / 60);
 	ut -= mins*60;
 
-	var hours_str = '00' + hours.toString();
+	let hours_str = '00' + hours.toString();
 	hours_str = hours_str.substr(hours_str.length - 2);
-	var mins_str = "00" + mins.toString();
+	let mins_str = "00" + mins.toString();
 	mins_str = mins_str.substr(mins_str.length - 2);
-	var ut_str = "00" + ut.toString();
+	let ut_str = "00" + ut.toString();
 	ut_str = ut_str.substr(ut_str.length - 2);
 
 	if (days) {
-	    var ds = days > 1 ? Proxmox.Utils.daysText : Proxmox.Utils.dayText;
+	    let ds = days > 1 ? Proxmox.Utils.daysText : Proxmox.Utils.dayText;
 	    return days.toString() + ' ' + ds + ' ' +
 		hours_str + ':' + mins_str + ':' + ut_str;
 	} else {
@@ -232,8 +232,8 @@ utilities: {
     compute_min_label_width: function(text, width) {
 	if (width === undefined) { width = 100; }
 
-	var tm = new Ext.util.TextMetrics();
-	var min = tm.getWidth(text + ':');
+	let tm = new Ext.util.TextMetrics();
+	let min = tm.getWidth(text + ':');
 
 	return min < width ? width : min;
     },
@@ -269,7 +269,7 @@ utilities: {
     // comp.setLoading() is buggy in ExtJS 4.0.7, so we
     // use el.mask() instead
     setErrorMask: function(comp, msg) {
-	var el = comp.el;
+	let el = comp.el;
 	if (!el) {
 	    return;
 	}
@@ -334,7 +334,7 @@ utilities: {
     },
 
     extractRequestError: function(result, verbose) {
-	var msg = gettext('Successful');
+	let msg = gettext('Successful');
 
 	if (!result.success) {
 	    msg = gettext("Unknown error");
@@ -358,7 +358,7 @@ utilities: {
 
     // Ext.Ajax.request
     API2Request: function(reqOpts) {
-	var newopts = Ext.apply({
+	let newopts = Ext.apply({
 	    waitMsg: gettext('Please wait...'),
 	}, reqOpts);
 
@@ -367,7 +367,7 @@ utilities: {
 	}
 	delete newopts.callback;
 
-	var createWrapper = function(successFn, callbackFn, failureFn) {
+	let createWrapper = function(successFn, callbackFn, failureFn) {
 	    Ext.apply(newopts, {
 		success: function(response, options) {
 		    if (options.waitMsgTarget) {
@@ -377,7 +377,7 @@ utilities: {
 			    options.waitMsgTarget.setLoading(false);
 			}
 		    }
-		    var result = Ext.decode(response.responseText);
+		    let result = Ext.decode(response.responseText);
 		    response.result = result;
 		    if (!result.success) {
 			response.htmlStatus = Proxmox.Utils.extractRequestError(result, true);
@@ -402,7 +402,7 @@ utilities: {
 		    } catch (e) {
 			// ignore
 		    }
-		    var msg = gettext('Connection error') + ' - server offline?';
+		    let msg = gettext('Connection error') + ' - server offline?';
 		    if (response.aborted) {
 			msg = gettext('Connection error') + ' - aborted.';
 		    } else if (response.timedout) {
@@ -419,7 +419,7 @@ utilities: {
 
 	createWrapper(reqOpts.success, reqOpts.callback, reqOpts.failure);
 
-	var target = newopts.waitMsgTarget;
+	let target = newopts.waitMsgTarget;
 	if (target) {
 	    if (Proxmox.Utils.toolkit === 'touch') {
 		target.setMasked({ xtype: 'loadmask', message: newopts.waitMsg });
@@ -657,11 +657,8 @@ utilities: {
     },
 
     format_size: function(size) {
-	/*jslint confusion: true */
-
-	var units = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
-	var num = 0;
-
+	let units = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
+	let num = 0;
 	while (size >= 1024 && num++ <= units.length) {
 	    size = size / 1024;
 	}
@@ -678,7 +675,7 @@ utilities: {
     },
 
     render_uptime: function(value) {
-	var uptime = value;
+	let uptime = value;
 
 	if (uptime === undefined) {
 	    return '';
@@ -692,9 +689,9 @@ utilities: {
     },
 
     parse_task_upid: function(upid) {
-	var task = {};
+	let task = {};
 
-	var res = upid.match(/^UPID:([^\s:]+):([0-9A-Fa-f]{8}):([0-9A-Fa-f]{8,9}):(([0-9A-Fa-f]{8,16}):)?([0-9A-Fa-f]{8}):([^:\s]+):([^:\s]*):([^:\s]+):$/);
+	let res = upid.match(/^UPID:([^\s:]+):([0-9A-Fa-f]{8}):([0-9A-Fa-f]{8,9}):(([0-9A-Fa-f]{8,16}):)?([0-9A-Fa-f]{8}):([^:\s]+):([^:\s]*):([^:\s]+):$/);
 	if (!res) {
 	    throw "unable to parse upid '" + upid + "'";
 	}
@@ -722,12 +719,12 @@ utilities: {
     },
 
     render_timestamp: function(value, metaData, record, rowIndex, colIndex, store) {
-	var servertime = new Date(value * 1000);
+	let servertime = new Date(value * 1000);
 	return Ext.Date.format(servertime, 'Y-m-d H:i:s');
     },
 
     get_help_info: function(section) {
-	var helpMap;
+	let helpMap;
 	if (typeof proxmoxOnlineHelpInfo !== 'undefined') {
 	    helpMap = proxmoxOnlineHelpInfo; // eslint-disable-line no-undef
 	} else if (typeof pveOnlineHelpInfo !== 'undefined') {
@@ -741,7 +738,7 @@ utilities: {
     },
 
     get_help_link: function(section) {
-	var info = Proxmox.Utils.get_help_info(section);
+	let info = Proxmox.Utils.get_help_info(section);
 	if (!info) {
 	    return undefined;
 	}
@@ -749,7 +746,7 @@ utilities: {
     },
 
     openXtermJsViewer: function(vmtype, vmid, nodename, vmname, cmd) {
-	var url = Ext.Object.toQueryString({
+	let url = Ext.Object.toQueryString({
 	    console: vmtype, // kvm, lxc, upgrade or shell
 	    xtermjs: 1,
 	    vmid: vmid,
@@ -758,7 +755,7 @@ utilities: {
 	    cmd: cmd,
 
 	});
-	var nw = window.open("?" + url, '_blank', 'toolbar=no,location=no,status=no,menubar=no,resizable=yes,width=800,height=420');
+	let nw = window.open("?" + url, '_blank', 'toolbar=no,location=no,status=no,menubar=no,resizable=yes,width=800,height=420');
 	if (nw) {
 	    nw.focus();
 	}
@@ -768,22 +765,22 @@ utilities: {
 
     singleton: true,
     constructor: function() {
-	var me = this;
+	let me = this;
 	Ext.apply(me, me.utilities);
 
-	var IPV4_OCTET = "(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])";
-	var IPV4_REGEXP = "(?:(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET + ")";
-	var IPV6_H16 = "(?:[0-9a-fA-F]{1,4})";
-	var IPV6_LS32 = "(?:(?:" + IPV6_H16 + ":" + IPV6_H16 + ")|" + IPV4_REGEXP + ")";
-	var IPV4_CIDR_MASK = "([0-9]{1,2})";
-	var IPV6_CIDR_MASK = "([0-9]{1,3})";
+	let IPV4_OCTET = "(?:25[0-5]|(?:[1-9]|1[0-9]|2[0-4])?[0-9])";
+	let IPV4_REGEXP = "(?:(?:" + IPV4_OCTET + "\\.){3}" + IPV4_OCTET + ")";
+	let IPV6_H16 = "(?:[0-9a-fA-F]{1,4})";
+	let IPV6_LS32 = "(?:(?:" + IPV6_H16 + ":" + IPV6_H16 + ")|" + IPV4_REGEXP + ")";
+	let IPV4_CIDR_MASK = "([0-9]{1,2})";
+	let IPV6_CIDR_MASK = "([0-9]{1,3})";
 
 
 	me.IP4_match = new RegExp("^(?:" + IPV4_REGEXP + ")$");
 	me.IP4_cidr_match = new RegExp("^(?:" + IPV4_REGEXP + ")/" + IPV4_CIDR_MASK + "$");
 
 	/* eslint-disable no-useless-concat,no-multi-spaces */
-	var IPV6_REGEXP = "(?:" +
+	let IPV6_REGEXP = "(?:" +
 	    "(?:(?:"                                                  + "(?:" + IPV6_H16 + ":){6})" + IPV6_LS32 + ")|" +
 	    "(?:(?:"                                         +   "::" + "(?:" + IPV6_H16 + ":){5})" + IPV6_LS32 + ")|" +
 	    "(?:(?:(?:"                           + IPV6_H16 + ")?::" + "(?:" + IPV6_H16 + ":){4})" + IPV6_LS32 + ")|" +
@@ -803,7 +800,7 @@ utilities: {
 	me.IP64_match = new RegExp("^(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + ")$");
 	me.IP64_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + "/" + IPV6_CIDR_MASK + ")|(?:" + IPV4_REGEXP + "/" + IPV4_CIDR_MASK + ")$");
 
-	var DnsName_REGEXP = "(?:(([a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*([A-Za-z0-9]([A-Za-z0-9\\-]*[A-Za-z0-9])?))";
+	let DnsName_REGEXP = "(?:(([a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*([A-Za-z0-9]([A-Za-z0-9\\-]*[A-Za-z0-9])?))";
 	me.DnsName_match = new RegExp("^" + DnsName_REGEXP + "$");
 
 	me.HostPort_match = new RegExp("^(" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")(:\\d+)?$");

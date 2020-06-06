@@ -7,7 +7,7 @@ Ext.define('Proxmox.data.RRDStore', {
     alias: 'store.proxmoxRRDStore',
 
     setRRDUrl: function(timeframe, cf) {
-	var me = this;
+	let me = this;
 	if (!timeframe) {
 	    timeframe = me.timeframe;
 	}
@@ -28,7 +28,7 @@ Ext.define('Proxmox.data.RRDStore', {
     cf: 'AVERAGE',
 
     constructor: function(config) {
-	var me = this;
+	let me = this;
 
 	config = config || {};
 
@@ -47,9 +47,9 @@ Ext.define('Proxmox.data.RRDStore', {
 	    throw "no rrdurl specified";
 	}
 
-	var stateid = 'proxmoxRRDTypeSelection';
-	var sp = Ext.state.Manager.getProvider();
-	var stateinit = sp.get(stateid);
+	let stateid = 'proxmoxRRDTypeSelection';
+	let sp = Ext.state.Manager.getProvider();
+	let stateinit = sp.get(stateid);
 
         if (stateinit) {
 	    if (stateinit.timeframe !== me.timeframe || stateinit.cf !== me.rrdcffn) {

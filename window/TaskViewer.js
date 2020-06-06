@@ -5,15 +5,15 @@ Ext.define('Proxmox.window.TaskProgress', {
     taskDone: Ext.emptyFn,
 
     initComponent: function() {
-        var me = this;
+        let me = this;
 
 	if (!me.upid) {
 	    throw "no task specified";
 	}
 
-	var task = Proxmox.Utils.parse_task_upid(me.upid);
+	let task = Proxmox.Utils.parse_task_upid(me.upid);
 
-	var statstore = Ext.create('Proxmox.data.ObjectStore', {
+	let statstore = Ext.create('Proxmox.data.ObjectStore', {
             url: "/api2/json/nodes/" + task.node + "/tasks/" + me.upid + "/status",
 	    interval: 1000,
 	    rows: {
@@ -24,21 +24,21 @@ Ext.define('Proxmox.window.TaskProgress', {
 
 	me.on('destroy', statstore.stopUpdate);
 
-	var getObjectValue = function(key, defaultValue) {
-	    var rec = statstore.getById(key);
+	let getObjectValue = function(key, defaultValue) {
+	    let rec = statstore.getById(key);
 	    if (rec) {
 		return rec.data.value;
 	    }
 	    return defaultValue;
 	};
 
-	var pbar = Ext.create('Ext.ProgressBar', { text: 'running...' });
+	let pbar = Ext.create('Ext.ProgressBar', { text: 'running...' });
 
 	me.mon(statstore, 'load', function() {
-	    var status = getObjectValue('status');
+	    let status = getObjectValue('status');
 	    if (status === 'stopped') {
-		var exitstatus = getObjectValue('exitstatus');
-		if (exitstatus == 'OK') {
+		let exitstatus = getObjectValue('exitstatus');
+		if (exitstatus === 'OK') {
 		    pbar.reset();
 		    pbar.updateText("Done!");
 		    Ext.Function.defer(me.close, 1000, me);
@@ -46,11 +46,11 @@ Ext.define('Proxmox.window.TaskProgress', {
 		    me.close();
 		    Ext.Msg.alert('Task failed', exitstatus);
 		}
-		me.taskDone(exitstatus == 'OK');
+		me.taskDone(exitstatus === 'OK');
 	    }
 	});
 
-	var descr = Proxmox.Utils.format_task_description(task.type, task.id);
+	let descr = Proxmox.Utils.format_task_description(task.type, task.id);
 
 	Ext.apply(me, {
 	    title: gettext('Task') + ': ' + descr,
@@ -63,7 +63,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 		{
 		    text: gettext('Details'),
 		    handler: function() {
-			var win = Ext.create('Proxmox.window.TaskViewer', {
+			let win = Ext.create('Proxmox.window.TaskViewer', {
 			    taskDone: me.taskDone,
 			    upid: me.upid,
 			});
@@ -83,7 +83,6 @@ Ext.define('Proxmox.window.TaskProgress', {
 });
 
 // fixme: how can we avoid those lint errors?
-/*jslint confusion: true */
 
 Ext.define('Proxmox.window.TaskViewer', {
     extend: 'Ext.window.Window',
@@ -94,28 +93,29 @@ Ext.define('Proxmox.window.TaskViewer', {
     taskDone: Ext.emptyFn,
 
     initComponent: function() {
-        var me = this;
+        let me = this;
 
 	if (!me.upid) {
 	    throw "no task specified";
 	}
 
-	var task = Proxmox.Utils.parse_task_upid(me.upid);
+	let task = Proxmox.Utils.parse_task_upid(me.upid);
 
-	var statgrid;
+	let statgrid;
 
-	var rows = {
+	let rows = {
 	    status: {
 		header: gettext('Status'),
 		defaultValue: 'unknown',
 		renderer: function(value) {
-		    if (value != 'stopped') {
+		    if (value !== 'stopped') {
 			return value;
 		    }
-		    var es = statgrid.getObjectValue('exitstatus');
+		    let es = statgrid.getObjectValue('exitstatus');
 		    if (es) {
 			return value + ': ' + es;
 		    }
+		    return 'unknown';
 		},
 	    },
 	    exitstatus: {
@@ -152,7 +152,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    },
 	};
 
-	var statstore = Ext.create('Proxmox.data.ObjectStore', {
+	let statstore = Ext.create('Proxmox.data.ObjectStore', {
             url: "/api2/json/nodes/" + task.node + "/tasks/" + me.upid + "/status",
 	    interval: 1000,
 	    rows: rows,
@@ -160,7 +160,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 
 	me.on('destroy', statstore.stopUpdate);
 
-	var stop_task = function() {
+	let stop_task = function() {
 	    Proxmox.Utils.API2Request({
 		url: "/nodes/" + task.node + "/tasks/" + me.upid,
 		waitMsgTarget: me,
@@ -171,13 +171,13 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    });
 	};
 
-	var stop_btn1 = new Ext.Button({
+	let stop_btn1 = new Ext.Button({
 	    text: gettext('Stop'),
 	    disabled: true,
 	    handler: stop_task,
 	});
 
-	var stop_btn2 = new Ext.Button({
+	let stop_btn2 = new Ext.Button({
 	    text: gettext('Stop'),
 	    disabled: true,
 	    handler: stop_task,
@@ -192,7 +192,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    border: false,
 	});
 
-	var logView = Ext.create('Proxmox.panel.LogView', {
+	let logView = Ext.create('Proxmox.panel.LogView', {
 	    title: gettext('Output'),
 	    tbar: [stop_btn2],
 	    border: false,
@@ -200,13 +200,13 @@ Ext.define('Proxmox.window.TaskViewer', {
 	});
 
 	me.mon(statstore, 'load', function() {
-	    var status = statgrid.getObjectValue('status');
+	    let status = statgrid.getObjectValue('status');
 
 	    if (status === 'stopped') {
 		logView.scrollToEnd = false;
 		logView.requestUpdate();
 		statstore.stopUpdate();
-		me.taskDone(statgrid.getObjectValue('exitstatus') == 'OK');
+		me.taskDone(statgrid.getObjectValue('exitstatus') === 'OK');
 	    }
 
 	    stop_btn1.setDisabled(status !== 'running');

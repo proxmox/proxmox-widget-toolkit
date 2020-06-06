@@ -3,7 +3,7 @@ Ext.define('Proxmox.form.NetworkSelectorController', {
     alias: 'controller.proxmoxNetworkSelectorController',
 
     init: function(view) {
-	var me = this;
+	let me = this;
 
 	if (!view.nodename) {
 	    throw "missing custom view config: nodename";
@@ -36,7 +36,7 @@ Ext.define('Proxmox.form.NetworkSelector', {
     nodename: 'localhost',
     setNodename: function(nodename) {
 	this.nodename = nodename;
-	var networkSelectorStore = this.getStore();
+	let networkSelectorStore = this.getStore();
 	networkSelectorStore.removeAll();
 	// because of manual local copy of data for ip4/6
 	this.getPicker().refresh();

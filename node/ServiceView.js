@@ -12,13 +12,13 @@ Ext.define('Proxmox.node.ServiceView', {
     startOnlyServices: {},
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
 	}
 
-	var rstore = Ext.create('Proxmox.data.UpdateStore', {
+	let rstore = Ext.create('Proxmox.data.UpdateStore', {
 	    interval: 1000,
 	    storeid: 'proxmox-services' + me.nodename,
 	    model: 'proxmox-services',
@@ -28,7 +28,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    },
 	});
 
-	var store = Ext.create('Proxmox.data.DiffStore', {
+	let store = Ext.create('Proxmox.data.DiffStore', {
 	    rstore: rstore,
 	    sortAfterUpdate: true,
 	    sorters: [
@@ -39,10 +39,10 @@ Ext.define('Proxmox.node.ServiceView', {
 	    ],
 	});
 
-	var view_service_log = function() {
-	    var sm = me.getSelectionModel();
-	    var rec = sm.getSelection()[0];
-	    var win = Ext.create('Ext.window.Window', {
+	let view_service_log = function() {
+	    let sm = me.getSelectionModel();
+	    let rec = sm.getSelection()[0];
+	    let win = Ext.create('Ext.window.Window', {
 		title: gettext('Syslog') + ': ' + rec.data.service,
 		modal: true,
 		width: 800,
@@ -58,9 +58,9 @@ Ext.define('Proxmox.node.ServiceView', {
 	    win.show();
 	};
 
-	var service_cmd = function(cmd) {
-	    var sm = me.getSelectionModel();
-	    var rec = sm.getSelection()[0];
+	let service_cmd = function(cmd) {
+	    let sm = me.getSelectionModel();
+	    let rec = sm.getSelection()[0];
 	    Proxmox.Utils.API2Request({
 		url: "/nodes/" + me.nodename + "/services/" + rec.data.service + "/" + cmd,
 		method: 'POST',
@@ -70,9 +70,9 @@ Ext.define('Proxmox.node.ServiceView', {
 		},
 		success: function(response, opts) {
 		    rstore.startUpdate();
-		    var upid = response.result.data;
+		    let upid = response.result.data;
 
-		    var win = Ext.create('Proxmox.window.TaskProgress', {
+		    let win = Ext.create('Proxmox.window.TaskProgress', {
 			upid: upid,
 		    });
 		    win.show();
@@ -80,7 +80,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    });
 	};
 
-	var start_btn = new Ext.Button({
+	let start_btn = new Ext.Button({
 	    text: gettext('Start'),
 	    disabled: true,
 	    handler: function() {
@@ -88,7 +88,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    },
 	});
 
-	var stop_btn = new Ext.Button({
+	let stop_btn = new Ext.Button({
 	    text: gettext('Stop'),
 	    disabled: true,
 	    handler: function() {
@@ -96,7 +96,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    },
 	});
 
-	var restart_btn = new Ext.Button({
+	let restart_btn = new Ext.Button({
 	    text: gettext('Restart'),
 	    disabled: true,
 	    handler: function() {
@@ -104,15 +104,15 @@ Ext.define('Proxmox.node.ServiceView', {
 	    },
 	});
 
-	var syslog_btn = new Ext.Button({
+	let syslog_btn = new Ext.Button({
 	    text: gettext('Syslog'),
 	    disabled: true,
 	    handler: view_service_log,
 	});
 
-	var set_button_status = function() {
-	    var sm = me.getSelectionModel();
-	    var rec = sm.getSelection()[0];
+	let set_button_status = function() {
+	    let sm = me.getSelectionModel();
+	    let rec = sm.getSelection()[0];
 
 	    if (!rec) {
 		start_btn.disable();
@@ -121,29 +121,25 @@ Ext.define('Proxmox.node.ServiceView', {
 		syslog_btn.disable();
 		return;
 	    }
-	    var service = rec.data.service;
-	    var state = rec.data.state;
+	    let service = rec.data.service;
+	    let state = rec.data.state;
 
 	    syslog_btn.enable();
 
-	    if (me.startOnlyServices[service]) {
-		if (state == 'running') {
-		    start_btn.disable();
-		    restart_btn.enable();
-		} else {
-		    start_btn.enable();
-		    restart_btn.disable();
-		}
-		stop_btn.disable();
-	    } else if (state == 'running') {
-		    start_btn.disable();
-		    restart_btn.enable();
+	    if (state === 'running') {
+		start_btn.disable();
+		restart_btn.enable();
+	    } else {
+		start_btn.enable();
+		restart_btn.disable();
+	    }
+	    if (!me.startOnlyServices[service]) {
+		if (state === 'running') {
 		    stop_btn.enable();
 		} else {
-		    start_btn.enable();
-		    restart_btn.disable();
 		    stop_btn.disable();
 		}
+	    }
 	};
 
 	me.mon(store, 'refresh', set_button_status);

@@ -2,7 +2,7 @@
 
 mandatory config parameters:
 rows: an object container where each propery is a key-value object we want to render
-       var rows = {
+       let rows = {
            keyboard: {
                header: gettext('Keyboard Layout'),
                editor: 'Your.KeyboardEdit',
@@ -25,7 +25,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     monStoreErrors: false,
 
     add_combobox_row: function(name, text, opts) {
-	var me = this;
+	let me = this;
 
 	opts = opts || {};
 	me.rows = me.rows || {};
@@ -58,7 +58,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     },
 
     add_text_row: function(name, text, opts) {
-	var me = this;
+	let me = this;
 
 	opts = opts || {};
 	me.rows = me.rows || {};
@@ -90,7 +90,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     },
 
     add_boolean_row: function(name, text, opts) {
-	var me = this;
+	let me = this;
 
 	opts = opts || {};
 	me.rows = me.rows || {};
@@ -123,7 +123,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     },
 
     add_integer_row: function(name, text, opts) {
-	var me = this;
+	let me = this;
 
 	opts = opts || {};
 	me.rows = me.rows || {};
@@ -159,22 +159,22 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     editorConfig: {}, // default config passed to editor
 
     run_editor: function() {
-	var me = this;
+	let me = this;
 
-	var sm = me.getSelectionModel();
-	var rec = sm.getSelection()[0];
+	let sm = me.getSelectionModel();
+	let rec = sm.getSelection()[0];
 	if (!rec) {
 	    return;
 	}
 
-	var rows = me.rows;
-	var rowdef = rows[rec.data.key];
+	let rows = me.rows;
+	let rowdef = rows[rec.data.key];
 	if (!rowdef.editor) {
 	    return;
 	}
 
-	var win;
-	var config;
+	let win;
+	let config;
 	if (Ext.isString(rowdef.editor)) {
 	    config = Ext.apply({
 		confid: rec.data.key,
@@ -194,13 +194,13 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     },
 
     reload: function() {
-	var me = this;
+	let me = this;
 	me.rstore.load();
     },
 
     getObjectValue: function(key, defaultValue) {
-	var me = this;
-	var rec = me.store.getById(key);
+	let me = this;
+	let rec = me.store.getById(key);
 	if (rec) {
 	    return rec.data.value;
 	}
@@ -208,19 +208,19 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     },
 
     renderKey: function(key, metaData, record, rowIndex, colIndex, store) {
-	var me = this;
-	var rows = me.rows;
-	var rowdef = rows && rows[key] ? rows[key] : {};
+	let me = this;
+	let rows = me.rows;
+	let rowdef = rows && rows[key] ? rows[key] : {};
 	return rowdef.header || key;
     },
 
     renderValue: function(value, metaData, record, rowIndex, colIndex, store) {
-	var me = this;
-	var rows = me.rows;
-	var key = record.data.key;
-	var rowdef = rows && rows[key] ? rows[key] : {};
+	let me = this;
+	let rows = me.rows;
+	let key = record.data.key;
+	let rowdef = rows && rows[key] ? rows[key] : {};
 
-	var renderer = rowdef.renderer;
+	let renderer = rowdef.renderer;
 	if (renderer) {
 	    return renderer(value, metaData, record, rowIndex, colIndex, store);
 	}
@@ -235,7 +235,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	    }
 	},
 	itemkeyup: function(view, record, item, index, e) {
-	    if (e.getKey() === e.ENTER && index == this.pressedIndex) {
+	    if (e.getKey() === e.ENTER && index === this.pressedIndex) {
 		this.run_editor();
 	    }
 
@@ -244,9 +244,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
     },
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
-	var rows = me.rows;
+	let rows = me.rows;
 
 	if (!me.rstore) {
 	    if (!me.url) {
@@ -287,7 +287,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	store.filters.add(Ext.create('Ext.util.Filter', {
 	    filterFn: function(item) {
 		if (rows) {
-		    var rowdef = rows[item.data.key];
+		    let rowdef = rows[item.data.key];
 		    if (!rowdef || rowdef.visible === false) {
 			return false;
 		    }

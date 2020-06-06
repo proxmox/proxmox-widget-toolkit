@@ -3,10 +3,10 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
     alias: ['widget.proxmoxPendingObjectGrid'],
 
     getObjectValue: function(key, defaultValue, pending) {
-	var me = this;
-	var rec = me.store.getById(key);
+	let me = this;
+	let rec = me.store.getById(key);
 	if (rec) {
-	    var value = rec.data.value;
+	    let value = rec.data.value;
 	    if (pending) {
 		if (Ext.isDefined(rec.data.pending) && rec.data.pending !== '') {
 		    value = rec.data.pending;
@@ -25,42 +25,42 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
     },
 
     hasPendingChanges: function(key) {
-	var me = this;
-	var rows = me.rows;
-	var rowdef = rows && rows[key] ? rows[key] : {};
-	var keys = rowdef.multiKey || [key];
-	var pending = false;
+	let me = this;
+	let rows = me.rows;
+	let rowdef = rows && rows[key] ? rows[key] : {};
+	let keys = rowdef.multiKey || [key];
+	let pending = false;
 
 	Ext.Array.each(keys, function(k) {
-	    var rec = me.store.getById(k);
+	    let rec = me.store.getById(k);
 	    if (rec && rec.data && (
-		    Ext.isDefined(rec.data.pending) && rec.data.pending !== '' ||
+		    (Ext.isDefined(rec.data.pending) && rec.data.pending !== '') ||
 		    rec.data.delete === 1
 	    )) {
 		pending = true;
 		return false; // break
 	    }
+	    return true;
 	});
 
 	return pending;
     },
 
     renderValue: function(value, metaData, record, rowIndex, colIndex, store) {
-	var me = this;
-	var rows = me.rows;
-	var key = record.data.key;
-	var rowdef = rows && rows[key] ? rows[key] : {};
-	var renderer = rowdef.renderer;
-	var current = '';
-	var pendingdelete = '';
-	var pending = '';
+	let me = this;
+	let rows = me.rows;
+	let key = record.data.key;
+	let rowdef = rows && rows[key] ? rows[key] : {};
+	let renderer = rowdef.renderer;
+	let current = '';
+	let pending = '';
 
 	if (renderer) {
 	    current = renderer(value, metaData, record, rowIndex, colIndex, store, false);
 	    if (me.hasPendingChanges(key)) {
 		pending = renderer(record.data.pending, metaData, record, rowIndex, colIndex, store, true);
 	    }
-	    if (pending == current) {
+	    if (pending === current) {
 		pending = undefined;
 	    }
 	} else {
@@ -69,14 +69,15 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
 	}
 
 	if (record.data.delete) {
-	    var delete_all = true;
+	    let delete_all = true;
 	    if (rowdef.multiKey) {
 		Ext.Array.each(rowdef.multiKey, function(k) {
-		    var rec = me.store.getById(k);
+		    let rec = me.store.getById(k);
 		    if (rec && rec.data && rec.data.delete !== 1) {
 			delete_all = false;
 			return false; // break
 		    }
+		    return true;
 		});
 	    }
 	    if (delete_all) {
@@ -92,9 +93,7 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
     },
 
     initComponent: function() {
-	var me = this;
-
-	var rows = me.rows;
+	let me = this;
 
 	if (!me.rstore) {
 	    if (!me.url) {

@@ -1,9 +1,6 @@
 /* help button pointing to an online documentation
    for components contained in a modal window
 */
-/*global
-  proxmoxOnlineHelpInfo
-*/
 Ext.define('Proxmox.button.Help', {
     extend: 'Ext.button.Button',
     xtype: 'proxmoxHelpButton',
@@ -27,28 +24,28 @@ Ext.define('Proxmox.button.Help', {
 	    },
 	},
 	onProxmoxShowHelp: function(helpLink) {
-	    var me = this.getView();
-	    if (me.listenToGlobalEvent === true) {
-		me.setOnlineHelp(helpLink);
-		me.show();
+	    let view = this.getView();
+	    if (view.listenToGlobalEvent === true) {
+		view.setOnlineHelp(helpLink);
+		view.show();
 	    }
 	},
 	onProxmoxHideHelp: function() {
-	    var me = this.getView();
-	    if (me.listenToGlobalEvent === true) {
-		me.hide();
+	    let view = this.getView();
+	    if (view.listenToGlobalEvent === true) {
+		view.hide();
 	    }
 	},
     },
 
     // this sets the link and the tooltip text
     setOnlineHelp: function(blockid) {
-	var me = this;
+	let me = this;
 
-	var info = Proxmox.Utils.get_help_info(blockid);
+	let info = Proxmox.Utils.get_help_info(blockid);
 	if (info) {
 	    me.onlineHelp = blockid;
-	    var title = info.title;
+	    let title = info.title;
 	    if (info.subtitle) {
 		title += ' - ' + info.subtitle;
 	    }
@@ -58,13 +55,13 @@ Ext.define('Proxmox.button.Help', {
 
     // helper to set the onlineHelp via a config object
     setHelpConfig: function(config) {
-	var me = this;
+	let me = this;
 	me.setOnlineHelp(config.onlineHelp);
     },
 
     handler: function() {
-	var me = this;
-	var docsURI;
+	let me = this;
+	let docsURI;
 
 	if (me.onlineHelp) {
 	    docsURI = Proxmox.Utils.get_help_link(me.onlineHelp);
@@ -78,8 +75,7 @@ Ext.define('Proxmox.button.Help', {
     },
 
     initComponent: function() {
-	/*jslint confusion: true */
-	var me = this;
+	let me = this;
 
 	me.callParent();
 

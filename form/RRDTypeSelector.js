@@ -38,10 +38,10 @@ Ext.define('Proxmox.form.RRDTypeSelector', {
     },
     // save current selection in the state Provider so RRDView can read it
     getState: function() {
-	var ind = this.getStore().findExact('id', this.getValue());
-	var rec = this.getStore().getAt(ind);
+	let ind = this.getStore().findExact('id', this.getValue());
+	let rec = this.getStore().getAt(ind);
 	if (!rec) {
-	    return;
+	    return undefined;
 	}
 	return {
 	    id: rec.data.id,

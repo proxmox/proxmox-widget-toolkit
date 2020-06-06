@@ -9,7 +9,7 @@ Ext.define('Proxmox.form.field.Textfield', {
     },
 
     getSubmitData: function() {
-        var me = this,
+        let me = this,
             data = null,
             val;
         if (!me.disabled && me.submitValue && !me.isFileUpload()) {
@@ -26,9 +26,9 @@ Ext.define('Proxmox.form.field.Textfield', {
     },
 
     getSubmitValue: function() {
-	var me = this;
+	let me = this;
 
-        var value = this.processRawValue(this.getRawValue());
+        let value = this.processRawValue(this.getRawValue());
 	if (value !== '') {
 	    return value;
 	}

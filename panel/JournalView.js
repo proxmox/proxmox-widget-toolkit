@@ -16,10 +16,10 @@ Ext.define('Proxmox.panel.JournalView', {
 	xclass: 'Ext.app.ViewController',
 
 	updateParams: function() {
-	    var me = this;
-	    var viewModel = me.getViewModel();
-	    var since = viewModel.get('since');
-	    var until = viewModel.get('until');
+	    let me = this;
+	    let viewModel = me.getViewModel();
+	    let since = viewModel.get('since');
+	    let until = viewModel.get('until');
 
 	    since.setHours(0, 0, 0, 0);
 	    until.setHours(0, 0, 0, 0);
@@ -34,48 +34,48 @@ Ext.define('Proxmox.panel.JournalView', {
 	},
 
 	scrollPosBottom: function() {
-	    var view = this.getView();
-	    var pos = view.getScrollY();
-	    var maxPos = view.getScrollable().getMaxPosition().y;
+	    let view = this.getView();
+	    let pos = view.getScrollY();
+	    let maxPos = view.getScrollable().getMaxPosition().y;
 	    return maxPos - pos;
 	},
 
 	scrollPosTop: function() {
-	    var view = this.getView();
+	    let view = this.getView();
 	    return view.getScrollY();
 	},
 
 	updateScroll: function(livemode, num, scrollPos, scrollPosTop) {
-	    var me = this;
-	    var view = me.getView();
+	    let me = this;
+	    let view = me.getView();
 
 	    if (!livemode) {
 		setTimeout(function() { view.scrollTo(0, 0); }, 10);
 	    } else if (view.scrollToEnd && scrollPos <= 0) {
 		setTimeout(function() { view.scrollTo(0, Infinity); }, 10);
-	    } else if (!view.scrollToEnd && scrollPosTop < 20*view.lineHeight) {
-		setTimeout(function() { view.scrollTo(0, num*view.lineHeight + scrollPosTop); }, 10);
+	    } else if (!view.scrollToEnd && scrollPosTop < 20 * view.lineHeight) {
+		setTimeout(function() { view.scrollTo(0, (num * view.lineHeight) + scrollPosTop); }, 10);
 	    }
 	},
 
 	updateView: function(lines, livemode, top) {
-	    var me = this;
-	    var view = me.getView();
-	    var viewmodel = me.getViewModel();
+	    let me = this;
+	    let view = me.getView();
+	    let viewmodel = me.getViewModel();
 	    if (!viewmodel || viewmodel.get('livemode') !== livemode) {
 		return; // we switched mode, do not update the content
 	    }
-	    var contentEl = me.lookup('content');
+	    let contentEl = me.lookup('content');
 
 	    // save old scrollpositions
-	    var scrollPos = me.scrollPosBottom();
-	    var scrollPosTop = me.scrollPosTop();
+	    let scrollPos = me.scrollPosBottom();
+	    let scrollPosTop = me.scrollPosTop();
 
-	    var newend = lines.shift();
-	    var newstart = lines.pop();
+	    let newend = lines.shift();
+	    let newstart = lines.pop();
 
-	    var num = lines.length;
-	    var text = lines.map(Ext.htmlEncode).join('<br>');
+	    let num = lines.length;
+	    let text = lines.map(Ext.htmlEncode).join('<br>');
 
 	    if (!livemode) {
 		if (num) {
@@ -107,14 +107,14 @@ Ext.define('Proxmox.panel.JournalView', {
 	},
 
 	doLoad: function(livemode, top, since, until) {
-	    var me = this;
+	    let me = this;
 	    if (me.running) {
 		me.requested = true;
 		return;
 	    }
 	    me.running = true;
-	    var view = me.getView();
-	    var params = {
+	    let view = me.getView();
+	    let params = {
 		lastentries: view.numEntries || 500,
 	    };
 	    if (livemode) {
@@ -138,7 +138,7 @@ Ext.define('Proxmox.panel.JournalView', {
 		method: 'GET',
 		success: function(response) {
 		    Proxmox.Utils.setErrorMask(me, false);
-		    var lines = response.result.data;
+		    let lines = response.result.data;
 		    me.updateView(lines, livemode, top);
 		    me.running = false;
 		    if (me.requested) {
@@ -147,7 +147,7 @@ Ext.define('Proxmox.panel.JournalView', {
 		    }
 		},
 		failure: function(response) {
-		    var msg = response.htmlStatus;
+		    let msg = response.htmlStatus;
 		    Proxmox.Utils.setErrorMask(me, msg);
 		    me.running = false;
 		    if (me.requested) {
@@ -159,10 +159,10 @@ Ext.define('Proxmox.panel.JournalView', {
 	},
 
 	onScroll: function(x, y) {
-	    var me = this;
-	    var view = me.getView();
-	    var viewmodel = me.getViewModel();
-	    var livemode = viewmodel.get('livemode');
+	    let me = this;
+	    let view = me.getView();
+	    let viewmodel = me.getViewModel();
+	    let livemode = viewmodel.get('livemode');
 	    if (!livemode) {
 		return;
 	    }
@@ -176,15 +176,15 @@ Ext.define('Proxmox.panel.JournalView', {
 	},
 
 	init: function(view) {
-	    var me = this;
+	    let me = this;
 
 	    if (!view.url) {
 		throw "no url specified";
 	    }
 
-	    var viewmodel = me.getViewModel();
-	    var viewModel = this.getViewModel();
-	    var since = new Date();
+	    let viewmodel = me.getViewModel();
+	    let viewModel = this.getViewModel();
+	    let since = new Date();
 	    since.setDate(since.getDate() - 3);
 	    viewModel.set('until', new Date());
 	    viewModel.set('since', since);
@@ -208,8 +208,8 @@ Ext.define('Proxmox.panel.JournalView', {
 	},
 
 	onLiveMode: function() {
-	    var me = this;
-	    var view = me.getView();
+	    let me = this;
+	    let view = me.getView();
 	    delete view.startcursor;
 	    delete view.endcursor;
 	    delete view.content;
@@ -219,14 +219,14 @@ Ext.define('Proxmox.panel.JournalView', {
 	},
 
 	onTimespan: function() {
-	    var me = this;
+	    let me = this;
 	    me.getViewModel().set('livemode', false);
 	    me.updateView([], false);
 	},
     },
 
     onDestroy: function() {
-	var me = this;
+	let me = this;
 	me.loadTask.cancel();
 	Ext.TaskManager.stop(me.task);
 	delete me.content;
@@ -234,7 +234,7 @@ Ext.define('Proxmox.panel.JournalView', {
 
     // for user to initiate a load from outside
     requestUpdate: function() {
-	var me = this;
+	let me = this;
 	me.loadTask.delay(200);
     },
 
@@ -257,7 +257,7 @@ Ext.define('Proxmox.panel.JournalView', {
 	    // the panel have a 'scroll' event'
 	    scroll: {
 		fn: function(scroller, x, y) {
-		    var controller = this.component.getController();
+		    let controller = this.component.getController();
 		    if (controller) { // on destroy, controller can be gone
 			controller.onScroll(x, y);
 		    }

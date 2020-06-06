@@ -24,14 +24,14 @@ Ext.define('Proxmox.button.Button', {
     parentXType: 'grid',
 
     initComponent: function() {
-        var me = this;
+        let me = this;
 
 	if (me.handler) {
 	    // Note: me.realHandler may be a string (see named scopes)
-	    var realHandler = me.handler;
+	    let realHandler = me.handler;
 
 	    me.handler = function(button, event) {
-		var rec, msg;
+		let rec, msg;
 		if (me.selModel) {
 		    rec = me.selModel.getSelection()[0];
 		    if (!rec || me.enableFn(rec) === false) {
@@ -66,9 +66,9 @@ Ext.define('Proxmox.button.Button', {
 
 	me.callParent();
 
-	var grid;
+	let grid;
 	if (!me.selModel && me.selModel !== null && me.selModel !== false) {
-	    parent = me.up(me.parentXType);
+	    let parent = me.up(me.parentXType);
 	    if (parent && parent.selModel) {
 		me.selModel = parent.selModel;
 	    }
@@ -85,7 +85,7 @@ Ext.define('Proxmox.button.Button', {
 
 	if (me.selModel) {
 	    me.mon(me.selModel, "selectionchange", function() {
-		var rec = me.selModel.getSelection()[0];
+		let rec = me.selModel.getSelection()[0];
 		if (!rec || me.enableFn(rec) === false) {
 		    me.setDisabled(true);
 		} else {
@@ -113,7 +113,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
     },
 
     getUrl: function(rec) {
-	var me = this;
+	let me = this;
 
 	if (me.selModel) {
 	    return me.baseurl + '/' + rec.getId();
@@ -130,16 +130,16 @@ Ext.define('Proxmox.button.StdRemoveButton', {
     getRecordName: (rec) => rec.getId(),
 
     confirmMsg: function(rec) {
-	var me = this;
+	let me = this;
 
-	var name = me.getRecordName(rec);
+	let name = me.getRecordName(rec);
 	return Ext.String.format(gettext('Are you sure you want to remove entry {0}'), `'${name}'`);
     },
 
     handler: function(btn, event, rec) {
-	var me = this;
+	let me = this;
 
-	var url = me.getUrl(rec);
+	let url = me.getUrl(rec);
 
 	if (typeof me.delay !== 'undefined' && me.delay >= 0) {
 	    url += "?delay=" + me.delay;

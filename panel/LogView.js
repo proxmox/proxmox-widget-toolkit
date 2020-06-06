@@ -20,10 +20,10 @@ Ext.define('Proxmox.panel.LogView', {
 	xclass: 'Ext.app.ViewController',
 
 	updateParams: function() {
-	    var me = this;
-	    var viewModel = me.getViewModel();
-	    var since = viewModel.get('since');
-	    var until = viewModel.get('until');
+	    let me = this;
+	    let viewModel = me.getViewModel();
+	    let since = viewModel.get('since');
+	    let until = viewModel.get('until');
 	    if (viewModel.get('hide_timespan')) {
 		return;
 	    }
@@ -39,18 +39,18 @@ Ext.define('Proxmox.panel.LogView', {
 	},
 
 	scrollPosBottom: function() {
-	    var view = this.getView();
-	    var pos = view.getScrollY();
-	    var maxPos = view.getScrollable().getMaxPosition().y;
+	    let view = this.getView();
+	    let pos = view.getScrollY();
+	    let maxPos = view.getScrollable().getMaxPosition().y;
 	    return maxPos - pos;
 	},
 
 	updateView: function(text, first, total) {
-	    var me = this;
-	    var view = me.getView();
-	    var viewModel = me.getViewModel();
-	    var content = me.lookup('content');
-	    var data = viewModel.get('data');
+	    let me = this;
+	    let view = me.getView();
+	    let viewModel = me.getViewModel();
+	    let content = me.lookup('content');
+	    let data = viewModel.get('data');
 
 	    if (first === data.first && total === data.total && text.length === data.textlen) {
 		return; // same content, skip setting and scrolling
@@ -61,7 +61,7 @@ Ext.define('Proxmox.panel.LogView', {
 		textlen: text.length,
 	    });
 
-	    var scrollPos = me.scrollPosBottom();
+	    let scrollPos = me.scrollPosBottom();
 
 	    content.update(text);
 
@@ -72,23 +72,23 @@ Ext.define('Proxmox.panel.LogView', {
 	},
 
 	doLoad: function() {
-	    var me = this;
+	    let me = this;
 	    if (me.running) {
 		me.requested = true;
 		return;
 	    }
 	    me.running = true;
-	    var view = me.getView();
-	    var viewModel = me.getViewModel();
+	    let view = me.getView();
+	    let viewModel = me.getViewModel();
 	    Proxmox.Utils.API2Request({
 		url: me.getView().url,
 		params: viewModel.get('params'),
 		method: 'GET',
 		success: function(response) {
 		    Proxmox.Utils.setErrorMask(me, false);
-		    var total = response.result.total;
-		    var lines = new Array();
-		    var first = Infinity;
+		    let total = response.result.total;
+		    let lines = [];
+		    let first = Infinity;
 
 		    Ext.Array.each(response.result.data, function(line) {
 			if (first > line.n) {
@@ -109,7 +109,7 @@ Ext.define('Proxmox.panel.LogView', {
 		    if (view.failCallback) {
 			view.failCallback(response);
 		    } else {
-			var msg = response.htmlStatus;
+			let msg = response.htmlStatus;
 			Proxmox.Utils.setErrorMask(me, msg);
 		    }
 		    me.running = false;
@@ -122,35 +122,35 @@ Ext.define('Proxmox.panel.LogView', {
 	},
 
 	onScroll: function(x, y) {
-	    var me = this;
-	    var view = me.getView();
-	    var viewModel = me.getViewModel();
+	    let me = this;
+	    let view = me.getView();
+	    let viewModel = me.getViewModel();
 
-	    var lineHeight = view.lineHeight;
-	    var line = view.getScrollY()/lineHeight;
-	    var start = viewModel.get('params.start');
-	    var limit = viewModel.get('params.limit');
-	    var viewLines = view.getHeight()/lineHeight;
+	    let lineHeight = view.lineHeight;
+	    let line = view.getScrollY()/lineHeight;
+	    let start = viewModel.get('params.start');
+	    let limit = viewModel.get('params.limit');
+	    let viewLines = view.getHeight()/lineHeight;
 
-	    var viewStart = Math.max(parseInt(line - 1 - view.viewBuffer, 10), 0);
-	    var viewEnd = parseInt(line + viewLines + 1 + view.viewBuffer, 10);
+	    let viewStart = Math.max(parseInt(line - 1 - view.viewBuffer, 10), 0);
+	    let viewEnd = parseInt(line + viewLines + 1 + view.viewBuffer, 10);
 
 	    if (viewStart < start || viewEnd > start+limit) {
 		viewModel.set('params.start',
-		    Math.max(parseInt(line - limit/2 + 10, 10), 0));
+		    Math.max(parseInt(line - (limit / 2) + 10, 10), 0));
 		view.loadTask.delay(200);
 	    }
 	},
 
 	init: function(view) {
-	    var me = this;
+	    let me = this;
 
 	    if (!view.url) {
 		throw "no url specified";
 	    }
 
-	    var viewModel = this.getViewModel();
-	    var since = new Date();
+	    let viewModel = this.getViewModel();
+	    let since = new Date();
 	    since.setDate(since.getDate() - 3);
 	    viewModel.set('until', new Date());
 	    viewModel.set('since', since);
@@ -177,14 +177,14 @@ Ext.define('Proxmox.panel.LogView', {
     },
 
     onDestroy: function() {
-	var me = this;
+	let me = this;
 	me.loadTask.cancel();
 	Ext.TaskManager.stop(me.task);
     },
 
     // for user to initiate a load from outside
     requestUpdate: function() {
-	var me = this;
+	let me = this;
 	me.loadTask.delay(200);
     },
 
@@ -216,7 +216,7 @@ Ext.define('Proxmox.panel.LogView', {
 	    // the panel have a 'scroll' event'
 	    scroll: {
 		fn: function(scroller, x, y) {
-		    var controller = this.component.getController();
+		    let controller = this.component.getController();
 		    if (controller) { // on destroy, controller can be gone
 			controller.onScroll(x, y);
 		    }

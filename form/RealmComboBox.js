@@ -13,10 +13,10 @@ Ext.define('Proxmox.form.RealmComboBox', {
 	    if (!success) {
 		return;
 	    }
-	    var me = this;
-	    var val = me.getValue();
+	    let me = this;
+	    let val = me.getValue();
 	    if (!val || !me.store.findRecord('realm', val)) {
-		var def = 'pam';
+		let def = 'pam';
 		Ext.each(records, function(rec) {
 		    if (rec.data && rec.data.default) {
 			def = rec.data.realm;

@@ -61,9 +61,9 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 
 
     updateValue: function(value, text) {
-	var me = this;
-	var color = me.defaultColor;
-	var attr = {};
+	let me = this;
+	let color = me.defaultColor;
+	let attr = {};
 
 	if (value >= me.criticalThreshold) {
 	    color = me.criticalColor;
@@ -88,7 +88,7 @@ Ext.define('Proxmox.panel.GaugeWidget', {
     },
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	me.callParent();
 
