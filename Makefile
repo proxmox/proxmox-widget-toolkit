@@ -76,8 +76,9 @@ ${DSC}: ${BUILDDIR}
 	lintian ${DSC}
 
 .PHONY: lint
+check: lint
 lint: ${JSSRC}
-	jslint ${JSSRC}
+	eslint ${JSSRC}
 
 proxmoxlib.js: ${JSSRC}
 	# add the version as comment in the file
