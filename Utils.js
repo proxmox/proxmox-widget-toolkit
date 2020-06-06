@@ -16,12 +16,12 @@ Ext.enableAriaPanels = false;
 if (!Ext.isDefined(Ext.global.console)) {
     var console = {
 	dir: function() {},
-	log: function() {}
+	log: function() {},
     };
 }
 
 Ext.Ajax.defaultHeaders = {
-    'Accept': 'application/json'
+    'Accept': 'application/json',
 };
 
 Ext.Ajax.on('beforerequest', function(conn, options) {
@@ -82,7 +82,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	zh_TW: 'Chinese (Traditional)',
     },
 
-    render_language: function (value) {
+    render_language: function(value) {
 	if (!value) {
 	    return Proxmox.Utils.defaultText + ' (English)';
 	}
@@ -223,7 +223,6 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     compute_min_label_width: function(text, width) {
-
 	if (width === undefined) { width = 100; }
 
 	var tm = new Ext.util.TextMetrics();
@@ -269,12 +268,10 @@ Ext.define('Proxmox.Utils', { utilities: {
 	}
 	if (!msg) {
 	    el.unmask();
+	} else if (msg === true) {
+	    el.mask(gettext("Loading..."));
 	} else {
-	    if (msg === true) {
-		el.mask(gettext("Loading..."));
-	    } else {
-		el.mask(msg);
-	    }
+	    el.mask(msg);
 	}
     },
 
@@ -286,7 +283,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	if (err.response && err.response.responseText) {
 	    let txt = err.response.responseText;
 	    try {
-		let res = JSON.parse(txt)
+		let res = JSON.parse(txt);
 		if (res.errors && typeof res.errors === 'object') {
 		    for (let [key, value] of Object.entries(res.errors)) {
 			msg.push(Ext.String.htmlEncode(`${key}: ${value}`));
@@ -354,9 +351,8 @@ Ext.define('Proxmox.Utils', { utilities: {
 
     // Ext.Ajax.request
     API2Request: function(reqOpts) {
-
 	var newopts = Ext.apply({
-	    waitMsg: gettext('Please wait...')
+	    waitMsg: gettext('Please wait...'),
 	}, reqOpts);
 
 	if (!newopts.url.match(/^\/api2/)) {
@@ -396,7 +392,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 		    response.result = {};
 		    try {
 			response.result = Ext.decode(response.responseText);
-		    } catch(e) {}
+		    } catch (e) {}
 		    var msg = gettext('Connection error') + ' - server offline?';
 		    if (response.aborted) {
 			msg = gettext('Connection error') + ' - aborted.';
@@ -408,7 +404,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 		    response.htmlStatus = msg;
 		    Ext.callback(callbackFn, options.scope, [options, false, response]);
 		    Ext.callback(failureFn, options.scope, [response, options]);
-		}
+		},
 	    });
 	};
 
@@ -417,7 +413,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	var target = newopts.waitMsgTarget;
 	if (target) {
 	    if (Proxmox.Utils.toolkit === 'touch') {
-		target.setMasked({ xtype: 'loadmask', message: newopts.waitMsg} );
+		target.setMasked({ xtype: 'loadmask', message: newopts.waitMsg });
 	    } else {
 		// Note: ExtJS bug - this does not work when component is not rendered
 		target.setLoading(newopts.waitMsg);
@@ -448,12 +444,12 @@ Ext.define('Proxmox.Utils', { utilities: {
 				return;
 			    }
 			    orig_cmd();
-			}
+			},
 		    });
 		} else {
 		    orig_cmd();
 		}
-	    }
+	    },
 	});
     },
 
@@ -527,7 +523,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	OVSBridge: 'OVS Bridge',
 	OVSBond: 'OVS Bond',
 	OVSPort: 'OVS Port',
-	OVSIntPort: 'OVS IntPort'
+	OVSIntPort: 'OVS IntPort',
     },
 
     render_network_iface_type: function(value) {
@@ -536,93 +532,93 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     task_desc_table: {
-	acmenewcert: [ 'SRV', gettext('Order Certificate') ],
-	acmeregister: [ 'ACME Account', gettext('Register') ],
-	acmedeactivate: [ 'ACME Account', gettext('Deactivate') ],
-	acmeupdate: [ 'ACME Account', gettext('Update') ],
-	acmerefresh: [ 'ACME Account', gettext('Refresh') ],
-	acmerenew: [ 'SRV', gettext('Renew Certificate') ],
-	acmerevoke: [ 'SRV', gettext('Revoke Certificate') ],
-	'auth-realm-sync': [ gettext('Realm'), gettext('Sync') ],
-	'auth-realm-sync-test': [ gettext('Realm'), gettext('Sync Preview')],
-	'move_volume': [ 'CT', gettext('Move Volume') ],
-	clustercreate: [ '', gettext('Create Cluster') ],
-	clusterjoin: [ '', gettext('Join Cluster') ],
-	diskinit: [ 'Disk', gettext('Initialize Disk with GPT') ],
-	vncproxy: [ 'VM/CT', gettext('Console') ],
-	spiceproxy: [ 'VM/CT', gettext('Console') + ' (Spice)' ],
-	vncshell: [ '', gettext('Shell') ],
-	spiceshell: [ '', gettext('Shell')  + ' (Spice)' ],
-	qmsnapshot: [ 'VM', gettext('Snapshot') ],
-	qmrollback: [ 'VM', gettext('Rollback') ],
-	qmdelsnapshot: [ 'VM', gettext('Delete Snapshot') ],
-	qmcreate: [ 'VM', gettext('Create') ],
-	qmrestore: [ 'VM', gettext('Restore') ],
-	qmdestroy: [ 'VM', gettext('Destroy') ],
-	qmigrate: [ 'VM', gettext('Migrate') ],
-	qmclone: [ 'VM', gettext('Clone') ],
-	qmmove: [ 'VM', gettext('Move disk') ],
-	qmtemplate: [ 'VM', gettext('Convert to template') ],
-	qmstart: [ 'VM', gettext('Start') ],
-	qmstop: [ 'VM', gettext('Stop') ],
-	qmreset: [ 'VM', gettext('Reset') ],
-	qmshutdown: [ 'VM', gettext('Shutdown') ],
-	qmreboot: [ 'VM', gettext('Reboot') ],
-	qmsuspend: [ 'VM', gettext('Hibernate') ],
-	qmpause: [ 'VM', gettext('Pause') ],
-	qmresume: [ 'VM', gettext('Resume') ],
-	qmconfig: [ 'VM', gettext('Configure') ],
-	vzsnapshot: [ 'CT', gettext('Snapshot') ],
-	vzrollback: [ 'CT', gettext('Rollback') ],
-	vzdelsnapshot: [ 'CT', gettext('Delete Snapshot') ],
-	vzcreate: ['CT', gettext('Create') ],
-	vzrestore: ['CT', gettext('Restore') ],
-	vzdestroy: ['CT', gettext('Destroy') ],
-	vzmigrate: [ 'CT', gettext('Migrate') ],
-	vzclone: [ 'CT', gettext('Clone') ],
-	vztemplate: [ 'CT', gettext('Convert to template') ],
-	vzstart: ['CT', gettext('Start') ],
-	vzstop: ['CT', gettext('Stop') ],
-	vzmount: ['CT', gettext('Mount') ],
-	vzumount: ['CT', gettext('Unmount') ],
-	vzshutdown: ['CT', gettext('Shutdown') ],
-	vzreboot: ['CT', gettext('Reboot') ],
-	vzsuspend: [ 'CT', gettext('Suspend') ],
-	vzresume: [ 'CT', gettext('Resume') ],
+	acmenewcert: ['SRV', gettext('Order Certificate')],
+	acmeregister: ['ACME Account', gettext('Register')],
+	acmedeactivate: ['ACME Account', gettext('Deactivate')],
+	acmeupdate: ['ACME Account', gettext('Update')],
+	acmerefresh: ['ACME Account', gettext('Refresh')],
+	acmerenew: ['SRV', gettext('Renew Certificate')],
+	acmerevoke: ['SRV', gettext('Revoke Certificate')],
+	'auth-realm-sync': [gettext('Realm'), gettext('Sync')],
+	'auth-realm-sync-test': [gettext('Realm'), gettext('Sync Preview')],
+	'move_volume': ['CT', gettext('Move Volume')],
+	clustercreate: ['', gettext('Create Cluster')],
+	clusterjoin: ['', gettext('Join Cluster')],
+	diskinit: ['Disk', gettext('Initialize Disk with GPT')],
+	vncproxy: ['VM/CT', gettext('Console')],
+	spiceproxy: ['VM/CT', gettext('Console') + ' (Spice)'],
+	vncshell: ['', gettext('Shell')],
+	spiceshell: ['', gettext('Shell')  + ' (Spice)'],
+	qmsnapshot: ['VM', gettext('Snapshot')],
+	qmrollback: ['VM', gettext('Rollback')],
+	qmdelsnapshot: ['VM', gettext('Delete Snapshot')],
+	qmcreate: ['VM', gettext('Create')],
+	qmrestore: ['VM', gettext('Restore')],
+	qmdestroy: ['VM', gettext('Destroy')],
+	qmigrate: ['VM', gettext('Migrate')],
+	qmclone: ['VM', gettext('Clone')],
+	qmmove: ['VM', gettext('Move disk')],
+	qmtemplate: ['VM', gettext('Convert to template')],
+	qmstart: ['VM', gettext('Start')],
+	qmstop: ['VM', gettext('Stop')],
+	qmreset: ['VM', gettext('Reset')],
+	qmshutdown: ['VM', gettext('Shutdown')],
+	qmreboot: ['VM', gettext('Reboot')],
+	qmsuspend: ['VM', gettext('Hibernate')],
+	qmpause: ['VM', gettext('Pause')],
+	qmresume: ['VM', gettext('Resume')],
+	qmconfig: ['VM', gettext('Configure')],
+	vzsnapshot: ['CT', gettext('Snapshot')],
+	vzrollback: ['CT', gettext('Rollback')],
+	vzdelsnapshot: ['CT', gettext('Delete Snapshot')],
+	vzcreate: ['CT', gettext('Create')],
+	vzrestore: ['CT', gettext('Restore')],
+	vzdestroy: ['CT', gettext('Destroy')],
+	vzmigrate: ['CT', gettext('Migrate')],
+	vzclone: ['CT', gettext('Clone')],
+	vztemplate: ['CT', gettext('Convert to template')],
+	vzstart: ['CT', gettext('Start')],
+	vzstop: ['CT', gettext('Stop')],
+	vzmount: ['CT', gettext('Mount')],
+	vzumount: ['CT', gettext('Unmount')],
+	vzshutdown: ['CT', gettext('Shutdown')],
+	vzreboot: ['CT', gettext('Reboot')],
+	vzsuspend: ['CT', gettext('Suspend')],
+	vzresume: ['CT', gettext('Resume')],
 	push_file: ['CT', gettext('Push file')],
 	pull_file: ['CT', gettext('Pull file')],
-	hamigrate: [ 'HA', gettext('Migrate') ],
-	hastart: [ 'HA', gettext('Start') ],
-	hastop: [ 'HA', gettext('Stop') ],
-	hashutdown: [ 'HA', gettext('Shutdown') ],
-	srvstart: ['SRV', gettext('Start') ],
-	srvstop: ['SRV', gettext('Stop') ],
-	srvrestart: ['SRV', gettext('Restart') ],
-	srvreload: ['SRV', gettext('Reload') ],
-	cephcreatemgr: ['Ceph Manager', gettext('Create') ],
-	cephdestroymgr: ['Ceph Manager', gettext('Destroy') ],
-	cephcreatemon: ['Ceph Monitor', gettext('Create') ],
-	cephdestroymon: ['Ceph Monitor', gettext('Destroy') ],
-	cephcreateosd: ['Ceph OSD', gettext('Create') ],
-	cephdestroyosd: ['Ceph OSD', gettext('Destroy') ],
-	cephcreatepool: ['Ceph Pool', gettext('Create') ],
-	cephdestroypool: ['Ceph Pool', gettext('Destroy') ],
-	cephfscreate: ['CephFS', gettext('Create') ],
-	cephcreatemds: ['Ceph Metadata Server', gettext('Create') ],
-	cephdestroymds: ['Ceph Metadata Server', gettext('Destroy') ],
-	imgcopy: ['', gettext('Copy data') ],
-	imgdel: ['', gettext('Erase data') ],
-	unknownimgdel: ['', gettext('Destroy image from unknown guest') ],
-	download: ['', gettext('Download') ],
+	hamigrate: ['HA', gettext('Migrate')],
+	hastart: ['HA', gettext('Start')],
+	hastop: ['HA', gettext('Stop')],
+	hashutdown: ['HA', gettext('Shutdown')],
+	srvstart: ['SRV', gettext('Start')],
+	srvstop: ['SRV', gettext('Stop')],
+	srvrestart: ['SRV', gettext('Restart')],
+	srvreload: ['SRV', gettext('Reload')],
+	cephcreatemgr: ['Ceph Manager', gettext('Create')],
+	cephdestroymgr: ['Ceph Manager', gettext('Destroy')],
+	cephcreatemon: ['Ceph Monitor', gettext('Create')],
+	cephdestroymon: ['Ceph Monitor', gettext('Destroy')],
+	cephcreateosd: ['Ceph OSD', gettext('Create')],
+	cephdestroyosd: ['Ceph OSD', gettext('Destroy')],
+	cephcreatepool: ['Ceph Pool', gettext('Create')],
+	cephdestroypool: ['Ceph Pool', gettext('Destroy')],
+	cephfscreate: ['CephFS', gettext('Create')],
+	cephcreatemds: ['Ceph Metadata Server', gettext('Create')],
+	cephdestroymds: ['Ceph Metadata Server', gettext('Destroy')],
+	imgcopy: ['', gettext('Copy data')],
+	imgdel: ['', gettext('Erase data')],
+	unknownimgdel: ['', gettext('Destroy image from unknown guest')],
+	download: ['', gettext('Download')],
 	vzdump: (type, id) => id ? `VM/CT ${id} - ${gettext('Backup')}` : gettext('Backup Job'),
-	aptupdate: ['', gettext('Update package database') ],
-	startall: [ '', gettext('Start all VMs and Containers') ],
-	stopall: [ '', gettext('Stop all VMs and Containers') ],
-	migrateall: [ '', gettext('Migrate all VMs and Containers') ],
-	dircreate: [ gettext('Directory Storage'), gettext('Create') ],
-	lvmcreate: [ gettext('LVM Storage'), gettext('Create') ],
-	lvmthincreate: [ gettext('LVM-Thin Storage'), gettext('Create') ],
-	zfscreate: [ gettext('ZFS Storage'), gettext('Create') ]
+	aptupdate: ['', gettext('Update package database')],
+	startall: ['', gettext('Start all VMs and Containers')],
+	stopall: ['', gettext('Stop all VMs and Containers')],
+	migrateall: ['', gettext('Migrate all VMs and Containers')],
+	dircreate: [gettext('Directory Storage'), gettext('Create')],
+	lvmcreate: [gettext('LVM Storage'), gettext('Create')],
+	lvmthincreate: [gettext('LVM-Thin Storage'), gettext('Create')],
+	zfscreate: [gettext('ZFS Storage'), gettext('Create')],
     },
 
     // to add or change existing for product specific ones
@@ -674,7 +670,6 @@ Ext.define('Proxmox.Utils', { utilities: {
     },
 
     render_uptime: function(value) {
-
 	var uptime = value;
 
 	if (uptime === undefined) {
@@ -760,7 +755,7 @@ Ext.define('Proxmox.Utils', { utilities: {
 	if (nw) {
 	    nw.focus();
 	}
-    }
+    },
 
 },
 
