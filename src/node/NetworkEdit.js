@@ -312,18 +312,18 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    name: 'gateway6',
 		},
 	    );
-	    advancedColumn1.push(
-		{
-		    xtype: 'proxmoxintegerfield',
-		    minValue: 1280,
-		    maxValue: 65520,
-		    deleteEmpty: !me.isCreate,
-		    emptyText: 1500,
-		    fieldLabel: 'MTU',
-		    name: 'mtu',
-		},
-	    );
 	}
+	advancedColumn1.push(
+	    {
+		xtype: 'proxmoxintegerfield',
+		minValue: 1280,
+		maxValue: 65520,
+		deleteEmpty: !me.isCreate,
+		emptyText: 1500,
+		fieldLabel: 'MTU',
+		name: 'mtu',
+	    },
+	);
 
 	Ext.applyIf(me, {
 	    url: url,
