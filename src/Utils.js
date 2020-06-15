@@ -711,6 +711,23 @@ utilities: {
 	return task;
     },
 
+    parse_task_status: function(status) {
+	if (status === 'OK') {
+	    return 'ok';
+	}
+
+	if (status === 'unknown') {
+	    return 'unknown';
+	}
+
+	let match = status.match(/^WARNINGS: (.*)$/);
+	if (match) {
+	    return 'warning';
+	}
+
+	return 'error';
+    },
+
     render_duration: function(value) {
 	if (value === undefined) {
 	    return '-';

@@ -81,8 +81,13 @@ Ext.define('Proxmox.node.Tasks', {
 		getRowClass: function(record, index) {
 		    let status = record.get('status');
 
-		    if (status && status !== 'OK') {
-			return "proxmox-invalid-row";
+		    if (status) {
+			let parsed = Proxmox.Utils.parse_task_status(status);
+			if (parsed === 'error') {
+			    return "proxmox-invalid-row";
+			} else if (parsed === 'warning') {
+			    return "proxmox-warning-row";
+			}
 		    }
 		    return '';
 		},
@@ -162,14 +167,19 @@ Ext.define('Proxmox.node.Tasks', {
 		    dataIndex: 'status',
 		    width: 200,
 		    renderer: function(value, metaData, record) {
-			if (value === 'OK') {
-			    return 'OK';
-			}
 			if (value === undefined && !record.data.endtime) {
 			    metaData.tdCls = "x-grid-row-loading";
 			    return '';
 			}
-			return "ERROR: " + value;
+
+			let parsed = Proxmox.Utils.parse_task_status(value);
+			switch (parsed) {
+			    case 'unknown': return Proxmox.Utils.unknownText;
+			    case 'error': return Proxmox.Utils.errorText + ': ' + value;
+			    case 'ok': // fall-through
+			    case 'warning': // fall-through
+			    default: return value;
+			}
 		    },
 		},
 	    ],
