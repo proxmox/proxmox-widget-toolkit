@@ -60,6 +60,7 @@ Ext.define('Proxmox.node.Tasks', {
 
 	    let win = Ext.create('Proxmox.window.TaskViewer', {
 		upid: rec.data.upid,
+		endtime: rec.data.endtime,
 	    });
 	    win.show();
 	};

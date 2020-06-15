@@ -152,6 +152,31 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    },
 	};
 
+	if (me.endtime) {
+	    if (typeof me.endtime === 'object') {
+		// convert to epoch
+		me.endtime = parseInt(me.endtime.getTime()/1000, 10);
+	    }
+	    rows.endtime = {
+		header: gettext('End Time'),
+		required: true,
+		renderer: function() {
+		    return Proxmox.Utils.render_timestamp(me.endtime);
+		},
+	    };
+	}
+
+	rows.duration = {
+	    header: gettext('Duration'),
+	    required: true,
+	    renderer: function() {
+		let starttime = statgrid.getObjectValue('starttime');
+		let endtime = me.endtime || Date.now()/1000;
+		let duration = endtime - starttime;
+		return Proxmox.Utils.format_duration_human(duration);
+	    },
+	};
+
 	let statstore = Ext.create('Proxmox.data.ObjectStore', {
             url: "/api2/json/nodes/" + task.node + "/tasks/" + me.upid + "/status",
 	    interval: 1000,
