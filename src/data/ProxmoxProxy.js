@@ -43,6 +43,18 @@ Ext.define('Proxmox.RestProxy', {
 	    { name: 'starttime', type: 'date', dateFormat: 'timestamp' },
 	    { name: 'endtime', type: 'date', dateFormat: 'timestamp' },
 	    { name: 'pid', type: 'int' },
+	    {
+		name: 'duration',
+		sortType: 'asInt',
+		calculate: function(data) {
+		    let endtime = data.endtime;
+		    let starttime = data.starttime;
+		    if (endtime !== undefined) {
+			return (endtime - starttime)/1000;
+		    }
+		    return 0;
+		},
+	    },
 	    'node', 'upid', 'user', 'status', 'type', 'id',
 	],
 	idProperty: 'upid',
