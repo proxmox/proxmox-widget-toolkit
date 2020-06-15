@@ -157,8 +157,8 @@ utilities: {
     format_duration_human: function(ut) {
 	let seconds = 0, minutes = 0, hours = 0, days = 0;
 
-	if (ut <= 0) {
-	    return '0s';
+	if (ut <= 0.1) {
+	    return '<0.1s';
 	}
 
 	let remaining = ut;
