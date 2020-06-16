@@ -1,3 +1,21 @@
+proxmox-widget-toolkit (2.2-8) pve pmg; urgency=medium
+
+  * format task description: avoid printing undefined ID
+
+  * network edit: display MTU for OVS-bond interfaces too
+
+  * ProxmoxProxy: add duration fields for proxmox-tasks model
+
+  * color and show task with warnings differently
+
+  * improve format_duration_human for small values <0.1s
+
+  * move over disk selection and smart info from Proxmox VE's manager
+
+  * task viewer: show task endtime and duration in status
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 16 Jun 2020 16:49:42 +0200
+
 proxmox-widget-toolkit (2.2-7) pve pmg; urgency=medium
 
   * button: make xtype of parent configurable
