@@ -29,6 +29,7 @@ JSSRC=					\
 	form/NetworkSelector.js		\
 	form/RealmComboBox.js		\
 	form/RoleSelector.js		\
+	form/DiskSelector.js		\
 	button/Button.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
