@@ -34,6 +34,7 @@ JSSRC=					\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
 	grid/PendingObjectGrid.js	\
+	grid/DiskList.js		\
 	panel/InputPanel.js		\
 	panel/LogView.js		\
 	panel/JournalView.js		\
@@ -43,6 +44,7 @@ JSSRC=					\
 	window/PasswordEdit.js		\
 	window/TaskViewer.js		\
 	window/LanguageEdit.js		\
+	window/DiskSmart.js		\
 	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
