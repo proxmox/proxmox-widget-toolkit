@@ -740,6 +740,31 @@ utilities: {
 	return Ext.Date.format(servertime, 'Y-m-d H:i:s');
     },
 
+    render_zfs_health: function(value) {
+	if (typeof value === 'undefined') {
+	    return "";
+	}
+	var iconCls = 'question-circle';
+	switch (value) {
+	    case 'AVAIL':
+	    case 'ONLINE':
+		iconCls = 'check-circle good';
+		break;
+	    case 'REMOVED':
+	    case 'DEGRADED':
+		iconCls = 'exclamation-circle warning';
+		break;
+	    case 'UNAVAIL':
+	    case 'FAULTED':
+	    case 'OFFLINE':
+		iconCls = 'times-circle critical';
+		break;
+	    default: //unknown
+	}
+
+	return '<i class="fa fa-' + iconCls + '"></i> ' + value;
+    },
+
     get_help_info: function(section) {
 	let helpMap;
 	if (typeof proxmoxOnlineHelpInfo !== 'undefined') {
