@@ -46,6 +46,7 @@ JSSRC=					\
 	window/TaskViewer.js		\
 	window/LanguageEdit.js		\
 	window/DiskSmart.js		\
+	window/ZFSDetail.js		\
 	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
