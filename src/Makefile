@@ -30,6 +30,7 @@ JSSRC=					\
 	form/RealmComboBox.js		\
 	form/RoleSelector.js		\
 	form/DiskSelector.js		\
+	form/MultiDiskSelector.js	\
 	button/Button.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
