@@ -39,9 +39,9 @@ Ext.Ajax.on('beforerequest', function(conn, options) {
 	}
 	options.headers.CSRFPreventionToken = Proxmox.CSRFPreventionToken;
     }
-    let storedUser = Proxmox.Utils.getStoredUser();
-    if (storedUser.token) {
-	options.headers.Authorization = storedUser.token;
+    let storedAuth = Proxmox.Utils.getStoredAuth();
+    if (storedAuth.token) {
+	options.headers.Authorization = storedAuth.token;
     }
 });
 
@@ -266,7 +266,7 @@ utilities: {
 	if (Proxmox.LoggedOut) {
 	    return undefined;
 	}
-	let storedAuth = Proxmox.Utils.getStoredUser();
+	let storedAuth = Proxmox.Utils.getStoredAuth();
 	let cookie = Ext.util.Cookies.get(Proxmox.Setup.auth_cookie_name);
 	if ((Proxmox.UserName !== '' && cookie && !cookie.startsWith("PVE:tfa!")) || storedAuth.token) {
 	    return cookie || storedAuth.token;
