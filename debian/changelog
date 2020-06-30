@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.2-9) pve pmg; urgency=medium
+
+  * add disk and storage related widgets, factored out from Proxmox VE's manager
+
+  * adapt auth utils for Proxmox token authentication
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 30 Jun 2020 13:36:05 +0200
+
 proxmox-widget-toolkit (2.2-8) pve pmg; urgency=medium
 
   * format task description: avoid printing undefined ID
