@@ -33,7 +33,7 @@ Ext.define('Proxmox.window.Edit', {
     defaultButton: 'submitbutton',
 
     // finds the first form field
-    defaultFocus: 'field[disabled=false][hidden=false]',
+    defaultFocus: 'field:focusable[disabled=false][hidden=false]',
 
     showProgress: false,
 
