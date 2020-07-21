@@ -793,7 +793,17 @@ utilities: {
 	    throw "no global OnlineHelpInfo map declared";
 	}
 
-	return helpMap[section];
+	if (helpMap[section]) {
+	    return helpMap[section];
+	}
+	// try to normalize - and _ separators, to support asciidoc and sphinx
+	// references at the same time.
+	let section_minus_normalized = section.replace(/_/, '-');
+	if (helpMap[section_minus_normalized]) {
+	    return helpMap[section_minus_normalized];
+	}
+	let section_underscore_normalized = section.replace(/-/, '_');
+	return helpMap[section_underscore_normalized];
     },
 
     get_help_link: function(section) {
