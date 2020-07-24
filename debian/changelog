@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (2.2-10) pve pmg; urgency=medium
+
+  * Add focusable pseudo class to edit windows defaultFocus
+
+  * displayedit: allow binding editable and value, and allow passing explicit
+    displayConfig
+
+  * service view: allow overwriting restart command
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 24 Jul 2020 15:11:11 +0200
+
 proxmox-widget-toolkit (2.2-9) pve pmg; urgency=medium
 
   * add disk and storage related widgets, factored out from Proxmox VE's manager
