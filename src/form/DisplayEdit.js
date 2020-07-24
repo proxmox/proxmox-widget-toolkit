@@ -21,6 +21,24 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 	me.editable = editable;
 	vm.set('editable', editable);
     },
+    getEditable: function() {
+	let me = this;
+	let vm = me.getViewModel();
+	vm.get('editable');
+    },
+
+    setValue: function(value) {
+	let me = this;
+	let vm = me.getViewModel();
+
+	me.value = value;
+	vm.set('value', value);
+    },
+    getValue: function() {
+	let me = this;
+	let vm = me.getViewModel();
+	vm.get('value');
+    },
 
     layout: 'fit',
     defaults: {
