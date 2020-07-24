@@ -59,10 +59,10 @@ Ext.define('Proxmox.node.ServiceView', {
 	};
 
 	let service_cmd = function(cmd) {
-	    let sm = me.getSelectionModel();
-	    let rec = sm.getSelection()[0];
+	    let rec = me.getSelectionModel().getSelection()[0];
+	    let service = rec.data.service;
 	    Proxmox.Utils.API2Request({
-		url: "/nodes/" + me.nodename + "/services/" + rec.data.service + "/" + cmd,
+		url: `/nodes/${me.nodename}/services/${service}/${cmd}`,
 		method: 'POST',
 		failure: function(response, opts) {
 		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
