@@ -63,6 +63,11 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 	});
 	Ext.applyIf(editConfig, displayConfig);
 
+	if (me.initialConfig && me.initialConfig.displayConfig) {
+	    Ext.applyIf(displayConfig, me.initialConfig.displayConfig);
+	    delete displayConfig.displayConfig;
+	}
+
 	Ext.applyIf(displayConfig.bind, {
 	    hidden: '{editable}',
 	    disabled: '{editable}',
