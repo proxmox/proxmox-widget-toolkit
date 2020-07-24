@@ -11,6 +11,8 @@ Ext.define('Proxmox.node.ServiceView', {
 
     startOnlyServices: {},
 
+    restartCommand: "restart", // TODO: default to reload once everywhere supported
+
     initComponent: function() {
 	let me = this;
 
@@ -100,7 +102,7 @@ Ext.define('Proxmox.node.ServiceView', {
 	    text: gettext('Restart'),
 	    disabled: true,
 	    handler: function() {
-		service_cmd("restart");
+		service_cmd(me.restartCommand || "restart");
 	    },
 	});
 
