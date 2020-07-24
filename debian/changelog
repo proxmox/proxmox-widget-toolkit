@@ -1,4 +1,4 @@
-proxmox-widget-toolkit (2.2-10) pve pmg; urgency=medium
+proxmox-widget-toolkit (2.2-11) pve pmg; urgency=medium
 
   * Add focusable pseudo class to edit windows defaultFocus
 
@@ -7,7 +7,9 @@ proxmox-widget-toolkit (2.2-10) pve pmg; urgency=medium
 
   * service view: allow overwriting restart command
 
- -- Proxmox Support Team <support@proxmox.com>  Fri, 24 Jul 2020 15:11:11 +0200
+  * re-bump package for Proxmox Backup Server
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 24 Jul 2020 16:16:52 +0200
 
 proxmox-widget-toolkit (2.2-9) pve pmg; urgency=medium
 
