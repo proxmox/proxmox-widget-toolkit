@@ -73,10 +73,10 @@ Ext.define('Proxmox.DiskList', {
 
 	    let rec = selection[0];
 	    Proxmox.Utils.API2Request({
-		url: `${view.baseurl}/initgpt`,
+		url: `${view.exturl}/initgpt`,
 		waitMsgTarget: view,
 		method: 'POST',
-		params: { disk: rec.data.devpath },
+		params: { disk: rec.data.name },
 		failure: function(response, options) {
 		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
 		},
@@ -84,6 +84,9 @@ Ext.define('Proxmox.DiskList', {
 		    var upid = response.result.data;
 		    var win = Ext.create('Proxmox.window.TaskProgress', {
 		        upid: upid,
+			taskDone: function() {
+			    me.reload()
+			}
 		    });
 		    win.show();
 		},
@@ -95,6 +98,7 @@ Ext.define('Proxmox.DiskList', {
 
 	    let nodename = view.nodename || 'localhost';
 	    view.baseurl = `/api2/json/nodes/${nodename}/disks`;
+	    view.exturl = `/api2/extjs/nodes/${nodename}/disks`;
 	    view.getStore().getProxy().setUrl(`${view.baseurl}/list`);
 	    view.getStore().load();
 	},
@@ -129,7 +133,7 @@ Ext.define('Proxmox.DiskList', {
 	    text: gettext('Initialize Disk with GPT'),
 	    disabled: true,
 	    enableFn: function(rec) {
-		if (!rec || rec.data.used) {
+		if (!rec || (rec.data.used && rec.data.used !== 'unused')) {
 		    return false;
 		} else {
 		    return true;
