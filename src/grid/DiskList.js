@@ -85,8 +85,8 @@ Ext.define('Proxmox.DiskList', {
 		    var win = Ext.create('Proxmox.window.TaskProgress', {
 		        upid: upid,
 			taskDone: function() {
-			    me.reload()
-			}
+			    me.reload();
+			},
 		    });
 		    win.show();
 		},
