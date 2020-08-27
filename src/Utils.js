@@ -74,6 +74,7 @@ utilities: {
 	zh_CN: 'Chinese (Simplified)',
 	zh_TW: 'Chinese (Traditional)',
 	da: 'Danish',
+	nl: 'Dutch',
 	en: 'English',
 	eu: 'Euskera (Basque)',
 	fr: 'French',
