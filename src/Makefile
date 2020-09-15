@@ -43,6 +43,7 @@ JSSRC=					\
 	panel/GaugeWidget.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
+	window/SafeDestroy.js		\
 	window/TaskViewer.js		\
 	window/LanguageEdit.js		\
 	window/DiskSmart.js		\
