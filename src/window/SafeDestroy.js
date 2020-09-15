@@ -18,9 +18,10 @@ Ext.define('Proxmox.window.SafeDestroy', {
     config: {
 	item: {
 	    id: undefined,
-	    type: undefined,
+	    purgeable: false,
 	},
 	url: undefined,
+	taskName: undefined,
 	params: {},
     },
 
@@ -159,28 +160,17 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	    throw "no ID specified";
 	}
 
-	if (!Ext.isDefined(item.type)) {
-	    throw "no VM type specified";
-	}
-
 	var messageCmp = me.lookupReference('messageCmp');
 	var msg;
 
-	if (item.type === 'VM') {
-	    msg = Proxmox.Utils.format_task_description('qmdestroy', item.id);
-	} else if (item.type === 'CT') {
-	    msg = Proxmox.Utils.format_task_description('vzdestroy', item.id);
-	} else if (item.type === 'CephPool') {
-	    msg = Proxmox.Utils.format_task_description('cephdestroypool', item.id);
-	} else if (item.type === 'Image') {
-	    msg = Proxmox.Utils.format_task_description('unknownimgdel', item.id);
+	if (Ext.isDefined(me.getTaskName())) {
+	    msg = Proxmox.Utils.format_task_description(me.getTaskName(), item.id);
+	    messageCmp.setHtml(msg);
 	} else {
-	    throw "unknown item type specified";
+	    throw "no task name specified";
 	}
 
-	messageCmp.setHtml(msg);
-
-	if (!(item.type === 'VM' || item.type === 'CT')) {
+	if (!item.purgeable) {
 	    let purgeCheckbox = me.lookupReference('purgeCheckbox');
 	    purgeCheckbox.setDisabled(true);
 	    purgeCheckbox.setHidden(true);
