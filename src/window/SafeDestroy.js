@@ -11,17 +11,17 @@ Ext.define('Proxmox.window.SafeDestroy', {
     buttonAlign: 'center',
     bodyPadding: 10,
     width: 450,
-    layout: { type:'hbox' },
+    layout: { type: 'hbox' },
     defaultFocus: 'confirmField',
     showProgress: false,
 
     config: {
 	item: {
 	    id: undefined,
-	    type: undefined
+	    type: undefined,
 	},
 	url: undefined,
-	params: {}
+	params: {},
     },
 
     getParams: function() {
@@ -51,12 +51,12 @@ Ext.define('Proxmox.window.SafeDestroy', {
 			removeButton.disable();
 		    }
 		},
-		specialkey: function (field, event) {
+		specialkey: function(field, event) {
 		    var removeButton = this.lookupReference('removeButton');
-		    if (!removeButton.isDisabled() && event.getKey() == event.ENTER) {
+		    if (!removeButton.isDisabled() && event.getKey() === event.ENTER) {
 			removeButton.fireEvent('click', removeButton, event);
 		    }
-		}
+		},
 	    },
            'button[reference=removeButton]': {
 		click: function() {
@@ -70,8 +70,8 @@ Ext.define('Proxmox.window.SafeDestroy', {
 			    Ext.Msg.alert('Error', response.htmlStatus);
 			},
 			success: function(response, options) {
-			    var hasProgressBar = view.showProgress &&
-				response.result.data ? true : false;
+			    var hasProgressBar = !!(view.showProgress &&
+				response.result.data);
 
 			    if (hasProgressBar) {
 				// stay around so we can trigger our close events
@@ -82,40 +82,40 @@ Ext.define('Proxmox.window.SafeDestroy', {
 				var win = Ext.create('Proxmox.window.TaskProgress', {
 				    upid: upid,
 				    listeners: {
-					destroy: function () {
+					destroy: function() {
 					    view.close();
-					}
-				    }
+					},
+				    },
 				});
 				win.show();
 			    } else {
 				view.close();
 			    }
-			}
+			},
 		    });
-		}
-            }
-	}
+		},
+            },
+	},
     },
 
     items: [
 	{
 	    xtype: 'component',
-	    cls: [ Ext.baseCSSPrefix + 'message-box-icon',
+	    cls: [Ext.baseCSSPrefix + 'message-box-icon',
 		   Ext.baseCSSPrefix + 'message-box-warning',
-		   Ext.baseCSSPrefix + 'dlg-icon']
+		   Ext.baseCSSPrefix + 'dlg-icon'],
 	},
 	{
 	    xtype: 'container',
 	    flex: 1,
 	    layout: {
 		type: 'vbox',
-		align: 'stretch'
+		align: 'stretch',
 	    },
 	    items: [
 		{
 		    xtype: 'component',
-		    reference: 'messageCmp'
+		    reference: 'messageCmp',
 		},
 		{
 		    itemId: 'confirmField',
@@ -124,7 +124,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
 		    name: 'confirm',
 		    labelWidth: 300,
 		    hideTrigger: true,
-		    allowBlank: false
+		    allowBlank: false,
 		},
 		{
 		    xtype: 'proxmoxcheckbox',
@@ -134,21 +134,21 @@ Ext.define('Proxmox.window.SafeDestroy', {
 		    checked: false,
 		    autoEl: {
 			tag: 'div',
-			'data-qtip': gettext('Remove from replication and backup jobs')
-		    }
-		}
-	    ]
-	}
+			'data-qtip': gettext('Remove from replication and backup jobs'),
+		    },
+		},
+	    ],
+	},
     ],
     buttons: [
 	{
 	    reference: 'removeButton',
 	    text: gettext('Remove'),
-	    disabled: true
-	}
+	    disabled: true,
+	},
     ],
 
-    initComponent : function() {
+    initComponent: function() {
 	var me = this;
 
 	me.callParent();
@@ -190,5 +190,5 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	msg = gettext('Please enter the ID to confirm') +
 	    ' (' + item.id + ')';
 	confirmField.setFieldLabel(msg);
-    }
+    },
 });
