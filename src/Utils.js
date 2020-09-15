@@ -646,6 +646,7 @@ utilities: {
 	stopall: ['', gettext('Stop all VMs and Containers')],
 	migrateall: ['', gettext('Migrate all VMs and Containers')],
 	dircreate: [gettext('Directory Storage'), gettext('Create')],
+	dirremove: [gettext('Directory'), gettext('Remove')],
 	lvmcreate: [gettext('LVM Storage'), gettext('Create')],
 	lvmthincreate: [gettext('LVM-Thin Storage'), gettext('Create')],
 	zfscreate: [gettext('ZFS Storage'), gettext('Create')],
