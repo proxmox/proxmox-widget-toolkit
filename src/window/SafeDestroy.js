@@ -26,8 +26,8 @@ Ext.define('Proxmox.window.SafeDestroy', {
     },
 
     getParams: function() {
-	var me = this;
-	var purgeCheckbox = me.lookupReference('purgeCheckbox');
+	let me = this;
+	const purgeCheckbox = me.lookupReference('purgeCheckbox');
 	if (purgeCheckbox.checked) {
 	    me.params.purge = 1;
 	}
@@ -44,8 +44,8 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	control: {
 	    'field[name=confirm]': {
 		change: function(f, value) {
-		    var view = this.getView();
-		    var removeButton = this.lookupReference('removeButton');
+		    const view = this.getView();
+		    const removeButton = this.lookupReference('removeButton');
 		    if (value === view.getItem().id.toString()) {
 			removeButton.enable();
 		    } else {
@@ -53,7 +53,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
 		    }
 		},
 		specialkey: function(field, event) {
-		    var removeButton = this.lookupReference('removeButton');
+		    const removeButton = this.lookupReference('removeButton');
 		    if (!removeButton.isDisabled() && event.getKey() === event.ENTER) {
 			removeButton.fireEvent('click', removeButton, event);
 		    }
@@ -61,7 +61,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	    },
            'button[reference=removeButton]': {
 		click: function() {
-		    var view = this.getView();
+		    const view = this.getView();
 		    Proxmox.Utils.API2Request({
 			url: view.getUrl() + view.getParams(),
 			method: 'DELETE',
@@ -71,7 +71,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
 			    Ext.Msg.alert('Error', response.htmlStatus);
 			},
 			success: function(response, options) {
-			    var hasProgressBar = !!(view.showProgress &&
+			    const hasProgressBar = !!(view.showProgress &&
 				response.result.data);
 
 			    if (hasProgressBar) {
@@ -79,8 +79,8 @@ Ext.define('Proxmox.window.SafeDestroy', {
 				// when background action is completed
 				view.hide();
 
-				var upid = response.result.data;
-				var win = Ext.create('Proxmox.window.TaskProgress', {
+				const upid = response.result.data;
+				const win = Ext.create('Proxmox.window.TaskProgress', {
 				    upid: upid,
 				    listeners: {
 					destroy: function() {
@@ -150,18 +150,18 @@ Ext.define('Proxmox.window.SafeDestroy', {
     ],
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	me.callParent();
 
-	var item = me.getItem();
+	const item = me.getItem();
 
 	if (!Ext.isDefined(item.id)) {
 	    throw "no ID specified";
 	}
 
-	var messageCmp = me.lookupReference('messageCmp');
-	var msg;
+	const messageCmp = me.lookupReference('messageCmp');
+	let msg;
 
 	if (Ext.isDefined(me.getTaskName())) {
 	    msg = Proxmox.Utils.format_task_description(me.getTaskName(), item.id);
@@ -171,12 +171,12 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	}
 
 	if (!item.purgeable) {
-	    let purgeCheckbox = me.lookupReference('purgeCheckbox');
+	    const purgeCheckbox = me.lookupReference('purgeCheckbox');
 	    purgeCheckbox.setDisabled(true);
 	    purgeCheckbox.setHidden(true);
 	}
 
-	var confirmField = me.lookupReference('confirmField');
+	const confirmField = me.lookupReference('confirmField');
 	msg = gettext('Please enter the ID to confirm') +
 	    ' (' + item.id + ')';
 	confirmField.setFieldLabel(msg);
