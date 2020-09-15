@@ -21,6 +21,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	    purgeable: false,
 	},
 	url: undefined,
+	note: undefined,
 	taskName: undefined,
 	params: {},
     },
@@ -138,6 +139,25 @@ Ext.define('Proxmox.window.SafeDestroy', {
 			'data-qtip': gettext('Remove from replication and backup jobs'),
 		    },
 		},
+		{
+		    xtype: 'container',
+		    reference: 'noteContainer',
+		    flex: 1,
+		    hidden: true,
+		    layout: {
+			type: 'vbox',
+			align: 'middle',
+		    },
+		    height: 25,
+		    items: [
+			{
+			    xtype: 'component',
+			    reference: 'noteCmp',
+			    width: '300px',
+			    style: 'font-size: smaller; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;',
+			},
+		    ],
+		},
 	    ],
 	},
     ],
@@ -161,7 +181,15 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	}
 
 	const messageCmp = me.lookupReference('messageCmp');
+	const noteCmp = me.lookupReference('noteCmp');
 	let msg;
+
+	if (Ext.isDefined(me.getNote())) {
+	    noteCmp.setHtml(`<span title="${me.getNote()}">${me.getNote()}</span>`);
+	    const noteContainer = me.lookupReference('noteContainer');
+	    noteContainer.setHidden(false);
+	    noteContainer.setDisabled(false);
+	}
 
 	if (Ext.isDefined(me.getTaskName())) {
 	    msg = Proxmox.Utils.format_task_description(me.getTaskName(), item.id);
