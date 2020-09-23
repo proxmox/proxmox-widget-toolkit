@@ -55,7 +55,7 @@ Ext.define('Proxmox.RestProxy', {
 		    return 0;
 		},
 	    },
-	    'node', 'upid', 'user', 'status', 'type', 'id',
+	    'node', 'upid', 'user', 'tokenid', 'status', 'type', 'id',
 	],
 	idProperty: 'upid',
     });

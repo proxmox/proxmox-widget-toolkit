@@ -130,6 +130,10 @@ Ext.define('Proxmox.window.TaskViewer', {
 		renderer: Ext.String.htmlEncode,
 		required: true,
 	    },
+	    tokenid: {
+		header: gettext('API Token'),
+		renderer: Ext.String.htmlEncode,
+	    },
 	    node: {
 		header: gettext('Node'),
 		required: true,
