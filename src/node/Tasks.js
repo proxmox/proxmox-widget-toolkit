@@ -28,6 +28,14 @@ Ext.define('Proxmox.node.Tasks', {
 	    },
 	});
 
+	store.on('prefetch', function() {
+	    // we want to update the scrollbar on every store load
+	    // since the total count might be different
+	    // the buffered grid plugin does this only on scrolling itself
+	    // and even reduces the scrollheight again when scrolling up
+	    me.updateLayout();
+	});
+
 	let userfilter = '';
 	let filter_errors = 0;
 
