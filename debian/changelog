@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (2.2-14) pve pmg; urgency=medium
+
+  * tasks viewer: include API token ID if available
+
+  * node tasks: improve scrollbar behaviour on store load
+
+  * node tasks: add duration column, hide by default to avoid crowding the
+    interface
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 29 Sep 2020 10:16:53 +0200
+
 proxmox-widget-toolkit (2.2-12) pve pmg; urgency=medium
 
   * fix #2933: disks: correct behaviour of 'Init GPT' button
