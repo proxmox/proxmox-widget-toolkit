@@ -127,12 +127,20 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    },
 	    user: {
 		header: gettext('User name'),
-		renderer: Ext.String.htmlEncode,
+		renderer: function(value) {
+		    let user = value;
+		    let tokenid = statgrid.getObjectValue('tokenid');
+		    if (tokenid) {
+			user += `!${tokenid} (API Token)`;
+		    }
+		    return Ext.String.htmlEncode(user);
+		},
 		required: true,
 	    },
 	    tokenid: {
 		header: gettext('API Token'),
 		renderer: Ext.String.htmlEncode,
+		visible: false,
 	    },
 	    node: {
 		header: gettext('Node'),
