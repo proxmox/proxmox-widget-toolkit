@@ -156,6 +156,23 @@ Ext.define('Proxmox.node.Tasks', {
 		    },
 		},
 		{
+		    header: gettext("Duration"),
+		    hidden: true,
+		    width: 80,
+		    renderer: function(value, metaData, record) {
+			let start = record.data.starttime;
+			if (start) {
+			    let end = record.data.endtime || Date.now();
+			    let duration = end - start;
+			    if (duration > 0) {
+				duration /= 1000;
+			    }
+			    return Proxmox.Utils.format_duration_human(duration);
+			}
+			return Proxmox.Utils.unknownText;
+		    },
+		},
+		{
 		    header: gettext("Node"),
 		    dataIndex: 'node',
 		    width: 120,
