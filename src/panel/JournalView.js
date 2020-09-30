@@ -51,7 +51,7 @@ Ext.define('Proxmox.panel.JournalView', {
 
 	    if (!livemode) {
 		setTimeout(function() { view.scrollTo(0, 0); }, 10);
-	    } else if (view.scrollToEnd && scrollPos <= 0) {
+	    } else if (view.scrollToEnd && scrollPos <= 5) {
 		setTimeout(function() { view.scrollTo(0, Infinity); }, 10);
 	    } else if (!view.scrollToEnd && scrollPosTop < 20 * view.lineHeight) {
 		setTimeout(function() { view.scrollTo(0, (num * view.lineHeight) + scrollPosTop); }, 10);
@@ -170,7 +170,7 @@ Ext.define('Proxmox.panel.JournalView', {
 	    if (me.scrollPosTop() < 20*view.lineHeight) {
 		view.scrollToEnd = false;
 		view.loadTask.delay(200, undefined, undefined, [true, true]);
-	    } else if (me.scrollPosBottom() <= 1) {
+	    } else if (me.scrollPosBottom() <= 5) {
 		view.scrollToEnd = true;
 	    }
 	},
@@ -199,7 +199,7 @@ Ext.define('Proxmox.panel.JournalView', {
 			return;
 		    }
 
-		    if (me.scrollPosBottom() <= 1) {
+		    if (me.scrollPosBottom() <= 5) {
 			view.loadTask.delay(200, undefined, undefined, [true, false]);
 		    }
 		},

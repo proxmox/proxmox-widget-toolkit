@@ -65,7 +65,7 @@ Ext.define('Proxmox.panel.LogView', {
 
 	    content.update(text);
 
-	    if (view.scrollToEnd && scrollPos <= 0) {
+	    if (view.scrollToEnd && scrollPos <= 5) {
 		// we use setTimeout to work around scroll handling on touchscreens
 		setTimeout(function() { view.scrollTo(0, Infinity); }, 10);
 	    }
@@ -167,7 +167,7 @@ Ext.define('Proxmox.panel.LogView', {
 			return;
 		    }
 
-		    if (me.scrollPosBottom() <= 1) {
+		    if (me.scrollPosBottom() <= 5) {
 			view.loadTask.delay(200);
 		    }
 		},
