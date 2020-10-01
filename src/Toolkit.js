@@ -152,8 +152,7 @@ Ext.apply(Ext.form.field.VTypes, {
 		Proxmox.Utils.HostPortBrackets_match.test(v) ||
 		Proxmox.Utils.IP6_dotnotation_match.test(v);
     },
-
-    HostPortText: gettext('Not a valid hosts'),
+    HostPortText: gettext('Host/IP address or optional port is invalid'),
 
     HostList: function(v) {
 	let list = v.split(/[ ,;]+/);
