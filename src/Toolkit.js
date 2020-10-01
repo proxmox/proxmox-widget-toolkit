@@ -147,6 +147,14 @@ Ext.apply(Ext.form.field.VTypes, {
     },
     DnsOrIpText: gettext('Not a valid DNS name or IP address.'),
 
+    HostPort: function(v) {
+	return Proxmox.Utils.HostPort_match.test(v) ||
+		Proxmox.Utils.HostPortBrackets_match.test(v) ||
+		Proxmox.Utils.IP6_dotnotation_match.test(v);
+    },
+
+    HostPortText: gettext('Not a valid hosts'),
+
     HostList: function(v) {
 	let list = v.split(/[ ,;]+/);
 	let i;
