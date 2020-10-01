@@ -873,12 +873,12 @@ utilities: {
 	me.IP64_match = new RegExp("^(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + ")$");
 	me.IP64_cidr_match = new RegExp("^(?:" + IPV6_REGEXP + "/" + IPV6_CIDR_MASK + ")|(?:" + IPV4_REGEXP + "/" + IPV4_CIDR_MASK + ")$");
 
-	let DnsName_REGEXP = "(?:(([a-zA-Z0-9]([a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*([A-Za-z0-9]([A-Za-z0-9\\-]*[A-Za-z0-9])?))";
+	let DnsName_REGEXP = "(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[A-Za-z0-9](?:[A-Za-z0-9\\-]*[A-Za-z0-9])?))";
 	me.DnsName_match = new RegExp("^" + DnsName_REGEXP + "$");
 
-	me.HostPort_match = new RegExp("^(" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")(:\\d+)?$");
-	me.HostPortBrackets_match = new RegExp("^\\[(?:" + IPV6_REGEXP + "|" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")\\](:\\d+)?$");
-	me.IP6_dotnotation_match = new RegExp("^" + IPV6_REGEXP + "(\\.\\d+)?$");
+	me.HostPort_match = new RegExp("^(" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")(?::(\\d+))?$");
+	me.HostPortBrackets_match = new RegExp("^\\[(" + IPV6_REGEXP + "|" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")\\](?::(\\d+))?$");
+	me.IP6_dotnotation_match = new RegExp("^(" + IPV6_REGEXP + ")(?:\\.(\\d+))?$");
 	me.Vlan_match = /^vlan(\\d+)/;
 	me.VlanInterface_match = /(\\w+)\\.(\\d+)/;
     },
