@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (2.3-2) pve pmg; urgency=medium
+
+  * add Korean as translation choice
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 15 Oct 2020 13:27:30 +0200
+
 proxmox-widget-toolkit (2.3-1) pve pmg; urgency=medium
 
   * log/journal views: fix auto scrolling on browser zoom
