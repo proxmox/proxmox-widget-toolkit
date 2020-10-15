@@ -82,6 +82,7 @@ utilities: {
 	he: 'Hebrew',
 	it: 'Italian',
 	ja: 'Japanese',
+	kr: 'Korean',
 	nb: 'Norwegian (Bokmal)',
 	nn: 'Norwegian (Nynorsk)',
 	fa: 'Persian (Farsi)',
