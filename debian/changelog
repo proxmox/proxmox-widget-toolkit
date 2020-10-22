@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.3-3) pve pmg; urgency=medium
+
+  * tasks: ensure the UPID parameter is always correctly encoded
+
+  * move over SafeDestroy widget from pve-manager
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 22 Oct 2020 08:53:18 +0200
+
 proxmox-widget-toolkit (2.3-2) pve pmg; urgency=medium
 
   * add Korean as translation choice
