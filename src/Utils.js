@@ -712,7 +712,6 @@ utilities: {
     },
 
     systemd_unescape: function(string_value) {
-
 	const charcode_0 = '0'.charCodeAt(0);
 	const charcode_9 = '9'.charCodeAt(0);
 	const charcode_A = 'A'.charCodeAt(0);
