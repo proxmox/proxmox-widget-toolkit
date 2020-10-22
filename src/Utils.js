@@ -711,6 +711,66 @@ utilities: {
 	return Proxmox.Utils.format_duration_long(uptime);
     },
 
+    systemd_unescape: function(string_value) {
+
+	const charcode_0 = '0'.charCodeAt(0);
+	const charcode_9 = '9'.charCodeAt(0);
+	const charcode_A = 'A'.charCodeAt(0);
+	const charcode_F = 'F'.charCodeAt(0);
+	const charcode_a = 'a'.charCodeAt(0);
+	const charcode_f = 'f'.charCodeAt(0);
+	const charcode_x = 'x'.charCodeAt(0);
+	const charcode_minus = '-'.charCodeAt(0);
+	const charcode_slash = '/'.charCodeAt(0);
+	const charcode_backslash = '\\'.charCodeAt(0);
+
+	let parse_hex_digit = function(d) {
+	    if (d >= charcode_0 && d <= charcode_9) {
+		return d - charcode_0;
+	    }
+	    if (d >= charcode_A && d <= charcode_F) {
+		return d - charcode_A + 10;
+	    }
+	    if (d >= charcode_a && d <= charcode_f) {
+		return d - charcode_a + 10;
+	    }
+	    throw "got invalid hex digit";
+	};
+
+	let value = new TextEncoder().encode(string_value);
+	let result = new Uint8Array(value.length);
+
+	let i = 0;
+	let result_len = 0;
+
+	while (i < value.length) {
+	    let c0 = value[i];
+	    if (c0 === charcode_minus) {
+		result.set([charcode_slash], result_len);
+		result_len += 1;
+		i += 1;
+		continue;
+	    }
+	    if ((i + 4) < value.length) {
+		let c1 = value[i+1];
+		if (c0 === charcode_backslash && c1 === charcode_x) {
+		    let h1 = parse_hex_digit(value[i+2]);
+		    let h0 = parse_hex_digit(value[i+3]);
+		    let ord = h1*16+h0;
+		    result.set([ord], result_len);
+		    result_len += 1;
+		    i += 4;
+		    continue;
+		}
+	    }
+	    result.set([c0], result_len);
+	    result_len += 1;
+	    i += 1;
+	}
+
+	return new TextDecoder().decode(result.slice(0, result.len));
+    },
+
     parse_task_upid: function(upid) {
 	let task = {};
 
@@ -726,7 +786,7 @@ utilities: {
 	}
 	task.starttime = parseInt(res[6], 16);
 	task.type = res[7];
-	task.id = res[8];
+	task.id = Proxmox.Utils.systemd_unescape(res[8]);
 	task.user = res[9];
 
 	task.desc = Proxmox.Utils.format_task_description(task.type, task.id);
