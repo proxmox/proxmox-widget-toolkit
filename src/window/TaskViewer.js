@@ -14,7 +14,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 	let task = Proxmox.Utils.parse_task_upid(me.upid);
 
 	let statstore = Ext.create('Proxmox.data.ObjectStore', {
-            url: "/api2/json/nodes/" + task.node + "/tasks/" + me.upid + "/status",
+            url: "/api2/json/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid) + "/status",
 	    interval: 1000,
 	    rows: {
 		status: { defaultValue: 'unknown' },
@@ -190,7 +190,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	};
 
 	let statstore = Ext.create('Proxmox.data.ObjectStore', {
-            url: "/api2/json/nodes/" + task.node + "/tasks/" + me.upid + "/status",
+            url: "/api2/json/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid) + "/status",
 	    interval: 1000,
 	    rows: rows,
 	});
@@ -199,7 +199,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 
 	let stop_task = function() {
 	    Proxmox.Utils.API2Request({
-		url: "/nodes/" + task.node + "/tasks/" + me.upid,
+		url: "/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid),
 		waitMsgTarget: me,
 		method: 'DELETE',
 		failure: function(response, opts) {
@@ -233,7 +233,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    title: gettext('Output'),
 	    tbar: [stop_btn2],
 	    border: false,
-	    url: "/api2/extjs/nodes/" + task.node + "/tasks/" + me.upid + "/log",
+	    url: "/api2/extjs/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid) + "/log",
 	});
 
 	me.mon(statstore, 'load', function() {
