@@ -37,6 +37,7 @@ JSSRC=					\
 	grid/PendingObjectGrid.js	\
 	grid/DiskList.js		\
 	panel/InputPanel.js		\
+	panel/InfoWidget.js		\
 	panel/LogView.js		\
 	panel/JournalView.js		\
 	panel/RRDChart.js		\
