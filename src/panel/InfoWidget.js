@@ -54,6 +54,10 @@ Ext.define('Proxmox.widget.Info', {
 	me.getComponent('label').data.iconCls = iconCls;
     },
 
+    setData: function(data) {
+	this.updateValue(data.text, data.usage);
+    },
+
     updateValue: function(text, usage) {
 	var me = this;
 	var label = me.getComponent('label');
