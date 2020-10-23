@@ -4,7 +4,7 @@ Ext.define('Proxmox.widget.Info', {
 
     layout: {
 	type: 'vbox',
-	align: 'stretch'
+	align: 'stretch',
     },
 
     value: 0,
@@ -17,27 +17,27 @@ Ext.define('Proxmox.widget.Info', {
 	    data: {
 		title: '',
 		usage: '',
-		iconCls: undefined
+		iconCls: undefined,
 	    },
 	    tpl: [
 		'<div class="left-aligned">',
 		'<tpl if="iconCls">',
 		'<i class="{iconCls}"></i> ',
 		'</tpl>',
-		'{title}</div>&nbsp;<div class="right-aligned">{usage}</div>'
-	    ]
+		'{title}</div>&nbsp;<div class="right-aligned">{usage}</div>',
+	    ],
 	},
 	{
 	    height: 2,
-	    border: 0
+	    border: 0,
 	},
 	{
 	    xtype: 'progressbar',
 	    itemId: 'progress',
 	    height: 5,
 	    value: 0,
-	    animate: true
-	}
+	    animate: true,
+	},
     ],
 
     warningThreshold: 0.6,
@@ -57,7 +57,7 @@ Ext.define('Proxmox.widget.Info', {
     updateValue: function(text, usage) {
 	var me = this;
 	var label = me.getComponent('label');
-	label.update(Ext.apply(label.data, {title: me.title, usage:text}));
+	label.update(Ext.apply(label.data, { title: me.title, usage: text }));
 
 	if (usage !== undefined &&
 	    me.printBar &&
@@ -91,6 +91,6 @@ Ext.define('Proxmox.widget.Info', {
 
 	me.updateValue(me.text, me.value);
 	me.setIconCls(me.iconCls);
-    }
+    },
 
 });
