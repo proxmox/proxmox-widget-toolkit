@@ -7,6 +7,10 @@ Ext.define('Proxmox.window.Edit', {
     // set extra options like params for the load request
     autoLoadOptions: undefined,
 
+    // to submit extra params on load and submit, useful, e.g., if not all ID
+    // parameters are included in the URL
+    extraRequestParams: {},
+
     resizable: false,
 
     // use this to atimatically generate a title like `Create: <subject>`
@@ -62,6 +66,8 @@ Ext.define('Proxmox.window.Edit', {
 	let me = this;
 
 	let values = {};
+	Ext.apply(values, me.extraRequestParams);
+
 	let form = me.formPanel.getForm();
 
 	form.getFields().each(function(field) {
@@ -186,6 +192,12 @@ Ext.define('Proxmox.window.Edit', {
 	let newopts = Ext.apply({
 	    waitMsgTarget: me,
 	}, options);
+
+	if (Object.keys(me.extraRequestParams).length > 0) {
+	    let params = newopts.params || {};
+	    Ext.applyIf(params, me.extraRequestParams);
+	    newopts.params = params;
+	}
 
 	let createWrapper = function(successFn) {
 	    Ext.apply(newopts, {
