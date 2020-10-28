@@ -1,10 +1,11 @@
-// fixme: how can we avoid those lint errors?
 Ext.define('Proxmox.window.Edit', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxWindowEdit',
 
     // autoLoad trigger a load() after component creation
     autoLoad: false,
+    // set extra options like params for the load request
+    autoLoadOptions: undefined,
 
     resizable: false,
 
@@ -383,7 +384,7 @@ Ext.define('Proxmox.window.Edit', {
 	});
 
 	if (me.autoLoad) {
-	    me.load();
+	    me.load(me.autoLoadOptions);
 	}
     },
 });
