@@ -40,6 +40,7 @@ JSSRC=					\
 	panel/InfoWidget.js		\
 	panel/LogView.js		\
 	panel/JournalView.js		\
+	panel/PermissionView.js		\
 	panel/RRDChart.js		\
 	panel/GaugeWidget.js		\
 	window/Edit.js			\
