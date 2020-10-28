@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (2.3-6) pve pmg; urgency=medium
+
+  * edit window: add autoLoadOptions to control API call
+
+  * edit window: add extraParams config
+
+  * move over PermissionView from Proxmox VE's manager
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 28 Oct 2020 18:39:41 +0100
+
 proxmox-widget-toolkit (2.3-5) pve pmg; urgency=medium
 
   * improve multiselect behaviour for checkboxmodel
