@@ -9,12 +9,10 @@ Ext.define('Proxmox.window.Edit', {
 
     resizable: false,
 
-    // use this tio atimatically generate a title like
-    // Create: <subject>
+    // use this to atimatically generate a title like `Create: <subject>`
     subject: undefined,
 
-    // set isCreate to true if you want a Create button (instead
-    // OK and RESET)
+    // set isCreate to true if you want a Create button (instead OK and RESET)
     isCreate: false,
 
     // set to true if you want an Add button (instead of Create)
@@ -63,15 +61,14 @@ Ext.define('Proxmox.window.Edit', {
     getValues: function(dirtyOnly) {
 	let me = this;
 
-        let values = {};
-
+	let values = {};
 	let form = me.formPanel.getForm();
 
-        form.getFields().each(function(field) {
-            if (!field.up('inputpanel') && (!dirtyOnly || field.isDirty())) {
-                Proxmox.Utils.assemble_field_data(values, field.getSubmitData());
-            }
-        });
+	form.getFields().each(function(field) {
+	    if (!field.up('inputpanel') && (!dirtyOnly || field.isDirty())) {
+		Proxmox.Utils.assemble_field_data(values, field.getSubmitData());
+	    }
+	});
 
 	Ext.Array.each(me.query('inputpanel'), function(panel) {
 	    Proxmox.Utils.assemble_field_data(values, panel.getValues(dirtyOnly));
