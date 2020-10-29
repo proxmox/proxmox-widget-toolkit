@@ -461,7 +461,7 @@ utilities: {
 		success: function(response, opts) {
 		    let res = response.result;
 		    if (res === null || res === undefined || !res || res
-			.data.status !== 'Active') {
+			.data.status.toLowerCase() !== 'active') {
 			Ext.Msg.show({
 			    title: gettext('No valid subscription'),
 			    icon: Ext.Msg.WARNING,
