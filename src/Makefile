@@ -31,6 +31,7 @@ JSSRC=					\
 	form/RoleSelector.js		\
 	form/DiskSelector.js		\
 	form/MultiDiskSelector.js	\
+	form/TaskTypeSelector.js	\
 	button/Button.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
