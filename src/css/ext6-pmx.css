@@ -69,3 +69,14 @@ div.right-aligned {
 .x-progress.warning .x-progress-bar{
     background-color: #FFCC00;
 }
+
+.x-treelist-item-icon {
+    color: #000;
+    font-size: 14px;
+}
+
+.x-tab-icon-el-default {
+    color: #000;
+    font-size: 14px;
+    margin-top: 2px;
+}
