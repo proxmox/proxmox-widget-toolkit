@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.3-7) pve pmg; urgency=medium
+
+  * improve redering of icons in navigation element
+
+  * add a form element for selecting a worker task type
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 02 Nov 2020 07:49:22 +0100
+
 proxmox-widget-toolkit (2.3-6) pve pmg; urgency=medium
 
   * edit window: add autoLoadOptions to control API call
