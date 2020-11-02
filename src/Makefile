@@ -80,3 +80,7 @@ install: proxmoxlib.js
 	install -d -m 755 ${WWWBASEDIR}
 	install -m 0644 proxmoxlib.js ${WWWBASEDIR}
 	set -e && for i in ${SUBDIRS}; do ${MAKE} -C $$i $@; done
+
+.PHONY: clean
+clean:
+	rm -f proxmoxlib.js

@@ -37,6 +37,7 @@ upload: ${DEB}
 
 distclean: clean
 clean:
+	$(MAKE) -C src clean
 	rm -rf ${BUILDDIR} ${BUILDDIR}.tmp *.tar.gz *.dsc *.deb *.changes *.buildinfo
 	find . -name '*~' -exec rm {} ';'
 
