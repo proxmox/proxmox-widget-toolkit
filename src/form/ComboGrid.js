@@ -304,6 +304,11 @@ Ext.define('Proxmox.form.ComboGrid', {
 		me.savedMinHeight = picker.getMinHeight();
 		picker.setMinHeight(100);
 	    }
+	    if (me.loadError) {
+		Proxmox.Utils.setErrorMask(picker, me.loadError);
+		delete me.loadError;
+		picker.updateLayout();
+	    }
 	});
 
         picker.getNavigationModel().navigateOnSpace = false;
@@ -415,6 +420,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	me.mon(me.store, 'load', function(store, r, success, o) {
 	    if (success) {
 		me.clearInvalid();
+		delete me.loadError;
 
 		if (me.enableLoadMask) {
 		    delete me.enableLoadMask;
@@ -425,6 +431,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 		    // gets not recalculated
 		    if (me.picker) {
 			me.picker.setMinHeight(me.savedMinHeight || 0);
+			Proxmox.Utils.setErrorMask(me.picker);
 			delete me.savedMinHeight;
 			me.picker.updateLayout();
 		    }
@@ -451,6 +458,12 @@ Ext.define('Proxmox.form.ComboGrid', {
 			}
 		    }
 		}
+	    } else {
+		let msg = Proxmox.Utils.getResponseErrorMessage(o.getError());
+		if (me.picker) {
+		    Proxmox.Utils.setErrorMask(me.picker, msg);
+		}
+		me.loadError = msg;
 	    }
 	});
     },
