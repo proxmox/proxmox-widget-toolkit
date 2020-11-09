@@ -5,13 +5,6 @@ if (!Ext.isDefined(Proxmox.Setup.auth_cookie_name)) {
     throw "Proxmox library not initialized";
 }
 
-// avoid errors related to Accessible Rich Internet Applications
-// (access for people with disabilities)
-// TODO reenable after all components are upgraded
-Ext.enableAria = false;
-Ext.enableAriaButtons = false;
-Ext.enableAriaPanels = false;
-
 // avoid errors when running without development tools
 if (!Ext.isDefined(Ext.global.console)) {
     let console = {
