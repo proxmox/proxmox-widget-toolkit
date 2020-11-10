@@ -777,11 +777,11 @@ utilities: {
 	}
 	// try to normalize - and _ separators, to support asciidoc and sphinx
 	// references at the same time.
-	let section_minus_normalized = section.replace(/_/, '-');
+	let section_minus_normalized = section.replaceAll('_', '-');
 	if (helpMap[section_minus_normalized]) {
 	    return helpMap[section_minus_normalized];
 	}
-	let section_underscore_normalized = section.replace(/-/, '_');
+	let section_underscore_normalized = section.replaceAll('-', '_');
 	return helpMap[section_underscore_normalized];
     },
 
