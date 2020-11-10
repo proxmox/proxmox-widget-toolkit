@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (2.3-9) pve pmg; urgency=medium
+
+  * combo grid: set errorMask on store load failure
+
+  * enable ExtJS ARIA accessibility support again
+
+  * Utils: fix help section normalization
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 10 Nov 2020 12:07:55 +0100
+
 proxmox-widget-toolkit (2.3-8) pve pmg; urgency=medium
 
   * Utils: remove product specific task descriptions
