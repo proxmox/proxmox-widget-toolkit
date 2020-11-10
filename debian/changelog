@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (2.3-10) pve pmg; urgency=medium
+
+  * utils: get help info: fix normalization with multiple minuses by using a
+    more compatible approach
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 10 Nov 2020 16:29:09 +0100
+
 proxmox-widget-toolkit (2.3-9) pve pmg; urgency=medium
 
   * combo grid: set errorMask on store load failure
