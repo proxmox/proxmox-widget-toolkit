@@ -65,12 +65,16 @@ JSSRC=					\
 all: ${SUBDIRS}
 	set -e && for i in ${SUBDIRS}; do ${MAKE} -C $$i; done
 
+.lint-incremental: ${JSSRC}
+	eslint $?
+	touch "$@"
+
 .PHONY: lint
 check: lint
 lint: ${JSSRC}
-	eslint ${JSSRC}
+	eslint --strict ${JSSRC}
 
-proxmoxlib.js: ${JSSRC}
+proxmoxlib.js: .lint-incremental ${JSSRC}
 	# add the version as comment in the file
 	echo "// ${DEB_VERSION_UPSTREAM_REVISION}" > $@.tmp
 	cat ${JSSRC} >> $@.tmp
