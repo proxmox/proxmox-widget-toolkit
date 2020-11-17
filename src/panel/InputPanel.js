@@ -82,70 +82,72 @@ Ext.define('Proxmox.panel.InputPanel', {
 	let items;
 
 	if (me.items) {
-	    me.columns = 1;
 	    items = [
 		{
-		    columnWidth: 1,
 		    layout: 'anchor',
 		    items: me.items,
 		},
 	    ];
 	    me.items = undefined;
 	} else if (me.column4) {
-	    me.columns = 4;
 	    items = [
 		{
-		    columnWidth: 0.25,
-		    padding: '0 10 0 0',
-		    layout: 'anchor',
-		    items: me.column1,
-		},
-		{
-		    columnWidth: 0.25,
-		    padding: '0 10 0 0',
-		    layout: 'anchor',
-		    items: me.column2,
-		},
-		{
-		    columnWidth: 0.25,
-		    padding: '0 10 0 0',
-		    layout: 'anchor',
-		    items: me.column3,
-		},
-		{
-		    columnWidth: 0.25,
-		    padding: '0 0 0 10',
-		    layout: 'anchor',
-		    items: me.column4,
+		    layout: 'hbox',
+		    defaults: {
+			border: false,
+			layout: 'anchor',
+			flex: 1,
+		    },
+		    items: [
+			{
+			    padding: '0 10 0 0',
+			    items: me.column1,
+			},
+			{
+			    padding: '0 10 0 0',
+			    items: me.column2,
+			},
+			{
+			    padding: '0 10 0 0',
+			    items: me.column3,
+			},
+			{
+			    padding: '0 0 0 10',
+			    items: me.column4,
+			},
+		    ],
 		},
 	    ];
 	    if (me.columnB) {
 		items.push({
-		    columnWidth: 1,
 		    padding: '10 0 0 0',
 		    layout: 'anchor',
 		    items: me.columnB,
 		});
 	    }
 	} else if (me.column1) {
-	    me.columns = 2;
 	    items = [
 		{
-		    columnWidth: 0.5,
-		    padding: '0 10 0 0',
-		    layout: 'anchor',
-		    items: me.column1,
-		},
-		{
-		    columnWidth: 0.5,
-		    padding: '0 0 0 10',
-		    layout: 'anchor',
-		    items: me.column2 || [], // allow empty column
+		    layout: 'hbox',
+		    defaults: {
+			border: false,
+			layout: 'anchor',
+			flex: 1,
+		    },
+		    items: [
+			{
+			    padding: '0 10 0 0',
+			    items: me.column1,
+			},
+			{
+			    padding: '0 0 0 10',
+			    items: me.column2 || [], // allow empty column
+			},
+		    ],
 		},
 	    ];
 	    if (me.columnB) {
 		items.push({
-		    columnWidth: 1,
 		    padding: '10 0 0 0',
 		    layout: 'anchor',
 		    items: me.columnB,
@@ -159,7 +161,6 @@ Ext.define('Proxmox.panel.InputPanel', {
 	if (me.advancedItems) {
 	    advItems = [
 		{
-		    columnWidth: 1,
 		    layout: 'anchor',
 		    items: me.advancedItems,
 		},
@@ -168,16 +169,25 @@ Ext.define('Proxmox.panel.InputPanel', {
 	} else if (me.advancedColumn1) {
 	    advItems = [
 		{
-		    columnWidth: 0.5,
-		    padding: '0 10 0 0',
-		    layout: 'anchor',
-		    items: me.advancedColumn1,
-		},
-		{
-		    columnWidth: 0.5,
-		    padding: '0 0 0 10',
-		    layout: 'anchor',
-		    items: me.advancedColumn2 || [], // allow empty column
+		    layout: {
+			type: 'hbox',
+			align: 'begin',
+		    },
+		    defaults: {
+			border: false,
+			layout: 'anchor',
+			flex: 1,
+		    },
+		    items: [
+			{
+			    padding: '0 10 0 0',
+			    items: me.advancedColumn1,
+			},
+			{
+			    padding: '0 0 0 10',
+			    items: me.advancedColumn2 || [], // allow empty column
+			},
+		    ],
 		},
 	    ];
 
@@ -186,7 +196,6 @@ Ext.define('Proxmox.panel.InputPanel', {
 
 	    if (me.advancedColumnB) {
 		advItems.push({
-		    columnWidth: 1,
 		    padding: '10 0 0 0',
 		    layout: 'anchor',
 		    items: me.advancedColumnB,
@@ -198,7 +207,6 @@ Ext.define('Proxmox.panel.InputPanel', {
 	if (advItems) {
 	    me.hasAdvanced = true;
 	    advItems.unshift({
-		columnWidth: 1,
 		xtype: 'box',
 		hidden: false,
 		border: true,
@@ -207,11 +215,9 @@ Ext.define('Proxmox.panel.InputPanel', {
 		},
 	    });
 	    items.push({
-		columnWidth: 1,
 		xtype: 'container',
 		itemId: 'advancedContainer',
 		hidden: !me.showAdvanced,
-		layout: 'column',
 		defaults: {
 		    border: false,
 		},
@@ -230,7 +236,10 @@ Ext.define('Proxmox.panel.InputPanel', {
 	    });
 	} else {
 	    Ext.apply(me, {
-		layout: 'column',
+		layout: {
+		    type: 'vbox',
+		    align: 'stretch',
+		},
 		defaultType: 'container',
 		items: items,
 	    });
