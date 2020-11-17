@@ -225,25 +225,14 @@ Ext.define('Proxmox.panel.InputPanel', {
 	    });
 	}
 
-	if (me.useFieldContainer) {
-	    Ext.apply(me, {
-		layout: 'fit',
-		items: Ext.apply(me.useFieldContainer, {
-		    layout: 'column',
-		    defaultType: 'container',
-		    items: items,
-		}),
-	    });
-	} else {
-	    Ext.apply(me, {
-		layout: {
-		    type: 'vbox',
-		    align: 'stretch',
-		},
-		defaultType: 'container',
-		items: items,
-	    });
-	}
+	Ext.apply(me, {
+	    layout: {
+		type: 'vbox',
+		align: 'stretch',
+	    },
+	    defaultType: 'container',
+	    items: items,
+	});
 
 	me.callParent();
     },
