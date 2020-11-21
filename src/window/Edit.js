@@ -34,6 +34,10 @@ Ext.define('Proxmox.window.Edit', {
     // new object is part of the URL, or that URL differs from GET/PUT URL
     submitUrl: Ext.identityFn,
 
+    // string or function, called as (url, initialConfig) - mostly for
+    // consistency with submitUrl existing. If both are set `url` gets optional
+    loadUrl: Ext.identityFn,
+
     // needed for finding the reference to submitbutton
     // because we do not have a controller
     referenceHolder: true,
@@ -205,9 +209,13 @@ Ext.define('Proxmox.window.Edit', {
 	    newopts.params = params;
 	}
 
+	let url = Ext.isFunction(me.loadUrl)
+	    ? me.loadUrl(me.url, me.initialConfig)
+	    : me.loadUrl || me.url;
+
 	let createWrapper = function(successFn) {
 	    Ext.apply(newopts, {
-		url: me.url,
+		url: url,
 		method: 'GET',
 		success: function(response, opts) {
 		    form.clearInvalid();
