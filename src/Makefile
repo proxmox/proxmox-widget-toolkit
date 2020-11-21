@@ -28,6 +28,7 @@ JSSRC=					\
 	form/BondModeSelector.js	\
 	form/NetworkSelector.js		\
 	form/RealmComboBox.js		\
+	form/PruneKeepField.js		\
 	form/RoleSelector.js		\
 	form/DiskSelector.js		\
 	form/MultiDiskSelector.js	\
