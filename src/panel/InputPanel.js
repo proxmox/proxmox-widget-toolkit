@@ -166,7 +166,7 @@ Ext.define('Proxmox.panel.InputPanel', {
 		},
 	    ];
 	    me.advancedItems = undefined;
-	} else if (me.advancedColumn1) {
+	} else if (me.advancedColumn1 || me.advancedColumn2 || me.advancedColumnB) {
 	    advItems = [
 		{
 		    layout: {
@@ -181,7 +181,7 @@ Ext.define('Proxmox.panel.InputPanel', {
 		    items: [
 			{
 			    padding: '0 10 0 0',
-			    items: me.advancedColumn1,
+			    items: me.advancedColumn1 || [], // allow empty column
 			},
 			{
 			    padding: '0 0 0 10',
