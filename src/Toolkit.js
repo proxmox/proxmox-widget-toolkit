@@ -503,7 +503,6 @@ Ext.define('Proxmox.selection.CheckboxModel', {
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
 Ext.onReady(function() {
-/*jslint confusion: true */
     Ext.override(Ext.Msg, {
 	alert: function(title, message, fn, scope) { // eslint-disable-line consistent-return
 	    if (Ext.isString(title)) {
@@ -520,7 +519,6 @@ Ext.onReady(function() {
 	    }
 	},
     });
-/*jslint confusion: false */
 });
 Ext.define('Ext.ux.IFrame', {
     extend: 'Ext.Component',
@@ -621,7 +619,6 @@ Ext.define('Ext.ux.IFrame', {
                 // the event reaches listeners on elements like the document body. The effected
                 // mechanisms that depend on this bubbling behavior are listed to the right
                 // of the event.
-		/*jslint nomen: true*/
                 Ext.get(doc).on(
                     me._docListeners = {
                         mousedown: fn, // menu dismisal (MenuManager) and Window onMouseDown (toFront)
@@ -632,7 +629,6 @@ Ext.define('Ext.ux.IFrame', {
                         scope: me,
                     },
                 );
-		/*jslint nomen: false*/
             } catch (e) {
                 // cannot do this xss
             }
