@@ -43,6 +43,7 @@ JSSRC=					\
 	panel/LogView.js		\
 	panel/JournalView.js		\
 	panel/PermissionView.js		\
+	panel/PruneKeepPanel.js		\
 	panel/RRDChart.js		\
 	panel/GaugeWidget.js		\
 	window/Edit.js			\
