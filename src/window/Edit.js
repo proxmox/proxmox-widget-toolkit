@@ -30,6 +30,10 @@ Ext.define('Proxmox.window.Edit', {
 
     backgroundDelay: 0,
 
+    // string or function, called as (url, values) - useful if the ID of the
+    // new object is part of the URL, or that URL differs from GET/PUT URL
+    submitUrl: Ext.identityFn,
+
     // needed for finding the reference to submitbutton
     // because we do not have a controller
     referenceHolder: true,
@@ -132,7 +136,9 @@ Ext.define('Proxmox.window.Edit', {
 	    values.background_delay = me.backgroundDelay;
 	}
 
-	let url = me.url;
+	let url = Ext.isFunction(me.submitUrl)
+	    ? me.submitUrl(me.url, values)
+	    : me.submitUrl || me.url;
 	if (me.method === 'DELETE') {
 	    url = url + "?" + Ext.Object.toQueryString(values);
 	    values = undefined;
