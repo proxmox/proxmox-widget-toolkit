@@ -246,8 +246,12 @@ Ext.define('Proxmox.window.Edit', {
     initComponent: function() {
 	let me = this;
 
-	if (!me.url) {
-	    throw "no url specified";
+	if (!me.url && (
+		!me.submitUrl || !me.loadUrl || me.submitUrl === Ext.identityFn ||
+		me.loadUrl === Ext.identityFn
+	    )
+	) {
+	    throw "neither 'url' nor both, submitUrl and loadUrl specified";
 	}
 
 	if (me.create) {throw "deprecated parameter, use isCreate";}
@@ -257,7 +261,7 @@ Ext.define('Proxmox.window.Edit', {
 	me.items = undefined;
 
 	me.formPanel = Ext.create('Ext.form.Panel', {
-	    url: me.url,
+	    url: me.url, // FIXME: not in 'form' class, safe to remove??
 	    method: me.method || 'PUT',
 	    trackResetOnLoad: true,
 	    bodyPadding: me.bodyPadding !== undefined ? me.bodyPadding : 10,
