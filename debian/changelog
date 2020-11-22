@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (2.4-1) pve pmg; urgency=medium
+
+  * input panel: improve column scaling behavior with non-default browser or OS
+    scaling and DPI settings
+
+  * add PruneKeepField and PruneInputPanel component
+
+  * input panel: make advanced column check more flexible
+
+  * edit window: add submitUrl and loadUrl config
+
+ -- Proxmox Support Team <support@proxmox.com>  Sun, 22 Nov 2020 18:04:35 +0100
+
 proxmox-widget-toolkit (2.3-10) pve pmg; urgency=medium
 
   * utils: get help info: fix normalization with multiple minuses by using a
