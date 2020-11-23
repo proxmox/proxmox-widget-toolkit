@@ -6,6 +6,8 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
     // set on use for now
     //onlineHelp: 'maintenance_pruning',
 
+    keepLastEmptyText: '',
+
     cbindData: function() {
 	let me = this;
 	me.isCreate = !!me.isCreate;
@@ -19,6 +21,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
 	    fieldLabel: gettext('keep-last'),
 	    cbind: {
 		deleteEmpty: '{!isCreate}',
+		emptyText: '{keepLastEmptyText}',
 	    },
 	},
 	{
