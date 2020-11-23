@@ -1,4 +1,4 @@
-proxmox-widget-toolkit (2.4-1) pve pmg; urgency=medium
+proxmox-widget-toolkit (2.4-2) pve pmg; urgency=medium
 
   * input panel: improve column scaling behavior with non-default browser or OS
     scaling and DPI settings
@@ -9,7 +9,7 @@ proxmox-widget-toolkit (2.4-1) pve pmg; urgency=medium
 
   * edit window: add submitUrl and loadUrl config
 
- -- Proxmox Support Team <support@proxmox.com>  Sun, 22 Nov 2020 18:04:35 +0100
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 23 Nov 2020 08:14:50 +0100
 
 proxmox-widget-toolkit (2.3-10) pve pmg; urgency=medium
 
