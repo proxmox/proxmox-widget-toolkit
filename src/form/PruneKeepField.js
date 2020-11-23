@@ -1,4 +1,4 @@
-Ext.define('Proxmox.form.PruneKeepField', {
+Ext.define('Proxmox.form.field.PruneKeep', {
     extend: 'Proxmox.form.field.Integer',
     xtype: 'pmxPruneKeepField',
 

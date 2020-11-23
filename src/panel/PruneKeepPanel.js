@@ -14,7 +14,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
 
     column1: [
 	{
-	    xtype: 'pmxPruneKeepInput',
+	    xtype: 'pmxPruneKeepField',
 	    name: 'keep-last',
 	    fieldLabel: gettext('keep-last'),
 	    cbind: {
@@ -22,7 +22,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
 	    },
 	},
 	{
-	    xtype: 'pmxPruneKeepInput',
+	    xtype: 'pmxPruneKeepField',
 	    name: 'keep-daily',
 	    fieldLabel: gettext('Keep Daily'),
 	    cbind: {
@@ -30,7 +30,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
 	    },
 	},
 	{
-	    xtype: 'pmxPruneKeepInput',
+	    xtype: 'pmxPruneKeepField',
 	    name: 'keep-monthly',
 	    fieldLabel: gettext('Keep Monthly'),
 	    cbind: {
@@ -40,7 +40,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
     ],
     column2: [
 	{
-	    xtype: 'pmxPruneKeepInput',
+	    xtype: 'pmxPruneKeepField',
 	    fieldLabel: gettext('Keep Hourly'),
 	    name: 'keep-hourly',
 	    cbind: {
@@ -48,7 +48,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
 	    },
 	},
 	{
-	    xtype: 'pmxPruneKeepInput',
+	    xtype: 'pmxPruneKeepField',
 	    name: 'keep-weekly',
 	    fieldLabel: gettext('Keep Weekly'),
 	    cbind: {
@@ -56,7 +56,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
 	    },
 	},
 	{
-	    xtype: 'pmxPruneKeepInput',
+	    xtype: 'pmxPruneKeepField',
 	    name: 'keep-yearly',
 	    fieldLabel: gettext('Keep Yearly'),
 	    cbind: {
