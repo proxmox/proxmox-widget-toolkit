@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (2.4-3) pve pmg; urgency=medium
+
+  * input panel: support convenience top column
+
+  * prune field: use dirtychange event to hide/show clear-trigger
+
+  * prune panel: allow to pass emptyText for keep-last
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 23 Nov 2020 18:46:02 +0100
+
 proxmox-widget-toolkit (2.4-2) pve pmg; urgency=medium
 
   * input panel: improve column scaling behavior with non-default browser or OS
