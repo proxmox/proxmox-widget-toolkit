@@ -6,11 +6,7 @@ Ext.define('Proxmox.form.field.PruneKeep', {
     minValue: 1,
 
     listeners: {
-	change: function(field, newValue, oldValue) {
-	    if (newValue !== this.originalValue) {
-		this.triggers.clear.setVisible(true);
-	    }
-	},
+	dirtychange: (field, dirty) => field.triggers.clear.setVisible(dirty),
     },
     triggers: {
 	clear: {
