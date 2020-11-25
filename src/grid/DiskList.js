@@ -3,7 +3,7 @@ Ext.define('pmx-disk-list', {
     fields: [
 	'devpath', 'used',
 	{ name: 'size', type: 'number' },
-	{ name: 'osdid', type: 'number' },
+	{ name: 'osdid', type: 'number', defaultValue: -1 },
 	{
 	    name: 'status',
 	    convert: function(value, rec) {
@@ -169,7 +169,28 @@ Ext.define('Proxmox.DiskList', {
 	    header: gettext('Usage'),
 	    width: 150,
 	    sortable: false,
-	    renderer: v => v || Proxmox.Utils.noText,
+	    renderer: function(v, metaData, rec) {
+		let extendedInfo = ' ';
+		if (rec) {
+		    let types = [];
+		    if (rec.data.osdid !== undefined && rec.data.osdid >= 0) {
+			types.push(`OSD.${rec.data.osdid.toString()}`);
+		    }
+		    if (rec.data.journals > 0) {
+			types.push('Journal');
+		    }
+		    if (rec.data.db > 0) {
+			types.push('DB');
+		    }
+		    if (rec.data.wal > 0) {
+			types.push('WAL');
+		    }
+		    if (types.length > 0) {
+			extendedInfo = `, Ceph (${types.join(', ')})`;
+		    }
+		}
+		return v ? `${v}${extendedInfo}` : Proxmox.Utils.noText;
+	    },
 	    dataIndex: 'used',
 	},
 	{
