@@ -346,14 +346,14 @@ Ext.define('Proxmox.form.ComboGrid', {
 
 	if (Ext.isArray(value)) {
 	    Ext.Array.each(value, function(v) {
-		if (store.findRecord(me.valueField, v)) {
+		if (store.findRecord(me.valueField, v, 0, false, true, true)) {
 		    found = true;
 		    return false; // break
 		}
 		return true;
 	    });
 	} else {
-	    found = !!store.findRecord(me.valueField, value);
+	    found = !!store.findRecord(me.valueField, value, 0, false, true, true);
 	}
 
 	return found;
