@@ -18,7 +18,7 @@ Ext.define('Proxmox.panel.PruneInputPanel', {
 	{
 	    xtype: 'pmxPruneKeepField',
 	    name: 'keep-last',
-	    fieldLabel: gettext('keep-last'),
+	    fieldLabel: gettext('Keep Last'),
 	    cbind: {
 		deleteEmpty: '{!isCreate}',
 		emptyText: '{keepLastEmptyText}',
