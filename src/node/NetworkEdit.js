@@ -157,7 +157,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    });
 
 	    let primaryfield = Ext.createWidget('textfield', {
-		fieldLabel: gettext('bond-primary'),
+		fieldLabel: 'bond-primary',
 		name: 'bond-primary',
 		value: '',
 		disabled: true,
