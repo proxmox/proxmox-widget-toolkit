@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (2.4-4) pve pmg; urgency=medium
+
+  * data reader: cope with null respones for not configured data, treat like
+    an empty response
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 15 Jan 2021 16:24:08 +0100
+
 proxmox-widget-toolkit (2.4-3) pve pmg; urgency=medium
 
   * input panel: support convenience top column
