@@ -53,6 +53,10 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 	    let root = result[me.getRootProperty()];
 
 	    if (me.readArray) {
+		// it can be more convenient for the backend to return null instead of an empty array
+		if (root === null) {
+		    root = [];
+		}
 		let rec_hash = {};
 		Ext.Array.each(root, function(rec) {
 		    if (Ext.isDefined(rec.key)) {
@@ -82,11 +86,12 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 		    });
 		}
 	    } else {
-		let org_root = root;
-
-		if (Ext.isArray(org_root)) {
+		// it can be more convenient for the backend to return null instead of an empty object
+		if (root === null) {
+		    root = {};
+		} else if (Ext.isArray(root)) {
 		    if (root.length === 1) {
-			root = org_root[0];
+			root = root[0];
 		    } else {
 			root = {};
 		    }
