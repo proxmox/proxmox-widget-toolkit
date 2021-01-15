@@ -48,9 +48,9 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 
 	let data = [];
         try {
-        let result = Ext.decode(response.responseText);
-        // get our data items inside the server response
-        let root = result[me.getRootProperty()];
+	    let result = Ext.decode(response.responseText);
+	    // get our data items inside the server response
+	    let root = result[me.getRootProperty()];
 
 	    if (me.readArray) {
 		let rec_hash = {};
@@ -109,15 +109,14 @@ Ext.define('Proxmox.data.reader.JsonObject', {
 		}
 	    }
 	} catch (ex) {
-            Ext.Error.raise({
-                response: response,
-                json: response.responseText,
-                parseError: ex,
-                msg: 'Unable to parse the JSON returned by the server: ' + ex.toString(),
-            });
-        }
+	    Ext.Error.raise({
+		response: response,
+		json: response.responseText,
+		parseError: ex,
+		msg: 'Unable to parse the JSON returned by the server: ' + ex.toString(),
+	    });
+	}
 
 	return data;
     },
 });
-
