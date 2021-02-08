@@ -128,6 +128,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		name: 'vlan-raw-device',
 		value: me.vlanrawdevicevalue,
 		disabled: me.disablevlanrawdevice,
+		allowBlank: false,
 	    });
 
 	    column2.push({
