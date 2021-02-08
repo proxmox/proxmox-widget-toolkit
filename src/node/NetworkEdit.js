@@ -246,6 +246,10 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    value: me.iface,
 	    vtype: iface_vtype,
 	    allowBlank: false,
+	    autoEl: {
+		tag: 'div',
+		 'data-qtip': gettext('For example, vmbr0.100, vmbr0, vlan0.100, vlan0'),
+	    },
 	    listeners: {
 		change: function(f, value) {
 		    if (me.isCreate && iface_vtype === 'VlanName') {

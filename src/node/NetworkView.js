@@ -235,7 +235,6 @@ Ext.define('Proxmox.node.NetworkView', {
 		    let win = Ext.create('Proxmox.node.NetworkEdit', {
 			nodename: me.nodename,
 			iftype: 'vlan',
-			iface_default: 'interfaceX.1',
 			onlineHelp: 'sysadmin_network_configuration',
 		    });
 		    win.on('destroy', reload);
