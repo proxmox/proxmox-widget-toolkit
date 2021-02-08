@@ -36,20 +36,35 @@ Ext.define('pmx-disk-list', {
 });
 
 Ext.define('Proxmox.DiskList', {
-    extend: 'Ext.grid.GridPanel',
+    extend: 'Ext.tree.Panel',
     alias: 'widget.pmxDiskList',
+
+    rootVisible: false,
 
     emptyText: gettext('No Disks found'),
 
     stateful: true,
-    stateId: 'grid-node-disks',
+    stateId: 'tree-node-disks',
 
     controller: {
 	xclass: 'Ext.app.ViewController',
 
 	reload: function() {
 	    let me = this;
-	    me.getView().getStore().load();
+	    let view = me.getView();
+
+	    let extraParams = {};
+	    if (view.includePartitions) {
+		extraParams['include-partitions'] = 1;
+	    }
+
+	    let url = `${view.baseurl}/list`;
+	    me.store.setProxy({
+		type: 'proxmox',
+		extraParams: extraParams,
+		url: url,
+	    });
+	    me.store.load();
 	},
 
 	openSmartWindow: function() {
@@ -94,27 +109,63 @@ Ext.define('Proxmox.DiskList', {
 	},
 
 	init: function(view) {
-	    Proxmox.Utils.monStoreErrors(view, view.getStore(), true);
-
 	    let nodename = view.nodename || 'localhost';
 	    view.baseurl = `/api2/json/nodes/${nodename}/disks`;
 	    view.exturl = `/api2/extjs/nodes/${nodename}/disks`;
-	    view.getStore().getProxy().setUrl(`${view.baseurl}/list`);
-	    view.getStore().load();
-	},
-    },
 
-    store: {
-	model: 'pmx-disk-list',
-	proxy: {
-	    type: 'proxmox',
+	    this.store = Ext.create('Ext.data.Store', {
+		model: 'pmx-disk-list',
+	    });
+	    this.store.on('load', this.onLoad, this);
+
+	    Proxmox.Utils.monStoreErrors(view, this.store);
+	    this.reload();
 	},
-	sorters: [
-	    {
-		property: 'dev',
-		direction: 'ASC',
-	    },
-	],
+
+	onLoad: function(store, records, success, operation) {
+	    let me = this;
+	    let view = this.getView();
+
+	    if (!success) {
+		Proxmox.Utils.setErrorMask(
+		    view,
+		    Proxmox.Utils.getResponseErrorMessage(operation.getError()),
+		);
+		return;
+	    }
+
+	    let disks = {};
+
+	    for (const item of records) {
+		let data = item.data;
+		data.leaf = true;
+		data.expanded = true;
+		data.children = [];
+		data.iconCls = 'fa fa-fw fa-hdd-o x-fa-tree';
+		if (!data.parent) {
+		    disks[data.devpath] = data;
+		}
+	    }
+	    for (const item of records) {
+		let data = item.data;
+		if (data.parent) {
+		    disks[data.parent].leaf = false;
+		    disks[data.parent].children.push(data);
+		}
+	    }
+
+	    let children = [];
+	    for (const [_, device] of Object.entries(disks)) {
+		children.push(device);
+	    }
+
+	    view.setRootNode({
+		expanded: true,
+		children: children,
+	    });
+
+	    Proxmox.Utils.setErrorMask(view, false);
+	},
     },
 
     tbar: [
@@ -125,15 +176,25 @@ Ext.define('Proxmox.DiskList', {
 	{
 	    xtype: 'proxmoxButton',
 	    text: gettext('Show S.M.A.R.T. values'),
+	    parentXType: 'treepanel',
 	    disabled: true,
+	    enableFn: function(rec) {
+		if (!rec || rec.data.parent) {
+		    return false;
+		} else {
+		    return true;
+		}
+	    },
 	    handler: 'openSmartWindow',
 	},
 	{
 	    xtype: 'proxmoxButton',
 	    text: gettext('Initialize Disk with GPT'),
+	    parentXType: 'treepanel',
 	    disabled: true,
 	    enableFn: function(rec) {
-		if (!rec || (rec.data.used && rec.data.used !== 'unused')) {
+		if (!rec || rec.data.parent ||
+		    (rec.data.used && rec.data.used !== 'unused')) {
 		    return false;
 		} else {
 		    return true;
@@ -145,6 +206,7 @@ Ext.define('Proxmox.DiskList', {
 
     columns: [
 	{
+	    xtype: 'treecolumn',
 	    header: gettext('Device'),
 	    width: 150,
 	    sortable: true,
