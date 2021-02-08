@@ -258,8 +258,22 @@ Ext.define('Proxmox.node.NetworkEdit', {
 			if (Proxmox.Utils.VlanInterface_match.test(value)) {
 			    vlanidField.setDisabled(true);
 			    vlanrawdeviceField.setDisabled(true);
+			    // User defined those values in the `iface` (Name)
+			    // field. Match them (instead of leaving the
+			    // previous value) to make clear what is submitted
+			    // and how the fields `iface`, `vlan-id` and
+			    // `vlan-raw-device` are connected
+			    vlanidField.setValue(
+				value.match(Proxmox.Utils.VlanInterface_match)[2],
+			    );
+			    vlanrawdeviceField.setValue(
+				value.match(Proxmox.Utils.VlanInterface_match)[1],
+			    );
 			} else if (Proxmox.Utils.Vlan_match.test(value)) {
 			    vlanidField.setDisabled(true);
+			    vlanidField.setValue(
+				value.match(Proxmox.Utils.Vlan_match)[1],
+			    );
 			    vlanrawdeviceField.setDisabled(false);
 			} else {
 			    vlanidField.setDisabled(false);
