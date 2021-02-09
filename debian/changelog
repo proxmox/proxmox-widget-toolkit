@@ -1,3 +1,17 @@
+proxmox-widget-toolkit (2.4-5) pve pmg; urgency=medium
+
+  * disk list: restore info about ceph
+
+  * disk list: convert to tree-grid and conditionally include partitions
+
+  * fix usage of findRecord for exact matches
+
+  * prune panel: make keep-last label text like the others
+
+  * network: VLAN edit: Fix automatic field disabling and other UX improvements
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 09 Feb 2021 14:31:03 +0100
+
 proxmox-widget-toolkit (2.4-4) pve pmg; urgency=medium
 
   * data reader: cope with null respones for not configured data, treat like
