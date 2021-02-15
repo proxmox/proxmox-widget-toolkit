@@ -25,6 +25,9 @@ Ext.define('Proxmox.window.Edit', {
     // set to true if you want an Remove button (instead of Create)
     isRemove: false,
 
+    // set to false, if you don't want the reset button present
+    showReset: true,
+
     // custom submitText
     submitText: undefined,
 
@@ -349,7 +352,7 @@ Ext.define('Proxmox.window.Edit', {
 	    me.title = Proxmox.Utils.dialog_title(me.subject, me.isCreate, me.isAdd);
 	}
 
-	if (me.isCreate) {
+	if (me.isCreate || !me.showReset) {
 		me.buttons = [submitBtn];
 	} else {
 		me.buttons = [submitBtn, resetBtn];
