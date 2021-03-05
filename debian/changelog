@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (2.4-6) pve pmg; urgency=medium
+
+  * disk list: partitions do not have a S.M.A.R.T. status, avoid showing
+    'unknown'
+
+  * task viewer: increase default height
+
+  * edit window: advanced: do not permanently enable advanced mode if they are
+    invalid, only show the advanced fields temporarily.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 05 Mar 2021 20:22:00 +0100
+
 proxmox-widget-toolkit (2.4-5) pve pmg; urgency=medium
 
   * disk list: restore info about ceph
