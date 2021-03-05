@@ -255,7 +255,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	Ext.apply(me, {
 	    title: "Task viewer: " + task.desc + me.extraTitle,
 	    width: 800,
-	    height: 400,
+	    height: 500,
 	    layout: 'fit',
 	    modal: true,
 	    items: [{
