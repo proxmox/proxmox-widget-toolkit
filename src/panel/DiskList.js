@@ -11,6 +11,11 @@ Ext.define('pmx-disk-list', {
 		if (rec.data.health) {
 		    return rec.data.health;
 		}
+
+		if (rec.data.type === 'partition') {
+		    return "";
+		}
+
 		return Proxmox.Utils.unknownText;
 	    },
 	},
