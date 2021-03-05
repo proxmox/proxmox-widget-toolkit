@@ -331,7 +331,6 @@ Ext.define('Proxmox.window.Edit', {
 
 		if (!allAdvancedValid) {
 		    inputPanel.setAdvancedVisible(true);
-		    me.down('#advancedcb').setValue(true);
 		}
 	    }
 	};
