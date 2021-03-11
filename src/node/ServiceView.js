@@ -22,7 +22,6 @@ Ext.define('Proxmox.node.ServiceView', {
 
 	let rstore = Ext.create('Proxmox.data.UpdateStore', {
 	    interval: 1000,
-	    storeid: 'proxmox-services' + me.nodename,
 	    model: 'proxmox-services',
 	    proxy: {
                 type: 'proxmox',
