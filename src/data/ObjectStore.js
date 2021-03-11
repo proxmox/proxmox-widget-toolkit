@@ -21,10 +21,6 @@ Ext.define('Proxmox.data.ObjectStore', {
 
         config = config || {};
 
-	if (!config.storeid) {
-	    config.storeid = 'proxmox-store-' + ++Ext.idSeed;
-	}
-
         Ext.applyIf(config, {
 	    model: 'KeyValue',
             proxy: {

@@ -33,9 +33,6 @@ Ext.define('Proxmox.data.UpdateStore', {
 	    delete config.interval;
 	}
 
-	if (!config.storeid) {
-	    throw "no storeid specified";
-	}
 
 	let load_task = new Ext.util.DelayedTask();
 

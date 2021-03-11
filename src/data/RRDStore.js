@@ -37,11 +37,6 @@ Ext.define('Proxmox.data.RRDStore', {
 	    config.interval = 30000;
 	}
 
-	// set a new storeid
-	if (!config.storeid) {
-	    config.storeid = 'rrdstore-' + ++Ext.idSeed;
-	}
-
 	// rrdurl is required
 	if (!config.rrdurl) {
 	    throw "no rrdurl specified";
