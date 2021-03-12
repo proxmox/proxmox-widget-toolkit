@@ -202,8 +202,9 @@ Ext.define('Proxmox.node.Tasks', {
 			switch (parsed) {
 			    case 'unknown': return Proxmox.Utils.unknownText;
 			    case 'error': return Proxmox.Utils.errorText + ': ' + value;
+			    case 'warning': return Proxmox.Utils.warningsText +
+				value.replace('WARNINGS', '');
 			    case 'ok': // fall-through
-			    case 'warning': // fall-through
 			    default: return value;
 			}
 		    },

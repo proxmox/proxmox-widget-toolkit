@@ -48,6 +48,7 @@ utilities: {
     noneText: gettext('none'),
     NoneText: gettext('None'),
     errorText: gettext('Error'),
+    warningsText: gettext('Warnings'),
     unknownText: gettext('Unknown'),
     defaultText: gettext('Default'),
     daysText: gettext('days'),
