@@ -809,6 +809,185 @@ utilities: {
 	}
     },
 
+    render_optional_url: function(value) {
+	if (value && value.match(/^https?:\/\//) !== null) {
+	    return '<a target="_blank" href="' + value + '">' + value + '</a>';
+	}
+	return value;
+    },
+
+    render_san: function(value) {
+	var names = [];
+	if (Ext.isArray(value)) {
+	    value.forEach(function(val) {
+		if (!Ext.isNumber(val)) {
+		    names.push(val);
+		}
+	    });
+	    return names.join('<br>');
+	}
+	return value;
+    },
+
+    loadTextFromFile: function(file, callback, maxBytes) {
+	let maxSize = maxBytes || 8192;
+	if (file.size > maxSize) {
+	    Ext.Msg.alert(gettext('Error'), gettext("Invalid file size: ") + file.size);
+	    return;
+	}
+	let reader = new FileReader();
+	reader.onload = evt => callback(evt.target.result);
+	reader.readAsText(file);
+    },
+
+    parsePropertyString: function(value, defaultKey) {
+	var res = {},
+	    error;
+
+	if (typeof value !== 'string' || value === '') {
+	    return res;
+	}
+
+	Ext.Array.each(value.split(','), function(p) {
+	    var kv = p.split('=', 2);
+	    if (Ext.isDefined(kv[1])) {
+		res[kv[0]] = kv[1];
+	    } else if (Ext.isDefined(defaultKey)) {
+		if (Ext.isDefined(res[defaultKey])) {
+		    error = 'defaultKey may be only defined once in propertyString';
+		    return false; // break
+		}
+		res[defaultKey] = kv[0];
+	    } else {
+		error = 'invalid propertyString, not a key=value pair and no defaultKey defined';
+		return false; // break
+	    }
+	    return true;
+	});
+
+	if (error !== undefined) {
+	    console.error(error);
+	    return undefined;
+	}
+
+	return res;
+    },
+
+    printPropertyString: function(data, defaultKey) {
+	var stringparts = [],
+	    gotDefaultKeyVal = false,
+	    defaultKeyVal;
+
+	Ext.Object.each(data, function(key, value) {
+	    if (defaultKey !== undefined && key === defaultKey) {
+		gotDefaultKeyVal = true;
+		defaultKeyVal = value;
+	    } else if (Ext.isArray(value)) {
+		stringparts.push(key + '=' + value.join(';'));
+	    } else if (value !== '') {
+		stringparts.push(key + '=' + value);
+	    }
+	});
+
+	stringparts = stringparts.sort();
+	if (gotDefaultKeyVal) {
+	    stringparts.unshift(defaultKeyVal);
+	}
+
+	return stringparts.join(',');
+    },
+
+    acmedomain_count: 5,
+
+    parseACMEPluginData: function(data) {
+	let res = {};
+	let extradata = [];
+	data.split('\n').forEach((line) => {
+	    // capture everything after the first = as value
+	    let [key, value] = line.split('=');
+	    if (value !== undefined) {
+		res[key] = value;
+	    } else {
+		extradata.push(line);
+	    }
+	});
+	return [res, extradata];
+    },
+
+    delete_if_default: function(values, fieldname, default_val, create) {
+	if (values[fieldname] === '' || values[fieldname] === default_val) {
+	    if (!create) {
+		if (values.delete) {
+		    if (Ext.isArray(values.delete)) {
+			values.delete.push(fieldname);
+		    } else {
+			values.delete += ',' + fieldname;
+		    }
+		} else {
+		    values.delete = fieldname;
+		}
+	    }
+
+	    delete values[fieldname];
+	}
+    },
+
+    printACME: function(value) {
+	if (Ext.isArray(value.domains)) {
+	    value.domains = value.domains.join(';');
+	}
+	return Proxmox.Utils.printPropertyString(value);
+    },
+
+    parseACME: function(value) {
+	if (!value) {
+	    return {};
+	}
+
+	var res = {};
+	var error;
+
+	Ext.Array.each(value.split(','), function(p) {
+	    var kv = p.split('=', 2);
+	    if (Ext.isDefined(kv[1])) {
+		res[kv[0]] = kv[1];
+	    } else {
+		error = 'Failed to parse key-value pair: '+p;
+		return false;
+	    }
+	    return true;
+	});
+
+	if (error !== undefined) {
+	    console.error(error);
+	    return undefined;
+	}
+
+	if (res.domains !== undefined) {
+	    res.domains = res.domains.split(/;/);
+	}
+
+	return res;
+    },
+
+    add_domain_to_acme: function(acme, domain) {
+	if (acme.domains === undefined) {
+	    acme.domains = [domain];
+	} else {
+	    acme.domains.push(domain);
+	    acme.domains = acme.domains.filter((value, index, self) => self.indexOf(value) === index);
+	}
+	return acme;
+    },
+
+    remove_domain_from_acme: function(acme, domain) {
+	if (acme.domains !== undefined) {
+	    acme.domains = acme.domains.filter(
+		(value, index, self) => self.indexOf(value) === index && value !== domain,
+	    );
+	}
+	return acme;
+    },
 },
 
     singleton: true,
