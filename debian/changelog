@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (2.4-7) pve pmg; urgency=medium
+
+  * data: stores: drop storeid requirement
+
+  * add ACME related data models and forms
+
+  * add ACME:
+    - account panel, plugin editing, certificate panel
+    - account and certificate panel
+    - plugin and domain editing
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 16 Mar 2021 13:31:23 +0100
+
 proxmox-widget-toolkit (2.4-6) pve pmg; urgency=medium
 
   * disk list: partitions do not have a S.M.A.R.T. status, avoid showing
