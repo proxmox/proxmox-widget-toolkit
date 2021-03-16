@@ -50,6 +50,7 @@ JSSRC=					\
 	panel/RRDChart.js		\
 	panel/GaugeWidget.js		\
 	panel/Certificates.js		\
+	panel/ACMEAccount.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
@@ -58,6 +59,7 @@ JSSRC=					\
 	window/DiskSmart.js		\
 	window/ZFSDetail.js		\
 	window/Certificates.js		\
+	window/ACMEAccount.js		\
 	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
