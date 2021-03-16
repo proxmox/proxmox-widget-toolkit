@@ -51,6 +51,7 @@ JSSRC=					\
 	panel/GaugeWidget.js		\
 	panel/Certificates.js		\
 	panel/ACMEAccount.js		\
+	panel/ACMEPlugin.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
@@ -60,6 +61,7 @@ JSSRC=					\
 	window/ZFSDetail.js		\
 	window/Certificates.js		\
 	window/ACMEAccount.js		\
+	window/ACMEPluginEdit.js	\
 	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
