@@ -15,6 +15,8 @@ JSSRC=					\
 	data/RRDStore.js		\
 	data/TimezoneStore.js		\
 	data/model/Realm.js		\
+	data/model/Certificates.js	\
+	data/model/ACME.js		\
 	form/DisplayEdit.js		\
 	form/ExpireDate.js		\
 	form/IntegerField.js		\
