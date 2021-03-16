@@ -49,6 +49,7 @@ JSSRC=					\
 	panel/PruneKeepPanel.js		\
 	panel/RRDChart.js		\
 	panel/GaugeWidget.js		\
+	panel/Certificates.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
@@ -56,6 +57,7 @@ JSSRC=					\
 	window/LanguageEdit.js		\
 	window/DiskSmart.js		\
 	window/ZFSDetail.js		\
+	window/Certificates.js		\
 	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
