@@ -52,6 +52,7 @@ JSSRC=					\
 	panel/Certificates.js		\
 	panel/ACMEAccount.js		\
 	panel/ACMEPlugin.js		\
+	panel/ACMEDomains.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
@@ -62,6 +63,7 @@ JSSRC=					\
 	window/Certificates.js		\
 	window/ACMEAccount.js		\
 	window/ACMEPluginEdit.js	\
+	window/ACMEDomains.js		\
 	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
