@@ -492,11 +492,75 @@ Ext.define('Proxmox.validIdReOverride', {
     validIdRe: /^[a-z_][a-z0-9\-_@]*$/i,
 });
 
-// use whole checkbox cell to multiselect, not only the checkbox
 Ext.define('Proxmox.selection.CheckboxModel', {
     override: 'Ext.selection.CheckboxModel',
 
+    // [P] use whole checkbox cell to multiselect, not only the checkbox
     checkSelector: '.x-grid-cell-row-checker',
+
+    // [ P: optimized to remove all records at once as single remove is O(n^3) slow ]
+    // records can be an index, a record or an array of records
+    doDeselect: function(records, suppressEvent) {
+        var me = this,
+            selected = me.selected,
+            i = 0,
+            len, record,
+            commit;
+        if (me.locked || !me.store) {
+            return false;
+        }
+        if (typeof records === "number") {
+            // No matching record, jump out
+            record = me.store.getAt(records);
+            if (!record) {
+                return false;
+            }
+            records = [
+                record,
+            ];
+        } else if (!Ext.isArray(records)) {
+            records = [
+                records,
+            ];
+        }
+	// [P] a beforedeselection, triggered by me.onSelectChange below, can block removal by
+	// returning false, thus the original implementation removed only here in the commit fn,
+	// which has an abysmal performance O(n^3). As blocking removal is not the norm, go do the
+	// reverse, record blocked records and remove them from the to-be-removed array before
+	// applying it. A FF86 i9-9900K on 10k records goes from >40s to ~33ms for >90% deselection
+	let committed = false;
+	commit = function() {
+	    committed = true;
+	    if (record === me.selectionStart) {
+		me.selectionStart = null;
+	    }
+	};
+	let removalBlocked = [];
+        len = records.length;
+        me.suspendChanges();
+        for (; i < len; i++) {
+            record = records[i];
+            if (me.isSelected(record)) {
+		committed = false;
+                me.onSelectChange(record, false, suppressEvent, commit);
+		if (!committed) {
+		    removalBlocked.push(record);
+		}
+                if (me.destroyed) {
+                    return false;
+                }
+            }
+        }
+	if (removalBlocked.length > 0) {
+	    records.remove(removalBlocked);
+	}
+	selected.remove(records); // [P] FAST(er)
+	me.lastSelected = selected.last();
+        me.resumeChanges();
+        // fire selchange if there was a change and there is no suppressEvent flag
+	me.maybeFireSelectionChange(records.length > 0 && !suppressEvent);
+	return records.length > 0;
+    },
 });
 
 // force alert boxes to be rendered with an Error Icon
