@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (2.4-8) pve pmg; urgency=medium
+
+  * add async API request and sleep helpers
+
+  * override deselection in CheckboxModel to improve performance
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 22 Mar 2021 16:23:16 +0100
+
 proxmox-widget-toolkit (2.4-7) pve pmg; urgency=medium
 
   * data: stores: drop storeid requirement
