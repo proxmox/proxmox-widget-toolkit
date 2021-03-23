@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (2.4-9) pve pmg; urgency=medium
+
+  * improve ranged selection and deselection performance in CheckboxModel
+
+  * utils: async api: reject with whole failure response and add helper to
+    alert it
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 23 Mar 2021 11:29:43 +0100
+
 proxmox-widget-toolkit (2.4-8) pve pmg; urgency=medium
 
   * add async API request and sleep helpers
