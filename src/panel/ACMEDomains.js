@@ -47,7 +47,6 @@ Ext.define('Proxmox.panel.ACMEDomains', {
 	    editBtnIcon: (get) => 'fa black fa-' + (get('accountEditable') ? 'check' : 'pencil'),
 	    accountTextHidden: (get) => get('accountEditable') || !get('accountsAvailable'),
 	    accountValueHidden: (get) => !get('accountEditable') || !get('accountsAvailable'),
-	    hasUsage: (get) => get('hasUsage'),
 	},
     },
 
