@@ -498,6 +498,8 @@ Ext.define('Proxmox.selection.CheckboxModel', {
     // [P] use whole checkbox cell to multiselect, not only the checkbox
     checkSelector: '.x-grid-cell-row-checker',
 
+    // TODO: remove all optimizations below to an override for parent 'Ext.selection.Model' ??
+
     // [ P: optimized to remove all records at once as single remove is O(n^3) slow ]
     // records can be an index, a record or an array of records
     doDeselect: function(records, suppressEvent) {
@@ -559,7 +561,96 @@ Ext.define('Proxmox.selection.CheckboxModel', {
         me.resumeChanges();
         // fire selchange if there was a change and there is no suppressEvent flag
 	me.maybeFireSelectionChange(records.length > 0 && !suppressEvent);
-	return records.length > 0;
+	return records.length;
+    },
+
+
+    doMultiSelect: function(records, keepExisting, suppressEvent) {
+        var me = this,
+            selected = me.selected,
+            change = false,
+            result, i, len, record, commit;
+
+        if (me.locked) {
+            return;
+        }
+
+        records = !Ext.isArray(records) ? [records] : records;
+        len = records.length;
+        if (!keepExisting && selected.getCount() > 0) {
+            result = me.deselectDuringSelect(records, suppressEvent);
+            if (me.destroyed) {
+                return;
+            }
+            if (result[0]) {
+                // We had a failure during selection, so jump out
+                // Fire selection change if we did deselect anything
+                me.maybeFireSelectionChange(result[1] > 0 && !suppressEvent);
+                return;
+            } else {
+                // Means something has been deselected, so we've had a change
+                change = result[1] > 0;
+            }
+        }
+
+	let gotBlocked, blockedRecords = [];
+        commit = function() {
+            if (!selected.getCount()) {
+                me.selectionStart = record;
+            }
+	    gotBlocked = false;
+            change = true;
+        };
+
+        for (i = 0; i < len; i++) {
+            record = records[i];
+            if (me.isSelected(record)) {
+                continue;
+            }
+
+	    gotBlocked = true;
+            me.onSelectChange(record, true, suppressEvent, commit);
+            if (me.destroyed) {
+                return;
+            }
+	    if (gotBlocked) {
+		blockedRecords.push(record);
+	    }
+        }
+	if (blockedRecords.length > 0) {
+	    records.remove(blockedRecords);
+	}
+        selected.add(records);
+        me.lastSelected = record;
+
+        // fire selchange if there was a change and there is no suppressEvent flag
+        me.maybeFireSelectionChange(change && !suppressEvent);
+    },
+    deselectDuringSelect: function(toSelect, suppressEvent) {
+        var me = this,
+            selected = me.selected.getRange(),
+            changed = 0,
+            failed = false;
+        // Prevent selection change events from firing, will happen during select
+        me.suspendChanges();
+        me.deselectingDuringSelect = true;
+	let toDeselect = selected.filter(item => !Ext.Array.contains(toSelect, item));
+	if (toDeselect.length > 0) {
+	    changed = me.doDeselect(toDeselect, suppressEvent);
+	    if (!changed) {
+		failed = true;
+            }
+            if (me.destroyed) {
+                failed = true;
+                changed = 0;
+            }
+        }
+        me.deselectingDuringSelect = false;
+        me.resumeChanges();
+        return [
+            failed,
+            changed,
+        ];
     },
 });
 
