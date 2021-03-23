@@ -443,6 +443,17 @@ utilities: {
 	Ext.Ajax.request(newopts);
     },
 
+    // can be useful for catching displaying errors from the API, e.g.:
+    // Proxmox.Async.api2({
+    //     ...
+    // }).catch(Proxmox.Utils.alertResponseFailure);
+    alertResponseFailure: (response) => {
+	Ext.Msg.alert(
+	    gettext('Error'),
+	    response.htmlStatus || response.result.message,
+	);
+    },
+
     checked_command: function(orig_cmd) {
 	Proxmox.Utils.API2Request(
 	    {
@@ -1041,18 +1052,13 @@ utilities: {
 Ext.define('Proxmox.Async', {
     singleton: true,
 
-    // Returns a Promise resolving to the result of an `API2Request`.
+    // Returns a Promise resolving to the result of an `API2Request` or rejecting to the error
+    // repsonse on failure
     api2: function(reqOpts) {
 	return new Promise((resolve, reject) => {
 	    delete reqOpts.callback; // not allowed in this api
 	    reqOpts.success = response => resolve(response);
-	    reqOpts.failure = response => {
-		if (response.result && response.result.message) {
-		    reject(response.result.message);
-		} else {
-		    reject("api call failed");
-		}
-	    };
+	    reqOpts.failure = response => reject(response);
 	    Proxmox.Utils.API2Request(reqOpts);
 	});
     },
