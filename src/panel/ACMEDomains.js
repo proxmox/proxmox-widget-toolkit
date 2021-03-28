@@ -206,12 +206,13 @@ Ext.define('Proxmox.panel.ACMEDomains', {
 
 	orderFinished: function(success, cert) {
 	    if (!success || !cert.reloadUi) return;
-	    var txt = gettext('gui will be restarted with new certificates, please reload!');
-	    Ext.getBody().mask(txt, ['x-mask-loading']);
-	    // reload after 10 seconds automatically
-	    Ext.defer(function() {
-		window.location.reload(true);
-	    }, 10000);
+
+	    Ext.getBody().mask(
+		gettext('API server will be restarted to use new certificates, please reload web-interface!'),
+		['pve-static-mask'],
+	    );
+	    // try to reload after 10 seconds automatically
+	    Ext.defer(() => window.location.reload(true), 10000);
 	},
 
 	reload: function() {
