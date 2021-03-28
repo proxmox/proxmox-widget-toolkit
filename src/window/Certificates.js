@@ -122,12 +122,12 @@ Ext.define('Proxmox.window.CertificateUpload', {
 	    return;
 	}
 
-	var txt = gettext('GUI server will be restarted with new certificates, please reload!');
-	Ext.getBody().mask(txt, ['pve-static-mask']);
-	// reload after 10 seconds automatically
-	Ext.defer(function() {
-	    window.location.reload(true);
-	}, 10000);
+	Ext.getBody().mask(
+	    gettext('API server will be restarted to use new certificates, please reload web-interface!'),
+	    ['pve-static-mask'],
+	);
+	// try to reload after 10 seconds automatically
+	Ext.defer(() => window.location.reload(true), 10000);
     },
 
     items: [

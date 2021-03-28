@@ -86,13 +86,12 @@ Ext.define('Proxmox.panel.Certificates', {
 	    method: 'DELETE',
 	    success: function(response, opt) {
 		if (cert.reloadUid) {
-		    let txt =
-			gettext('GUI will be restarted with new certificates, please reload!');
-		    Ext.getBody().mask(txt, ['x-mask-loading']);
-		    // reload after 10 seconds automatically
-		    Ext.defer(function() {
-			window.location.reload(true);
-		    }, 10000);
+		    Ext.getBody().mask(
+			gettext('API server will be restarted to use new certificates, please reload web-interface!'),
+			['pve-static-mask'],
+		    );
+		    // try to reload after 10 seconds automatically
+		    Ext.defer(() => window.location.reload(true), 10000);
 		}
 	    },
 	    failure: function(response, opt) {
