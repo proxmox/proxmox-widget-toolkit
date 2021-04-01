@@ -64,6 +64,7 @@ JSSRC=					\
 	window/ACMEAccount.js		\
 	window/ACMEPluginEdit.js	\
 	window/ACMEDomains.js		\
+	window/FileBrowser.js		\
 	node/APT.js			\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
