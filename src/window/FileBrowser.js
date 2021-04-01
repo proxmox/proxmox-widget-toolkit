@@ -80,23 +80,19 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let atag = document.createElement('a');
 
 	    atag.download = data.text;
-	    let params = {
-		'backup-id': view['backup-id'],
-		'backup-type': view['backup-type'],
-		'backup-time': view['backup-time'],
-	    };
+	    let params = { ...view.extraParams };
 	    params.filepath = data.filepath;
 	    atag.download = data.text;
 	    if (data.type === 'd') {
 		atag.download += ".zip";
 	    }
-	    atag.href = me
-	        .buildUrl(`/api2/json/admin/datastore/${view.datastore}/pxar-file-download`, params);
+	    atag.href = me.buildUrl(view.downloadUrl, params);
 	    atag.click();
 	},
 
 	fileChanged: function() {
 	    let me = this;
+	    let view = me.getView();
 	    let tree = me.lookup('tree');
 	    let selection = tree.getSelection();
 	    if (!selection || selection.length < 1) return;
@@ -104,17 +100,19 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let data = selection[0].data;
 
 	    let canDownload = false;
-	    switch (data.type) {
-		case 'h':
-		case 'f':
-		    canDownload = true;
-		    break;
-		case 'd':
-		    if (data.depth > 1) {
+	    if (view.downloadUrl) {
+		switch (data.type) {
+		    case 'h':
+		    case 'f':
 			canDownload = true;
-		    }
-		    break;
-		default: break;
+			break;
+		    case 'd':
+			if (data.depth > 1) {
+			    canDownload = true;
+			}
+			break;
+		    default: break;
+		}
 	    }
 
 	    me.lookup('downloadBtn').setDisabled(!canDownload);
@@ -124,28 +122,16 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let me = this;
 	    let tree = me.lookup('tree');
 
-	    if (!view['backup-id']) {
-		throw "no backup-id given";
-	    }
-
-	    if (!view['backup-type']) {
-		throw "no backup-id given";
-	    }
-
-	    if (!view['backup-time']) {
-		throw "no backup-id given";
+	    if (!view.listUrl) {
+		throw "no list URL given";
 	    }
 
 	    let store = tree.getStore();
 	    let proxy = store.getProxy();
 
 	    Proxmox.Utils.monStoreErrors(tree, store, true);
-	    proxy.setUrl(`/api2/json/admin/datastore/${view.datastore}/catalog`);
-	    proxy.setExtraParams({
-		'backup-id': view['backup-id'],
-		'backup-type': view['backup-type'],
-		'backup-time': view['backup-time'],
-	    });
+	    proxy.setUrl(view.listUrl);
+	    proxy.setExtraParams(view.extraParams);
 	    store.load(() => {
 		let root = store.getRoot();
 		root.expand(); // always expand invisible root node
