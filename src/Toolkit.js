@@ -182,6 +182,11 @@ Ext.apply(Ext.form.field.VTypes, {
     },
 
     passwordText: gettext('Passwords do not match'),
+
+    email: function(value) {
+	let emailre = /^[\w+~-]+(\.[\w+~-]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)$/;
+	return emailre.test(value);
+    },
 });
 
 // Firefox 52+ Touchscreen bug
