@@ -738,6 +738,18 @@ utilities: {
 	return 'error';
     },
 
+    format_task_status: function(value) {
+	let parsed = Proxmox.Utils.parse_task_status(value);
+	switch (parsed) {
+	    case 'unknown': return Proxmox.Utils.unknownText;
+	    case 'error': return Proxmox.Utils.errorText + ': ' + value;
+	    case 'warning': return Proxmox.Utils.warningsText +
+		value.replace('WARNINGS', '');
+	    case 'ok': // fall-through
+	    default: return value;
+	}
+    },
+
     render_duration: function(value) {
 	if (value === undefined) {
 	    return '-';
