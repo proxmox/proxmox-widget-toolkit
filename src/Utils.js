@@ -738,15 +738,15 @@ utilities: {
 	return 'error';
     },
 
-    format_task_status: function(value) {
-	let parsed = Proxmox.Utils.parse_task_status(value);
+    format_task_status: function(status) {
+	let parsed = Proxmox.Utils.parse_task_status(status);
 	switch (parsed) {
 	    case 'unknown': return Proxmox.Utils.unknownText;
-	    case 'error': return Proxmox.Utils.errorText + ': ' + value;
+	    case 'error': return Proxmox.Utils.errorText + ': ' + status;
 	    case 'warning': return Proxmox.Utils.warningsText +
-		value.replace('WARNINGS', '');
+		status.replace('WARNINGS', '');
 	    case 'ok': // fall-through
-	    default: return value;
+	    default: return status;
 	}
     },
 
