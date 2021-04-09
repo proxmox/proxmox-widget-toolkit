@@ -743,8 +743,7 @@ utilities: {
 	switch (parsed) {
 	    case 'unknown': return Proxmox.Utils.unknownText;
 	    case 'error': return Proxmox.Utils.errorText + ': ' + status;
-	    case 'warning': return Proxmox.Utils.warningsText +
-		status.replace('WARNINGS', '');
+	    case 'warning': return status.replace('WARNINGS', Proxmox.Utils.warningsText);
 	    case 'ok': // fall-through
 	    default: return status;
 	}
