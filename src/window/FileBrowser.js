@@ -98,23 +98,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    if (!selection || selection.length < 1) return;
 
 	    let data = selection[0].data;
-
-	    let canDownload = false;
-	    if (view.downloadUrl) {
-		switch (data.type) {
-		    case 'h':
-		    case 'f':
-			canDownload = true;
-			break;
-		    case 'd':
-			if (data.depth > 1) {
-			    canDownload = true;
-			}
-			break;
-		    default: break;
-		}
-	    }
-
+	    let canDownload = view.downloadUrl && ['h', 'f', 'd'].indexOf(data.type) !== -1;
 	    me.lookup('downloadBtn').setDisabled(!canDownload);
 	},
 
