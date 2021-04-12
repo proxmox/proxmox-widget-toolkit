@@ -16,6 +16,8 @@ Ext.define('proxmox-networks', {
 	'netmask6',
 	'slaves',
 	'type',
+	'vlan-id',
+	'vlan-raw-device',
     ],
     idProperty: 'iface',
 });
@@ -428,6 +430,18 @@ Ext.define('Proxmox.node.NetworkView', {
 			    sortable: true,
 			    dataIndex: 'gateway',
 			    renderer: renderer_generator('gateway'),
+			},
+			{
+			    header: gettext('VLAN ID'),
+			    hidden: true,
+			    sortable: true,
+			    dataIndex: 'vlan-id',
+			},
+			{
+			    header: gettext('VLAN raw device'),
+			    hidden: true,
+			    sortable: true,
+			    dataIndex: 'vlan-raw-device',
 			},
 			{
 			    header: gettext('Comment'),
