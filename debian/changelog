@@ -1,3 +1,17 @@
+proxmox-widget-toolkit (2.5-1) pve pmg; urgency=medium
+
+  * panel/acme-domains: fix cyclic dependency in view model
+
+  * tasks: add warningsText
+
+  * window: move FileBrowser widget over from Proxmox Backup Server for re-use
+
+  * window/edit: add option to disable reset button
+
+  * toolkit: override email VType validation
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 13 Apr 2021 09:11:48 +0200
+
 proxmox-widget-toolkit (2.4-9) pve pmg; urgency=medium
 
   * improve ranged selection and deselection performance in CheckboxModel
