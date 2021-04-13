@@ -56,6 +56,24 @@ Ext.define("Proxmox.window.FileBrowser", {
 
     modal: true,
 
+    config: {
+	// the base-URL to get the list of files. required.
+	listURL: '',
+
+	// the base download URL, e.g., something like '/api2/...'
+	downloadURL: '',
+
+	// extra parameters set as proxy paramns and for an actual download request
+	extraParams: {},
+
+	// the file types for which the download button should be enabled
+	downloadableFileTypes: {
+	    'h': true, // hardlinks
+	    'f': true, // "normal" files
+	    'd': true, // directories
+	},
+    },
+
     controller: {
 	xclass: 'Ext.app.ViewController',
 
@@ -86,7 +104,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    if (data.type === 'd') {
 		atag.download += ".zip";
 	    }
-	    atag.href = me.buildUrl(view.downloadUrl, params);
+	    atag.href = me.buildUrl(view.downloadURL, params);
 	    atag.click();
 	},
 
@@ -98,7 +116,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    if (!selection || selection.length < 1) return;
 
 	    let data = selection[0].data;
-	    let canDownload = view.downloadUrl && ['h', 'f', 'd'].indexOf(data.type) !== -1;
+	    let canDownload = view.downloadURL && view.downloadableFileTypes[data.type];
 	    me.lookup('downloadBtn').setDisabled(!canDownload);
 	},
 
@@ -106,7 +124,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let me = this;
 	    let tree = me.lookup('tree');
 
-	    if (!view.listUrl) {
+	    if (!view.listURL) {
 		throw "no list URL given";
 	    }
 
@@ -114,7 +132,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let proxy = store.getProxy();
 
 	    Proxmox.Utils.monStoreErrors(tree, store, true);
-	    proxy.setUrl(view.listUrl);
+	    proxy.setUrl(view.listURL);
 	    proxy.setExtraParams(view.extraParams);
 	    store.load(() => {
 		let root = store.getRoot();
