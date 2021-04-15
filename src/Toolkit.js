@@ -126,6 +126,11 @@ Ext.apply(Ext.form.field.VTypes, {
     },
     DnsNameText: gettext('This is not a valid DNS name'),
 
+    DnsNameOrWildcard: function(v) {
+	return Proxmox.Utils.DnsName_or_Wildcard_match.test(v);
+    },
+    DnsNameOrWildcardText: gettext('This is not a valid DNS name'),
+
     // workaround for https://www.sencha.com/forum/showthread.php?302150
     proxmoxMail: function(v) {
         return (/^(\w+)([-+.][\w]+)*@(\w[-\w]*\.){1,5}([A-Za-z]){2,63}$/).test(v);

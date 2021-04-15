@@ -153,7 +153,7 @@ Ext.define('Proxmox.window.ACMEDomainEdit', {
 		    xtype: 'proxmoxtextfield',
 		    name: 'domain',
 		    allowBlank: false,
-		    vtype: 'DnsName',
+		    vtype: 'DnsNameOrWildcard',
 		    value: '',
 		    fieldLabel: gettext('Domain'),
 		},

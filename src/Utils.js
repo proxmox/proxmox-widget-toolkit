@@ -1213,6 +1213,7 @@ utilities: {
 
 	let DnsName_REGEXP = "(?:(?:(?:[a-zA-Z0-9](?:[a-zA-Z0-9\\-]*[a-zA-Z0-9])?)\\.)*(?:[A-Za-z0-9](?:[A-Za-z0-9\\-]*[A-Za-z0-9])?))";
 	me.DnsName_match = new RegExp("^" + DnsName_REGEXP + "$");
+	me.DnsName_or_Wildcard_match = new RegExp("^(?:\\*\\.)?" + DnsName_REGEXP + "$");
 
 	me.HostPort_match = new RegExp("^(" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")(?::(\\d+))?$");
 	me.HostPortBrackets_match = new RegExp("^\\[(" + IPV6_REGEXP + "|" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")\\](?::(\\d+))?$");
