@@ -4,16 +4,23 @@ Ext.define('Proxmox.widget.RRDChart', {
 
     unit: undefined, // bytes, bytespersecond, percent
 
+    powerOfTwo: false,
+
     controller: {
 	xclass: 'Ext.app.ViewController',
+
+	init: function(view) {
+	    this.powerOfTwo = view.powerOfTwo;
+	},
 
 	convertToUnits: function(value) {
 	    let units = ['', 'k', 'M', 'G', 'T', 'P'];
 	    let si = 0;
 	    let format = '0.##';
 	    if (value < 0.1) format += '#';
-	    while (value >= 1000 && si < units.length -1) {
-		value = value / 1000;
+	    const baseValue = this.powerOfTwo ? 1024 : 1000;
+	    while (value >= baseValue && si < units.length -1) {
+		value = value / baseValue;
 		si++;
 	    }
 
@@ -23,7 +30,10 @@ Ext.define('Proxmox.widget.RRDChart', {
 	    // limit decimal points
 	    value = Ext.util.Format.number(value, format);
 
-	    return value.toString() + " " + units[si];
+	    let unit = units[si];
+	    if (this.powerOfTwo) unit += 'i';
+
+	    return `${value.toString()} ${unit}`;
 	},
 
 	leftAxisRenderer: function(axis, label, layoutContext) {
