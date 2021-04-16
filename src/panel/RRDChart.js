@@ -1,3 +1,58 @@
+Ext.define('Proxmox.chart.axis.segmenter.NumericBase2', {
+    extend: 'Ext.chart.axis.segmenter.Numeric',
+    alias: 'segmenter.numericBase2',
+
+    // derived from the original numeric segmenter but using 2 instead of 10 as base
+    preferredStep: function(min, estStepSize) {
+	// Getting an order of magnitude of the estStepSize with a common logarithm.
+	let order = Math.floor(Math.log2(estStepSize));
+	let scale = Math.pow(2, order);
+
+	estStepSize /= scale;
+
+	// FIXME: below is not useful when using base 2 instead of base 10, we could
+	// just directly set estStepSize to 2
+	if (estStepSize <= 1) {
+	    estStepSize = 1;
+	} else if (estStepSize < 2) {
+	    estStepSize = 2;
+	}
+	return {
+	    unit: {
+		// When passed estStepSize is less than 1, its order of magnitude
+		// is equal to -number_of_leading_zeros in the estStepSize.
+		fixes: -order, // Number of fractional digits.
+		scale: scale,
+	    },
+	    step: estStepSize,
+	};
+    },
+
+    /**
+     * Wraps the provided estimated step size of a range without altering it into a step size object.
+     *
+     * @param {*} min The start point of range.
+     * @param {*} estStepSize The estimated step size.
+     * @return {Object} Return the step size by an object of step x unit.
+     * @return {Number} return.step The step count of units.
+     * @return {Object} return.unit The unit.
+     */
+    // derived from the original numeric segmenter but using 2 instead of 10 as base
+    exactStep: function(min, estStepSize) {
+	let order = Math.floor(Math.log2(estStepSize));
+	let scale = Math.pow(2, order);
+
+	return {
+	    unit: {
+		// add one decimal point if estStepSize is not a multiple of scale
+		fixes: -order + (estStepSize % scale === 0 ? 0 : 1),
+		scale: 1,
+	    },
+	    step: estStepSize,
+	};
+    },
+});
+
 Ext.define('Proxmox.widget.RRDChart', {
     extend: 'Ext.chart.CartesianChart',
     alias: 'widget.proxmoxRRDChart',
@@ -81,23 +136,31 @@ Ext.define('Proxmox.widget.RRDChart', {
     legend: {
 	padding: 0,
     },
-    axes: [
-	{
-	    type: 'numeric',
-	    position: 'left',
-	    grid: true,
-	    renderer: 'leftAxisRenderer',
-	    minimum: 0,
-	},
-	{
-	    type: 'time',
-	    position: 'bottom',
-	    grid: true,
-	    fields: ['time'],
-	},
-    ],
     listeners: {
 	animationend: 'onAfterAnimation',
+    },
+
+    constructor: function(config) {
+	let me = this;
+
+	let segmenter = config.powerOfTwo ? 'numericBase2' : 'numeric';
+	config.axes = [
+	    {
+		type: 'numeric',
+		position: 'left',
+		grid: true,
+		renderer: 'leftAxisRenderer',
+		minimum: 0,
+		segmenter,
+	    },
+	    {
+		type: 'time',
+		position: 'bottom',
+		grid: true,
+		fields: ['time'],
+	    },
+	];
+	me.callParent([config]);
     },
 
     initComponent: function() {
