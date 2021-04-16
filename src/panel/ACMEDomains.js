@@ -21,6 +21,8 @@ Ext.define('Proxmox.panel.ACMEDomains', {
     domainUsages: undefined,
     // if no domainUsages parameter is supllied, the orderUrl is required instead:
     orderUrl: undefined,
+    // Force the use of 'acmedomainX' properties.
+    separateDomainEntries: undefined,
 
     acmeUrl: undefined,
 
@@ -87,6 +89,7 @@ Ext.define('Proxmox.panel.ACMEDomains', {
 		acmeUrl: view.acmeUrl,
 		nodeconfig: view.nodeconfig,
 		domainUsages: view.domainUsages,
+		separateDomainEntries: view.separateDomainEntries,
 		apiCallDone: function() {
 		    me.reload();
 		},
@@ -105,6 +108,7 @@ Ext.define('Proxmox.panel.ACMEDomains', {
 		acmeUrl: view.acmeUrl,
 		nodeconfig: view.nodeconfig,
 		domainUsages: view.domainUsages,
+		separateDomainEntries: view.separateDomainEntries,
 		domain: selection[0].data,
 		apiCallDone: function() {
 		    me.reload();

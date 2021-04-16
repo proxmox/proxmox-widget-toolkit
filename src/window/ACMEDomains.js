@@ -16,6 +16,9 @@ Ext.define('Proxmox.window.ACMEDomainEdit', {
     // For PMG the we have multiple certificates, so we have a "usage" attribute & column.
     domainUsages: undefined,
 
+    // Force the use of 'acmedomainX' properties.
+    separateDomainEntries: undefined,
+
     cbindData: function(config) {
 	let me = this;
 	return {
@@ -50,7 +53,7 @@ Ext.define('Proxmox.window.ACMEDomainEdit', {
 		};
 
 		// If we have a 'usage' property (pmg), we only use the `acmedomainX` config keys.
-		if (win.domainUsages) {
+		if (win.separateDomainEntries || win.domainUsages) {
 		    if (!configkey || configkey === 'acme') {
 			configkey = find_free_slot();
 		    }
