@@ -87,3 +87,28 @@ div.right-aligned {
     font-size: 14px;
     margin-top: 2px;
 }
+
+.pmx-icon {
+    height: 16px;
+    background-position: bottom;
+    vertical-align: bottom;
+    padding: 0;
+}
+
+.pmx-itype-icon-memory,
+.pmx-itype-icon-processor
+{
+    background-repeat: no-repeat;
+    background-position:3px center;
+    padding-left: 20px;
+}
+
+.pmx-itype-icon-memory
+{
+    background-image:url(../images/icon-ram.png);
+}
+
+.pmx-itype-icon-processor
+{
+    background-image:url(../images/icon-cpu.png);
+}

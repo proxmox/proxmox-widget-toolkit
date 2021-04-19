@@ -1,6 +1,12 @@
+# icon-cpu, icon-ram
+# are self made (sources as .xcf)
+
 include ../defines.mk
 
-IMAGES=pmx-clear-trigger.png
+IMAGES=pmx-clear-trigger.png	\
+       icon-cpu.png		\
+       icon-ram.png		\
+
 
 all:
 
