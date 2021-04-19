@@ -15,6 +15,8 @@ Ext.define('Proxmox.window.SafeDestroy', {
     defaultFocus: 'confirmField',
     showProgress: false,
 
+    additionalItems: [],
+
     config: {
 	item: {
 	    id: undefined,
@@ -96,56 +98,6 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	},
     },
 
-    items: [
-	{
-	    xtype: 'component',
-	    cls: [Ext.baseCSSPrefix + 'message-box-icon',
-		   Ext.baseCSSPrefix + 'message-box-warning',
-		   Ext.baseCSSPrefix + 'dlg-icon'],
-	},
-	{
-	    xtype: 'container',
-	    flex: 1,
-	    layout: {
-		type: 'vbox',
-		align: 'stretch',
-	    },
-	    items: [
-		{
-		    xtype: 'component',
-		    reference: 'messageCmp',
-		},
-		{
-		    itemId: 'confirmField',
-		    reference: 'confirmField',
-		    xtype: 'textfield',
-		    name: 'confirm',
-		    labelWidth: 300,
-		    hideTrigger: true,
-		    allowBlank: false,
-		},
-		{
-		    xtype: 'container',
-		    reference: 'noteContainer',
-		    flex: 1,
-		    hidden: true,
-		    layout: {
-			type: 'vbox',
-			align: 'middle',
-		    },
-		    height: 25,
-		    items: [
-			{
-			    xtype: 'component',
-			    reference: 'noteCmp',
-			    width: '300px',
-			    style: 'font-size: smaller; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;',
-			},
-		    ],
-		},
-	    ],
-	},
-    ],
     buttons: [
 	{
 	    reference: 'removeButton',
@@ -156,6 +108,58 @@ Ext.define('Proxmox.window.SafeDestroy', {
 
     initComponent: function() {
 	let me = this;
+
+	me.items = [
+	    {
+		xtype: 'component',
+		cls: [Ext.baseCSSPrefix + 'message-box-icon',
+		       Ext.baseCSSPrefix + 'message-box-warning',
+		       Ext.baseCSSPrefix + 'dlg-icon'],
+	    },
+	    {
+		xtype: 'container',
+		flex: 1,
+		layout: {
+		    type: 'vbox',
+		    align: 'stretch',
+		},
+		items: [
+		    {
+			xtype: 'component',
+			reference: 'messageCmp',
+		    },
+		    {
+			itemId: 'confirmField',
+			reference: 'confirmField',
+			xtype: 'textfield',
+			name: 'confirm',
+			labelWidth: 300,
+			hideTrigger: true,
+			allowBlank: false,
+		    },
+		].concat(me.additionalItems).concat([
+		    {
+			xtype: 'container',
+			reference: 'noteContainer',
+			flex: 1,
+			hidden: true,
+			layout: {
+			    type: 'vbox',
+			    align: 'middle',
+			},
+			height: 25,
+			items: [
+			    {
+				xtype: 'component',
+				reference: 'noteCmp',
+				width: '300px',
+				style: 'font-size: smaller; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;',
+			    },
+			],
+		    },
+		]),
+	    },
+	];
 
 	me.callParent();
 
