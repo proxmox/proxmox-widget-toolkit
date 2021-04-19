@@ -53,6 +53,7 @@ JSSRC=					\
 	panel/ACMEAccount.js		\
 	panel/ACMEPlugin.js		\
 	panel/ACMEDomains.js		\
+	panel/StatusView.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
