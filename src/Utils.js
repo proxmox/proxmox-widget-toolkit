@@ -1060,6 +1060,36 @@ utilities: {
 	}
 	return acme;
     },
+
+    updateColumns: function(container) {
+	let mode = Ext.state.Manager.get('summarycolumns') || 'auto';
+	let factor;
+	if (mode !== 'auto') {
+	    factor = parseInt(mode, 10);
+	    if (Number.isNaN(factor)) {
+		factor = 1;
+	    }
+	} else {
+	    factor = container.getSize().width < 1400 ? 1 : 2;
+	}
+
+	if (container.oldFactor === factor) {
+	    return;
+	}
+
+	let items = container.query('>'); // direct childs
+	factor = Math.min(factor, items.length);
+	container.oldFactor = factor;
+
+	items.forEach((item) => {
+	    item.columnWidth = 1 / factor;
+	});
+
+	// we have to update the layout twice, since the first layout change
+	// can trigger the scrollbar which reduces the amount of space left
+	container.updateLayout();
+	container.updateLayout();
+    },
 },
 
     singleton: true,
