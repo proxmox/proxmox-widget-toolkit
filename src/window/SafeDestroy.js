@@ -18,7 +18,6 @@ Ext.define('Proxmox.window.SafeDestroy', {
     config: {
 	item: {
 	    id: undefined,
-	    purgeable: false,
 	},
 	url: undefined,
 	note: undefined,
@@ -28,10 +27,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
 
     getParams: function() {
 	let me = this;
-	const purgeCheckbox = me.lookupReference('purgeCheckbox');
-	if (purgeCheckbox.checked) {
-	    me.params.purge = 1;
-	}
+
 	if (Ext.Object.isEmpty(me.params)) {
 	    return '';
 	}
@@ -129,17 +125,6 @@ Ext.define('Proxmox.window.SafeDestroy', {
 		    allowBlank: false,
 		},
 		{
-		    xtype: 'proxmoxcheckbox',
-		    name: 'purge',
-		    reference: 'purgeCheckbox',
-		    boxLabel: gettext('Purge'),
-		    checked: false,
-		    autoEl: {
-			tag: 'div',
-			'data-qtip': gettext('Remove from replication and backup jobs'),
-		    },
-		},
-		{
 		    xtype: 'container',
 		    reference: 'noteContainer',
 		    flex: 1,
@@ -196,12 +181,6 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	    messageCmp.setHtml(msg);
 	} else {
 	    throw "no task name specified";
-	}
-
-	if (!item.purgeable) {
-	    const purgeCheckbox = me.lookupReference('purgeCheckbox');
-	    purgeCheckbox.setDisabled(true);
-	    purgeCheckbox.setHidden(true);
 	}
 
 	const confirmField = me.lookupReference('confirmField');
