@@ -841,6 +841,66 @@ utilities: {
 	return value;
     },
 
+    render_usage: function(val) {
+	return (val*100).toFixed(2) + '%';
+    },
+
+    render_cpu_usage: function(val, max) {
+	return Ext.String.format(gettext('{0}% of {1}') +
+	    ' ' + gettext('CPU(s)'), (val*100).toFixed(2), max);
+    },
+
+    render_size_usage: function(val, max) {
+	if (max === 0) {
+	    return gettext('N/A');
+	}
+	return (val*100/max).toFixed(2) + '% (' +
+	    Ext.String.format(gettext('{0} of {1}'),
+	    Proxmox.Utils.render_size(val), Proxmox.Utils.render_size(max)) + ')';
+    },
+
+    render_cpu: function(value, metaData, record, rowIndex, colIndex, store) {
+	if (!(record.data.uptime && Ext.isNumeric(value))) {
+	    return '';
+	}
+
+	var maxcpu = record.data.maxcpu || 1;
+
+	if (!Ext.isNumeric(maxcpu) && maxcpu >= 1) {
+	    return '';
+	}
+
+	var per = value * 100;
+
+	return per.toFixed(1) + '% of ' + maxcpu.toString() + (maxcpu > 1 ? 'CPUs' : 'CPU');
+    },
+
+    render_size: function(value, metaData, record, rowIndex, colIndex, store) {
+	if (!Ext.isNumeric(value)) {
+	    return '';
+	}
+
+	return Proxmox.Utils.format_size(value);
+    },
+
+    render_cpu_model: function(cpuinfo) {
+	return cpuinfo.cpus + " x " + cpuinfo.model + " (" +
+	    cpuinfo.sockets.toString() + " " +
+	    (cpuinfo.sockets > 1
+		? gettext('Sockets')
+		: gettext('Socket')
+	    ) + ")";
+    },
+
+    /* this is different for nodes */
+    render_node_cpu_usage: function(value, record) {
+	return Proxmox.Utils.render_cpu_usage(value, record.cpus);
+    },
+
+    render_node_size_usage: function(record) {
+	return Proxmox.Utils.render_size_usage(record.used, record.total);
+    },
+
     loadTextFromFile: function(file, callback, maxBytes) {
 	let maxSize = maxBytes || 8192;
 	if (file.size > maxSize) {
