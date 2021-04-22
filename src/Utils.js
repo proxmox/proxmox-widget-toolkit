@@ -317,7 +317,7 @@ utilities: {
 	return msg.join('<br>');
     },
 
-    monStoreErrors: function(component, store, clearMaskBeforeLoad) {
+    monStoreErrors: function(component, store, clearMaskBeforeLoad, errorCallback) {
 	if (clearMaskBeforeLoad) {
 	    component.mon(store, 'beforeload', function(s, operation, eOpts) {
 		Proxmox.Utils.setErrorMask(component, false);
@@ -342,7 +342,9 @@ utilities: {
 
 	    let error = request._operation.getError();
 	    let msg = Proxmox.Utils.getResponseErrorMessage(error);
-	    Proxmox.Utils.setErrorMask(component, msg);
+	    if (!errorCallback || !errorCallback(error, msg)) {
+		Proxmox.Utils.setErrorMask(component, msg);
+	    }
 	});
     },
 
