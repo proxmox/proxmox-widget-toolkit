@@ -36,6 +36,9 @@ Ext.define('proxmox-file-tree', {
 		    case 's': // socket
 			icon = 'plug';
 			break;
+		    case 'v': // virtual
+			icon = 'cube';
+			break;
 		    default:
 			icon = 'file-o';
 			break;
@@ -217,6 +220,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 			    case 'l': return gettext('Softlink');
 			    case 'p': return gettext('Pipe/Fifo');
 			    case 's': return gettext('Socket');
+			    case 'v': return gettext('Virtual');
 			    default: return Proxmox.Utils.unknownText;
 			}
 		    },
