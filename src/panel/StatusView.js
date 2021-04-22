@@ -9,20 +9,20 @@ Ext.define('Proxmox.panel.StatusView', {
     title: gettext('Status'),
 
     getRecordValue: function(key, store) {
+	let me = this;
+
 	if (!key) {
 	    throw "no key given";
 	}
-	var me = this;
 
 	if (store === undefined) {
 	    store = me.getStore();
 	}
 
-	var rec = store.getById(key);
+	let rec = store.getById(key);
 	if (rec) {
 	    return rec.data.value;
 	}
-
 	return '';
     },
 
@@ -55,8 +55,8 @@ Ext.define('Proxmox.panel.StatusView', {
     },
 
     updateField: function(field) {
-	var me = this;
-	var renderer = me.fieldRenderer;
+	let me = this;
+	let renderer = me.fieldRenderer;
 	if (Ext.isFunction(field.renderer)) {
 	    renderer = field.renderer;
 	}
@@ -65,12 +65,10 @@ Ext.define('Proxmox.panel.StatusView', {
 	} else if (field.textField !== undefined) {
 	    field.updateValue(renderer.call(field, me.getRecordValue(field.textField)));
 	} else if (field.valueField !== undefined) {
-	    var used = me.getRecordValue(field.valueField);
-	    /* string and int */
-	    var max = field.maxField !== undefined ? me.getRecordValue(field.maxField) : 1;
+	    let used = me.getRecordValue(field.valueField);
+	    let max = field.maxField !== undefined ? me.getRecordValue(field.maxField) : 1;
 
-	    var calculate = me.fieldCalculator;
-
+	    let calculate = me.fieldCalculator;
 	    if (Ext.isFunction(field.calculate)) {
 		calculate = field.calculate;
 	    }
@@ -79,7 +77,8 @@ Ext.define('Proxmox.panel.StatusView', {
     },
 
     getStore: function() {
-	var me = this;
+	let me = this;
+
 	if (!me.rstore) {
 	    throw "there is no rstore";
 	}
@@ -88,29 +87,28 @@ Ext.define('Proxmox.panel.StatusView', {
     },
 
     updateTitle: function() {
-	var me = this;
+	let me = this;
 	me.setTitle(me.getRecordValue('name'));
     },
 
     updateValues: function(store, records, success) {
+	let me = this;
+
 	if (!success) {
 	    return; // do not update if store load was not successful
 	}
-	var me = this;
-	var itemsToUpdate = me.query('pmxInfoWidget');
 
-	itemsToUpdate.forEach(me.updateField, me);
+	me.query('pmxInfoWidget').forEach(me.updateField, me);
 
 	me.updateTitle(store);
     },
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.rstore) {
 	    throw "no rstore given";
 	}
-
 	if (!me.title) {
 	    throw "no title given";
 	}
