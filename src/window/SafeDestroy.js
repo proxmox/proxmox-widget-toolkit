@@ -4,7 +4,7 @@
  */
 Ext.define('Proxmox.window.SafeDestroy', {
     extend: 'Ext.window.Window',
-    alias: 'proxmoxSafeDestroy',
+    alias: 'widget.proxmoxSafeDestroy',
 
     title: gettext('Confirm'),
     modal: true,
