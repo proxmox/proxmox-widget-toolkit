@@ -841,13 +841,14 @@ utilities: {
 	return value;
     },
 
-    render_usage: function(val) {
-	return (val*100).toFixed(2) + '%';
-    },
+    render_usage: val => (val*100).toFixed(2) + '%',
 
     render_cpu_usage: function(val, max) {
-	return Ext.String.format(gettext('{0}% of {1}') +
-	    ' ' + gettext('CPU(s)'), (val*100).toFixed(2), max);
+	return Ext.String.format(
+	    `${gettext('{0}% of {1}')} ${gettext('CPU(s)')}`,
+	    (val*100).toFixed(2),
+	    max,
+	);
     },
 
     render_size_usage: function(val, max) {
@@ -864,32 +865,25 @@ utilities: {
 	    return '';
 	}
 
-	var maxcpu = record.data.maxcpu || 1;
-
+	let maxcpu = record.data.maxcpu || 1;
 	if (!Ext.isNumeric(maxcpu) && maxcpu >= 1) {
 	    return '';
 	}
-
-	var per = value * 100;
-
-	return per.toFixed(1) + '% of ' + maxcpu.toString() + (maxcpu > 1 ? 'CPUs' : 'CPU');
+	let cpuText = maxcpu > 1 ? 'CPUs' : 'CPU';
+	let ratio = (value * 100).toFixed(1);
+	return `${ratio}% of ${maxcpu.toString()} ${cpuText}`;
     },
 
     render_size: function(value, metaData, record, rowIndex, colIndex, store) {
 	if (!Ext.isNumeric(value)) {
 	    return '';
 	}
-
 	return Proxmox.Utils.format_size(value);
     },
 
-    render_cpu_model: function(cpuinfo) {
-	return cpuinfo.cpus + " x " + cpuinfo.model + " (" +
-	    cpuinfo.sockets.toString() + " " +
-	    (cpuinfo.sockets > 1
-		? gettext('Sockets')
-		: gettext('Socket')
-	    ) + ")";
+    render_cpu_model: function(cpu) {
+	let socketText = cpu.sockets > 1 ? gettext('Sockets') : gettext('Socket');
+	return `${cpu.cpus} x ${cpu.model} (${cpu.sockets.toString()} ${socketText})`;
     },
 
     /* this is different for nodes */
