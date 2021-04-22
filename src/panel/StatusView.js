@@ -97,8 +97,8 @@ Ext.define('Proxmox.panel.StatusView', {
 	if (!success) {
 	    return; // do not update if store load was not successful
 	}
-
 	me.query('pmxInfoWidget').forEach(me.updateField, me);
+	me.query('pveInfoWidget').forEach(me.updateField, me);
 
 	me.updateTitle(store);
     },
