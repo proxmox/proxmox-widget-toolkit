@@ -123,6 +123,16 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    me.lookup('downloadBtn').setDisabled(!canDownload);
 	},
 
+	errorHandler: function(error, msg) {
+	    let me = this;
+	    me.lookup('downloadBtn').setDisabled(true);
+	    if (me.initialLoadDone) {
+		Ext.Msg.alert(gettext('Error'), msg);
+		return true;
+	    }
+	    return false;
+	},
+
 	init: function(view) {
 	    let me = this;
 	    let tree = me.lookup('tree');
@@ -134,13 +144,16 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let store = tree.getStore();
 	    let proxy = store.getProxy();
 
-	    Proxmox.Utils.monStoreErrors(tree, store, true);
+	    let errorCallback = (error, msg) => me.errorHandler(error, msg);
+	    Proxmox.Utils.monStoreErrors(tree, store, true, errorCallback);
 	    proxy.setUrl(view.listURL);
 	    proxy.setExtraParams(view.extraParams);
-	    store.load(() => {
+	    store.load((rec, op, success) => {
 		let root = store.getRoot();
 		root.expand(); // always expand invisible root node
-		if (view.archive) {
+		if (view.archive === 'all') {
+		    root.expandChildren(false);
+		} else if (view.archive) {
 		    let child = root.findChild('text', view.archive);
 		    if (child) {
 			child.expand();
@@ -152,6 +165,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 		} else if (root.childNodes.length === 1) {
 		    root.firstChild.expand();
 		}
+		me.initialLoadDone = success;
 	    });
 	},
 
