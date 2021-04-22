@@ -866,7 +866,7 @@ utilities: {
 	}
 
 	let maxcpu = record.data.maxcpu || 1;
-	if (!Ext.isNumeric(maxcpu) && maxcpu >= 1) {
+	if (!Ext.isNumeric(maxcpu) || maxcpu < 1) {
 	    return '';
 	}
 	let cpuText = maxcpu > 1 ? 'CPUs' : 'CPU';
