@@ -137,7 +137,9 @@ Ext.define('Proxmox.window.SafeDestroy', {
 			hideTrigger: true,
 			allowBlank: false,
 		    },
-		].concat(me.additionalItems).concat([
+		]
+		.concat(me.additionalItems)
+		.concat([
 		    {
 			xtype: 'container',
 			reference: 'noteContainer',
@@ -163,33 +165,28 @@ Ext.define('Proxmox.window.SafeDestroy', {
 
 	me.callParent();
 
-	const item = me.getItem();
-
-	if (!Ext.isDefined(item.id)) {
+	const itemId = me.getItem().id;
+	if (!Ext.isDefined(itemId)) {
 	    throw "no ID specified";
 	}
 
-	const messageCmp = me.lookupReference('messageCmp');
-	const noteCmp = me.lookupReference('noteCmp');
-	let msg;
-
 	if (Ext.isDefined(me.getNote())) {
-	    noteCmp.setHtml(`<span title="${me.getNote()}">${me.getNote()}</span>`);
+	    me.lookupReference('noteCmp').setHtml(`<span title="${me.getNote()}">${me.getNote()}</span>`);
 	    const noteContainer = me.lookupReference('noteContainer');
 	    noteContainer.setHidden(false);
 	    noteContainer.setDisabled(false);
 	}
 
-	if (Ext.isDefined(me.getTaskName())) {
-	    msg = Proxmox.Utils.format_task_description(me.getTaskName(), item.id);
-	    messageCmp.setHtml(msg);
+	let taskName = me.getTaskName();
+	if (Ext.isDefined(taskName)) {
+	    me.lookupReference('messageCmp').setHtml(
+		Proxmox.Utils.format_task_description(taskName, itemId),
+	    );
 	} else {
 	    throw "no task name specified";
 	}
 
-	const confirmField = me.lookupReference('confirmField');
-	msg = gettext('Please enter the ID to confirm') +
-	    ' (' + item.id + ')';
-	confirmField.setFieldLabel(msg);
+	me.lookupReference('confirmField')
+	    .setFieldLabel(`${gettext('Please enter the ID to confirm')} (${itemId})`);
     },
 });
