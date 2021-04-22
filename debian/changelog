@@ -1,3 +1,22 @@
+proxmox-widget-toolkit (2.5-2) pve pmg; urgency=medium
+
+  * rrd chart: add option to render values and Y-axis with a power-of-two base
+
+  * safe destroy: allow specifing additional items
+
+  * utils: add several render and helper functions from Proxmox VE's manager
+
+  * panel: add StatusView from Proxmox VE's manager
+
+  * utils: add optional error callback to monStoreErrors
+
+  * acme: separate flag to disable the 'domains=' array
+
+  * file browser: support 'virtual'/'v' file type, show errors in messagebox
+    and allow expand 'all'
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 22 Apr 2021 20:34:39 +0200
+
 proxmox-widget-toolkit (2.5-1) pve pmg; urgency=medium
 
   * panel/acme-domains: fix cyclic dependency in view model
