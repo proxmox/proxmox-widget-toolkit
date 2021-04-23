@@ -206,42 +206,6 @@ Ext.define('Proxmox.DiskList', {
 	return v ? `${v}${extendedInfo}` : Proxmox.Utils.noText;
     },
 
-    tbar: [
-	{
-	    text: gettext('Reload'),
-	    handler: 'reload',
-	},
-	{
-	    xtype: 'proxmoxButton',
-	    text: gettext('Show S.M.A.R.T. values'),
-	    parentXType: 'treepanel',
-	    disabled: true,
-	    enableFn: function(rec) {
-		if (!rec || rec.data.parent) {
-		    return false;
-		} else {
-		    return true;
-		}
-	    },
-	    handler: 'openSmartWindow',
-	},
-	{
-	    xtype: 'proxmoxButton',
-	    text: gettext('Initialize Disk with GPT'),
-	    parentXType: 'treepanel',
-	    disabled: true,
-	    enableFn: function(rec) {
-		if (!rec || rec.data.parent ||
-		    (rec.data.used && rec.data.used !== 'unused')) {
-		    return false;
-		} else {
-		    return true;
-		}
-	    },
-	    handler: 'initGPT',
-	},
-    ],
-
     columns: [
 	{
 	    xtype: 'treecolumn',
@@ -331,5 +295,49 @@ Ext.define('Proxmox.DiskList', {
 
     listeners: {
 	itemdblclick: 'openSmartWindow',
+    },
+
+    initComponent: function() {
+	let me = this;
+
+	let tbar = [
+	    {
+		text: gettext('Reload'),
+		handler: 'reload',
+	    },
+	    {
+		xtype: 'proxmoxButton',
+		text: gettext('Show S.M.A.R.T. values'),
+		parentXType: 'treepanel',
+		disabled: true,
+		enableFn: function(rec) {
+		    if (!rec || rec.data.parent) {
+			return false;
+		    } else {
+			return true;
+		    }
+		},
+		handler: 'openSmartWindow',
+	    },
+	    {
+		xtype: 'proxmoxButton',
+		text: gettext('Initialize Disk with GPT'),
+		parentXType: 'treepanel',
+		disabled: true,
+		enableFn: function(rec) {
+		    if (!rec || rec.data.parent ||
+			(rec.data.used && rec.data.used !== 'unused')) {
+			return false;
+		    } else {
+			return true;
+		    }
+		},
+		handler: 'initGPT',
+	    },
+	];
+
+	me.tbar = tbar;
+
+	me.callParent();
     },
 });
