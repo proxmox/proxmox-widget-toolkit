@@ -44,6 +44,8 @@ Ext.define('Proxmox.DiskList', {
     extend: 'Ext.tree.Panel',
     alias: 'widget.pmxDiskList',
 
+    supportsWipeDisk: false,
+
     rootVisible: false,
 
     emptyText: gettext('No Disks found'),
@@ -96,6 +98,34 @@ Ext.define('Proxmox.DiskList', {
 		url: `${view.exturl}/initgpt`,
 		waitMsgTarget: view,
 		method: 'POST',
+		params: { disk: rec.data.name },
+		failure: function(response, options) {
+		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+		},
+		success: function(response, options) {
+		    var upid = response.result.data;
+		    var win = Ext.create('Proxmox.window.TaskProgress', {
+		        upid: upid,
+			taskDone: function() {
+			    me.reload();
+			},
+		    });
+		    win.show();
+		},
+	    });
+	},
+
+	wipeDisk: function() {
+	    let me = this;
+	    let view = me.getView();
+	    let selection = view.getSelection();
+	    if (!selection || selection.length < 1) return;
+
+	    let rec = selection[0];
+	    Proxmox.Utils.API2Request({
+		url: `${view.exturl}/wipedisk`,
+		waitMsgTarget: view,
+		method: 'PUT',
 		params: { disk: rec.data.name },
 		failure: function(response, options) {
 		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
@@ -335,6 +365,57 @@ Ext.define('Proxmox.DiskList', {
 		handler: 'initGPT',
 	    },
 	];
+
+	if (me.supportsWipeDisk) {
+	    tbar.push('-');
+	    tbar.push({
+		xtype: 'proxmoxButton',
+		text: gettext('Wipe Disk'),
+		parentXType: 'treepanel',
+		dangerous: true,
+		confirmMsg: function(rec) {
+		    const data = rec.data;
+
+		    let mainMessage = Ext.String.format(
+			gettext('Are you sure you want to wipe {0}?'),
+			data.devpath,
+		    );
+		    mainMessage += `<br> ${gettext('All data on the device will be lost!')}`;
+
+		    const type = me.renderDiskType(data["disk-type"]);
+
+		    let usage;
+		    if (data.children.length > 0) {
+			const partitionUsage = data.children.map(
+			    partition => me.renderDiskUsage(partition.used),
+			).join(', ');
+			usage = `${gettext('Partitions')} (${partitionUsage})`;
+		    } else {
+			usage = me.renderDiskUsage(data.used, undefined, rec);
+		    }
+
+		    const size = Proxmox.Utils.format_size(data.size);
+		    const serial = Ext.String.htmlEncode(data.serial);
+
+		    let additionalInfo = `${gettext('Type')}: ${type}<br>`;
+		    additionalInfo += `${gettext('Usage')}: ${usage}<br>`;
+		    additionalInfo += `${gettext('Size')}: ${size}<br>`;
+		    additionalInfo += `${gettext('Serial')}: ${serial}`;
+
+		    return `${mainMessage}<br><br>${additionalInfo}`;
+		},
+		disabled: true,
+		enableFn: function(rec) {
+		    // TODO enable for partitions once they can be selected for ZFS,LVM,etc. creation
+		    if (!rec || rec.data.parent) {
+			return false;
+		    } else {
+			return true;
+		    }
+		},
+		handler: 'wipeDisk',
+	    });
+	}
 
 	me.tbar = tbar;
 
