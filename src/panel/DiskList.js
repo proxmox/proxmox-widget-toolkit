@@ -237,7 +237,7 @@ Ext.define('Proxmox.DiskList', {
 	    width: 150,
 	    sortable: false,
 	    renderer: function(v, metaData, rec) {
-		let extendedInfo = ' ';
+		let extendedInfo = '';
 		if (rec) {
 		    let types = [];
 		    if (rec.data.osdid !== undefined && rec.data.osdid >= 0) {
