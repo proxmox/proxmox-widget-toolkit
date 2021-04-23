@@ -173,6 +173,39 @@ Ext.define('Proxmox.DiskList', {
 	},
     },
 
+    renderDiskType: function(v) {
+	if (v === undefined) return Proxmox.Utils.unknownText;
+	switch (v) {
+	    case 'ssd': return 'SSD';
+	    case 'hdd': return 'Hard Disk';
+	    case 'usb': return 'USB';
+	    default: return v;
+	}
+    },
+
+    renderDiskUsage: function(v, metaData, rec) {
+	let extendedInfo = '';
+	if (rec) {
+	    let types = [];
+	    if (rec.data.osdid !== undefined && rec.data.osdid >= 0) {
+		types.push(`OSD.${rec.data.osdid.toString()}`);
+	    }
+	    if (rec.data.journals > 0) {
+		types.push('Journal');
+	    }
+	    if (rec.data.db > 0) {
+		types.push('DB');
+	    }
+	    if (rec.data.wal > 0) {
+		types.push('WAL');
+	    }
+	    if (types.length > 0) {
+		extendedInfo = `, Ceph (${types.join(', ')})`;
+	    }
+	}
+	return v ? `${v}${extendedInfo}` : Proxmox.Utils.noText;
+    },
+
     tbar: [
 	{
 	    text: gettext('Reload'),
@@ -223,13 +256,8 @@ Ext.define('Proxmox.DiskList', {
 	    sortable: true,
 	    dataIndex: 'disk-type',
 	    renderer: function(v) {
-		if (v === undefined) return Proxmox.Utils.unknownText;
-		switch (v) {
-		    case 'ssd': return 'SSD';
-		    case 'hdd': return 'Hard Disk';
-		    case 'usb': return 'USB';
-		    default: return v;
-		}
+		let me = this;
+		return me.renderDiskType(v);
 	    },
 	},
 	{
@@ -237,26 +265,8 @@ Ext.define('Proxmox.DiskList', {
 	    width: 150,
 	    sortable: false,
 	    renderer: function(v, metaData, rec) {
-		let extendedInfo = '';
-		if (rec) {
-		    let types = [];
-		    if (rec.data.osdid !== undefined && rec.data.osdid >= 0) {
-			types.push(`OSD.${rec.data.osdid.toString()}`);
-		    }
-		    if (rec.data.journals > 0) {
-			types.push('Journal');
-		    }
-		    if (rec.data.db > 0) {
-			types.push('DB');
-		    }
-		    if (rec.data.wal > 0) {
-			types.push('WAL');
-		    }
-		    if (types.length > 0) {
-			extendedInfo = `, Ceph (${types.join(', ')})`;
-		    }
-		}
-		return v ? `${v}${extendedInfo}` : Proxmox.Utils.noText;
+		let me = this;
+		return me.renderDiskUsage(v, metaData, rec);
 	    },
 	    dataIndex: 'used',
 	},
