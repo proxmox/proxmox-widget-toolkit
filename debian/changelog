@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (2.5-3) pve pmg; urgency=medium
+
+  * toolkit: update email regex for ACME account to allow more than two domain
+    parts again
+
+ -- Proxmox Support Team <support@proxmox.com>  Sat, 24 Apr 2021 19:30:08 +0200
+
 proxmox-widget-toolkit (2.5-2) pve pmg; urgency=medium
 
   * rrd chart: add option to render values and Y-axis with a power-of-two base
