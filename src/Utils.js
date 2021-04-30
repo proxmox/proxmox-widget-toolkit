@@ -568,6 +568,7 @@ utilities: {
 	    Proxmox.Utils.unknownText;
     },
 
+    // NOTE: only add general, product agnostic, ones here! Else use override helper in product repos
     task_desc_table: {
 	aptupdate: ['', gettext('Update package database')],
 	diskinit: ['Disk', gettext('Initialize Disk with GPT')],
