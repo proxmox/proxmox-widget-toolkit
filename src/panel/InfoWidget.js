@@ -40,7 +40,7 @@ Ext.define('Proxmox.widget.Info', {
 	},
     ],
 
-    warningThreshold: 0.6,
+    warningThreshold: 0.75,
     criticalThreshold: 0.9,
 
     setPrintBar: function(enable) {
