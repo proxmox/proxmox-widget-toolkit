@@ -4,6 +4,17 @@ Ext.define('Proxmox.window.DiskSmart', {
 
     modal: true,
 
+    layout: {
+	type: 'vbox',
+	align: 'stretch',
+    },
+    width: 800,
+    height: 500,
+    minWidth: 400,
+    minHeight: 300,
+    bodyPadding: 5,
+    title: gettext('S.M.A.R.T. Values'),
+
     items: [
 	{
 	    xtype: 'gridpanel',
@@ -16,14 +27,46 @@ Ext.define('Proxmox.window.DiskSmart', {
 	    itemId: 'smarts',
 	    reserveScrollbar: true,
 	    columns: [
-	    { text: 'ID', dataIndex: 'id', width: 50 },
-	    { text: gettext('Attribute'), flex: 1, dataIndex: 'name', renderer: Ext.String.htmlEncode },
-	    { text: gettext('Value'), dataIndex: 'raw', renderer: Ext.String.htmlEncode },
-	    { text: gettext('Normalized'), dataIndex: 'value', width: 60 },
-	    { text: gettext('Threshold'), dataIndex: 'threshold', width: 60 },
-	    { text: gettext('Worst'), dataIndex: 'worst', width: 60 },
-	    { text: gettext('Flags'), dataIndex: 'flags' },
-	    { text: gettext('Failing'), dataIndex: 'fail', renderer: Ext.String.htmlEncode },
+		{
+		    text: 'ID',
+		    dataIndex: 'id',
+		    width: 50,
+		},
+		{
+		    text: gettext('Attribute'),
+		    dataIndex: 'name',
+		    flex: 1,
+		    renderer: Ext.String.htmlEncode,
+		},
+		{
+		    text: gettext('Value'),
+		    dataIndex: 'raw',
+		    renderer: Ext.String.htmlEncode,
+		},
+		{
+		    text: gettext('Normalized'),
+		    dataIndex: 'value',
+		    width: 60,
+		},
+		{
+		    text: gettext('Threshold'),
+		    dataIndex: 'threshold',
+		    width: 60,
+		},
+		{
+		    text: gettext('Worst'),
+		    dataIndex: 'worst',
+		    width: 60,
+		},
+		{
+		    text: gettext('Flags'),
+		    dataIndex: 'flags',
+		},
+		{
+		    text: gettext('Failing'),
+		    dataIndex: 'fail',
+		    renderer: Ext.String.htmlEncode,
+		},
 	    ],
 	},
 	{
@@ -60,17 +103,6 @@ Ext.define('Proxmox.window.DiskSmart', {
 	},
     ],
 
-    layout: {
-	type: 'vbox',
-	align: 'stretch',
-    },
-    width: 800,
-    height: 500,
-    minWidth: 600,
-    minHeight: 400,
-    bodyPadding: 5,
-    title: gettext('S.M.A.R.T. Values'),
-
     initComponent: function() {
 	var me = this;
 
@@ -92,20 +124,21 @@ Ext.define('Proxmox.window.DiskSmart', {
 	});
 
 	me.callParent();
-	var grid = me.down('#smarts');
-	var text = me.down('#text');
+
+	let grid = me.down('#smarts');
 
 	Proxmox.Utils.monStoreErrors(grid, me.store);
 	me.mon(me.store, 'load', function(s, records, success) {
 	    if (success && records.length > 0) {
-		var rec = records[0];
+		let rec = records[0];
 		if (rec.data.type === 'text') {
 		    grid.setVisible(false);
-		    text.setVisible(true);
-		    text.setHtml(Ext.String.htmlEncode(rec.data.text));
+
+		    me.down('#text').setHtml(Ext.String.htmlEncode(rec.data.text));
+		    me.down('#text').setVisible(true);
 		} else {
 		    grid.setVisible(true);
-		    text.setVisible(false);
+		    me.down('#textContainer').setVisible(false);
 		    grid.setStore(rec.attributes());
 		}
 	    }
