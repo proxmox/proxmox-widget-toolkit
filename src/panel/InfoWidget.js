@@ -63,11 +63,8 @@ Ext.define('Proxmox.widget.Info', {
 	var label = me.getComponent('label');
 	label.update(Ext.apply(label.data, { title: me.title, usage: text }));
 
-	if (usage !== undefined &&
-	    me.printBar &&
-	    Ext.isNumeric(usage) &&
-	    usage >= 0) {
-	    var progressBar = me.getComponent('progress');
+	if (usage !== undefined && me.printBar && Ext.isNumeric(usage) && usage >= 0) {
+	    let progressBar = me.getComponent('progress');
 	    progressBar.updateProgress(usage, '');
 	    if (usage > me.criticalThreshold) {
 		progressBar.removeCls('warning');
