@@ -5,8 +5,7 @@ Ext.define('Proxmox.window.DiskSmart', {
     modal: true,
 
     layout: {
-	type: 'vbox',
-	align: 'stretch',
+	type: 'fit',
     },
     width: 800,
     height: 500,
@@ -72,10 +71,9 @@ Ext.define('Proxmox.window.DiskSmart', {
 	{
 	    xtype: 'component',
 	    itemId: 'text',
-	    layout: {
-		type: 'fit',
-	    },
 	    hidden: true,
+	    autoScroll: true,
+	    padding: 5,
 	    style: {
 		'background-color': 'white',
 		'white-space': 'pre',
