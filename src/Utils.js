@@ -855,7 +855,7 @@ utilities: {
 	return value;
     },
 
-    render_usage: val => (val*100).toFixed(2) + '%',
+    render_usage: val => (val * 100).toFixed(2) + '%',
 
     render_cpu_usage: function(val, max) {
 	return Ext.String.format(
@@ -869,9 +869,9 @@ utilities: {
 	if (max === 0) {
 	    return gettext('N/A');
 	}
-	return (val*100/max).toFixed(2) + '% (' +
-	    Ext.String.format(gettext('{0} of {1}'),
-	    Proxmox.Utils.render_size(val), Proxmox.Utils.render_size(max)) + ')';
+	let fmt = v => Proxmox.Utils.format_size(v);
+	let ratio = (val * 100 / max).toFixed(2);
+	return ratio + '% (' + Ext.String.format(gettext('{0} of {1}'), fmt(val), fmt(max)) + ')';
     },
 
     render_cpu: function(value, metaData, record, rowIndex, colIndex, store) {
