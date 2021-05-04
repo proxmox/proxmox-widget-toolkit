@@ -608,14 +608,22 @@ utilities: {
 	return text;
     },
 
-    format_size: function(size) {
-	let units = ['', 'Ki', 'Mi', 'Gi', 'Ti', 'Pi', 'Ei', 'Zi', 'Yi'];
-	let num = 0;
-	while (size >= 1024 && num++ <= units.length) {
-	    size = size / 1024;
+    format_size: function(size, useSI) {
+	let units = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+	let order = 0;
+	const baseValue = useSI ? 1000 : 1024;
+	while (size >= baseValue && order < units.length) {
+	    size = size / baseValue;
+	    order++;
 	}
 
-	return size.toFixed(num > 0?2:0) + " " + units[num] + "B";
+	let unit = units[order], commaDigits = 2;
+	if (order === 0) {
+	    commaDigits = 0;
+	} else if (!useSI) {
+	    unit += 'i';
+	}
+	return `${size.toFixed(commaDigits)} ${unit}B`;
     },
 
     render_upid: function(value, metaData, record) {
@@ -865,11 +873,11 @@ utilities: {
 	);
     },
 
-    render_size_usage: function(val, max) {
+    render_size_usage: function(val, max, useSI) {
 	if (max === 0) {
 	    return gettext('N/A');
 	}
-	let fmt = v => Proxmox.Utils.format_size(v);
+	let fmt = v => Proxmox.Utils.format_size(v, useSI);
 	let ratio = (val * 100 / max).toFixed(2);
 	return ratio + '% (' + Ext.String.format(gettext('{0} of {1}'), fmt(val), fmt(max)) + ')';
     },
