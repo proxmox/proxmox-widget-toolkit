@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (2.5-4) pve pmg; urgency=medium
+
+  * info widget: set default usage warning threshold from 60% to 75%
+
+  * node disk: S.M.A.R.T.: improve the simple layout and enable autoscroll for
+    long output
+
+  * format/render size: allow one to specifiy if base 2 or 10 (SI unit) is
+    desired
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 07 May 2021 18:00:29 +0200
+
 proxmox-widget-toolkit (2.5-3) pve pmg; urgency=medium
 
   * toolkit: update email regex for ACME account to allow more than two domain
