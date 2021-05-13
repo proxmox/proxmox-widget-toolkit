@@ -2,7 +2,7 @@ Source: proxmox-widget-toolkit
 Section: web
 Priority: optional
 Maintainer: Proxmox Support Team <support@proxmox.com>
-Build-Depends: debhelper (>= 10~),
+Build-Depends: debhelper (>= 12~),
                pve-eslint (>= 7.12.1-1),
 Standards-Version: 3.9.8
 Homepage: http://www.proxmox.com
