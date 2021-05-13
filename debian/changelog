@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (3.0-1) bullseye; urgency=medium
+
+  * re-build for Debian 11 Bullseye based releases
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 13 May 2021 19:46:29 +0200
+
 proxmox-widget-toolkit (2.5-4) pve pmg; urgency=medium
 
   * info widget: set default usage warning threshold from 60% to 75%
