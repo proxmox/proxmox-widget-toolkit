@@ -136,7 +136,7 @@ Ext.define('Proxmox.window.DiskSmart', {
 		    me.down('#text').setVisible(true);
 		} else {
 		    grid.setVisible(true);
-		    me.down('#textContainer').setVisible(false);
+		    me.down('#text').setVisible(false);
 		    grid.setStore(rec.attributes());
 		}
 	    }
