@@ -19,6 +19,11 @@ Useful for a readonly tabular display
 Ext.define('Proxmox.grid.ObjectGrid', {
     extend: 'Ext.grid.GridPanel',
     alias: ['widget.proxmoxObjectGrid'],
+
+    // can be used as declarative replacement over manually calling the add_XYZ_row helpers,
+    // see top-level doc-comment above for details/example
+    gridRows: [],
+
     disabled: false,
     hideHeaders: true,
 
@@ -245,6 +250,17 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 
     initComponent: function() {
 	let me = this;
+
+	for (const rowdef of me.gridRows || []) {
+	    let addFn = me[`add_${rowdef.xtype}_row`];
+	    if (typeof addFn !== 'function') {
+		throw `unknown object-grid row xtype '${rowdef.xtype}'`;
+	    } else if (typeof rowdef.name !== 'string') {
+		throw `object-grid row need a valid name string-property!`;
+	    } else {
+		addFn.call(me, rowdef.name, rowdef.text || rowdef.name, rowdef);
+	    }
+	}
 
 	let rows = me.rows;
 
