@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (2.5-6) buster; urgency=medium
+
+  * object grid: allow one to declaratively specify rows
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 21 May 2021 17:39:59 +0200
+
 proxmox-widget-toolkit (2.5-5) pve pmg; urgency=medium
 
   * disks: fix regression in S.M.A.R.T. window
