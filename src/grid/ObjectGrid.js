@@ -269,13 +269,13 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 	});
 
 	if (rows) {
-	    Ext.Object.each(rows, function(key, rowdef) {
+	    for (const [key, rowdef] of Object.entries(rows)) {
 		if (Ext.isDefined(rowdef.defaultValue)) {
 		    store.add({ key: key, value: rowdef.defaultValue });
 		} else if (rowdef.required) {
 		    store.add({ key: key, value: undefined });
 		}
-	    });
+	    }
 	}
 
 	if (me.sorterFn) {
