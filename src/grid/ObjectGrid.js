@@ -1,21 +1,45 @@
-/* Renders a list of key values objets
+/** Renders a list of key values objets
 
-mandatory config parameters:
+Mandatory Config Parameters:
+
 rows: an object container where each propery is a key-value object we want to render
-       let rows = {
-           keyboard: {
-               header: gettext('Keyboard Layout'),
-               editor: 'Your.KeyboardEdit',
-               required: true
-           },
 
-optional:
-disabled: setting this parameter to true will disable selection and focus on the
-proxmoxObjectGrid as well as greying out input elements.
-Useful for a readonly tabular display
+  rows: {
+     keyboard: {
+         header: gettext('Keyboard Layout'),
+         editor: 'Your.KeyboardEdit',
+         required: true
+     },
+     // ...
+  },
+
+Convenience Helper:
+
+As alternative you can use the common add-row helper like `add_text_row`, but you need to
+call it in an overridden initComponent before `me.callParent(arguments)` gets executed.
+
+For a declarative approach you can use the `gridRows` configuration to pass an array of
+objects with each having at least a `xtype` to match `add_XTYPE_row` and a field-name
+property, for example:
+
+ gridRows: [
+    {
+      xtype: 'text',
+      name: 'http-proxy',
+      text: gettext('HTTP proxy'),
+      defaultValue: Proxmox.Utils.noneText,
+      vtype: 'HttpProxy',
+      deleteEmpty: true,
+    },
+  ],
+
+Optional Configs:
+
+disabled:: setting this parameter to true will disable selection and focus on
+  the proxmoxObjectGrid as well as greying out input elements. Useful for a
+  readonly tabular display
 
 */
-
 Ext.define('Proxmox.grid.ObjectGrid', {
     extend: 'Ext.grid.GridPanel',
     alias: ['widget.proxmoxObjectGrid'],
