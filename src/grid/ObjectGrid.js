@@ -109,8 +109,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    name: name,
 		    deleteEmpty: !!opts.deleteEmpty,
 		    emptyText: opts.defaultValue,
-		    labelWidth: Proxmox.Utils.compute_min_label_width(
-			text, opts.labelWidth),
+		    labelWidth: Proxmox.Utils.compute_min_label_width(text, opts.labelWidth),
 		    vtype: opts.vtype,
 		    fieldLabel: text,
 		},
@@ -143,8 +142,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    defaultValue: opts.defaultValue || 0,
 		    checked: !!opts.defaultValue,
 		    deleteDefaultValue: !!opts.deleteDefaultValue,
-		    labelWidth: Proxmox.Utils.compute_min_label_width(
-			text, opts.labelWidth),
+		    labelWidth: Proxmox.Utils.compute_min_label_width(text, opts.labelWidth),
 		    fieldLabel: text,
 		},
 	    },
@@ -177,8 +175,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 		    emptyText: gettext('Default'),
 		    deleteEmpty: !!opts.deleteEmpty,
 		    value: opts.defaultValue,
-		    labelWidth: Proxmox.Utils.compute_min_label_width(
-			text, opts.labelWidth),
+		    labelWidth: Proxmox.Utils.compute_min_label_width(text, opts.labelWidth),
 		    fieldLabel: text,
 		},
 	    },
