@@ -32,6 +32,7 @@ Ext.define('Proxmox.data.reader.JsonObject', {
     alias: 'reader.jsonobject',
 
     readArray: false,
+    responseType: undefined,
 
     rows: undefined,
 

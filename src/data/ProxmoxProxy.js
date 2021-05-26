@@ -17,6 +17,7 @@ Ext.define('Proxmox.RestProxy', {
     constructor: function(config) {
 	Ext.applyIf(config, {
 	    reader: {
+		responseType: undefined,
 		type: 'json',
 		rootProperty: config.root || 'data',
 	    },
