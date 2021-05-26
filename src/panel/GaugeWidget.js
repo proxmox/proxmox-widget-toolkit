@@ -20,6 +20,8 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 	    xtype: 'polar',
 	    height: 120,
 	    border: false,
+	    // set to '-' to suppress warning in debug mode
+	    downloadServerUrl: '-',
 	    itemId: 'chart',
 	    series: [{
 		type: 'gauge',

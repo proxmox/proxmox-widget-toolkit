@@ -61,6 +61,9 @@ Ext.define('Proxmox.widget.RRDChart', {
 
     powerOfTwo: false,
 
+    // set to empty string to suppress warning in debug mode
+    downloadServerUrl: '-',
+
     controller: {
 	xclass: 'Ext.app.ViewController',
 
