@@ -112,3 +112,13 @@ div.right-aligned {
 {
     background-image:url(../images/icon-cpu.png);
 }
+
+/* change font for config panel back to fontawesome */
+.x-treelist-item-expanded > * > * > .x-treelist-item-expander::after,
+.x-treelist-item-expander::after {
+    font: 16px/1 FontAwesome;
+}
+
+.x-treelist-pve-nav {
+    background-color: #f5f5f5;
+}
