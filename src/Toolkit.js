@@ -380,58 +380,105 @@ Ext.define(null, {
     jumpToFocus: false,
 
     saveFocusState: function() {
-	let me = this,
+	var me = this,
 	    store = me.dataSource,
 	    actionableMode = me.actionableMode,
 	    navModel = me.getNavigationModel(),
 	    focusPosition = actionableMode ? me.actionPosition : navModel.getPosition(true),
-	    refocusRow, refocusCol;
+	    activeElement = Ext.fly(Ext.Element.getActiveElement()),
+	    focusCell = focusPosition && focusPosition.view === me &&
+	    Ext.fly(focusPosition.getCell(true)),
+	    refocusRow, refocusCol, record;
 
-	if (focusPosition) {
+	// The navModel may return a position that is in a locked partner, so check that
+	// the focusPosition's cell contains the focus before going forward.
+	// The skipSaveFocusState is set by Actionables which actively control
+	// focus destination. See CellEditing#activateCell.
+	if (!me.skipSaveFocusState && focusCell && focusCell.contains(activeElement)) {
 	    // Separate this from the instance that the nav model is using.
 	    focusPosition = focusPosition.clone();
 
-	    // Exit actionable mode.
-	    // We must inform any Actionables that they must relinquish control.
-	    // Tabbability must be reset.
-	    if (actionableMode) {
-		me.ownerGrid.setActionableMode(false);
+	    // While we deactivate the focused element, suspend focus processing on it.
+	    activeElement.suspendFocusEvents();
+
+	    // Suspend actionable mode.
+	    // Each Actionable must silently save its state ready to resume when focus
+	    // can be restored but should only do that if the activeElement is not the cell itself,
+	    // this happens when the grid is refreshed while one of the actionables is being
+	    // deactivated (e.g. Calling  view refresh inside CellEditor 'edit' event listener).
+	    if (actionableMode && focusCell.dom !== activeElement.dom) {
+		me.suspendActionableMode();
+	    } else {
+		// Clear position, otherwise the setPosition on the other side
+		// will be rejected as a no-op if the resumption position is logically
+		// equivalent.
+		actionableMode = false;
+		navModel.setPosition();
 	    }
 
-	    // Blur the focused descendant, but do not trigger focusLeave.
-	    me.el.dom.focus();
+	    // Do not leave the element in tht state in case refresh fails, and restoration
+	    // closure not called.
+	    activeElement.resumeFocusEvents();
 
-	    // Exiting actionable mode navigates to the owning cell, so in either focus mode we must
-	    // clear the navigation position
-	    navModel.setPosition();
+	    // if the store is expanding or collapsing, we should never scroll the view.
+	    if (store.isExpandingOrCollapsing) {
+		return Ext.emptyFn;
+	    }
 
 	    // The following function will attempt to refocus back in the same mode to the same cell
-	    // as it was at before based upon the previous record (if it's still inthe store), or the row index.
+	    // as it was at before based upon the previous record (if it's still in the store),
+	    // or the row index.
 	    return function() {
+		var all;
+
+		// May have changed due to reconfigure
+		store = me.dataSource;
+
 		// If we still have data, attempt to refocus in the same mode.
 		if (store.getCount()) {
-		    // Adjust expectations of where we are able to refocus according to what kind of destruction
-		    // might have been wrought on this view's DOM during focus save.
-		    refocusRow = Math.min(focusPosition.rowIdx, me.all.getCount() - 1);
-		    refocusCol = Math.min(focusPosition.colIdx,
-					  me.getVisibleColumnManager().getColumns().length - 1);
-		    refocusRow = store.contains(focusPosition.record) ? focusPosition.record : refocusRow;
-		    focusPosition = new Ext.grid.CellContext(me).setPosition(refocusRow, refocusCol);
+		    all = me.all;
 
-		    if (actionableMode) {
-			me.ownerGrid.setActionableMode(true, focusPosition);
-		    } else {
-			me.cellFocused = true;
+		    // Adjust expectations of where we are able to refocus according to
+		    // what kind of destruction might have been wrought on this view's DOM
+		    // during focus save.
+		    refocusRow =
+			Math.min(Math.max(focusPosition.rowIdx, all.startIndex), all.endIndex);
 
-			// we sometimes want to scroll back to where we were
-			let x = me.getScrollX();
-			let y = me.getScrollY();
+		    refocusCol = Math.min(
+			focusPosition.colIdx,
+			me.getVisibleColumnManager().getColumns().length - 1,
+		    );
 
-			// Pass "preventNavigation" as true so that that does not cause selection.
-			navModel.setPosition(focusPosition, null, null, null, true);
+		    record = focusPosition.record;
 
-			if (!me.jumpToFocus) {
-			    me.scrollTo(x, y);
+		    focusPosition = new Ext.grid.CellContext(me).setPosition(
+			record && store.contains(record) && !record.isCollapsedPlaceholder
+			? record
+			: refocusRow,
+			refocusCol,
+		    );
+
+		    // Maybe there are no cells. eg: all groups collapsed.
+		    if (focusPosition.getCell(true)) {
+			if (actionableMode) {
+			    me.resumeActionableMode(focusPosition);
+			} else {
+			    // we sometimes want to scroll back to where we are
+
+			    let x = me.getScrollX();
+			    let y = me.getScrollY();
+
+			    // Pass "preventNavigation" as true
+			    // so that that does not cause selection.
+			    navModel.setPosition(focusPosition, null, null, null, true);
+
+			    if (!navModel.getPosition()) {
+				focusPosition.column.focus();
+			    }
+
+			    if (!me.jumpToFocus) {
+				me.scrollTo(x, y);
+			    }
 			}
 		    }
 		} else { // No rows - focus associated column header
