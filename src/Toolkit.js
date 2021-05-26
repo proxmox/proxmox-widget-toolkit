@@ -393,13 +393,6 @@ Ext.define(null, {
     },
 });
 
-// should be fixed with ExtJS 6.0.2, see:
-// https://www.sencha.com/forum/showthread.php?307244-Bug-with-datefield-in-window-with-scroll
-Ext.define('Proxmox.Datepicker', {
-    override: 'Ext.picker.Date',
-    hideMode: 'visibility',
-});
-
 // ExtJS 6.0.1 has no setSubmitValue() (although you find it in the docs).
 // Note: this.submitValue is a boolean flag, whereas getSubmitValue() returns
 // data to be submitted.
