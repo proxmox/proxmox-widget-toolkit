@@ -662,6 +662,12 @@ Ext.define('Proxmox.selection.CheckboxModel', {
 // override the download server url globally, for privacy reasons
 Ext.draw.Container.prototype.defaultDownloadServerUrl = "-";
 
+// stop nulling of properties
+Ext.define('Proxmox.Component', {
+    override: 'Ext.Component',
+    clearPropertiesOnDestroy: false,
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
