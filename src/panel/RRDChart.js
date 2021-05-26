@@ -121,6 +121,9 @@ Ext.define('Proxmox.widget.RRDChart', {
 	},
 
 	onAfterAnimation: function(chart, eopts) {
+	    if (!chart.header || !chart.header.tools) {
+		return;
+	    }
 	    // if the undo button is disabled, disable our tool
 	    let ourUndoZoomButton = chart.header.tools[0];
 	    let undoButton = chart.interactions[0].getUndoButton();
@@ -137,10 +140,16 @@ Ext.define('Proxmox.widget.RRDChart', {
 	},
     ],
     legend: {
+	type: 'dom',
 	padding: 0,
     },
     listeners: {
-	animationend: 'onAfterAnimation',
+	redraw: {
+	    fn: 'onAfterAnimation',
+	    options: {
+		buffer: 500,
+	    },
+	},
     },
 
     constructor: function(config) {
@@ -200,6 +209,7 @@ Ext.define('Proxmox.widget.RRDChart', {
 	if (me.header && me.legend) {
 	    me.header.padding = '4 9 4';
 	    me.header.add(me.legend);
+	    me.legend = undefined;
 	}
 
 	if (!me.noTool) {

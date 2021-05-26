@@ -122,3 +122,8 @@ div.right-aligned {
 .x-treelist-pve-nav {
     background-color: #f5f5f5;
 }
+
+/* fix padding for legend in header */
+.x-legend-inner {
+    padding: 0;
+}
