@@ -3,11 +3,6 @@
  // do not send '_dc' parameter
 Ext.Ajax.disableCaching = false;
 
-// FIXME: HACK! Makes scrolling in number spinner work again. fixed in ExtJS >= 6.1
-if (Ext.isFirefox) {
-    Ext.$eventNameMap.DOMMouseScroll = 'DOMMouseScroll';
-}
-
 // custom Vtypes
 Ext.apply(Ext.form.field.VTypes, {
     IPAddress: function(v) {
@@ -466,29 +461,96 @@ Ext.define('Proxmox.form.field.Text', {
     },
 });
 
-// this should be fixed with ExtJS 6.0.2
-// make mousescrolling work in firefox in the containers overflowhandler
+// make mousescrolling work in firefox in the containers overflowhandler,
+// by using only the 'wheel' event not 'mousewheel'(fixed in 7.3)
+// also reverse the scrolldirection (fixed in 7.3)
+// and reduce the default increment
 Ext.define(null, {
     override: 'Ext.layout.container.boxOverflow.Scroller',
 
-    createWheelListener: function() {
-	let me = this;
-	if (Ext.isFirefox) {
-	    me.wheelListener = me.layout.innerCt.on('wheel', me.onMouseWheelFirefox, me, { destroyable: true });
+    wheelIncrement: 1,
+
+    getWheelDelta: function(e) {
+	return -e.getWheelDelta(e);
+    },
+
+    onOwnerRender: function(owner) {
+	var me = this,
+	    scrollable = {
+		isBoxOverflowScroller: true,
+		x: false,
+		y: false,
+		listeners: {
+		    scrollend: this.onScrollEnd,
+		    scope: this,
+		},
+	    };
+
+	// If no obstrusive scrollbars, allow natural scrolling on mobile touch devices
+	if (!Ext.scrollbar.width() && !Ext.platformTags.desktop) {
+	    scrollable[owner.layout.horizontal ? 'x' : 'y'] = true;
 	} else {
-	    me.wheelListener = me.layout.innerCt.on('mousewheel', me.onMouseWheel, me, { destroyable: true });
+	    me.wheelListener = me.layout.innerCt.on(
+		'wheel', me.onMouseWheel, me, { destroyable: true },
+	    );
+	}
+
+	owner.setScrollable(scrollable);
+    },
+});
+
+// extj 6.7 reversed mousewheel direction... (fixed in 7.3)
+// https://forum.sencha.com/forum/showthread.php?472517-Mousewheel-scroll-direction-in-numberfield-with-spinners
+// alse use the 'wheel' event instead of 'mousewheel' (fixed in 7.3)
+Ext.define('Proxmox.form.field.Spinner', {
+    override: 'Ext.form.field.Spinner',
+
+    onRender: function() {
+	var me = this,
+	    spinnerTrigger = me.getTrigger('spinner');
+
+	me.callParent();
+
+	// Init up/down arrow keys
+	if (me.keyNavEnabled) {
+	    me.spinnerKeyNav = new Ext.util.KeyNav({
+		target: me.inputEl,
+		scope: me,
+		up: me.spinUp,
+		down: me.spinDown,
+	    });
+
+	    me.inputEl.on({
+		keyup: me.onInputElKeyUp,
+		scope: me,
+	    });
+	}
+
+	// Init mouse wheel
+	if (me.mouseWheelEnabled) {
+	    me.mon(me.bodyEl, 'wheel', me.onMouseWheel, me);
+	}
+
+	// in v4 spinUpEl/spinDownEl were childEls, now they are children of the trigger.
+	// create references for compatibility
+	me.spinUpEl = spinnerTrigger.upEl;
+	me.spinDownEl = spinnerTrigger.downEl;
+    },
+
+    onMouseWheel: function(e) {
+	var me = this,
+	    delta;
+	if (me.hasFocus) {
+	    delta = e.getWheelDelta();
+	    if (delta > 0) {
+		me.spinDown();
+	    } else if (delta < 0) {
+		me.spinUp();
+	    }
+	    e.stopEvent();
+	    me.onSpinEnd();
 	}
     },
-
-    // special wheel handler for firefox. differs from the default onMouseWheel
-    // handler by using deltaY instead of wheelDeltaY and no normalizing,
-    // because it is already
-    onMouseWheelFirefox: function(e) {
-	e.stopEvent();
-	let delta = e.browserEvent.deltaY || 0;
-	this.scrollBy(delta * this.wheelIncrement, false);
-    },
-
 });
 
 // add '@' to the valid id
