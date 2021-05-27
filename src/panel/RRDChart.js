@@ -246,10 +246,6 @@ Ext.define('Proxmox.widget.RRDChart', {
 		    marker: {
 			opacity: 0,
 			scaling: 0.01,
-			fx: {
-			    duration: 200,
-			    easing: 'easeOut',
-			},
 		    },
 		    highlightCfg: {
 			opacity: 1,
@@ -266,7 +262,10 @@ Ext.define('Proxmox.widget.RRDChart', {
 
 	// enable animation after the store is loaded
 	me.store.onAfter('load', function() {
-	    me.setAnimation(true);
+	    me.setAnimation({
+		duration: 200,
+		easing: 'easeIn',
+	    });
 	}, this, { single: true });
     },
 });
