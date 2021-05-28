@@ -88,6 +88,7 @@ all: ${SUBDIRS}
 check: lint
 lint: ${JSSRC}
 	eslint --strict ${JSSRC}
+	touch ".lint-incremental"
 
 proxmoxlib.js: .lint-incremental ${JSSRC}
 	# add the version as comment in the file
