@@ -1,3 +1,6 @@
+// override the download server url globally, for privacy reasons
+Ext.draw.Container.prototype.defaultDownloadServerUrl = "-";
+
 Ext.define('Proxmox.chart.axis.segmenter.NumericBase2', {
     extend: 'Ext.chart.axis.segmenter.Numeric',
     alias: 'segmenter.numericBase2',

@@ -664,9 +664,6 @@ Ext.define('Proxmox.selection.CheckboxModel', {
     },
 });
 
-// override the download server url globally, for privacy reasons
-Ext.draw.Container.prototype.defaultDownloadServerUrl = "-";
-
 // stop nulling of properties
 Ext.define('Proxmox.Component', {
     override: 'Ext.Component',
