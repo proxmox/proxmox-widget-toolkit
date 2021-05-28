@@ -3,7 +3,9 @@ export DEB_VERSION_UPSTREAM_REVISION
 
 export PACKAGE=proxmox-widget-toolkit
 BUILDDIR ?= ${PACKAGE}-${DEB_VERSION_UPSTREAM}
-DEB=${PACKAGE}_${DEB_VERSION_UPSTREAM_REVISION}_all.deb
+WT_DEB=${PACKAGE}_${DEB_VERSION_UPSTREAM_REVISION}_all.deb
+WT_DEV_DEB=${PACKAGE}-dev_${DEB_VERSION_UPSTREAM_REVISION}_all.deb
+DEBS=${WT_DEB} ${WT_DEV_DEB}
 DSC=${PACKAGE}_${DEB_VERSION_UPSTREAM_REVISION}.dsc
 
 GITVERSION:=$(shell git rev-parse HEAD)
@@ -16,10 +18,10 @@ ${BUILDDIR}:
 	mv ${BUILDDIR}.tmp/ ${BUILDDIR}
 
 .PHONY: deb
-deb: ${DEB}
-${DEB}: ${BUILDDIR}
+deb: ${DEBS}
+${DEBS}: ${BUILDDIR}
 	cd ${BUILDDIR}; dpkg-buildpackage -b -us -uc
-	lintian ${DEB}
+	lintian ${DEBS}
 
 .PHONY: dsc
 dsc: ${DSC}
@@ -32,8 +34,9 @@ lint: ${JSSRC}
 	${MAKE} -C src lint
 
 .PHONY: upload
-upload: ${DEB}
-	tar cf - ${DEB} | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg,pbs --dist buster
+upload: ${DEBS}
+	tar cf - ${WT_DEB} | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg,pbs --dist buster
+	tar cf - ${WT_DEV_DEB} | ssh -X repoman@repo.proxmox.com -- upload --product devel --dist buster
 
 distclean: clean
 clean:
@@ -42,5 +45,5 @@ clean:
 	find . -name '*~' -exec rm {} ';'
 
 .PHONY: dinstall
-dinstall: ${DEB}
-	dpkg -i ${DEB}
+dinstall: ${DEBS}
+	dpkg -i ${DEBS}

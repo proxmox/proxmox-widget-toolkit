@@ -12,3 +12,10 @@ Architecture: all
 Depends: ${misc:Depends}
 Description: ExtJS Helper Classes for Proxmox 
  ExtJS Helper Classes to easy access to Proxmox APIs.
+
+Package: proxmox-widget-toolkit-dev
+Architecture: all
+Depends: ${misc:Depends}
+Description: Development dependencies for Proxmox Projects
+ Contains some common javascript code that are dev-dependencies,
+ for various Proxmox projects.
