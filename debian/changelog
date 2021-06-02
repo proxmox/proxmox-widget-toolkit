@@ -1,3 +1,18 @@
+proxmox-widget-toolkit (3.1-1) bullseye; urgency=medium
+
+  * support ExtJS 7
+
+  * object grid: allow one to declaratively specify rows
+
+  * disk list: add wipe disk button which users of this widget can opt-in
+
+  * data/ProxmoxProxy: set responseType to undefined for XMLHTTPRequest
+
+  * ship api-viewer in new proxmox-widget-toolkit-dev pacakge to improve
+    possibility for code reuse
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 02 Jun 2021 16:16:02 +0200
+
 proxmox-widget-toolkit (3.0-2) bullseye; urgency=medium
 
   * disks: fix regression in S.M.A.R.T. window
