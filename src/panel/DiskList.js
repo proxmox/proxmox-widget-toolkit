@@ -99,18 +99,15 @@ Ext.define('Proxmox.DiskList', {
 		waitMsgTarget: view,
 		method: 'POST',
 		params: { disk: rec.data.name },
-		failure: function(response, options) {
-		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		},
+		failure: response => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
 		success: function(response, options) {
-		    var upid = response.result.data;
-		    var win = Ext.create('Proxmox.window.TaskProgress', {
-		        upid: upid,
+		    Ext.create('Proxmox.window.TaskProgress', {
+		        upid: response.result.data,
 			taskDone: function() {
 			    me.reload();
 			},
+			autoShow: true,
 		    });
-		    win.show();
 		},
 	    });
 	},
@@ -127,18 +124,15 @@ Ext.define('Proxmox.DiskList', {
 		waitMsgTarget: view,
 		method: 'PUT',
 		params: { disk: rec.data.name },
-		failure: function(response, options) {
-		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		},
+		failure: response => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
 		success: function(response, options) {
-		    var upid = response.result.data;
-		    var win = Ext.create('Proxmox.window.TaskProgress', {
-		        upid: upid,
+		    Ext.create('Proxmox.window.TaskProgress', {
+		        upid: response.result.data,
 			taskDone: function() {
 			    me.reload();
 			},
+			autoShow: true,
 		    });
-		    win.show();
 		},
 	    });
 	},
