@@ -1,3 +1,5 @@
+/*global apiSchema*/
+
 Ext.onReady(function() {
     Ext.define('pmx-param-schema', {
         extend: 'Ext.data.Model',
@@ -23,7 +25,7 @@ Ext.onReady(function() {
 	}),
 	proxy: {
 	    type: 'memory',
-	    data: pmxapi,
+	    data: apiSchema,
 	},
 	sorters: [{
 	    property: 'leaf',
