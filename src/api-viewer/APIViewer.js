@@ -1,45 +1,36 @@
-// avoid errors when running without development tools
-if (!Ext.isDefined(Ext.global.console)) {
-    var console = {
-        dir: function() {},
-        log: function() {}
-    };
-}
-
 Ext.onReady(function() {
-
     Ext.define('pmx-param-schema', {
         extend: 'Ext.data.Model',
-        fields:  [
+        fields: [
 	    'name', 'type', 'typetext', 'description', 'verbose_description',
 	    'enum', 'minimum', 'maximum', 'minLength', 'maxLength',
 	    'pattern', 'title', 'requires', 'format', 'default',
 	    'disallow', 'extends', 'links',
 	    {
 		name: 'optional',
-		type: 'boolean'
-	    }
-	]
+		type: 'boolean',
+	    },
+	],
     });
 
-    var store = Ext.define('pmx-updated-treestore', {
+    let store = Ext.define('pmx-updated-treestore', {
 	extend: 'Ext.data.TreeStore',
 	model: Ext.define('pmx-api-doc', {
             extend: 'Ext.data.Model',
-            fields:  [
+            fields: [
 		'path', 'info', 'text',
-	    ]
+	    ],
 	}),
-        proxy: {
-            type: 'memory',
-            data: pmxapi
-        },
-        sorters: [{
-            property: 'leaf',
-            direction: 'ASC'
-        }, {
-            property: 'text',
-            direction: 'ASC'
+	proxy: {
+	    type: 'memory',
+	    data: pmxapi,
+	},
+	sorters: [{
+	    property: 'leaf',
+	    direction: 'ASC',
+	}, {
+	    property: 'text',
+	    direction: 'ASC',
 	}],
 	filterer: 'bottomup',
 	doFilter: function(node) {
@@ -47,7 +38,7 @@ Ext.onReady(function() {
 	},
 
 	filterNodes: function(node, filterFn, parentVisible) {
-	    var me = this,
+	    let me = this,
 		bottomUpFiltering = me.filterer === 'bottomup',
 		match = filterFn(node) && parentVisible || (node.isRoot() && !me.getRootVisible()),
 		childNodes = node.childNodes,
@@ -68,50 +59,42 @@ Ext.onReady(function() {
 
     }).create();
 
-    var render_description = function(value, metaData, record) {
-	var pdef = record.data;
+    let render_description = function(value, metaData, record) {
+	let pdef = record.data;
 
 	value = pdef.verbose_description || value;
 
 	// TODO: try to render asciidoc correctly
 
-	metaData.style = 'white-space:pre-wrap;'
+	metaData.style = 'white-space:pre-wrap;';
 
 	return Ext.htmlEncode(value);
     };
 
-    var render_type = function(value, metaData, record) {
-	var pdef = record.data;
+    let render_type = function(value, metaData, record) {
+	let pdef = record.data;
 
-	return pdef['enum'] ? 'enum' : (pdef.type || 'string');
+	return pdef.enum ? 'enum' : pdef.type || 'string';
     };
 
     let render_simple_format = function(pdef, type_fallback) {
-	if (pdef.typetext)
-	    return pdef.typetext;
+	if (pdef.typetext) {return pdef.typetext;}
 
-	if (pdef['enum'])
-	    return pdef['enum'].join(' | ');
+	if (pdef.enum) {return pdef.enum.join(' | ');}
 
-	if (pdef.format)
-	    return pdef.format;
+	if (pdef.format) {return pdef.format;}
 
-	if (pdef.pattern)
-	    return pdef.pattern;
+	if (pdef.pattern) {return pdef.pattern;}
 
-	if (pdef.type === 'boolean')
-	    return `<true|false>`;
+	if (pdef.type === 'boolean') {return `<true|false>`;}
 
-	if (type_fallback && pdef.type)
-	    return `<${pdef.type}>`;
-
-	return;
+	if (type_fallback && pdef.type) {return `<${pdef.type}>`;}
     };
 
     let render_format = function(value, metaData, record) {
 	let pdef = record.data;
 
-	metaData.style = 'white-space:normal;'
+	metaData.style = 'white-space:normal;';
 
 	if (pdef.type === 'array' && pdef.items) {
 	    let format = render_simple_format(pdef.items, true);
@@ -121,11 +104,11 @@ Ext.onReady(function() {
 	return Ext.htmlEncode(render_simple_format(pdef) || '');
     };
 
-    var real_path = function(path) {
+    let real_path = function(path) {
 	return path.replace(/^.*\/_upgrade_(\/)?/, "/");
     };
 
-    var permission_text = function(permission) {
+    let permission_text = function(permission) {
 	let permhtml = "";
 
 	if (permission.user) {
@@ -141,20 +124,20 @@ Ext.onReady(function() {
 	    }
 	} else if (permission.check) {
 	    permhtml += "<pre>Check: " +
-		Ext.htmlEncode(Ext.JSON.encode(permission.check))  + "</pre>";
+		Ext.htmlEncode(Ext.JSON.encode(permission.check)) + "</pre>";
 	} else if (permission.userParam) {
 	    permhtml += `<div>Check if user matches parameter '${permission.userParam}'`;
 	} else if (permission.or) {
 	    permhtml += "<div>Or<div style='padding-left: 10px;'>";
 	    Ext.Array.each(permission.or, function(sub_permission) {
 		permhtml += permission_text(sub_permission);
-	    })
+	    });
 	    permhtml += "</div></div>";
 	} else if (permission.and) {
 	    permhtml += "<div>And<div style='padding-left: 10px;'>";
 	    Ext.Array.each(permission.and, function(sub_permission) {
 		permhtml += permission_text(sub_permission);
-	    })
+	    });
 	    permhtml += "</div></div>";
 	} else {
 	    //console.log(permission);
@@ -164,25 +147,24 @@ Ext.onReady(function() {
 	return permhtml;
     };
 
-    var render_docu = function(data) {
-	var md = data.info;
+    let render_docu = function(data) {
+	let md = data.info;
 
 	// console.dir(data);
 
-	var items = [];
+	let items = [];
 
-	var clicmdhash = {
+	let clicmdhash = {
 	    GET: 'get',
 	    POST: 'create',
 	    PUT: 'set',
-	    DELETE: 'delete'
+	    DELETE: 'delete',
 	};
 
 	Ext.Array.each(['GET', 'POST', 'PUT', 'DELETE'], function(method) {
-	    var info = md[method];
+	    let info = md[method];
 	    if (info) {
-
-		var usage = "";
+		let usage = "";
 
 		usage += "<table><tr><td>HTTP:&nbsp;&nbsp;&nbsp;</td><td>"
 		    + method + " " + real_path("/api2/json" + data.path) + "</td></tr>";
@@ -191,33 +173,32 @@ Ext.onReady(function() {
 		    usage += cliusage(method, real_path(data.path));
 		}
 
-		var sections = [
+		let sections = [
 		    {
 			title: 'Description',
 			html: Ext.htmlEncode(info.description),
-			bodyPadding: 10
+			bodyPadding: 10,
 		    },
 		    {
 			title: 'Usage',
 			html: usage,
-			bodyPadding: 10
-		    }
+			bodyPadding: 10,
+		    },
 		];
 
 		if (info.parameters && info.parameters.properties) {
-
-		    var pstore = Ext.create('Ext.data.Store', {
+		    let pstore = Ext.create('Ext.data.Store', {
 			model: 'pmx-param-schema',
 			proxy: {
-			    type: 'memory'
+			    type: 'memory',
 			},
 			groupField: 'optional',
 			sorters: [
 			    {
 				property: 'name',
-				direction: 'ASC'
-			    }
-			]
+				direction: 'ASC',
+			    },
+			],
 		    });
 
 		    Ext.Object.each(info.parameters.properties, function(name, pdef) {
@@ -227,9 +208,9 @@ Ext.onReady(function() {
 
 		    pstore.sort();
 
-		    var groupingFeature = Ext.create('Ext.grid.feature.Grouping',{
+		    let groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
 			enableGroupingMenu: false,
-			groupHeaderTpl: '<tpl if="groupValue">Optional</tpl><tpl if="!groupValue">Required</tpl>'
+			groupHeaderTpl: '<tpl if="groupValue">Optional</tpl><tpl if="!groupValue">Required</tpl>',
 		    });
 
 		    sections.push({
@@ -239,66 +220,62 @@ Ext.onReady(function() {
 			store: pstore,
 			viewConfig: {
 			    trackOver: false,
-			    stripeRows: true
+			    stripeRows: true,
 			},
 			columns: [
 			    {
 				header: 'Name',
 				dataIndex: 'name',
-				flex: 1
+				flex: 1,
 			    },
 			    {
 				header: 'Type',
 				dataIndex: 'type',
 				renderer: render_type,
-				flex: 1
+				flex: 1,
 			    },
 			    {
 				header: 'Default',
 				dataIndex: 'default',
-				flex: 1
+				flex: 1,
 			    },
 			    {
 				header: 'Format',
 				dataIndex: 'type',
 				renderer: render_format,
-				flex: 2
+				flex: 2,
 			    },
 			    {
 				header: 'Description',
 				dataIndex: 'description',
 				renderer: render_description,
-				flex: 6
-			    }
-			]
+				flex: 6,
+			    },
+			],
 		    });
-
 		}
 
 		if (info.returns) {
+		    let retinf = info.returns;
+		    let rtype = retinf.type;
+		    if (!rtype && retinf.items) {rtype = 'array';}
+		    if (!rtype) {rtype = 'object';}
 
-		    var retinf = info.returns;
-		    var rtype = retinf.type;
-		    if (!rtype && retinf.items)
-			rtype = 'array';
-		    if (!rtype)
-			rtype = 'object';
-
-		    var rpstore = Ext.create('Ext.data.Store', {
+		    let rpstore = Ext.create('Ext.data.Store', {
 			model: 'pmx-param-schema',
 			proxy: {
-			    type: 'memory'
+			    type: 'memory',
 			},
 			groupField: 'optional',
 			sorters: [
 			    {
 				property: 'name',
-				direction: 'ASC'
-			   }
-			]
+				direction: 'ASC',
+			   },
+			],
 		    });
 
-		    var properties;
+		    let properties;
 		    if (rtype === 'array' && retinf.items.properties) {
 			properties = retinf.items.properties;
 		    }
@@ -314,11 +291,11 @@ Ext.onReady(function() {
 
 		    rpstore.sort();
 
-		    var groupingFeature = Ext.create('Ext.grid.feature.Grouping',{
+		    let groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
 			enableGroupingMenu: false,
-			groupHeaderTpl: '<tpl if="groupValue">Optional</tpl><tpl if="!groupValue">Obligatory</tpl>'
+			groupHeaderTpl: '<tpl if="groupValue">Optional</tpl><tpl if="!groupValue">Obligatory</tpl>',
 		    });
-		    var returnhtml;
+		    let returnhtml;
 		    if (retinf.items) {
 			returnhtml = '<pre>items: ' + Ext.htmlEncode(JSON.stringify(retinf.items, null, 4)) + '</pre>';
 		    }
@@ -328,10 +305,10 @@ Ext.onReady(function() {
 			returnhtml += '<pre>properties:' + Ext.htmlEncode(JSON.stringify(retinf.properties, null, 4)) + '</pre>';
 		    }
 
-		    var rawSection = Ext.create('Ext.panel.Panel', {
+		    let rawSection = Ext.create('Ext.panel.Panel', {
 			bodyPadding: '0px 10px 10px 10px',
 			html: returnhtml,
-			hidden: true
+			hidden: true,
 		    });
 
 		    sections.push({
@@ -341,37 +318,37 @@ Ext.onReady(function() {
 			store: rpstore,
 			viewConfig: {
 			    trackOver: false,
-			    stripeRows: true
+			    stripeRows: true,
 			},
 		    columns: [
 			{
 			    header: 'Name',
 			    dataIndex: 'name',
-			    flex: 1
+			    flex: 1,
 			},
 			{
 			    header: 'Type',
 			    dataIndex: 'type',
 			    renderer: render_type,
-			    flex: 1
+			    flex: 1,
 			},
 			{
 			    header: 'Default',
 			    dataIndex: 'default',
-			    flex: 1
+			    flex: 1,
 			},
 			{
 			    header: 'Format',
 			    dataIndex: 'type',
 			    renderer: render_format,
-			    flex: 2
+			    flex: 2,
 			},
 			{
 			    header: 'Description',
 			    dataIndex: 'description',
 			    renderer: render_description,
-			    flex: 6
-			}
+			    flex: 6,
+			},
 		    ],
 		    bbar: [
 			{
@@ -380,17 +357,16 @@ Ext.onReady(function() {
 			    handler: function(btn) {
 				rawSection.setVisible(!rawSection.isVisible());
 				btn.setText(rawSection.isVisible() ? 'Hide RAW' : 'Show RAW');
-			    }}
-		    ]
+			    },
+},
+		    ],
 		});
 
 		sections.push(rawSection);
-
-
 		}
 
 		if (!data.path.match(/\/_upgrade_/)) {
-		    var permhtml = '';
+		    let permhtml = '';
 
 		    if (!info.permissions) {
 			permhtml = "Root only.";
@@ -403,13 +379,13 @@ Ext.onReady(function() {
 		    }
 
 		    if (info.allowtoken !== undefined && !info.allowtoken) {
-		        permhtml += "<br />This API endpoint is not available for API tokens."
+		        permhtml += "<br />This API endpoint is not available for API tokens.";
 		    }
 
 		    sections.push({
 			title: 'Required permissions',
 			bodyPadding: 10,
-			html: permhtml
+			html: permhtml,
 		    });
 		}
 
@@ -417,15 +393,15 @@ Ext.onReady(function() {
 		    title: method,
 		    autoScroll: true,
 		    defaults: {
-			border: false
+			border: false,
 		    },
-		    items: sections
+		    items: sections,
 		});
 	    }
 	});
 
-	var ct = Ext.getCmp('docview');
-	ct.setTitle("Path: " +  real_path(data.path));
+	let ct = Ext.getCmp('docview');
+	ct.setTitle("Path: " + real_path(data.path));
 	ct.removeAll(true);
 	ct.add(items);
 	ct.setActiveTab(0);
@@ -441,28 +417,27 @@ Ext.onReady(function() {
 
 	inputType: 'search',
 	listeners: {
-	    'change': function(){
-
-		var value = this.getValue();
+	    'change': function() {
+		let value = this.getValue();
 		if (!Ext.isEmpty(value)) {
 		    store.filter({
 			property: 'path',
 			value: value,
-			anyMatch: true
+			anyMatch: true,
 		    });
 		} else {
 		    store.clearFilter();
 		}
-	    }
-	}
+	    },
+	},
     });
 
-    var tree = Ext.create('Ext.tree.Panel', {
+    let tree = Ext.create('Ext.tree.Panel', {
 	title: 'Resource Tree',
 	tbar: [
 	    {
 		xtype: 'searchfield',
-	    }
+	    },
 	],
 	tools: [
 	    {
@@ -486,13 +461,12 @@ Ext.onReady(function() {
         rootVisible: false,
 	listeners: {
 	    selectionchange: function(v, selections) {
-		if (!selections[0])
-		    return;
-		var rec = selections[0];
+		if (!selections[0]) {return;}
+		let rec = selections[0];
 		render_docu(rec.data);
 		location.hash = '#' + rec.data.path;
-	    }
-	}
+	    },
+	},
     });
 
     Ext.create('Ext.container.Viewport', {
@@ -507,23 +481,22 @@ Ext.onReady(function() {
 		region: 'center',
 		margins: '5 5 5 0',
 		layout: 'fit',
-		items: []
-	    }
-	]
+		items: [],
+	    },
+	],
     });
 
-    var deepLink = function() {
-	var path = window.location.hash.substring(1).replace(/\/\s*$/, '')
-	var endpoint = store.findNode('path', path);
+    let deepLink = function() {
+	let path = window.location.hash.substring(1).replace(/\/\s*$/, '');
+	let endpoint = store.findNode('path', path);
 
 	if (endpoint) {
 	    tree.getSelectionModel().select(endpoint);
 	    tree.expandPath(endpoint.getPath());
 	    render_docu(endpoint.data);
 	}
-    }
+    };
     window.onhashchange = deepLink;
 
     deepLink();
-
 });
