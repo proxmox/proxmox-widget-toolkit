@@ -152,16 +152,7 @@ Ext.onReady(function() {
     let render_docu = function(data) {
 	let md = data.info;
 
-	// console.dir(data);
-
 	let items = [];
-
-	let clicmdhash = {
-	    GET: 'get',
-	    POST: 'create',
-	    PUT: 'set',
-	    DELETE: 'delete',
-	};
 
 	Ext.Array.each(['GET', 'POST', 'PUT', 'DELETE'], function(method) {
 	    let info = md[method];
