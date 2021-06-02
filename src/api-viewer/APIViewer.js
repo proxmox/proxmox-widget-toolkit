@@ -40,18 +40,18 @@ Ext.onReady(function() {
 	},
 
 	filterNodes: function(node, filterFn, parentVisible) {
-	    let me = this,
-		bottomUpFiltering = me.filterer === 'bottomup',
-		match = filterFn(node) && parentVisible || (node.isRoot() && !me.getRootVisible()),
-		childNodes = node.childNodes,
-		len = childNodes && childNodes.length, i, matchingChildren;
+	    let me = this;
 
-	    if (len) {
-		for (i = 0; i < len; ++i) {
-		    matchingChildren = me.filterNodes(childNodes[i], filterFn, match || bottomUpFiltering) || matchingChildren;
+	    let match = filterFn(node) && (parentVisible || (node.isRoot() && !me.getRootVisible()));
+
+	    if (node.childNodes && node.childNodes.length) {
+		let bottomUpFiltering = me.filterer === 'bottomup';
+		let childMatch;
+		for (const child of node.childNodes) {
+		    childMatch = me.filterNodes(child, filterFn, match || bottomUpFiltering) || childMatch;
 		}
 		if (bottomUpFiltering) {
-		    match = matchingChildren || match;
+		    match = childMatch || match;
 		}
 	    }
 
@@ -80,17 +80,25 @@ Ext.onReady(function() {
     };
 
     let render_simple_format = function(pdef, type_fallback) {
-	if (pdef.typetext) {return pdef.typetext;}
-
-	if (pdef.enum) {return pdef.enum.join(' | ');}
-
-	if (pdef.format) {return pdef.format;}
-
-	if (pdef.pattern) {return pdef.pattern;}
-
-	if (pdef.type === 'boolean') {return `<true|false>`;}
-
-	if (type_fallback && pdef.type) {return `<${pdef.type}>`;}
+	if (pdef.typetext) {
+	    return pdef.typetext;
+	}
+	if (pdef.enum) {
+	    return pdef.enum.join(' | ');
+	}
+	if (pdef.format) {
+	    return pdef.format;
+	}
+	if (pdef.pattern) {
+	    return pdef.pattern;
+	}
+	if (pdef.type === 'boolean') {
+	    return `<true|false>`;
+	}
+	if (type_fallback && pdef.type) {
+	    return `<${pdef.type}>`;
+	}
+	return '';
     };
 
     let render_format = function(value, metaData, record) {
@@ -103,7 +111,7 @@ Ext.onReady(function() {
 	    return `[${Ext.htmlEncode(format)}, ...]`;
 	}
 
-	return Ext.htmlEncode(render_simple_format(pdef) || '');
+	return Ext.htmlEncode(render_simple_format(pdef));
     };
 
     let real_path = function(path) {
@@ -120,29 +128,22 @@ Ext.onReady(function() {
 		} else if (permission.user === 'all') {
 		    permhtml += "Accessible by all authenticated users.";
 		} else {
-		    permhtml += 'Onyl accessible by user "' +
-			permission.user + '"';
+		    permhtml += `Only accessible by user "${permission.user}"`;
 		}
 	    }
 	} else if (permission.check) {
-	    permhtml += "<pre>Check: " +
-		Ext.htmlEncode(Ext.JSON.encode(permission.check)) + "</pre>";
+	    permhtml += `<pre>Check: ${Ext.htmlEncode(JSON.stringify(permission.check))}</pre>`;
 	} else if (permission.userParam) {
 	    permhtml += `<div>Check if user matches parameter '${permission.userParam}'`;
 	} else if (permission.or) {
 	    permhtml += "<div>Or<div style='padding-left: 10px;'>";
-	    Ext.Array.each(permission.or, function(sub_permission) {
-		permhtml += permission_text(sub_permission);
-	    });
+	    permhtml += permission.or.map(v => permission_text(v)).join('');
 	    permhtml += "</div></div>";
 	} else if (permission.and) {
 	    permhtml += "<div>And<div style='padding-left: 10px;'>";
-	    Ext.Array.each(permission.and, function(sub_permission) {
-		permhtml += permission_text(sub_permission);
-	    });
+	    permhtml += permission.and.map(v => permission_text(v)).join('');
 	    permhtml += "</div></div>";
 	} else {
-	    //console.log(permission);
 	    permhtml += "Unknown syntax!";
 	}
 
@@ -157,13 +158,12 @@ Ext.onReady(function() {
 	Ext.Array.each(['GET', 'POST', 'PUT', 'DELETE'], function(method) {
 	    let info = md[method];
 	    if (info) {
-		let usage = "";
+		let endpoint = real_path(data.path);
+		let usage = `<table><tr><td>HTTP:&nbsp;&nbsp;&nbsp;</td><td>`;
+		usage += `${method} /api2/json/${endpoint}</td></tr>`;
 
-		usage += "<table><tr><td>HTTP:&nbsp;&nbsp;&nbsp;</td><td>"
-		    + method + " " + real_path("/api2/json" + data.path) + "</td></tr>";
-
-		if (typeof cliusage === 'function') {
-		    usage += cliusage(method, real_path(data.path));
+		if (typeof cliUsageRenderer === 'function') {
+		    usage += cliUsageRenderer(method, endpoint); // eslint-disable-line no-undef
 		}
 
 		let sections = [
@@ -313,49 +313,49 @@ Ext.onReady(function() {
 			    trackOver: false,
 			    stripeRows: true,
 			},
-		    columns: [
-			{
-			    header: 'Name',
-			    dataIndex: 'name',
-			    flex: 1,
-			},
-			{
-			    header: 'Type',
-			    dataIndex: 'type',
-			    renderer: render_type,
-			    flex: 1,
-			},
-			{
-			    header: 'Default',
-			    dataIndex: 'default',
-			    flex: 1,
-			},
-			{
-			    header: 'Format',
-			    dataIndex: 'type',
-			    renderer: render_format,
-			    flex: 2,
-			},
-			{
-			    header: 'Description',
-			    dataIndex: 'description',
-			    renderer: render_description,
-			    flex: 6,
-			},
-		    ],
-		    bbar: [
-			{
-			    xtype: 'button',
-			    text: 'Show RAW',
-			    handler: function(btn) {
-				rawSection.setVisible(!rawSection.isVisible());
-				btn.setText(rawSection.isVisible() ? 'Hide RAW' : 'Show RAW');
+			columns: [
+			    {
+				header: 'Name',
+				dataIndex: 'name',
+				flex: 1,
 			    },
-},
-		    ],
-		});
+			    {
+				header: 'Type',
+				dataIndex: 'type',
+				renderer: render_type,
+				flex: 1,
+			    },
+			    {
+				header: 'Default',
+				dataIndex: 'default',
+				flex: 1,
+			    },
+			    {
+				header: 'Format',
+				dataIndex: 'type',
+				renderer: render_format,
+				flex: 2,
+			    },
+			    {
+				header: 'Description',
+				dataIndex: 'description',
+				renderer: render_description,
+				flex: 6,
+			    },
+			],
+			bbar: [
+			    {
+				xtype: 'button',
+				text: 'Show RAW',
+				handler: function(btn) {
+				    rawSection.setVisible(!rawSection.isVisible());
+				    btn.setText(rawSection.isVisible() ? 'Hide RAW' : 'Show RAW');
+				},
+			    },
+			],
+		    });
 
-		sections.push(rawSection);
+		    sections.push(rawSection);
 		}
 
 		if (!data.path.match(/\/_upgrade_/)) {
@@ -425,7 +425,7 @@ Ext.onReady(function() {
 	},
     });
 
-    let tree = Ext.create('Ext.tree.Panel', {
+    let treePanel = Ext.create('Ext.tree.Panel', {
 	title: 'Resource Tree',
 	tbar: [
 	    {
@@ -437,13 +437,13 @@ Ext.onReady(function() {
 		type: 'expand',
 		tooltip: 'Expand all',
 		tooltipType: 'title',
-		callback: (tree) => tree.expandAll(),
+		callback: tree => tree.expandAll(),
 	    },
 	    {
 		type: 'collapse',
 		tooltip: 'Collapse all',
 		tooltipType: 'title',
-		callback: (tree) => tree.collapseAll(),
+		callback: tree => tree.collapseAll(),
 	    },
 	],
         store: store,
@@ -466,7 +466,7 @@ Ext.onReady(function() {
 	layout: 'border',
 	renderTo: Ext.getBody(),
 	items: [
-	    tree,
+	    treePanel,
 	    {
 		xtype: 'tabpanel',
 		title: 'Documentation',
@@ -484,8 +484,8 @@ Ext.onReady(function() {
 	let endpoint = store.findNode('path', path);
 
 	if (endpoint) {
-	    tree.getSelectionModel().select(endpoint);
-	    tree.expandPath(endpoint.getPath());
+	    treePanel.getSelectionModel().select(endpoint);
+	    treePanel.expandPath(endpoint.getPath());
 	    render_docu(endpoint.data);
 	}
     };
