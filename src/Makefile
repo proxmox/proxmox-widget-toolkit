@@ -86,6 +86,7 @@ all: ${SUBDIRS}
 
 .PHONY: lint
 check: lint
+	eslint --strict api-viewer/APIViewer.js
 lint: ${JSSRC}
 	eslint --strict ${JSSRC}
 	touch ".lint-incremental"
