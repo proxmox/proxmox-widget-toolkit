@@ -17,6 +17,14 @@ Ext.define('Proxmox.window.SafeDestroy', {
 
     additionalItems: [],
 
+    // gets called if we have a progress bar or taskview and it detected that
+    // the task finished. function(success)
+    taskDone: Ext.emptyFn,
+
+    // gets called when the api call is finished, right at the beginning
+    // function(success, response, options)
+    apiCallDone: Ext.emptyFn,
+
     config: {
 	item: {
 	    id: undefined,
@@ -66,12 +74,15 @@ Ext.define('Proxmox.window.SafeDestroy', {
 			method: 'DELETE',
 			waitMsgTarget: view,
 			failure: function(response, opts) {
+			    view.apiCallDone(false, response, opts);
 			    view.close();
 			    Ext.Msg.alert('Error', response.htmlStatus);
 			},
 			success: function(response, options) {
 			    const hasProgressBar = !!(view.showProgress &&
 				response.result.data);
+
+			    view.apiCallDone(true, response, options);
 
 			    if (hasProgressBar) {
 				// stay around so we can trigger our close events
@@ -81,6 +92,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
 				const upid = response.result.data;
 				const win = Ext.create('Proxmox.window.TaskProgress', {
 				    upid: upid,
+				    taskDone: view.taskDone,
 				    listeners: {
 					destroy: function() {
 					    view.close();
