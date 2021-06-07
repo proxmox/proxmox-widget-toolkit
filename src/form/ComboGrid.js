@@ -425,14 +425,12 @@ Ext.define('Proxmox.form.ComboGrid', {
 		if (me.enableLoadMask) {
 		    delete me.enableLoadMask;
 
-		    // if the picker exists,
-		    // we reset its minheight to the saved let/0
-		    // we have to update the layout, otherwise the height
-		    // gets not recalculated
+		    // if the picker exists, we reset its minHeight to the previous saved one or 0
 		    if (me.picker) {
 			me.picker.setMinHeight(me.savedMinHeight || 0);
 			Proxmox.Utils.setErrorMask(me.picker);
 			delete me.savedMinHeight;
+			// we have to update the layout, otherwise the height gets not recalculated
 			me.picker.updateLayout();
 		    }
 		}
