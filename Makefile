@@ -37,8 +37,8 @@ lint: ${JSSRC}
 
 .PHONY: upload
 upload: ${DEBS}
-	tar cf - ${WT_DEB} | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg,pbs --dist buster
-	tar cf - ${WT_DEV_DEB} | ssh -X repoman@repo.proxmox.com -- upload --product devel --dist buster
+	tar cf - ${DEB} | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg,pbs --dist bullseye
+	tar cf - ${DEV_DEB} | ssh -X repoman@repo.proxmox.com -- upload --product devel --dist bullseye
 
 distclean: clean
 clean:
