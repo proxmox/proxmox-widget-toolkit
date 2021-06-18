@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (3.1-2) bullseye; urgency=medium
+
+  * ui: network: add, by default hidden, columns for the `vlan-id` and the
+    `vlan-raw-device`
+
+  * add interface for markdown parser and wire-up marked to it
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 18 Jun 2021 15:32:27 +0200
+
 proxmox-widget-toolkit (3.1-1) bullseye; urgency=medium
 
   * support ExtJS 7
