@@ -15,3 +15,12 @@ License: AGPLv3
  .
  You should have received a copy of the GNU Affero General Public License
  along with this program.  If not, see <http://www.gnu.org/licenses/>.
+
+Marked:
+ The Marked JavaScript library is shipped through linkage from the Debian
+ package unmodified alongside proxmox-widget-toolkit.
+
+ Copyright (c) 2018+, MarkedJS (https://github.com/markedjs/) Copyright (c)
+ 2011-2018, Christopher Jeffrey (https://github.com/chjj/)
+
+ For the license and copyright details see `/usr/share/doc/libjs-marked/copyright`

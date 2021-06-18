@@ -2,10 +2,15 @@ include defines.mk
 
 SUBDIRS= css images
 
+# bundle it for now from the libjs-marked debian package to avoid touching our proxies file mapper,
+# we could also just ship a link to the packages file and load from same path as the widget-toolkit
+MARKEDJS=/usr/share/javascript/marked/marked.min.js
+
 JSSRC=					\
 	Utils.js			\
 	Toolkit.js			\
 	Logo.js				\
+	Parser.js			\
 	mixin/CBind.js			\
 	data/reader/JsonObject.js	\
 	data/ProxmoxProxy.js		\
@@ -94,7 +99,7 @@ lint: ${JSSRC}
 proxmoxlib.js: .lint-incremental ${JSSRC}
 	# add the version as comment in the file
 	echo "// ${DEB_VERSION_UPSTREAM_REVISION}" > $@.tmp
-	cat ${JSSRC} >> $@.tmp
+	cat ${JSSRC} ${MARKEDJS}  >> $@.tmp
 	mv $@.tmp $@
 
 install: proxmoxlib.js
