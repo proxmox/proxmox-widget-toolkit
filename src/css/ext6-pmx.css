@@ -145,6 +145,12 @@ div.right-aligned {
     font-weight: bold;
 }
 
+.pmx-md blockquote {
+    border-left: 1px solid #666666;
+    padding-left: 4px;
+    margin: 10px 2ch;
+}
+
 /* markdown tables */
 .pmx-md table {
     border-spacing: 0;
