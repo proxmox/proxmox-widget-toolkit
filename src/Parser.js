@@ -20,7 +20,7 @@ Ext.define('Proxmox.Markdown', {
 	    for (let i=node.attributes.length; i--;) {
 		const name = node.attributes[i].name;
 		// TODO: we may want to also disallow class and id attrs
-		if (!/^(class|id|name|href|src|alt|align|valign)$/i.test(name)) {
+		if (!/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type)$/i.test(name)) {
 		    node.attributes.removeNamedItem(name);
 		}
 	    }
