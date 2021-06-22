@@ -24,8 +24,8 @@ Ext.define('Proxmox.node.ServiceView', {
 	    interval: 1000,
 	    model: 'proxmox-services',
 	    proxy: {
-                type: 'proxmox',
-                url: "/api2/json/nodes/" + me.nodename + "/services",
+		type: 'proxmox',
+		url: `/api2/json/nodes/${me.nodename}/services`,
 	    },
 	});
 
@@ -41,27 +41,24 @@ Ext.define('Proxmox.node.ServiceView', {
 	});
 
 	let view_service_log = function() {
-	    let sm = me.getSelectionModel();
-	    let rec = sm.getSelection()[0];
-	    let win = Ext.create('Ext.window.Window', {
-		title: gettext('Syslog') + ': ' + rec.data.service,
+	    let { data: { service } } = me.getSelectionModel().getSelection()[0];
+	    Ext.create('Ext.window.Window', {
+		title: gettext('Syslog') + ': ' + service,
 		modal: true,
 		width: 800,
 		height: 400,
 		layout: 'fit',
 		items: {
 		    xtype: 'proxmoxLogView',
-		    url: "/api2/extjs/nodes/" + me.nodename + "/syslog?service=" +
-			rec.data.service,
+		    url: `/api2/extjs/nodes/${me.nodename}/syslog?service=${service}`,
 		    log_select_timespan: 1,
 		},
+		autoShow: true,
 	    });
-	    win.show();
 	};
 
 	let service_cmd = function(cmd) {
-	    let rec = me.getSelectionModel().getSelection()[0];
-	    let service = rec.data.service;
+	    let { data: { service } } = me.getSelectionModel().getSelection()[0];
 	    Proxmox.Utils.API2Request({
 		url: `/nodes/${me.nodename}/services/${service}/${cmd}`,
 		method: 'POST',
@@ -71,12 +68,10 @@ Ext.define('Proxmox.node.ServiceView', {
 		},
 		success: function(response, opts) {
 		    rstore.startUpdate();
-		    let upid = response.result.data;
-
-		    let win = Ext.create('Proxmox.window.TaskProgress', {
-			upid: upid,
+		    Ext.create('Proxmox.window.TaskProgress', {
+			upid: response.result.data,
+			autoShow: true,
 		    });
-		    win.show();
 		},
 	    });
 	};
