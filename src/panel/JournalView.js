@@ -77,6 +77,8 @@ Ext.define('Proxmox.panel.JournalView', {
 	    let num = lines.length;
 	    let text = lines.map(Ext.htmlEncode).join('<br>');
 
+	    let contentChanged = true;
+
 	    if (!livemode) {
 		if (num) {
 		    view.content = text;
@@ -89,6 +91,8 @@ Ext.define('Proxmox.panel.JournalView', {
 		    view.content = view.content ? text + '<br>' + view.content : text;
 		} else if (!top && num) {
 		    view.content = view.content ? view.content + '<br>' + text : text;
+		} else {
+		    contentChanged = false;
 		}
 
 		// update cursors
@@ -101,7 +105,9 @@ Ext.define('Proxmox.panel.JournalView', {
 		}
 	    }
 
-	    contentEl.update(view.content);
+	    if (contentChanged) {
+		contentEl.update(view.content);
+	    }
 
 	    me.updateScroll(livemode, num, scrollPos, scrollPosTop);
 	},
