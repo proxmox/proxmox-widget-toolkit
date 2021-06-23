@@ -1,6 +1,6 @@
 Ext.define('proxmox-services', {
     extend: 'Ext.data.Model',
-    fields: ['service', 'name', 'desc', 'state'],
+    fields: ['service', 'name', 'desc', 'state', 'unit-state', 'active-state'],
     idProperty: 'service',
 });
 
@@ -158,6 +158,23 @@ Ext.define('Proxmox.node.ServiceView', {
 		    width: 100,
 		    sortable: true,
 		    dataIndex: 'state',
+		    renderer: (v, meta, rec) => rec.get('unit-state') === 'masked'
+			    ? gettext('disabled')
+			    : v,
+		},
+		{
+		    header: gettext('Active'),
+		    width: 100,
+		    sortable: true,
+		    hidden: true,
+		    dataIndex: 'active-state',
+		},
+		{
+		    header: gettext('Unit'),
+		    width: 120,
+		    sortable: true,
+		    hidden: typeof PVE === 'object', // FIXME currently only PVE supports it
+		    dataIndex: 'unit-state',
 		},
 		{
 		    header: gettext('Description'),
