@@ -63,6 +63,46 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		me.up('proxmoxNodeAPTRepositories').reload();
 	    },
 	},
+	{
+	    text: gettext('Add'),
+	    menu: {
+		plain: true,
+		itemId: "addMenu",
+		items: [],
+	    },
+	},
+	{
+	    xtype: 'proxmoxButton',
+	    text: gettext('Enable') + '/' + gettext('Disable'),
+	    disabled: true,
+	    handler: function(button, event, record) {
+		let me = this;
+		let panel = me.up('proxmoxNodeAPTRepositories');
+
+		let params = {
+		    path: record.data.Path,
+		    index: record.data.Index,
+		    enabled: record.data.Enabled ? 0 : 1, // invert
+		};
+
+		if (panel.digest !== undefined) {
+		   params.digest = panel.digest;
+		}
+
+		Proxmox.Utils.API2Request({
+		    url: `/nodes/${panel.nodename}/apt/repositories`,
+		    method: 'POST',
+		    params: params,
+		    failure: function(response, opts) {
+			Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+			panel.reload();
+		    },
+		    success: function(response, opts) {
+			panel.reload();
+		    },
+		});
+	    },
+	},
     ],
 
     sortableColumns: false,
@@ -340,6 +380,9 @@ Ext.define('Proxmox.node.APTRepositories', {
 	let me = this;
 	let vm = me.getViewModel();
 
+	let menu = me.down('#addMenu');
+	menu.removeAll();
+
 	for (const standardRepo of standardRepos) {
 	    const handle = standardRepo.handle;
 	    const status = standardRepo.status;
@@ -349,6 +392,43 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    } else if (handle === "no-subscription") {
 		vm.set('noSubscriptionRepo', status);
 	    }
+
+	    let status_text = '';
+	    if (status !== undefined && status !== null) {
+		status_text = Ext.String.format(
+		    ' ({0}, {1})',
+		    gettext('configured'),
+		    status ? gettext('enabled') : gettext('disabled'),
+		);
+	    }
+
+	    menu.add({
+		text: standardRepo.name + status_text,
+		disabled: status !== undefined && status !== null,
+		repoHandle: handle,
+		handler: function(menuItem) {
+		   let params = {
+		       handle: menuItem.repoHandle,
+		   };
+
+		   if (me.digest !== undefined) {
+		       params.digest = me.digest;
+		   }
+
+		    Proxmox.Utils.API2Request({
+			url: `/nodes/${me.nodename}/apt/repositories`,
+			method: 'PUT',
+			params: params,
+			failure: function(response, opts) {
+			    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+			    me.reload();
+			},
+			success: function(response, opts) {
+			    me.reload();
+			},
+		    });
+		},
+	    });
 	}
     },
 
