@@ -438,25 +438,27 @@ Ext.define('Proxmox.node.APTRepositories', {
 		disabled: status !== undefined && status !== null,
 		repoHandle: handle,
 		handler: function(menuItem) {
-		   let params = {
-		       handle: menuItem.repoHandle,
-		   };
+		    Proxmox.Utils.checked_command(() => {
+			let params = {
+			    handle: menuItem.repoHandle,
+			};
 
-		   if (me.digest !== undefined) {
-		       params.digest = me.digest;
-		   }
+			if (me.digest !== undefined) {
+			    params.digest = me.digest;
+			}
 
-		    Proxmox.Utils.API2Request({
-			url: `/nodes/${me.nodename}/apt/repositories`,
-			method: 'PUT',
-			params: params,
-			failure: function(response, opts) {
-			    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-			    me.reload();
-			},
-			success: function(response, opts) {
-			    me.reload();
-			},
+			Proxmox.Utils.API2Request({
+			    url: `/nodes/${me.nodename}/apt/repositories`,
+			    method: 'PUT',
+			    params: params,
+			    failure: function(response, opts) {
+				Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+				me.reload();
+			    },
+			    success: function(response, opts) {
+				me.reload();
+			    },
+			});
 		    });
 		},
 	    });
