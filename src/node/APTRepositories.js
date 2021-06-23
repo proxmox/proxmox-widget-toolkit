@@ -33,10 +33,7 @@ Ext.define('Proxmox.node.APTRepositoriesErrors', {
 	{
 	    header: gettext('File'),
 	    dataIndex: 'path',
-	    renderer: function(value, cell, record) {
-		return "<i class='pve-grid-fa fa fa-fw " +
-		    "fa-exclamation-triangle'></i>" + value;
-	    },
+	    renderer: value => `<i class='pve-grid-fa fa fa-fw fa-exclamation-triangle'></i>${value}`,
 	    width: 350,
 	},
 	{
@@ -49,7 +46,6 @@ Ext.define('Proxmox.node.APTRepositoriesErrors', {
 
 Ext.define('Proxmox.node.APTRepositoriesGrid', {
     extend: 'Ext.grid.GridPanel',
-
     xtype: 'proxmoxNodeAPTRepositoriesGrid',
 
     title: gettext('APT Repositories'),
@@ -71,6 +67,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		items: [],
 	    },
 	},
+	'-',
 	{
 	    xtype: 'proxmoxButton',
 	    text: gettext('Enable') + '/' + gettext('Disable'),
@@ -216,7 +213,8 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	for (const info of infos) {
 	    const key = `${info.path}:${info.index}`;
 	    if (info.kind === 'warning' ||
-		(info.kind === 'ignore-pre-upgrade-warning' && !me.majorUpgradeAllowed)) {
+		(info.kind === 'ignore-pre-upgrade-warning' && !me.majorUpgradeAllowed)
+	    ) {
 		addLine(warnings, key, gettext('Warning') + ": " + info.message);
 	    } else if (info.kind === 'badge' && info.message === 'official host name') {
 		officialHosts[key] = true;
@@ -285,7 +283,6 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 
 Ext.define('Proxmox.node.APTRepositories', {
     extend: 'Ext.panel.Panel',
-
     xtype: 'proxmoxNodeAPTRepositories',
     mixins: ['Proxmox.Mixin.CBind'],
 
@@ -364,13 +361,10 @@ Ext.define('Proxmox.node.APTRepositories', {
 	Proxmox.Utils.API2Request({
 	    url: `/nodes/${me.nodename}/subscription`,
 	    method: 'GET',
-	    failure: function(response, opts) {
-		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-	    },
+	    failure: (response, opts) => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
 	    success: function(response, opts) {
 		const res = response.result;
-		const subscription = !(res === null || res === undefined ||
-		    !res || res.data.status.toLowerCase() !== 'active');
+		const subscription = !(!res || !res.data || res.data.status.toLowerCase() !== 'active');
 		vm.set('subscriptionActive', subscription);
 	    },
 	});
