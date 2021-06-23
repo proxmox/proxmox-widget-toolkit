@@ -70,7 +70,10 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	'-',
 	{
 	    xtype: 'proxmoxButton',
-	    text: gettext('Enable') + '/' + gettext('Disable'),
+	    text: gettext('Enable'),
+	    defaultText: gettext('Enable'),
+	    altText: gettext('Disable'),
+	    id: 'repoEnableButton',
 	    disabled: true,
 	    handler: function(button, event, record) {
 		let me = this;
@@ -98,6 +101,18 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 			panel.reload();
 		    },
 		});
+	    },
+	    listeners: {
+		render: function(btn) {
+		    // HACK: calculate the max button width on first render to avoid toolbar glitches
+		    let defSize = btn.getSize().width;
+
+		    btn.setText(btn.altText);
+		    let altSize = btn.getSize().width;
+
+		    btn.setText(btn.defaultText);
+		    btn.setSize({ width: altSize > defSize ? altSize : defSize });
+		},
 	    },
 	},
     ],
@@ -279,6 +294,19 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 
 	me.callParent();
     },
+
+    listeners: {
+	selectionchange: function() {
+	    let me = this;
+
+	    if (me.onSelectionChange) {
+		let sm = me.getSelectionModel();
+		let rec = sm.getSelection()[0];
+
+		me.onSelectionChange(rec, sm);
+	    }
+	},
+    },
 });
 
 Ext.define('Proxmox.node.APTRepositories', {
@@ -351,6 +379,13 @@ Ext.define('Proxmox.node.APTRepositories', {
 		nodename: '{nodename}',
 	    },
 	    majorUpgradeAllowed: false, // TODO get release information from an API call?
+	    onSelectionChange: function(rec, sm) {
+		let me = this;
+		if (rec) {
+		    let btn = me.up('proxmoxNodeAPTRepositories').down('#repoEnableButton');
+		    btn.setText(rec.get('Enabled') ? gettext('Disable') : gettext('Enable'));
+		}
+	    },
 	},
     ],
 
