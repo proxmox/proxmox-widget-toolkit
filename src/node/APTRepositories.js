@@ -123,27 +123,12 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 
     columns: [
 	{
-	    header: gettext('Official'),
-	    dataIndex: 'OfficialHost',
-	    renderer: function(value, cell, record) {
-		let icon = (cls) => `<i class="fa fa-fw ${cls}"></i>`;
-
-		const enabled = record.data.Enabled;
-
-		if (value === undefined || value === null) {
-		    return icon('fa-question-circle-o');
-		}
-		if (!value) {
-		    return icon('fa-times ' + (enabled ? 'critical' : 'faded'));
-		}
-		return icon('fa-check ' + (enabled ? 'good' : 'faded'));
-	    },
-	    width: 70,
-	},
-	{
+	    xtype: 'checkcolumn',
 	    header: gettext('Enabled'),
 	    dataIndex: 'Enabled',
-	    renderer: Proxmox.Utils.format_enabled_toggle,
+	    listeners: {
+		beforecheckchange: () => false, // veto, we don't want to allow inline change - to subtle
+	    },
 	    width: 90,
 	},
 	{
@@ -204,6 +189,23 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		return text;
 	    },
 	    flex: 1,
+	},
+	{
+	    header: gettext('Official'),
+	    dataIndex: 'OfficialHost',
+	    renderer: function(value, cell, record) {
+		let icon = (cls) => `<i class="fa fa-fw ${cls}"></i>`;
+
+		if (value === undefined || value === null) {
+		    return icon('fa-question-circle-o');
+		}
+		const enabled = record.data.Enabled;
+		if (!value) {
+		    return icon('fa-question ' + (enabled ? 'warning' : 'faded'));
+		}
+		return icon('fa-check ' + (enabled ? 'good' : 'faded'));
+	    },
+	    width: 70,
 	},
 	{
 	    header: gettext('Comment'),
