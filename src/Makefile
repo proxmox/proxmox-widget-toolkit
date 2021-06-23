@@ -72,6 +72,7 @@ JSSRC=					\
 	window/ACMEDomains.js		\
 	window/FileBrowser.js		\
 	node/APT.js			\
+	node/APTRepositories.js		\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\
 	node/DNSEdit.js			\
