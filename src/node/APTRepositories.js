@@ -318,8 +318,11 @@ Ext.define('Proxmox.node.APTRepositories', {
 
     digest: undefined,
 
+    product: 'Proxmox VE', // default
+
     viewModel: {
 	data: {
+	    product: 'Proxmox VE', // default
 	    errorCount: 0,
 	    subscriptionActive: '',
 	    noSubscriptionRepo: '',
@@ -334,21 +337,20 @@ Ext.define('Proxmox.node.APTRepositories', {
 		    return '';
 		}
 
-		let withStyle = (msg) => "<div style='color:red;'><i class='fa fa-fw " +
-		    "fa-exclamation-triangle'></i>" + gettext('Warning') + ': ' + msg + "</div>";
+		let icon = `<i class='fa fa-fw fa-exclamation-triangle critical'></i>`;
+		let fmt = (msg) => `<div class="black">${icon}${gettext('Warning')}: ${msg}</div>`;
 
 		if (!get('subscriptionActive') && get('enterpriseRepo')) {
-		    return withStyle(gettext('The enterprise repository is ' +
-			'enabled, but there is no active subscription!'));
+		    return fmt(gettext('The enterprise repository is enabled, but there is no active subscription!'));
 		}
 
 		if (get('noSubscriptionRepo')) {
-		    return withStyle(gettext('The no-subscription repository is ' +
-			'not recommended for production use!'));
+		    return fmt(gettext('The no-subscription repository is not recommended for production use!'));
 		}
 
 		if (!get('enterpriseRepo') && !get('noSubscriptionRepo')) {
-		    return withStyle(gettext('No Proxmox repository is enabled!'));
+		    let msg = Ext.String.format(gettext('No {0} repository is enabled!'), get('product'));
+		    return fmt(msg);
 		}
 
 		return '';
@@ -532,5 +534,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	Proxmox.Utils.monStoreErrors(me, me.store, true);
 
 	me.callParent();
+
+	me.getViewModel().set('product', me.product);
     },
 });
