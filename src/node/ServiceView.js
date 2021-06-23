@@ -119,12 +119,16 @@ Ext.define('Proxmox.node.ServiceView', {
 	    }
 	    let service = rec.data.service;
 	    let state = rec.data.state;
+	    let unit = rec.data['unit-state'];
 
 	    syslog_btn.enable();
 
 	    if (state === 'running') {
 		start_btn.disable();
 		restart_btn.enable();
+	    } else if (unit !== undefined && (unit === 'masked' || unit === 'unknown')) {
+		start_btn.disable();
+		restart_btn.disable();
 	    } else {
 		start_btn.enable();
 		restart_btn.disable();
