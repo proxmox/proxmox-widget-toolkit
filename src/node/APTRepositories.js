@@ -50,6 +50,8 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 
     title: gettext('APT Repositories'),
 
+    cls: 'proxmox-apt-repos', // to allow applying styling to general components with local effect
+
     tbar: [
 	{
 	    text: gettext('Reload'),
