@@ -147,6 +147,25 @@ Ext.define('Proxmox.node.ServiceView', {
 	Proxmox.Utils.monStoreErrors(me, rstore);
 
 	Ext.apply(me, {
+	    viewConfig: {
+		trackOver: false,
+		stripeRows: false, // does not work with getRowClass()
+		getRowClass: function(record, index) {
+		    let unitState = record.get('unit-state');
+		    if (!unitState) {
+			return '';
+		    }
+		    if (unitState === 'masked') {
+			return "proxmox-disabled-row";
+		    } else if (unitState === 'unknown') {
+			if (record.get('name') === 'syslog') {
+			    return "proxmox-disabled-row"; // replaced by journal on most hosts
+			}
+			return "proxmox-warning-row";
+		    }
+		    return '';
+		},
+	    },
 	    store: store,
 	    stateful: false,
 	    tbar: [start_btn, stop_btn, restart_btn, syslog_btn],

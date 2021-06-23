@@ -10,6 +10,11 @@
     text-align: center;
 }
 
+.proxmox-disabled-row, .proxmox-disabled-row td {
+    /*color: #a0a0a0;*/
+    color: #666665;
+}
+
 .proxmox-invalid-row {
     background-color: #f3d6d7;
 }
