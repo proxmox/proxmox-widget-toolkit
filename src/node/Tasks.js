@@ -1,217 +1,453 @@
 Ext.define('Proxmox.node.Tasks', {
     extend: 'Ext.grid.GridPanel',
 
-    alias: ['widget.proxmoxNodeTasks'],
+    alias: 'widget.proxmoxNodeTasks',
+
     stateful: true,
-    stateId: 'grid-node-tasks',
+    stateId: 'pve-grid-node-tasks',
+
     loadMask: true,
     sortableColumns: false,
-    vmidFilter: 0,
 
-    initComponent: function() {
-	let me = this;
+    // set extra filter components,
+    // must have a 'name' property for the parameter,
+    // and must trigger a 'change' event
+    // if the value is 'undefined', it will not be sent to the api
+    extraFilter: [],
 
-	if (!me.nodename) {
-	    throw "no node name specified";
-	}
 
-	let store = Ext.create('Ext.data.BufferedStore', {
-	    pageSize: 500,
-	    autoLoad: true,
-	    remoteFilter: true,
-	    model: 'proxmox-tasks',
-	    proxy: {
-                type: 'proxmox',
-		startParam: 'start',
-		limitParam: 'limit',
-                url: "/api2/json/nodes/" + me.nodename + "/tasks",
-	    },
-	});
+    // filters that should only be set once and is not changable
+    // example:
+    // {
+    //    vmid: 100,
+    // }
+    preFilter: {},
 
-	store.on('prefetch', function() {
+    controller: {
+	xclass: 'Ext.app.ViewController',
+
+	showTaskLog: function() {
+	    let me = this;
+	    let selection = me.getView().getSelection();
+	    if (selection.length < 1) {
+		return;
+	    }
+
+	    let rec = selection[0];
+
+	    Ext.create('Proxmox.window.TaskViewer', {
+		upid: rec.data.upid,
+		endtime: rec.data.endtime,
+	    }).show();
+	},
+
+	updateLayout: function() {
+	    let me = this;
 	    // we want to update the scrollbar on every store load
 	    // since the total count might be different
 	    // the buffered grid plugin does this only on scrolling itself
 	    // and even reduces the scrollheight again when scrolling up
-	    me.updateLayout();
-	});
+	    me.getView().updateLayout();
+	},
 
-	let userfilter = '';
-	let filter_errors = 0;
+	sinceChange: function(field, newval) {
+	    let me = this;
+	    let vm = me.getViewModel();
 
-	let updateProxyParams = function() {
-	    let params = {
-		errors: filter_errors,
-	    };
-	    if (userfilter) {
-		params.userfilter = userfilter;
-	    }
-	    if (me.vmidFilter) {
-		params.vmid = me.vmidFilter;
-	    }
-	    store.proxy.extraParams = params;
-	};
+	    vm.set('since', newval);
+	},
 
-	updateProxyParams();
+	untilChange: function(field, newval, oldval) {
+	    let me = this;
+	    let vm = me.getViewModel();
 
-	let reload_task = Ext.create('Ext.util.DelayedTask', function() {
-	    updateProxyParams();
-	    store.reload();
-	});
+	    vm.set('until', newval);
+	},
 
-	let run_task_viewer = function() {
-	    let sm = me.getSelectionModel();
-	    let rec = sm.getSelection()[0];
-	    if (!rec) {
-		return;
-	    }
+	reload: function() {
+	    let me = this;
+	    let view = me.getView();
+	    view.getStore().load();
+	},
 
-	    let win = Ext.create('Proxmox.window.TaskViewer', {
-		upid: rec.data.upid,
-		endtime: rec.data.endtime,
-	    });
-	    win.show();
-	};
+	showFilter: function(btn, pressed) {
+	    let me = this;
+	    let vm = me.getViewModel();
+	    vm.set('showFilter', pressed);
+	},
 
-	let view_btn = new Ext.Button({
-	    text: gettext('View'),
-	    disabled: true,
-	    handler: run_task_viewer,
-	});
+	init: function(view) {
+	    let me = this;
+	    Proxmox.Utils.monStoreErrors(view, view.getStore(), true);
+	},
+    },
 
-	Proxmox.Utils.monStoreErrors(me, store, true);
 
-	Ext.apply(me, {
-	    store: store,
-	    viewConfig: {
-		trackOver: false,
-		stripeRows: false, // does not work with getRowClass()
+    listeners: {
+	itemdblclick: 'showTaskLog',
+    },
 
-		getRowClass: function(record, index) {
-		    let status = record.get('status');
+    viewModel: {
+	data: {
+	    typefilter: '',
+	    statusfilter: '',
+	    datastore: '',
+	    showFilter: false,
+	    extraFilter: {},
+	    since: null,
+	    until: null,
+	},
 
-		    if (status) {
-			let parsed = Proxmox.Utils.parse_task_status(status);
-			if (parsed === 'error') {
-			    return "proxmox-invalid-row";
-			} else if (parsed === 'warning') {
-			    return "proxmox-warning-row";
+	formulas: {
+	    filterIcon: (get) => 'fa fa-filter' + (get('showFilter') ? ' info-blue' : ''),
+	    extraParams: function(get) {
+		let me = this;
+		let params = {};
+		if (get('typefilter')) {
+		    params.typefilter = get('typefilter');
+		}
+		if (get('statusfilter')) {
+		    params.statusfilter = get('statusfilter');
+		}
+		if (get('datastore')) {
+		    params.store = get('datastore');
+		}
+
+		if (get('extraFilter')) {
+		    let extraFilter = get('extraFilter');
+		    for (const [name, value] of Object.entries(extraFilter)) {
+			if (value !== undefined && value !== null && value !== "") {
+			    params[name] = value;
 			}
 		    }
-		    return '';
+		}
+
+		if (get('since')) {
+		    params.since = get('since').valueOf()/1000;
+		}
+
+		if (get('until')) {
+		    let until = new Date(get('until').getTime()); // copy object
+		    until.setDate(until.getDate() + 1); // end of the day
+		    params.until = until.valueOf()/1000;
+		}
+
+		me.getView().getStore().load();
+
+		return params;
+	    },
+	},
+
+	stores: {
+	    bufferedstore: {
+		type: 'buffered',
+		pageSize: 500,
+		autoLoad: true,
+		remoteFilter: true,
+		model: 'proxmox-tasks',
+		proxy: {
+		    type: 'proxmox',
+		    startParam: 'start',
+		    limitParam: 'limit',
+		    extraParams: '{extraParams}',
+		    url: "/api2/json/nodes/localhost/tasks",
+		},
+		listeners: {
+		    prefetch: 'updateLayout',
 		},
 	    },
-	    tbar: [
-		view_btn,
+	},
+    },
+
+    bind: {
+	store: '{bufferedstore}',
+    },
+
+    dockedItems: [
+	{
+	    xtype: 'toolbar',
+	    items: [
 		{
-		    text: gettext('Refresh'), // FIXME: smart-auto-refresh store
-		    handler: () => store.reload(),
+		    xtype: 'proxmoxButton',
+		    text: gettext('View'),
+		    iconCls: 'fa fa-window-restore',
+		    disabled: true,
+		    handler: 'showTaskLog',
+		},
+		{
+		    xtype: 'button',
+		    text: gettext('Reload'),
+		    iconCls: 'fa fa-refresh',
+		    handler: 'reload',
 		},
 		'->',
-		gettext('User name') +':',
-		' ',
 		{
-		    xtype: 'textfield',
-		    width: 200,
-		    value: userfilter,
-		    enableKeyEvents: true,
+		    xtype: 'button',
+		    enableToggle: true,
+		    bind: {
+			iconCls: '{filterIcon}',
+		    },
+		    text: gettext('Filter'),
+		    stateful: true,
+		    stateId: 'task-showfilter',
+		    stateEvents: ['toggle'],
+		    applyState: function(state) {
+			if (state.pressed !== undefined) {
+			    this.setPressed(state.pressed);
+			}
+		    },
+		    getState: function() {
+			return {
+			    pressed: this.pressed,
+			};
+		    },
 		    listeners: {
-			keyup: function(field, e) {
-			    userfilter = field.getValue();
-			    reload_task.delay(500);
-			},
-		    },
-		}, ' ', gettext('Only Errors') + ':', ' ',
-		{
-		    xtype: 'checkbox',
-		    hideLabel: true,
-		    checked: filter_errors,
-		    listeners: {
-			change: function(field, checked) {
-			    filter_errors = checked ? 1 : 0;
-			    reload_task.delay(10);
-			},
-		    },
-		}, ' ',
-	    ],
-	    columns: [
-		{
-		    header: gettext("Start Time"),
-		    dataIndex: 'starttime',
-		    width: 130,
-		    renderer: function(value) {
-			return Ext.Date.format(value, "M d H:i:s");
-		    },
-		},
-		{
-		    header: gettext("End Time"),
-		    dataIndex: 'endtime',
-		    width: 130,
-		    renderer: function(value, metaData, record) {
-			if (!value) {
-			    metaData.tdCls = "x-grid-row-loading";
-			    return '';
-			}
-			return Ext.Date.format(value, "M d H:i:s");
-		    },
-		},
-		{
-		    header: gettext("Duration"),
-		    hidden: true,
-		    width: 80,
-		    renderer: function(value, metaData, record) {
-			let start = record.data.starttime;
-			if (start) {
-			    let end = record.data.endtime || Date.now();
-			    let duration = end - start;
-			    if (duration > 0) {
-				duration /= 1000;
-			    }
-			    return Proxmox.Utils.format_duration_human(duration);
-			}
-			return Proxmox.Utils.unknownText;
-		    },
-		},
-		{
-		    header: gettext("Node"),
-		    dataIndex: 'node',
-		    width: 120,
-		},
-		{
-		    header: gettext("User name"),
-		    dataIndex: 'user',
-		    width: 150,
-		},
-		{
-		    header: gettext("Description"),
-		    dataIndex: 'upid',
-		    flex: 1,
-		    renderer: Proxmox.Utils.render_upid,
-		},
-		{
-		    header: gettext("Status"),
-		    dataIndex: 'status',
-		    width: 200,
-		    renderer: function(value, metaData, record) {
-			if (value === undefined && !record.data.endtime) {
-			    metaData.tdCls = "x-grid-row-loading";
-			    return '';
-			}
-
-			return Proxmox.Utils.format_task_status(value);
+			toggle: 'showFilter',
 		    },
 		},
 	    ],
-	    listeners: {
-		itemdblclick: run_task_viewer,
-		selectionchange: function(v, selections) {
-		    view_btn.setDisabled(!(selections && selections[0]));
-		},
-		show: function() { reload_task.delay(10); },
-		destroy: function() { reload_task.cancel(); },
+	},
+	{
+	    xtype: 'toolbar',
+	    dock: 'top',
+	    reference: 'filtertoolbar',
+	    layout: {
+		type: 'hbox',
+		align: 'top',
 	    },
-	});
+	    bind: {
+		hidden: '{!showFilter}',
+	    },
+	    items: [
+		{
+		    xtype: 'container',
+		    padding: 10,
+		    layout: {
+			type: 'vbox',
+			align: 'stretch',
+		    },
+		    defaults: {
+			labelWidth: 80,
+		    },
+		    // cannot bind the values directly, as it then changes also
+		    // on blur, causing wrong reloads of the store
+		    items: [
+			{
+			    xtype: 'datefield',
+			    fieldLabel: gettext('Since'),
+			    format: 'Y-m-d',
+			    bind: {
+				maxValue: '{until}',
+			    },
+			    listeners: {
+				change: 'sinceChange',
+			    },
+			},
+			{
+			    xtype: 'datefield',
+			    fieldLabel: gettext('Until'),
+			    format: 'Y-m-d',
+			    bind: {
+				minValue: '{since}',
+			    },
+			    listeners: {
+				change: 'untilChange',
+			    },
+			},
+		    ],
+		},
+		{
+		    xtype: 'container',
+		    padding: 10,
+		    layout: {
+			type: 'vbox',
+			align: 'stretch',
+		    },
+		    defaults: {
+			labelWidth: 80,
+		    },
+		    items: [
+			{
+			    xtype: 'pmxTaskTypeSelector',
+			    fieldLabel: gettext('Task Type'),
+			    emptyText: gettext('All'),
+			    bind: {
+				value: '{typefilter}',
+			    },
+			},
+			{
+			    xtype: 'combobox',
+			    fieldLabel: gettext('Task Result'),
+			    emptyText: gettext('All'),
+			    multiSelect: true,
+			    store: [
+				['ok', gettext('OK')],
+				['unknown', Proxmox.Utils.unknownText],
+				['warning', gettext('Warnings')],
+				['error', gettext('Errors')],
+			    ],
+			    bind: {
+				value: '{statusfilter}',
+			    },
+			},
+		    ],
+		},
+	    ],
+	},
+    ],
+
+    viewConfig: {
+	trackOver: false,
+	stripeRows: false, // does not work with getRowClass()
+	emptyText: gettext('No Tasks found'),
+
+	getRowClass: function(record, index) {
+	    let status = record.get('status');
+
+	    if (status) {
+		let parsed = Proxmox.Utils.parse_task_status(status);
+		if (parsed === 'error') {
+		    return "proxmox-invalid-row";
+		} else if (parsed === 'warning') {
+		    return "proxmox-warning-row";
+		}
+	    }
+	    return '';
+	},
+    },
+
+    columns: [
+	{
+	    header: gettext("Start Time"),
+	    dataIndex: 'starttime',
+	    width: 130,
+	    renderer: function(value) {
+		return Ext.Date.format(value, "M d H:i:s");
+	    },
+	},
+	{
+	    header: gettext("End Time"),
+	    dataIndex: 'endtime',
+	    width: 130,
+	    renderer: function(value, metaData, record) {
+		if (!value) {
+		    metaData.tdCls = "x-grid-row-loading";
+		    return '';
+		}
+		return Ext.Date.format(value, "M d H:i:s");
+	    },
+	},
+	{
+	    header: gettext("Duration"),
+	    hidden: true,
+	    width: 80,
+	    renderer: function(value, metaData, record) {
+		let start = record.data.starttime;
+		if (start) {
+		    let end = record.data.endtime || Date.now();
+		    let duration = end - start;
+		    if (duration > 0) {
+			duration /= 1000;
+		    }
+		    return Proxmox.Utils.format_duration_human(duration);
+		}
+		return Proxmox.Utils.unknownText;
+	    },
+	},
+	{
+	    header: gettext("User name"),
+	    dataIndex: 'user',
+	    width: 150,
+	},
+	{
+	    header: gettext("Description"),
+	    dataIndex: 'upid',
+	    flex: 1,
+	    renderer: Proxmox.Utils.render_upid,
+	},
+	{
+	    header: gettext("Status"),
+	    dataIndex: 'status',
+	    width: 200,
+	    renderer: function(value, metaData, record) {
+		if (value === undefined && !record.data.endtime) {
+		    metaData.tdCls = "x-grid-row-loading";
+		    return '';
+		}
+
+		let parsed = Proxmox.Utils.parse_task_status(value);
+		switch (parsed) {
+		    case 'unknown': return Proxmox.Utils.unknownText;
+		    case 'error': return Proxmox.Utils.errorText + ': ' + value;
+		    case 'ok': // fall-through
+		    case 'warning': // fall-through
+		    default: return value;
+		}
+	    },
+	},
+    ],
+
+    initComponent: function() {
+	const me = this;
+
+	let updateExtraFilters = function(name, value) {
+	    let vm = me.getViewModel();
+	    let extraFilter = Ext.clone(vm.get('extraFilter'));
+	    extraFilter[name] = value;
+	    vm.set('extraFilter', extraFilter);
+	};
+
+	for (const [name, value] of Object.entries(me.preFilter)) {
+	    updateExtraFilters(name, value);
+	}
 
 	me.callParent();
+
+	let addFields = function(items) {
+	    me.lookup('filtertoolbar').add({
+		xtype: 'container',
+		padding: 10,
+		layout: {
+		    type: 'vbox',
+		    align: 'stretch',
+		},
+		defaults: {
+		    labelWidth: 80,
+		},
+		items,
+	    });
+	};
+
+	// start with a userfilter
+	me.extraFilter = [
+	    {
+		xtype: 'textfield',
+		fieldLabel: gettext('User name'),
+		changeOptions: {
+		    buffer: 500,
+		},
+		name: 'userfilter',
+	    },
+	    ...me.extraFilter,
+	];
+	let items = [];
+	for (const filterTemplate of me.extraFilter) {
+	    let filter = Ext.clone(filterTemplate);
+
+	    filter.listeners = filter.listeners || {};
+	    filter.listeners.change = Ext.apply(filter.changeOptions || {}, {
+		fn: function(field, value) {
+		    updateExtraFilters(filter.name, value);
+		},
+	    });
+
+	    items.push(filter);
+	    if (items.length === 2) {
+		addFields(items);
+		items = [];
+	    }
+	}
+
+	addFields(items);
     },
 });
