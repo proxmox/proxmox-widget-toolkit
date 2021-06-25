@@ -88,7 +88,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 	    found = false;
 	    for (i = 0; i < arrayLength; i++) {
 		el = org[i];
-		if (el.constructor === Object && el.xtype) {
+		if (el.constructor === Object && (el.xtype || el.cbind)) {
 		    found = true;
 		    break;
 		}
@@ -99,7 +99,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 	    copy = [];
 	    for (i = 0; i < arrayLength; i++) {
 		el = org[i];
-		if (el.constructor === Object && el.xtype) {
+		if (el.constructor === Object && (el.xtype || el.cbind)) {
 		    elcopy = cloneTemplateObject(el);
 		    if (elcopy.cbind) {
 			applyCBind(elcopy);
@@ -123,7 +123,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 		    res[prop] = el;
 		    continue;
 		}
-		if (el.constructor === Object && el.xtype) {
+		if (el.constructor === Object && (el.xtype || el.cbind)) {
 		    copy = cloneTemplateObject(el);
 		    if (copy.cbind) {
 			applyCBind(copy);
@@ -146,7 +146,7 @@ Ext.define('Proxmox.Mixin.CBind', {
 		el = me[prop];
 		if (el === undefined || el === null) continue;
 		if (typeof el === 'object' && el.constructor === Object) {
-		    if (el.xtype && prop !== 'config') {
+		    if ((el.xtype || el.cbind) && prop !== 'config') {
 			me[prop] = cloneTemplateObject(el);
 		    }
 		} else if (el.constructor === Array) {
