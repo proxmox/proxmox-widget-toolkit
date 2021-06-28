@@ -9,18 +9,13 @@ Ext.define('Proxmox.node.Tasks', {
     loadMask: true,
     sortableColumns: false,
 
-    // set extra filter components,
-    // must have a 'name' property for the parameter,
-    // and must trigger a 'change' event
-    // if the value is 'undefined', it will not be sent to the api
+    // set extra filter components, must have a 'name' property for the parameter, and must
+    // trigger a 'change' event if the value is 'undefined', it will not be sent to the api
     extraFilter: [],
 
 
-    // filters that should only be set once and is not changable
-    // example:
-    // {
-    //    vmid: 100,
-    // }
+    // fixed filters which cannot be changed after instantiation, for example:
+    // { vmid: 100 }
     preFilter: {},
 
     controller: {
@@ -43,10 +38,9 @@ Ext.define('Proxmox.node.Tasks', {
 
 	updateLayout: function() {
 	    let me = this;
-	    // we want to update the scrollbar on every store load
-	    // since the total count might be different
-	    // the buffered grid plugin does this only on scrolling itself
-	    // and even reduces the scrollheight again when scrolling up
+	    // update the scrollbar on every store load since the total count might be different.
+	    // the buffered grid plugin does this only on (user) scrolling itself and even reduces
+	    // the scrollheight again when scrolling up
 	    me.getView().updateLayout();
 	},
 
