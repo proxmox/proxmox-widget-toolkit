@@ -1,0 +1,4 @@
+src/.lint-incremental
+*.deb
+*.changes
+*.buildinfo
