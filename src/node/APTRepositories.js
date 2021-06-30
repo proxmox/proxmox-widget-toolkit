@@ -188,6 +188,9 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    altText: gettext('Disable'),
 	    id: 'repoEnableButton',
 	    disabled: true,
+	    bind: {
+		text: '{enableButtonText}',
+	    },
 	    handler: function(button, event, record) {
 		let me = this;
 		let panel = me.up('proxmoxNodeAPTRepositories');
@@ -406,19 +409,6 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 
 	me.callParent();
     },
-
-    listeners: {
-	selectionchange: function() {
-	    let me = this;
-
-	    if (me.onSelectionChange) {
-		let sm = me.getSelectionModel();
-		let rec = sm.getSelection()[0];
-
-		me.onSelectionChange(rec, sm);
-	    }
-	},
-    },
 });
 
 Ext.define('Proxmox.node.APTRepositories', {
@@ -430,6 +420,20 @@ Ext.define('Proxmox.node.APTRepositories', {
 
     product: 'Proxmox VE', // default
 
+    controller: {
+	xclass: 'Ext.app.ViewController',
+
+	selectionChange: function(grid, selection) {
+	    let me = this;
+	    if (!selection || selection.length < 1) {
+		return;
+	    }
+	    let rec = selection[0];
+	    let vm = me.getViewModel();
+	    vm.set('selectionenabled', rec.get('Enabled'));
+	},
+    },
+
     viewModel: {
 	data: {
 	    product: 'Proxmox VE', // default
@@ -437,9 +441,12 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    subscriptionActive: '',
 	    noSubscriptionRepo: '',
 	    enterpriseRepo: '',
+	    selectionenabled: false,
 	},
 	formulas: {
 	    noErrors: (get) => get('errorCount') === 0,
+	    enableButtonText: (get) => get('selectionenabled')
+		? gettext('Disable') : gettext('Enable'),
 	    mainWarning: function(get) {
 		// Not yet initialized
 		if (get('subscriptionActive') === '' ||
@@ -506,12 +513,8 @@ Ext.define('Proxmox.node.APTRepositories', {
 		nodename: '{nodename}',
 	    },
 	    majorUpgradeAllowed: false, // TODO get release information from an API call?
-	    onSelectionChange: function(rec, sm) {
-		let me = this;
-		if (rec) {
-		    let btn = me.up('proxmoxNodeAPTRepositories').down('#repoEnableButton');
-		    btn.setText(rec.get('Enabled') ? gettext('Disable') : gettext('Enable'));
-		}
+	    listeners: {
+		selectionchange: 'selectionChange',
 	    },
 	},
     ],
