@@ -264,8 +264,20 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	{
 	    header: gettext('Suites'),
 	    dataIndex: 'Suites',
-	    renderer: function(suites, cell, record) {
-		return suites.join(' ');
+	    renderer: function(suites, metaData, record) {
+		let err = '';
+		if (record.data.warnings && record.data.warnings.length > 0) {
+		    let txt = [gettext('Warning')];
+		    record.data.warnings.forEach((warning) => {
+			if (warning.property === 'Suites') {
+			    txt.push(warning.message);
+			}
+		    });
+		    metaData.tdAttr = `data-qtip="${Ext.htmlEncode(txt.join('<br>'))}"`;
+		    metaData.tdCls = 'proxmox-invalid-row';
+		    err = '<i class="fa fa-fw critical fa-exclamation-circle"></i> ';
+		}
+		return suites.join(' ') + err;
 	    },
 	    width: 130,
 	},
@@ -325,53 +337,6 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	},
     ],
 
-    addAdditionalInfos: function(gridData, infos) {
-	let me = this;
-
-	let warnings = {};
-	let origins = {};
-
-	let addLine = function(obj, key, line) {
-	    if (obj[key]) {
-		obj[key] += "\n";
-		obj[key] += line;
-	    } else {
-		obj[key] = line;
-	    }
-	};
-
-	for (const info of infos) {
-	    const key = `${info.path}:${info.index}`;
-	    if (info.kind === 'warning' ||
-		(info.kind === 'ignore-pre-upgrade-warning' && !me.majorUpgradeAllowed)
-	    ) {
-		addLine(warnings, key, gettext('Warning') + ": " + info.message);
-	    } else if (info.kind === 'origin') {
-		origins[key] = info.message;
-	    }
-	}
-
-	gridData.forEach(function(record) {
-	    const key = `${record.Path}:${record.Index}`;
-	    record.Origin = origins[key];
-	});
-
-	me.rowBodyFeature.getAdditionalData = function(innerData, rowIndex, record, orig) {
-	    let headerCt = this.view.headerCt;
-	    let colspan = headerCt.getColumnCount();
-
-	    const key = `${innerData.Path}:${innerData.Index}`;
-	    const warning_text = warnings[key];
-
-	    return {
-		rowBody: '<div style="color: red; white-space: pre-line">' +
-		    Ext.String.htmlEncode(warning_text) + '</div>',
-		rowBodyCls: warning_text ? '' : Ext.baseCSSPrefix + 'grid-row-body-hidden',
-		rowBodyColspan: colspan,
-	    };
-	};
-    },
-
     initComponent: function() {
 	let me = this;
 
@@ -390,8 +355,6 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    ],
 	});
 
-	let rowBodyFeature = Ext.create('Ext.grid.feature.RowBody', {});
-
 	let groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
 	    groupHeaderTpl: '{[ "File: " + values.name ]} ({rows.length} ' +
 		'repositor{[values.rows.length > 1 ? "ies" : "y"]})',
@@ -403,8 +366,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	Ext.apply(me, {
 	    store: store,
 	    selModel: sm,
-	    rowBodyFeature: rowBodyFeature,
-	    features: [groupingFeature, rowBodyFeature],
+	    features: [groupingFeature],
 	});
 
 	me.callParent();
@@ -576,16 +538,46 @@ Ext.define('Proxmox.node.APTRepositories', {
 		errors = data.errors;
 		digest = data.digest;
 
+		let infos = {};
+		for (const info of data.infos) {
+		    let path = info.path;
+		    let idx = info.index;
+
+		    if (!infos[path]) {
+			infos[path] = {};
+		    }
+		    if (!infos[path][idx]) {
+			infos[path][idx] = {
+			    origin: '',
+			    warnings: [],
+			};
+		    }
+
+		    if (info.kind === 'origin') {
+			infos[path][idx].origin = info.message;
+		    } else if (info.kind === 'warning' ||
+			(info.kind === 'ignore-pre-upgrade-warning' && !repoGrid.majorUpgradeAllowed)
+		    ) {
+			infos[path][idx].warnings.push(info);
+		    } else {
+			throw 'unknown info';
+		    }
+		}
+
+
 		files.forEach(function(file) {
 		    for (let n = 0; n < file.repositories.length; n++) {
 			let repo = file.repositories[n];
 			repo.Path = file.path;
 			repo.Index = n;
+			if (infos[file.path] && infos[file.path][n]) {
+			    repo.Origin = infos[file.path][n].origin || Proxmox.Utils.UnknownText;
+			    repo.warnings = infos[file.path][n].warnings || [];
+			}
 			gridData.push(repo);
 		    }
 		});
 
-		repoGrid.addAdditionalInfos(gridData, data.infos);
 		repoGrid.store.loadData(gridData);
 
 		me.updateStandardRepos(data['standard-repos']);
