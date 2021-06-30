@@ -329,6 +329,9 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    dataIndex: 'Origin',
 	    width: 120,
 	    renderer: (value, meta, rec) => {
+		if (typeof value !== 'string' || value.length === 0) {
+		    value = gettext('Other');
+		}
 		let cls = 'fa fa-fw fa-question-circle-o';
 		if (value.match(/^\s*Proxmox\s*$/i)) {
 		    cls = 'pmx-itype-icon pmx-itype-icon-proxmox-x';
