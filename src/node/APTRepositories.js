@@ -468,6 +468,12 @@ Ext.define('Proxmox.node.APTRepositories', {
 	},
     },
 
+    scrollable: true,
+    layout: {
+	type: 'vbox',
+	align: 'stretch',
+    },
+
     items: [
 	{
 	    xtype: 'header',
