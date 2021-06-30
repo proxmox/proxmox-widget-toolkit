@@ -23,6 +23,7 @@ Ext.define('Proxmox.window.APTRepositoryAdd', {
     isAdd: true,
 
     subject: gettext('Repository'),
+    width: 600,
 
     initComponent: function() {
 	let me = this;
@@ -86,14 +87,12 @@ Ext.define('Proxmox.window.APTRepositoryAdd', {
 
 	repoSelector.setValue(me.repoInfo[0].handle);
 
-	let items = [
-	    repoSelector,
-	    description,
-	    status,
-	];
-
 	Ext.apply(me, {
-	    items: items,
+	    items: [
+		repoSelector,
+		description,
+		status,
+	    ],
 	    repoSelector: repoSelector,
 	});
 
