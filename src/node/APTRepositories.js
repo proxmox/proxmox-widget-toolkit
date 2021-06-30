@@ -233,6 +233,10 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
     ],
 
     sortableColumns: false,
+    viewConfig: {
+	stripeRows: false,
+	getRowClass: (record, index) => record.get('Enabled') ? '' : 'proxmox-disabled-row',
+    },
 
     columns: [
 	{
