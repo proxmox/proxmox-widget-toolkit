@@ -196,7 +196,7 @@ Ext.define('Proxmox.node.ServiceView', {
 		    header: gettext('Unit'),
 		    width: 120,
 		    sortable: true,
-		    hidden: typeof PVE === 'object', // FIXME currently only PVE supports it
+		    hidden: Proxmox?.Setup?.auth_cookie_name !== 'PVEAuthCookie', // FIXME currently only PVE supports it
 		    dataIndex: 'unit-state',
 		},
 		{
