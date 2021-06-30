@@ -277,8 +277,13 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 			}
 		    });
 		    metaData.tdAttr = `data-qtip="${Ext.htmlEncode(txt.join('<br>'))}"`;
-		    metaData.tdCls = 'proxmox-invalid-row';
-		    err = '<i class="fa fa-fw critical fa-exclamation-circle"></i> ';
+		    if (record.data.Enabled) {
+			metaData.tdCls = 'proxmox-invalid-row';
+			err = '<i class="fa fa-fw critical fa-exclamation-circle"></i> ';
+		    } else {
+			metaData.tdCls = 'proxmox-warning-row';
+			err = '<i class="fa fa-fw warning fa-exclamation-circle"></i> ';
+		    }
 		}
 		return suites.join(' ') + err;
 	    },
