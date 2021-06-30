@@ -15,6 +15,92 @@ Ext.define('apt-repolist', {
     ],
 });
 
+Ext.define('Proxmox.window.APTRepositoryAdd', {
+    extend: 'Proxmox.window.Edit',
+    alias: 'widget.pmxAPTRepositoryAdd',
+
+    isCreate: true,
+    isAdd: true,
+
+    subject: gettext('Repository'),
+
+    initComponent: function() {
+	let me = this;
+
+	if (!me.repoInfo || me.repoInfo.length === 0) {
+	    throw "repository information not initialized";
+	}
+
+	let description = Ext.create('Ext.form.field.Display', {
+	    fieldLabel: gettext('Description'),
+	    name: 'description',
+	});
+
+	let status = Ext.create('Ext.form.field.Display', {
+	    fieldLabel: gettext('Status'),
+	    name: 'status',
+	    renderer: function(value) {
+		let statusText = gettext('Not yet configured');
+		if (value !== '') {
+		    statusText = Ext.String.format(
+			'{0}: {1}',
+			gettext('Configured'),
+			value ? gettext('enabled') : gettext('disabled'),
+		    );
+		}
+
+		return statusText;
+	    },
+	});
+
+	let repoSelector = Ext.create('Proxmox.form.KVComboBox', {
+	    fieldLabel: gettext('Repository'),
+	    xtype: 'proxmoxKVComboBox',
+	    name: 'handle',
+	    allowBlank: false,
+	    comboItems: me.repoInfo.map(info => [info.handle, info.name]),
+	    isValid: function() {
+		const handle = this.value;
+
+		if (!handle) {
+		    return false;
+		}
+
+		const info = me.repoInfo.find(elem => elem.handle === handle);
+
+		if (!info) {
+		    return false;
+		}
+
+		// not yet configured
+		return info.status === undefined || info.status === null;
+	    },
+	    listeners: {
+		change: function(f, value) {
+		    const info = me.repoInfo.find(elem => elem.handle === value);
+		    description.setValue(info.description);
+		    status.setValue(info.status);
+		},
+	    },
+	});
+
+	repoSelector.setValue(me.repoInfo[0].handle);
+
+	let items = [
+	    repoSelector,
+	    description,
+	    status,
+	];
+
+	Ext.apply(me, {
+	    items: items,
+	    repoSelector: repoSelector,
+	});
+
+	me.callParent();
+    },
+});
+
 Ext.define('Proxmox.node.APTRepositoriesErrors', {
     extend: 'Ext.grid.GridPanel',
 
@@ -63,10 +149,31 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	},
 	{
 	    text: gettext('Add'),
-	    menu: {
-		plain: true,
-		itemId: "addMenu",
-		items: [],
+	    id: 'addButton',
+	    disabled: true,
+	    repoInfo: undefined,
+	    handler: function(button, event, record) {
+		Proxmox.Utils.checked_command(() => {
+		    let me = this;
+		    let panel = me.up('proxmoxNodeAPTRepositories');
+
+		    let extraParams = {};
+		    if (panel.digest !== undefined) {
+		       extraParams.digest = panel.digest;
+		    }
+
+		    Ext.create('Proxmox.window.APTRepositoryAdd', {
+			repoInfo: me.repoInfo,
+			url: `/api2/json/nodes/${panel.nodename}/apt/repositories`,
+			method: 'PUT',
+			extraRequestParams: extraParams,
+			listeners: {
+			    destroy: function() {
+				panel.reload();
+			    },
+			},
+		    }).show();
+		});
 	    },
 	},
 	'-',
@@ -403,8 +510,8 @@ Ext.define('Proxmox.node.APTRepositories', {
 	let me = this;
 	let vm = me.getViewModel();
 
-	let menu = me.down('#addMenu');
-	menu.removeAll();
+	let addButton = me.down('#addButton');
+	addButton.repoInfo = [];
 
 	for (const standardRepo of standardRepos) {
 	    const handle = standardRepo.handle;
@@ -416,45 +523,11 @@ Ext.define('Proxmox.node.APTRepositories', {
 		vm.set('noSubscriptionRepo', status);
 	    }
 
-	    let status_text = '';
-	    if (status !== undefined && status !== null) {
-		status_text = Ext.String.format(
-		    ' ({0}, {1})',
-		    gettext('configured'),
-		    status ? gettext('enabled') : gettext('disabled'),
-		);
-	    }
-
-	    menu.add({
-		text: standardRepo.name + status_text,
-		disabled: status !== undefined && status !== null,
-		repoHandle: handle,
-		handler: function(menuItem) {
-		    Proxmox.Utils.checked_command(() => {
-			let params = {
-			    handle: menuItem.repoHandle,
-			};
-
-			if (me.digest !== undefined) {
-			    params.digest = me.digest;
-			}
-
-			Proxmox.Utils.API2Request({
-			    url: `/nodes/${me.nodename}/apt/repositories`,
-			    method: 'PUT',
-			    params: params,
-			    failure: function(response, opts) {
-				Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-				me.reload();
-			    },
-			    success: function(response, opts) {
-				me.reload();
-			    },
-			});
-		    });
-		},
-	    });
+	    addButton.repoInfo.push(standardRepo);
+	    addButton.digest = me.digest;
 	}
+
+	addButton.setDisabled(false);
     },
 
     reload: function() {
