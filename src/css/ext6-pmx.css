@@ -146,28 +146,43 @@ div.right-aligned {
 }
 
 /* rules for the markdown content, prefix with the .pmx-md class */
+.pmx-md {
+    font-size: 1.0em;
+    line-height: 1.25em;
+}
+.pmx-md p {
+    margin-top: 0.75em;
+    margin-bottom: 0.75em;
+}
+.pmx-md :is(h1, h2, h3, h4, h5, h6) {
+    margin-top: 0.9em;
+    margin-bottom: 0.75em;
+}
+.pmx-md h1 { font-size: 175%; }
+.pmx-md h2 { font-size: 150%; }
+.pmx-md h3 { font-size: 125%; }
+.pmx-md h4 { font-size: 110%; }
+.pmx-md h5 { font-size: 100%; }
+.pmx-md h6 { font-size: 100%; }
+
 .pmx-md code {
     white-space: pre;
     background-color: #f5f5f5;
     padding: 1px;
 }
-
 .pmx-md pre code {
     display: inline-block;
     padding: 5px;
     border-left: 3px solid #e0e0e0;
 }
-
 .pmx-md strong {
     font-weight: bold;
 }
-
 .pmx-md blockquote {
     border-left: 1px solid #666666;
     padding-left: 4px;
     margin: 10px 2ch;
 }
-
 /* markdown tables */
 .pmx-md table {
     border-spacing: 0;
@@ -194,3 +209,6 @@ div.right-aligned {
 .pmx-md tbody tr:hover td {
     background-color: #e0e0e0;
 }
+/* markdown tables end */
+
+/* markdown content end */
