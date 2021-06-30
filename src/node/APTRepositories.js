@@ -3,7 +3,7 @@ Ext.define('apt-repolist', {
     fields: [
 	'Path',
 	'Index',
-	'OfficialHost',
+	'Origin',
 	'FileType',
 	'Enabled',
 	'Comment',
@@ -191,21 +191,9 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    flex: 1,
 	},
 	{
-	    header: gettext('Official'),
-	    dataIndex: 'OfficialHost',
-	    renderer: function(value, cell, record) {
-		let icon = (cls) => `<i class="fa fa-fw ${cls}"></i>`;
-
-		if (value === undefined || value === null) {
-		    return icon('fa-question-circle-o');
-		}
-		const enabled = record.data.Enabled;
-		if (!value) {
-		    return icon('fa-question ' + (enabled ? 'warning' : 'faded'));
-		}
-		return icon('fa-check ' + (enabled ? 'good' : 'faded'));
-	    },
-	    width: 70,
+	    header: gettext('Origin'),
+	    dataIndex: 'Origin',
+	    width: 100,
 	},
 	{
 	    header: gettext('Comment'),
@@ -218,7 +206,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	let me = this;
 
 	let warnings = {};
-	let officialHosts = {};
+	let origins = {};
 
 	let addLine = function(obj, key, line) {
 	    if (obj[key]) {
@@ -235,14 +223,14 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		(info.kind === 'ignore-pre-upgrade-warning' && !me.majorUpgradeAllowed)
 	    ) {
 		addLine(warnings, key, gettext('Warning') + ": " + info.message);
-	    } else if (info.kind === 'badge' && info.message === 'official host name') {
-		officialHosts[key] = true;
+	    } else if (info.kind === 'origin') {
+		origins[key] = info.message;
 	    }
 	}
 
 	gridData.forEach(function(record) {
 	    const key = `${record.Path}:${record.Index}`;
-	    record.OfficialHost = !!officialHosts[key];
+	    record.Origin = origins[key];
 	});
 
 	me.rowBodyFeature.getAdditionalData = function(innerData, rowIndex, record, orig) {
