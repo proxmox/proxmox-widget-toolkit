@@ -7,7 +7,7 @@ all:
 .PHONY: install
 install: ${CSS}
 	install -d ${WWWCSSDIR}
-	for i in ${CSS}; do install -m 0755 $$i ${WWWCSSDIR}/$$i; done
+	for i in ${CSS}; do install -m 0644 $$i ${WWWCSSDIR}/$$i; done
 
 .PHONY: clean
 clean:
