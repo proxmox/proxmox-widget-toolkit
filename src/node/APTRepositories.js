@@ -110,6 +110,8 @@ Ext.define('Proxmox.node.APTRepositoriesErrors', {
 
     store: {},
 
+    border: false,
+
     viewConfig: {
 	stripeRows: false,
 	getRowClass: () => 'proxmox-invalid-row',
@@ -137,6 +139,8 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
     title: gettext('APT Repositories'),
 
     cls: 'proxmox-apt-repos', // to allow applying styling to general components with local effect
+
+    border: false,
 
     tbar: [
 	{
@@ -466,18 +470,25 @@ Ext.define('Proxmox.node.APTRepositories', {
 
     items: [
 	{
-	    title: gettext('Warning'),
-	    name: 'repositoriesMainWarning',
-	    xtype: 'panel',
+	    xtype: 'header',
+	    baseCls: 'x-panel-header',
 	    bind: {
+		hidden: '{!mainWarning}',
 		title: '{mainWarning}',
+	    },
+	},
+	{
+	    xtype: 'box',
+	    bind: {
 		hidden: '{!mainWarning}',
 	    },
+	    height: 5,
 	},
 	{
 	    xtype: 'proxmoxNodeAPTRepositoriesErrors',
 	    name: 'repositoriesErrors',
 	    hidden: true,
+	    padding: '0 0 5 0',
 	    bind: {
 		hidden: '{noErrors}',
 	    },
