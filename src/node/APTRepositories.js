@@ -361,11 +361,8 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    enableGroupingMenu: false,
 	});
 
-	let sm = Ext.create('Ext.selection.RowModel', {});
-
 	Ext.apply(me, {
 	    store: store,
-	    selModel: sm,
 	    features: [groupingFeature],
 	});
 
