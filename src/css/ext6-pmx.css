@@ -122,10 +122,12 @@ div.right-aligned {
 }
 
 .pmx-itype-icon-debian-swirl {
+    padding-left: 22px;
     background-size: 16px;
     background-image:url(../images/debian-swirl-openlogo.svg);
 }
 .pmx-itype-icon-proxmox-x {
+    padding-left: 22px;
     background-size: 16px;
     background-image:url(../images/proxmox-symbol-x.svg);
 }
