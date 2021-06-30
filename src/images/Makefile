@@ -3,10 +3,11 @@
 
 include ../defines.mk
 
-IMAGES=pmx-clear-trigger.png	\
-       icon-cpu.png		\
-       icon-ram.png		\
-
+IMAGES=pmx-clear-trigger.png		\
+       icon-cpu.png			\
+       icon-ram.png			\
+       debian-swirl-openlogo.svg	\
+       proxmox-symbol-x.svg		\
 
 all:
 

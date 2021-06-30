@@ -105,21 +105,29 @@ div.right-aligned {
 }
 
 .pmx-itype-icon-memory,
-.pmx-itype-icon-processor
+.pmx-itype-icon-processor,
+.pmx-itype-icon /* NOTE: use this one instead of adding new specific ones! */
 {
     background-repeat: no-repeat;
     background-position:3px center;
     padding-left: 20px;
 }
 
-.pmx-itype-icon-memory
-{
+.pmx-itype-icon-memory {
     background-image:url(../images/icon-ram.png);
 }
 
-.pmx-itype-icon-processor
-{
+.pmx-itype-icon-processor {
     background-image:url(../images/icon-cpu.png);
+}
+
+.pmx-itype-icon-debian-swirl {
+    background-size: 16px;
+    background-image:url(../images/debian-swirl-openlogo.svg);
+}
+.pmx-itype-icon-proxmox-x {
+    background-size: 16px;
+    background-image:url(../images/proxmox-symbol-x.svg);
 }
 
 /* change font for config panel back to fontawesome */
