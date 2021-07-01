@@ -170,7 +170,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 
 		    Ext.create('Proxmox.window.APTRepositoryAdd', {
 			repoInfo: me.repoInfo,
-			url: `/api2/json/nodes/${panel.nodename}/apt/repositories`,
+			url: `/api2/extjs/nodes/${panel.nodename}/apt/repositories`,
 			method: 'PUT',
 			extraRequestParams: extraParams,
 			listeners: {
