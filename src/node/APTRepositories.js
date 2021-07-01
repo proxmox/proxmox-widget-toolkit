@@ -74,7 +74,7 @@ Ext.define('Proxmox.window.APTRepositoryAdd', {
 		    return false;
 		}
 
-		if (!info.status) {
+		if (info.status) {
 		    return Ext.String.format(gettext('{0} is already configured'), renderedValue);
 		}
 		return valid;
