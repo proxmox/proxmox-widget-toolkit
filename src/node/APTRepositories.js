@@ -295,8 +295,23 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	{
 	    header: gettext('Components'),
 	    dataIndex: 'Components',
-	    renderer: function(components, cell, record) {
-		return components.join(' ');
+	    renderer: function(components, metaData, record) {
+		let err = '';
+		if (components.length === 1) {
+		    // FIXME: this should be a flag set to the actual repsotiories, i.e., a tristate
+		    // like production-read =
+		    if (components[0].match(/\w+(-no-subscription|test)\s*$/i)) {
+			metaData.tdCls = 'proxmox-warning-row';
+			err = '<i class="fa fa-fw warning fa-exclamation-circle"></i> ';
+
+			let qtip = components[0].match(/no-subscription/)
+			    ? gettext('The no-subscription repository is NOT production-ready')
+			    : gettext('The test repository may contain unstable updates')
+			    ;
+			    metaData.tdAttr = `data-qtip="${Ext.htmlEncode(qtip)}"`;
+		    }
+		}
+		return components.join(' ') + err;
 	    },
 	    width: 170,
 	},
