@@ -60,21 +60,24 @@ Ext.define('Proxmox.window.APTRepositoryAdd', {
 	    name: 'handle',
 	    allowBlank: false,
 	    comboItems: me.repoInfo.map(info => [info.handle, info.name]),
-	    isValid: function() {
-		const handle = this.value;
+	    validator: function(renderedValue) {
+		let handle = this.value;
+		// we cannot use this.callParent in instantiations
+		let valid = Proxmox.form.KVComboBox.prototype.validator.call(this, renderedValue);
 
-		if (!handle) {
+		if (!valid || !handle) {
 		    return false;
 		}
 
 		const info = me.repoInfo.find(elem => elem.handle === handle);
-
 		if (!info) {
 		    return false;
 		}
 
-		// not yet configured
-		return info.status === undefined || info.status === null;
+		if (!info.status) {
+		    return Ext.String.format(gettext('{0} is already configured'), renderedValue);
+		}
+		return valid;
 	    },
 	    listeners: {
 		change: function(f, value) {
