@@ -433,38 +433,33 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let store = vm.get('errorstore');
 	    store.removeAll();
 
+	    let status = 'good'; // start with best, the helper below will downgrade if needed
+	    let text = gettext('All OK, you have production-ready repositories configured!');
+
 	    let errors = vm.get('errors');
 	    errors.forEach((error) => {
+		status = 'critical';
 		store.add({
 		    status: 'critical',
 		    message: `${error.path} - ${error.error}`,
 		});
 	    });
 
-	    let text = gettext('Repositories are configured in a recommended way');
-	    let status = 'good';
+	    let addGood = message => store.add({ status: 'good', message });
+
+	    let addWarn = message => {
+		if (status === 'good') {
+		    status = 'warning';
+		    text = message;
+		}
+		store.add({ status: 'warning', message });
+	    };
 
 	    let activeSubscription = vm.get('subscriptionActive');
 	    let enterprise = vm.get('enterpriseRepo');
 	    let nosubscription = vm.get('noSubscriptionRepo');
 	    let test = vm.get('testRepo');
 	    let wrongSuites = vm.get('suitesWarning');
-
-	    let addGood = function(message) {
-		store.add({
-		    status: 'good',
-		    message,
-		});
-	    };
-
-	    let addWarn = function(message) {
-		status = 'warning';
-		text = message;
-		store.add({
-		    status,
-		    message,
-		});
-	    };
 
 	    if (!enterprise && !nosubscription && !test) {
 		addWarn(Ext.String.format(gettext('No {0} repository is enabled!'), vm.get('product')));
@@ -491,11 +486,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    }
 
 	    if (errors.length > 0) {
-		vm.set('state', {
-		    iconCls: Proxmox.Utils.get_health_icon('critical', true),
-		    text: gettext('Error parsing repositories'),
-		});
-		return;
+		text = gettext('Error parsing repositories');
 	    }
 
 	    let iconCls = Proxmox.Utils.get_health_icon(status, true);
