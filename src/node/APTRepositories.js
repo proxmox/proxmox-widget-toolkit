@@ -462,7 +462,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let wrongSuites = vm.get('suitesWarning');
 
 	    if (!enterprise && !nosubscription && !test) {
-		addWarn(Ext.String.format(gettext('No {0} repository is enabled!'), vm.get('product')));
+		addWarn(Ext.String.format(gettext('No {0} repository is enabled, you do not get any updates!'), vm.get('product')));
 	    } else if (enterprise && !nosubscription && !test && activeSubscription) {
 		addGood(Ext.String.format(gettext('You get supported updates for {0}'), vm.get('product')));
 	    } else if (nosubscription || test) {
@@ -470,7 +470,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    }
 
 	    if (wrongSuites) {
-		addWarn(gettext('Some Suites are misconfigured'));
+		addWarn(gettext('Some suites are misconfigured'));
 	    }
 
 	    if (!activeSubscription && enterprise) {
@@ -482,11 +482,11 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    }
 
 	    if (test) {
-		addWarn(gettext('The test repository is not recommended for production use!'));
+		addWarn(gettext('The test repository may pull in unstable updates and is not recommended for production use!'));
 	    }
 
 	    if (errors.length > 0) {
-		text = gettext('Error parsing repositories');
+		text = gettext('Fatal error when parsing at least one repository');
 	    }
 
 	    let iconCls = Proxmox.Utils.get_health_icon(status, true);
