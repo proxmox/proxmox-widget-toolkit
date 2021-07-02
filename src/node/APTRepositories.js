@@ -299,7 +299,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		let err = '';
 		if (components.length === 1) {
 		    // FIXME: this should be a flag set to the actual repsotiories, i.e., a tristate
-		    // like production-read =
+		    // like production-ready = <yes|no|other> (Option<bool>)
 		    if (components[0].match(/\w+(-no-subscription|test)\s*$/i)) {
 			metaData.tdCls = 'proxmox-warning-row';
 			err = '<i class="fa fa-fw warning fa-exclamation-circle"></i> ';
