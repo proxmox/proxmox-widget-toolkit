@@ -253,12 +253,12 @@ utilities: {
     },
 
     render_username: function(userid) {
-	let username = PVE.Utils.parse_userid(userid)[0] || "";
+	let username = Proxmox.Utils.parse_userid(userid)[0] || "";
 	return Ext.htmlEncode(username);
     },
 
     render_realm: function(userid) {
-	let username = PVE.Utils.parse_userid(userid)[1] || "";
+	let username = Proxmox.Utils.parse_userid(userid)[1] || "";
 	return Ext.htmlEncode(username);
     },
 
