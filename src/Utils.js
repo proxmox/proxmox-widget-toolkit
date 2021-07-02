@@ -1140,6 +1140,42 @@ utilities: {
 	container.updateLayout();
 	container.updateLayout();
     },
+
+    get_health_icon: function(state, circle) {
+	if (circle === undefined) {
+	    circle = false;
+	}
+
+	if (state === undefined) {
+	    state = 'uknown';
+	}
+
+	var icon = 'faded fa-question';
+	switch (state) {
+	    case 'good':
+		icon = 'good fa-check';
+		break;
+	    case 'upgrade':
+		icon = 'warning fa-upload';
+		break;
+	    case 'old':
+		icon = 'warning fa-refresh';
+		break;
+	    case 'warning':
+		icon = 'warning fa-exclamation';
+		break;
+	    case 'critical':
+		icon = 'critical fa-times';
+		break;
+	    default: break;
+	}
+
+	if (circle) {
+	    icon += '-circle';
+	}
+
+	return icon;
+    },
 },
 
     singleton: true,
