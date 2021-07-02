@@ -161,6 +161,15 @@ div.right-aligned {
     color: #333;
 }
 
+/* some general helper classes */
+.centered-flex-column {
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
+    width: 100%;
+    height: 100%;
+}
+
 /* rules for the markdown content, prefix with the .pmx-md class */
 .pmx-md {
     font-size: 1.0em;
