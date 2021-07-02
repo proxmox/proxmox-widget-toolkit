@@ -132,6 +132,12 @@ div.right-aligned {
     background-image:url(../images/proxmox-symbol-x.svg);
 }
 
+.pmx-itype-icon-openid-logo {
+    padding-left: 22px;
+    background-size: 16px 16px;
+    background-image:url(../images/openid-icon-100x100.png);
+}
+
 /* change font for config panel back to fontawesome */
 .x-treelist-item-expanded > * > * > .x-treelist-item-expander::after,
 .x-treelist-item-expander::after {
