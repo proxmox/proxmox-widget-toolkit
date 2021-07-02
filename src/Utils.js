@@ -238,6 +238,30 @@ utilities: {
 	return min < width ? width : min;
     },
 
+    // returns username + realm
+    parse_userid: function(userid) {
+	if (!Ext.isString(userid)) {
+	    return [undefined, undefined];
+	}
+
+	let match = userid.match(/^(.+)@([^@]+)$/);
+	if (match !== null) {
+	    return [match[1], match[2]];
+	}
+
+	return [undefined, undefined];
+    },
+
+    render_username: function(userid) {
+	let username = PVE.Utils.parse_userid(userid)[0] || "";
+	return Ext.htmlEncode(username);
+    },
+
+    render_realm: function(userid) {
+	let username = PVE.Utils.parse_userid(userid)[1] || "";
+	return Ext.htmlEncode(username);
+    },
+
     getStoredAuth: function() {
 	let storedAuth = JSON.parse(window.localStorage.getItem('ProxmoxUser'));
 	return storedAuth || {};
