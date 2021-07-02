@@ -1,3 +1,23 @@
+proxmox-widget-toolkit (3.2-1) bullseye; urgency=medium
+
+  * css: some markdown heading and paragraph font-size & padding tuning
+
+  * node: services: fix logic for displaying unit state
+
+  * add Debian and Proxmox symbol logos and css
+
+  * node: apt: spawn a window for adding repository
+
+  * utils: add getOpenIDRedirectionAuthorization helper
+
+  * factor out userid parsing and username, realm renderer to Utils
+
+  * add OpenID icon + css class
+
+  * node: APT Repositories: rework top status and error grid
+
+ -- Proxmox Support Team <support@proxmox.com>  Sat, 03 Jul 2021 00:12:34 +0200
+
 proxmox-widget-toolkit (3.1-4) bullseye; urgency=medium
 
   * cbind mixin: also descend in elements with an cbind property
