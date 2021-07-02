@@ -279,6 +279,16 @@ utilities: {
 	window.localStorage.removeItem("ProxmoxUser");
     },
 
+    // The End-User gets redirected back here after login on the OpenID auth. portal, and in the
+    // redirection URL the state and auth.code are passed as URL GET params, this helper parses those
+    getOpenIDRedirectionAuthorization: function() {
+	const auth = Ext.Object.fromQueryString(window.location.search);
+	if (auth.state !== undefined && auth.code !== undefined) {
+	    return auth;
+	}
+	return undefined;
+    },
+
     // comp.setLoading() is buggy in ExtJS 4.0.7, so we
     // use el.mask() instead
     setErrorMask: function(comp, msg) {
