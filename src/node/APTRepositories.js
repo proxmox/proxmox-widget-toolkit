@@ -108,11 +108,9 @@ Ext.define('Proxmox.node.APTRepositoriesErrors', {
 
     xtype: 'proxmoxNodeAPTRepositoriesErrors',
 
-    title: gettext('Errors'),
-
     store: {},
 
-    border: false,
+    scrollable: true,
 
     viewConfig: {
 	stripeRows: false,
@@ -419,6 +417,50 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let rec = selection[0];
 	    let vm = me.getViewModel();
 	    vm.set('selectionenabled', rec.get('Enabled'));
+	    vm.notify();
+	},
+
+	updateState: function() {
+	    let me = this;
+	    let vm = me.getViewModel();
+
+	    if (vm.get('errorCount') > 0) {
+		vm.set('state', {
+		    iconCls: Proxmox.Utils.get_health_icon('critical', true),
+		    text: gettext('Error parsing repositories'),
+		});
+		return;
+	    }
+
+	    let text = gettext('Repositories are configured in a recommended way');
+	    let status = 'warning';
+
+	    let activeSubscription = vm.get('subscriptionActive');
+	    let enterprise = vm.get('enterpriseRepo');
+	    let nosubscription = vm.get('noSubscriptionRepo');
+	    let test = vm.get('testRepo');
+	    let wrongSuites = vm.get('suitesWarning');
+
+	    if (!activeSubscription && enterprise) {
+		text = gettext('The enterprise repository is enabled, but there is no active subscription!');
+	    } else if (nosubscription) {
+		text = gettext('The no-subscription repository is not recommended for production use!');
+	    } else if (test) {
+		text = gettext('The test repository is not recommended for production use!');
+	    } else if (!enterprise && !nosubscription && !test) {
+		text = Ext.String.format(gettext('No {0} repository is enabled!'), vm.get('product'));
+	    } else if (wrongSuites) {
+		text = gettext('Some Suites are misconfigured');
+	    } else {
+		status = 'good';
+	    }
+
+	    let iconCls = Proxmox.Utils.get_health_icon(status, true);
+
+	    vm.set('state', {
+		iconCls,
+		text,
+	    });
 	},
     },
 
@@ -426,40 +468,18 @@ Ext.define('Proxmox.node.APTRepositories', {
 	data: {
 	    product: 'Proxmox VE', // default
 	    errorCount: 0,
+	    suitesWarning: false,
 	    subscriptionActive: '',
 	    noSubscriptionRepo: '',
 	    enterpriseRepo: '',
+	    testRepo: '',
 	    selectionenabled: false,
+	    state: {},
 	},
 	formulas: {
 	    noErrors: (get) => get('errorCount') === 0,
 	    enableButtonText: (get) => get('selectionenabled')
 		? gettext('Disable') : gettext('Enable'),
-	    mainWarning: function(get) {
-		// Not yet initialized
-		if (get('subscriptionActive') === '' ||
-		    get('enterpriseRepo') === '') {
-		    return '';
-		}
-
-		let icon = `<i class='fa fa-fw fa-exclamation-triangle critical'></i>`;
-		let fmt = (msg) => `<div class="black">${icon}${gettext('Warning')}: ${msg}</div>`;
-
-		if (!get('subscriptionActive') && get('enterpriseRepo')) {
-		    return fmt(gettext('The enterprise repository is enabled, but there is no active subscription!'));
-		}
-
-		if (get('noSubscriptionRepo')) {
-		    return fmt(gettext('The no-subscription repository is not recommended for production use!'));
-		}
-
-		if (!get('enterpriseRepo') && !get('noSubscriptionRepo')) {
-		    let msg = Ext.String.format(gettext('No {0} repository is enabled!'), get('product'));
-		    return fmt(msg);
-		}
-
-		return '';
-	    },
 	},
     },
 
@@ -471,32 +491,50 @@ Ext.define('Proxmox.node.APTRepositories', {
 
     items: [
 	{
-	    xtype: 'header',
-	    baseCls: 'x-panel-header',
-	    bind: {
-		hidden: '{!mainWarning}',
-		title: '{mainWarning}',
+	    xtype: 'panel',
+	    border: false,
+	    layout: {
+		type: 'hbox',
+		align: 'stretch',
 	    },
-	},
-	{
-	    xtype: 'box',
-	    bind: {
-		hidden: '{!mainWarning}',
-	    },
-	    height: 5,
-	},
-	{
-	    xtype: 'proxmoxNodeAPTRepositoriesErrors',
-	    name: 'repositoriesErrors',
-	    hidden: true,
-	    padding: '0 0 5 0',
-	    bind: {
-		hidden: '{noErrors}',
-	    },
+	    height: 150,
+	    title: gettext('Status'),
+	    items: [
+		{
+		    xtype: 'box',
+		    flex: 1,
+		    margin: 10,
+		    data: {
+			iconCls: Proxmox.Utils.get_health_icon(undefined, true),
+			text: '',
+		    },
+		    bind: {
+			data: '{state}',
+		    },
+		    tpl: [
+			'<center>',
+			'<i class="fa fa-4x {iconCls}"></i>',
+			'<br/><br/>',
+			'{text}',
+			'</center>',
+		    ],
+		},
+		{
+		    xtype: 'proxmoxNodeAPTRepositoriesErrors',
+		    name: 'repositoriesErrors',
+		    flex: 2,
+		    hidden: true,
+		    margin: 10,
+		    bind: {
+			hidden: '{noErrors}',
+		    },
+		},
+	    ],
 	},
 	{
 	    xtype: 'proxmoxNodeAPTRepositoriesGrid',
 	    name: 'repositoriesGrid',
+	    flex: 1,
 	    cbind: {
 		nodename: '{nodename}',
 	    },
@@ -519,6 +557,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 		const res = response.result;
 		const subscription = !(!res || !res.data || res.data.status.toLowerCase() !== 'active');
 		vm.set('subscriptionActive', subscription);
+		me.getController().updateState();
 	    },
 	});
     },
@@ -538,7 +577,10 @@ Ext.define('Proxmox.node.APTRepositories', {
 		vm.set('enterpriseRepo', status);
 	    } else if (handle === "no-subscription") {
 		vm.set('noSubscriptionRepo', status);
+	    } else if (handle === 'test') {
+		vm.set('testRepo', status);
 	    }
+	    me.getController().updateState();
 
 	    addButton.repoInfo.push(standardRepo);
 	    addButton.digest = me.digest;
@@ -557,6 +599,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let gridData = [];
 	    let errors = [];
 	    let digest;
+	    let suitesWarning = false;
 
 	    if (success && records.length > 0) {
 		let data = records[0].data;
@@ -585,6 +628,9 @@ Ext.define('Proxmox.node.APTRepositories', {
 			(info.kind === 'ignore-pre-upgrade-warning' && !repoGrid.majorUpgradeAllowed)
 		    ) {
 			infos[path][idx].warnings.push(info);
+			if (!suitesWarning && info.property === 'Suites') {
+			    suitesWarning = true;
+			}
 		    } else {
 			throw 'unknown info';
 		    }
@@ -612,6 +658,9 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    me.digest = digest;
 
 	    vm.set('errorCount', errors.length);
+	    vm.set('suitesWarning', suitesWarning);
+	    me.getController().updateState();
+
 	    errorGrid.store.loadData(errors);
 	});
 
