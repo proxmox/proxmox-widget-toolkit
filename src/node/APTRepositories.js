@@ -540,7 +540,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    items: [
 		{
 		    xtype: 'box',
-		    flex: 1,
+		    flex: 2,
 		    margin: 10,
 		    data: {
 			iconCls: Proxmox.Utils.get_health_icon(undefined, true),
@@ -550,7 +550,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 			data: '{state}',
 		    },
 		    tpl: [
-			'<center>',
+			'<center class="centered-flex-column" style="font-size:15px;line-height: 25px;">',
 			'<i class="fa fa-4x {iconCls}"></i>',
 			'<br/><br/>',
 			'{text}',
@@ -560,7 +560,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 		{
 		    xtype: 'proxmoxNodeAPTRepositoriesErrors',
 		    name: 'repositoriesErrors',
-		    flex: 2,
+		    flex: 7,
 		    margin: 10,
 		    bind: {
 			store: '{errorstore}',
