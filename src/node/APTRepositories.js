@@ -552,7 +552,6 @@ Ext.define('Proxmox.node.APTRepositories', {
 		    tpl: [
 			'<center class="centered-flex-column" style="font-size:15px;line-height: 25px;">',
 			'<i class="fa fa-4x {iconCls}"></i>',
-			'<br/><br/>',
 			'{text}',
 			'</center>',
 		    ],
