@@ -448,7 +448,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let addGood = message => store.add({ status: 'good', message });
 
 	    let addWarn = message => {
-		if (status === 'good') {
+		if (status !== 'critical') {
 		    status = 'warning';
 		    text = message;
 		}
