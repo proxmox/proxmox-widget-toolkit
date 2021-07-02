@@ -123,12 +123,12 @@ div.right-aligned {
 
 .pmx-itype-icon-debian-swirl {
     padding-left: 22px;
-    background-size: 16px;
+    background-size: 16px 16px; /* Chrom* needs both as else it gets cut-off due do non 1:1 ratio */
     background-image:url(../images/debian-swirl-openlogo.svg);
 }
 .pmx-itype-icon-proxmox-x {
     padding-left: 22px;
-    background-size: 16px;
+    background-size: 16px 16px; /* Not really required here, as here WxH is 1:1 but cannot hurt */
     background-image:url(../images/proxmox-symbol-x.svg);
 }
 
