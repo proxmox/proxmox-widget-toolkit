@@ -378,26 +378,24 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	},
     ],
 
+
+    store: {
+	model: 'apt-repolist',
+	groupField: 'Path',
+	sorters: [
+	    {
+		property: 'Index',
+		direction: 'ASC',
+	    },
+	],
+    },
+
     initComponent: function() {
 	let me = this;
 
 	if (!me.nodename) {
 	    throw "no node name specified";
 	}
-
-	let store = Ext.create('Ext.data.Store', {
-	    model: 'apt-repolist',
-	    groupField: 'Path',
-	    sorters: [
-		{
-		    property: 'Index',
-		    direction: 'ASC',
-		},
-	    ],
-	});
-	Ext.apply(me, {
-	    store: store,
-	});
 
 	me.callParent();
     },
