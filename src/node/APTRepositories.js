@@ -370,6 +370,14 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	},
     ],
 
+    features: [
+	{
+	    ftype: 'grouping',
+	    groupHeaderTpl: '{[ "File: " + values.name ]} ({rows.length} repositor{[values.rows.length > 1 ? "ies" : "y"]})',
+	    enableGroupingMenu: false,
+	},
+    ],
+
     initComponent: function() {
 	let me = this;
 
@@ -387,16 +395,8 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		},
 	    ],
 	});
-
-	let groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
-	    groupHeaderTpl: '{[ "File: " + values.name ]} ({rows.length} ' +
-		'repositor{[values.rows.length > 1 ? "ies" : "y"]})',
-	    enableGroupingMenu: false,
-	});
-
 	Ext.apply(me, {
 	    store: store,
-	    features: [groupingFeature],
 	});
 
 	me.callParent();
