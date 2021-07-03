@@ -159,7 +159,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	},
 	{
 	    text: gettext('Add'),
-	    id: 'addButton',
+	    name: 'addRepo',
 	    disabled: true,
 	    repoInfo: undefined,
 	    handler: function(button, event, record) {
@@ -192,7 +192,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    text: gettext('Enable'),
 	    defaultText: gettext('Enable'),
 	    altText: gettext('Disable'),
-	    id: 'repoEnableButton',
+	    name: 'repoEnable',
 	    disabled: true,
 	    bind: {
 		text: '{enableButtonText}',
@@ -602,9 +602,9 @@ Ext.define('Proxmox.node.APTRepositories', {
 	let me = this;
 	let vm = me.getViewModel();
 
-	let addButton = me.down('#addButton');
-	addButton.repoInfo = [];
+	let addButton = me.down('button[name=addRepo]');
 
+	addButton.repoInfo = [];
 	for (const standardRepo of standardRepos) {
 	    const handle = standardRepo.handle;
 	    const status = standardRepo.status;
