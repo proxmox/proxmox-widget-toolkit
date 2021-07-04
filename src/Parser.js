@@ -14,7 +14,9 @@ Ext.define('Proxmox.Markdown', {
 	let _sanitize;
 	_sanitize = (node) => {
 	    if (node.nodeType === 3) return;
-	    if (node.nodeType !== 1 || /^(script|style|iframe|object|embed|svg)$/i.test(node.tagName)) {
+	    if (node.nodeType !== 1 ||
+		/^(script|style|form|select|option|optgroup|map|area|canvas|textarea|applet|font|iframe|audio|video|object|embed|svg)$/i.test(node.tagName)
+	    ) {
 		// could do node.remove() instead, but it's nicer UX if we keep the (encoded!) html
 		node.outerHTML = Ext.String.htmlEncode(node.outerHTML);
 		return;
