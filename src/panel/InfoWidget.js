@@ -59,7 +59,14 @@ Ext.define('Proxmox.widget.Info', {
     },
 
     updateValue: function(text, usage) {
-	var me = this;
+	let me = this;
+
+	if (me.lastText === text && me.lastUsage === usage) {
+	    return;
+	}
+	me.lastText = text;
+	me.lastUsage = usage;
+
 	var label = me.getComponent('label');
 	label.update(Ext.apply(label.data, { title: me.title, usage: text }));
 
