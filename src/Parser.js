@@ -10,19 +10,34 @@ Ext.define('Proxmox.Markdown', {
 	if (!input) {
 	    return input;
 	}
+	let _isHTTPLike = value => value.match(/^\s*https?:/i); // URL's protocol ends with :
 	let _sanitize;
 	_sanitize = (node) => {
 	    if (node.nodeType === 3) return;
-	    if (node.nodeType !== 1 || /^(script|iframe|object|embed|svg)$/i.test(node.tagName)) {
+	    if (node.nodeType !== 1 || /^(script|style|iframe|object|embed|svg)$/i.test(node.tagName)) {
 		// could do node.remove() instead, but it's nicer UX if we keep the (encoded!) html
 		node.outerHTML = Ext.String.htmlEncode(node.outerHTML);
 		return;
 	    }
 	    for (let i=node.attributes.length; i--;) {
 		const name = node.attributes[i].name;
+		const value = node.attributes[i].value;
 		// TODO: we may want to also disallow class and id attrs
-		if (!/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type)$/i.test(name)) {
+		if (
+		    !/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type)$/i.test(name)
+		) {
 		    node.attributes.removeNamedItem(name);
+		} else if ((name === 'href' || name === 'src') && !_isHTTPLike(value)) {
+		    try {
+			let url = new URL(value, window.location.origin);
+			if (_isHTTPLike(url.protocol)) {
+			    node.attributes[i].value = url.href;
+			} else {
+			    node.attributes.removeNamedItem(name);
+			}
+		    } catch (e) {
+			node.attributes[i].removeNamedItem(name);
+		    }
 		}
 	    }
 	    for (let i=node.childNodes.length; i--;) _sanitize(node.childNodes[i]);
