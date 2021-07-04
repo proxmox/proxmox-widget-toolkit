@@ -300,6 +300,9 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    header: gettext('Components'),
 	    dataIndex: 'Components',
 	    renderer: function(components, metaData, record) {
+		if (components === undefined) {
+		    return '';
+		}
 		let err = '';
 		if (components.length === 1) {
 		    // FIXME: this should be a flag set to the actual repsotiories, i.e., a tristate
@@ -377,7 +380,6 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    enableGroupingMenu: false,
 	},
     ],
-
 
     store: {
 	model: 'apt-repolist',
