@@ -3,7 +3,7 @@ Ext.define('Proxmox.Markdown', {
     alternateClassName: 'Px.Markdown', // just trying out something, do NOT copy this line
     singleton: true,
 
-    // transforms HTML to a DOM tree and recursively descends and prunes every branch with a
+    // transforms HTML to a DOM tree and recursively descends and HTML-encodes every branch with a
     // "bad" node.type and drops "bad" attributes from the remaining nodes.
     // "bad" means anything which can do XSS or break the layout of the outer page
     sanitizeHTML: function(input) {
@@ -14,7 +14,8 @@ Ext.define('Proxmox.Markdown', {
 	_sanitize = (node) => {
 	    if (node.nodeType === 3) return;
 	    if (node.nodeType !== 1 || /^(script|iframe|object|embed|svg)$/i.test(node.tagName)) {
-		node.remove();
+		// could do node.remove() instead, but it's nicer UX if we keep the (encoded!) html
+		node.outerHTML = Ext.String.htmlEncode(node.outerHTML);
 		return;
 	    }
 	    for (let i=node.attributes.length; i--;) {
