@@ -44,6 +44,20 @@ Ext.define('Proxmox.node.Tasks', {
 	    me.getView().updateLayout();
 	},
 
+	refresh: function() {
+	    let me = this;
+	    let view = me.getView();
+
+	    let selection = view.getSelection();
+	    let store = me.getViewModel().get('bufferedstore');
+	    if (selection && selection.length > 0) {
+		// deselect if selection is not there anymore
+		if (!store.contains(selection[0])) {
+		    view.setSelection(undefined);
+		}
+	    }
+	},
+
 	sinceChange: function(field, newval) {
 	    let me = this;
 	    let vm = me.getViewModel();
@@ -144,6 +158,7 @@ Ext.define('Proxmox.node.Tasks', {
 		},
 		listeners: {
 		    prefetch: 'updateLayout',
+		    refresh: 'refresh',
 		},
 	    },
 	},
