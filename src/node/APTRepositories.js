@@ -436,17 +436,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let status = 'good'; // start with best, the helper below will downgrade if needed
 	    let text = gettext('All OK, you have production-ready repositories configured!');
 
-	    let errors = vm.get('errors');
-	    errors.forEach((error) => {
-		status = 'critical';
-		store.add({
-		    status: 'critical',
-		    message: `${error.path} - ${error.error}`,
-		});
-	    });
-
 	    let addGood = message => store.add({ status: 'good', message });
-
 	    let addWarn = (message, important) => {
 		if (status !== 'critical') {
 		    status = 'warning';
@@ -454,6 +444,14 @@ Ext.define('Proxmox.node.APTRepositories', {
 		}
 		store.add({ status: 'warning', message });
 	    };
+	    let addCritical = (message, important) => {
+		status = 'critical';
+		text = important ? message : gettext('Error');
+		store.add({ status: 'critical', message });
+	    };
+
+	    let errors = vm.get('errors');
+	    errors.forEach(error => addCritical(`${error.path} - ${error.error}`));
 
 	    let activeSubscription = vm.get('subscriptionActive');
 	    let enterprise = vm.get('enterpriseRepo');
@@ -462,12 +460,9 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let wrongSuites = vm.get('suitesWarning');
 
 	    if (!enterprise && !nosubscription && !test) {
-		status = 'critical';
-		text = gettext('Error');
-		store.add({
-		    status: 'critical',
-		    message: Ext.String.format(gettext('No {0} repository is enabled, you do not get any updates!'), vm.get('product')),
-		});
+		addCritical(
+		    Ext.String.format(gettext('No {0} repository is enabled, you do not get any updates!'), vm.get('product')),
+		);
 	    } else if (enterprise && !nosubscription && !test && activeSubscription) {
 		addGood(Ext.String.format(gettext('You get supported updates for {0}'), vm.get('product')));
 	    } else if (nosubscription || test) {
