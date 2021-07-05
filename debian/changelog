@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (3.2-4) bullseye; urgency=medium
+
+  * node: APT repositories: upgrade "no Proxmox product repo configured" from
+    warning to error
+
+  * node: task history: deselect entries when filter changes
+
+  * node: task history: show errors on store load
+
+  * node: task history: add 'clear filter' button
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 05 Jul 2021 16:50:23 +0200
+
 proxmox-widget-toolkit (3.2-3) bullseye; urgency=medium
 
   * node: repos: handle that components can be undefined
