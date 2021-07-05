@@ -462,7 +462,12 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let wrongSuites = vm.get('suitesWarning');
 
 	    if (!enterprise && !nosubscription && !test) {
-		addWarn(Ext.String.format(gettext('No {0} repository is enabled, you do not get any updates!'), vm.get('product')));
+		status = 'critical';
+		text = gettext('Error');
+		store.add({
+		    status: 'critical',
+		    message: Ext.String.format(gettext('No {0} repository is enabled, you do not get any updates!'), vm.get('product')),
+		});
 	    } else if (enterprise && !nosubscription && !test && activeSubscription) {
 		addGood(Ext.String.format(gettext('You get supported updates for {0}'), vm.get('product')));
 	    } else if (nosubscription || test) {
