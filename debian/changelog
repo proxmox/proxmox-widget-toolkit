@@ -1,10 +1,30 @@
-proxmox-widget-toolkit (3.2-2) UNRELEASED; urgency=medium
+proxmox-widget-toolkit (3.2-3) bullseye; urgency=medium
+
+  * node: repos: handle that components can be undefined
+
+  * markdown: encode bad nodes HTML instead of pruning it
+
+  * markdown: make sanitizer more strict in filtering tags and ensure that the
+    src and the href attributes point to a HTTP url, or is a data-url on a
+    image.
+
+  * info widget: early return from update if text & value stayed the same
+
+  * utils: updateColumnWidth: drop duplicate implementation and allow
+    overriding tresholdWidth
+
+  * utils: updateColumnWidth: directly calculate column count by threshold,
+    automatically using more columns on wide containers.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 05 Jul 2021 10:10:47 +0200
+
+proxmox-widget-toolkit (3.2-2) bullseye; urgency=medium
 
   * avoid using unique ids for components that may have more than one instance
-    at at time. Fixes and issue with switching between nodes on the new APT
-    Repository panel.
+    at the same time. Fixes and issue with switching between nodes on the new
+    APT Repository panel.
 
- -- Proxmox Support Team <support@proxmox.com>  Sat, 03 Jul 2021 16:33:40 +0200
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 05 Jul 2021 09:47:46 +0200
 
 proxmox-widget-toolkit (3.2-1) bullseye; urgency=medium
 

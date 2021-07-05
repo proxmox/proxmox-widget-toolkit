@@ -32,7 +32,7 @@ Ext.define('Proxmox.Markdown', {
 		} else if ((name === 'href' || name === 'src') && !_isHTTPLike(value)) {
 		    try {
 			let url = new URL(value, window.location.origin);
-			if (_isHTTPLike(url.protocol)) {
+			if (_isHTTPLike(url.protocol) || (node.tagName === 'img' && url.protocol === 'data:')) {
 			    node.attributes[i].value = url.href;
 			} else {
 			    node.attributes.removeNamedItem(name);
