@@ -85,7 +85,6 @@ Ext.define('Proxmox.node.Tasks', {
 	data: {
 	    typefilter: '',
 	    statusfilter: '',
-	    datastore: '',
 	    showFilter: false,
 	    extraFilter: {},
 	    since: null,
@@ -102,9 +101,6 @@ Ext.define('Proxmox.node.Tasks', {
 		}
 		if (get('statusfilter')) {
 		    params.statusfilter = get('statusfilter');
-		}
-		if (get('datastore')) {
-		    params.store = get('datastore');
 		}
 
 		if (get('extraFilter')) {
