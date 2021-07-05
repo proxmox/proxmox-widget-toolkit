@@ -486,7 +486,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    }
 
 	    if (errors.length > 0) {
-		text = gettext('Fatal error when parsing at least one repository');
+		text = gettext('Fatal parsing error for at least one repository');
 	    }
 
 	    let iconCls = Proxmox.Utils.get_health_icon(status, true);
