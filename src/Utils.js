@@ -544,7 +544,7 @@ utilities: {
 	});
     },
 
-    updateColumnWidth: function(container) {
+    updateColumnWidth: function(container, tresholdWidth) {
 	let mode = Ext.state.Manager.get('summarycolumns') || 'auto';
 	let factor;
 	if (mode !== 'auto') {
@@ -553,7 +553,8 @@ utilities: {
 		factor = 1;
 	    }
 	} else {
-	    factor = container.getSize().width < 1600 ? 1 : 2;
+	    tresholdWidth = (tresholdWidth || 1400) + 1;
+	    factor = Math.ceil(container.getSize().width / tresholdWidth);
 	}
 
 	if (container.oldFactor === factor) {
