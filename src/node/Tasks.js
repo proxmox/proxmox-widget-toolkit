@@ -89,6 +89,13 @@ Ext.define('Proxmox.node.Tasks', {
 	    let vm = me.getViewModel();
 	    vm.set('showFilter', pressed);
 	},
+
+	clearFilter: function() {
+	    let me = this;
+	    me.lookup('filtertoolbar').query('field').forEach((field) => {
+		field.setValue(undefined);
+	    });
+	},
     },
 
     listeners: {
@@ -140,6 +147,44 @@ Ext.define('Proxmox.node.Tasks', {
 
 		return params;
 	    },
+	    filterCount: function(get) {
+		let count = 0;
+		if (get('typefilter')) {
+		    count++;
+		}
+		let status = get('statusfilter');
+		if ((Ext.isArray(status) && status.length > 0) ||
+		    (!Ext.isArray(status) && status)) {
+		    count++;
+		}
+		if (get('since')) {
+		    count++;
+		}
+		if (get('until')) {
+		    count++;
+		}
+
+		if (get('extraFilter')) {
+		    let extraFilter = get('extraFilter');
+		    for (const value of Object.values(extraFilter)) {
+			if (value !== undefined && value !== null && value !== "") {
+			    count++;
+			}
+		    }
+		}
+
+		return count;
+	    },
+	    clearFilterText: function(get) {
+		let count = get('filterCount');
+		let fieldMsg = '';
+		if (count > 1) {
+		    fieldMsg = ` (${count} ${gettext('Fields')})`;
+		} else if (count > 0) {
+		    fieldMsg = ` (1 ${gettext('Field')})`;
+		}
+		return gettext('Clear Filter') + fieldMsg;
+	    },
 	},
 
 	stores: {
@@ -186,6 +231,16 @@ Ext.define('Proxmox.node.Tasks', {
 		    handler: 'reload',
 		},
 		'->',
+		{
+		    xtype: 'button',
+		    bind: {
+			text: '{clearFilterText}',
+			disabled: '{!filterCount}',
+		    },
+		    text: gettext('Clear Filter'),
+		    enabled: false,
+		    handler: 'clearFilter',
+		},
 		{
 		    xtype: 'button',
 		    enableToggle: true,
