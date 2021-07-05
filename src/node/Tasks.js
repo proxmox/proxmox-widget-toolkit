@@ -36,12 +36,18 @@ Ext.define('Proxmox.node.Tasks', {
 	    }).show();
 	},
 
-	updateLayout: function() {
+	updateLayout: function(store, records, success, operation) {
 	    let me = this;
+	    let view = me.getView().getView(); // the table view, not the whole grid
+	    Proxmox.Utils.setErrorMask(view, false);
 	    // update the scrollbar on every store load since the total count might be different.
 	    // the buffered grid plugin does this only on (user) scrolling itself and even reduces
 	    // the scrollheight again when scrolling up
 	    me.getView().updateLayout();
+
+	    if (!success) {
+		Proxmox.Utils.setErrorMask(view, Proxmox.Utils.getResponseErrorMessage(operation.getError()));
+	    }
 	},
 
 	refresh: function() {
@@ -83,13 +89,7 @@ Ext.define('Proxmox.node.Tasks', {
 	    let vm = me.getViewModel();
 	    vm.set('showFilter', pressed);
 	},
-
-	init: function(view) {
-	    let me = this;
-	    Proxmox.Utils.monStoreErrors(view, view.getStore(), true);
-	},
     },
-
 
     listeners: {
 	itemdblclick: 'showTaskLog',
