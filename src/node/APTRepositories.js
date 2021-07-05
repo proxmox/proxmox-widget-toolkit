@@ -463,6 +463,8 @@ Ext.define('Proxmox.node.APTRepositories', {
 		addCritical(
 		    Ext.String.format(gettext('No {0} repository is enabled, you do not get any updates!'), vm.get('product')),
 		);
+	    } else if (errors.length > 0) {
+		// nothing extra, just avoid that we show "get updates"
 	    } else if (enterprise && !nosubscription && !test && activeSubscription) {
 		addGood(Ext.String.format(gettext('You get supported updates for {0}'), vm.get('product')));
 	    } else if (nosubscription || test) {
