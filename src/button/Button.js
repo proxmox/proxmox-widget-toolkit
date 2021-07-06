@@ -152,9 +152,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 	    callback: function(options, success, response) {
 		Ext.callback(me.callback, me.scope, [options, success, response], 0, me);
 	    },
-	    failure: function(response, opts) {
-		Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-	    },
+	    failure: response => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
 	});
     },
     initComponent: function() {

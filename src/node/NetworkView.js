@@ -40,7 +40,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	    throw "no node name specified";
 	}
 
-	let baseUrl = '/nodes/' + me.nodename + '/network';
+	let baseUrl = `/nodes/${me.nodename}/network`;
 
 	let store = Ext.create('Ext.data.Store', {
 	    model: 'proxmox-networks',
@@ -171,19 +171,6 @@ Ext.define('Proxmox.node.NetworkView', {
 
 	    edit_btn.setDisabled(!rec);
 	    del_btn.setDisabled(!rec);
-	};
-
-	let render_ports = function(value, metaData, record) {
-	    if (value === 'bridge') {
-		return record.data.bridge_ports;
-	    } else if (value === 'bond') {
-		return record.data.slaves;
-	    } else if (value === 'OVSBridge') {
-		return record.data.ovs_ports;
-	    } else if (value === 'OVSBond') {
-		return record.data.ovs_bonds;
-	    }
-	    return '';
 	};
 
 	let find_next_iface_id = function(prefix) {
@@ -389,7 +376,18 @@ Ext.define('Proxmox.node.NetworkView', {
 			{
 			    header: gettext('Ports/Slaves'),
 			    dataIndex: 'type',
-			    renderer: render_ports,
+			    renderer: (value, metaData, { data }) => {
+				if (value === 'bridge') {
+				    return data.bridge_ports;
+				} else if (value === 'bond') {
+				    return data.slaves;
+				} else if (value === 'OVSBridge') {
+				    return data.ovs_ports;
+				} else if (value === 'OVSBond') {
+				    return data.ovs_bonds;
+				}
+				return '';
+			    },
 			},
 			{
 			    header: gettext('Bond Mode'),
