@@ -110,31 +110,12 @@ Ext.define('Proxmox.node.NetworkView', {
 	    handler: run_editor,
 	});
 
-	let del_btn = new Ext.Button({
-	    text: gettext('Remove'),
-	    disabled: true,
-	    handler: function() {
-		let grid = me.down('gridpanel');
-		let sm = grid.getSelectionModel();
-		let rec = sm.getSelection()[0];
-		if (!rec) {
-		    return;
-		}
+	let sm = Ext.create('Ext.selection.RowModel', {});
 
-		let iface = rec.data.iface;
-
-		Proxmox.Utils.API2Request({
-		    url: baseUrl + '/' + iface,
-		    method: 'DELETE',
-		    waitMsgTarget: me,
-		    callback: function() {
-			reload();
-		    },
-		    failure: function(response, opts) {
-			Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		    },
-		});
-	    },
+	let del_btn = new Proxmox.button.StdRemoveButton({
+	    selModel: sm,
+	    getUrl: ({ data }) => `${baseUrl}/${data.iface}`,
+	    callback: () => reload(),
 	});
 
 	let apply_btn = Ext.create('Proxmox.button.Button', {
@@ -165,8 +146,6 @@ Ext.define('Proxmox.node.NetworkView', {
 	});
 
 	let set_button_status = function() {
-	    let grid = me.down('gridpanel');
-	    let sm = grid.getSelectionModel();
 	    let rec = sm.getSelection()[0];
 
 	    edit_btn.setDisabled(!rec);
@@ -328,6 +307,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    stateful: true,
 		    stateId: 'grid-node-network',
 		    store: store,
+		    selModel: sm,
 		    region: 'center',
 		    border: false,
 		    columns: [
