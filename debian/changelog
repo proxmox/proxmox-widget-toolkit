@@ -1,3 +1,17 @@
+proxmox-widget-toolkit (3.2-5) bullseye; urgency=medium
+
+  * network: always ask for confirmation before removing a network
+    interface from the configuration. While it is not that dangerous as we
+    have a pending config that needs to get applied, it still is nicer to do
+    for remove actions.
+
+  * node: tasks: use helper to format status again for a localized warnings
+    text
+
+  * window: safe-destroy: add taskDone and apiCallDone callbacks
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 08 Jul 2021 14:30:44 +0200
+
 proxmox-widget-toolkit (3.2-4) bullseye; urgency=medium
 
   * node: APT repositories: upgrade "no Proxmox product repo configured" from
