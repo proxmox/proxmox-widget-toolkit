@@ -21,7 +21,7 @@ Ext.define('Proxmox.Schema', { // a singleton
     // to add or change existing for product specific ones
     overrideAuthDomains: function(extra) {
 	for (const [key, value] of Object.entries(extra)) {
-	    Proxmox.Utils.authSchema[key] = value;
+	    Proxmox.Schema.authDomains[key] = value;
 	}
     },
 });
