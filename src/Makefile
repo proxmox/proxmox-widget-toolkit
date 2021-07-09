@@ -45,6 +45,7 @@ JSSRC=					\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
 	grid/PendingObjectGrid.js	\
+	panel/AuthView.js		\
 	panel/DiskList.js		\
 	panel/InputPanel.js		\
 	panel/InfoWidget.js		\
