@@ -1150,6 +1150,22 @@ utilities: {
 
 	return icon;
     },
+
+    authSchema: {
+	pam: {
+	    name: 'Linux PAM',
+	    add: false,
+	    edit: false,
+	    pwchange: true,
+	},
+    },
+
+    // to add or change existing for product specific ones
+    overrideAuthSchema: function(extra) {
+	for (const [key, value] of Object.entries(extra)) {
+	    Proxmox.Utils.authSchema[key] = value;
+	}
+    },
 },
 
     singleton: true,
