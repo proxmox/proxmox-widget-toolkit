@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (3.3-1) bullseye; urgency=medium
+
+  * node: repos: only show suites warning at the top if enabled repository is
+    affected
+
+  * move over authentication-real edit window widget from Proxmox VE
+
+  * utils: add helper to format node's repository status
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 09 Jul 2021 17:01:49 +0200
+
 proxmox-widget-toolkit (3.2-5) bullseye; urgency=medium
 
   * network: always ask for confirmation before removing a network
