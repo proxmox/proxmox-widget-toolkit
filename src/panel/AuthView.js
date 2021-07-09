@@ -63,7 +63,7 @@ Ext.define('Proxmox.panel.AuthView', {
 	    return;
 	}
 
-	if (!Proxmox.Utils.authSchema[rec.data.type].edit) {
+	if (!Proxmox.Schema.authDomains[rec.data.type].edit) {
 	    return;
 	}
 
@@ -74,7 +74,7 @@ Ext.define('Proxmox.panel.AuthView', {
 	var me = this;
 
 	let menuitems = [];
-	for (const [authType, config] of Object.entries(Proxmox.Utils.authSchema).sort()) {
+	for (const [authType, config] of Object.entries(Proxmox.Schema.authDomains).sort()) {
 	    if (!config.add) { continue; }
 	    menuitems.push({
 		text: config.name,
@@ -94,13 +94,13 @@ Ext.define('Proxmox.panel.AuthView', {
 		xtype: 'proxmoxButton',
 		text: gettext('Edit'),
 		disabled: true,
-		enableFn: (rec) => Proxmox.Utils.authSchema[rec.data.type].edit,
+		enableFn: (rec) => Proxmox.Schema.authDomains[rec.data.type].edit,
 		handler: () => me.run_editor(),
 	    },
 	    {
 		xtype: 'proxmoxStdRemoveButton',
 		baseurl: '/access/domains/',
-		enableFn: (rec) => Proxmox.Utils.authSchema[rec.data.type].add,
+		enableFn: (rec) => Proxmox.Schema.authDomains[rec.data.type].add,
 		callback: () => me.reload(),
 	    },
 	];
