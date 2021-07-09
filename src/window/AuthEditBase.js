@@ -20,7 +20,7 @@ Ext.define('Proxmox.window.AuthEditBase', {
 	    me.method = 'PUT';
 	}
 
-	let authConfig = Proxmox.Utils.authSchema[me.authType];
+	let authConfig = Proxmox.Schema.authDomains[me.authType];
 	if (!authConfig) {
 	    throw 'unknown auth type';
 	} else if (!authConfig.add && me.isCreate) {
