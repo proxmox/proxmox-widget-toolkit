@@ -8,6 +8,7 @@ MARKEDJS=/usr/share/javascript/marked/marked.min.js
 
 JSSRC=					\
 	Utils.js			\
+	Schema.js			\
 	Toolkit.js			\
 	Logo.js				\
 	Parser.js			\
