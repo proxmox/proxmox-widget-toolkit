@@ -73,6 +73,7 @@ JSSRC=					\
 	window/ACMEDomains.js		\
 	window/FileBrowser.js		\
 	window/AuthEditBase.js		\
+	window/AuthEditOpenId.js	\
 	node/APT.js			\
 	node/APTRepositories.js		\
 	node/NetworkEdit.js		\

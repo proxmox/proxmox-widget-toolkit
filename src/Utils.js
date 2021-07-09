@@ -1158,6 +1158,15 @@ utilities: {
 	    edit: false,
 	    pwchange: true,
 	},
+	openid: {
+	    name: gettext('OpenID Connect Server'),
+	    ipanel: 'pmxAuthOpenIDPanel',
+	    add: true,
+	    edit: true,
+	    tfa: false,
+	    pwchange: false,
+	    iconCls: 'pmx-itype-icon-openid-logo',
+	},
     },
 
     // to add or change existing for product specific ones
