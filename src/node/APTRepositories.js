@@ -665,9 +665,6 @@ Ext.define('Proxmox.node.APTRepositories', {
 			(info.kind === 'ignore-pre-upgrade-warning' && !repoGrid.majorUpgradeAllowed)
 		    ) {
 			infos[path][idx].warnings.push(info);
-			if (!suitesWarning && info.property === 'Suites') {
-			    suitesWarning = true;
-			}
 		    } else {
 			throw 'unknown info';
 		    }
@@ -682,6 +679,10 @@ Ext.define('Proxmox.node.APTRepositories', {
 			if (infos[file.path] && infos[file.path][n]) {
 			    repo.Origin = infos[file.path][n].origin || Proxmox.Utils.UnknownText;
 			    repo.warnings = infos[file.path][n].warnings || [];
+
+			    if (repo.Enabled && repo.warnings.some(w => w.property === 'Suites')) {
+				suitesWarning = true;
+			    }
 			}
 			gridData.push(repo);
 		    }
