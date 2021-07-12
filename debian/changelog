@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (3.3-3) bullseye; urgency=medium
+
+  * realm view/edit: make more generic for better reuse
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 12 Jul 2021 09:52:27 +0200
+
 proxmox-widget-toolkit (3.3-2) bullseye; urgency=medium
 
   * node: repos: only show suites warning at the top if enabled repository is
