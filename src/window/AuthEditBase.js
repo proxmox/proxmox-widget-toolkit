@@ -7,16 +7,23 @@ Ext.define('Proxmox.window.AuthEditBase', {
 	labelWidth: 120,
     },
 
+    baseurl: '/access/domains',
+    useTypeInUrl: false,
+
     initComponent: function() {
 	var me = this;
 
 	me.isCreate = !me.realm;
 
+	me.url = `/api2/extjs${me.baseUrl}`;
+	if (me.useTypeInUrl) {
+	    me.url += `/${me.authType}`;
+	}
+
 	if (me.isCreate) {
-	    me.url = '/api2/extjs/access/domains';
 	    me.method = 'POST';
 	} else {
-	    me.url = '/api2/extjs/access/domains/' + me.realm;
+	    me.url += `/${me.realm}`;
 	    me.method = 'PUT';
 	}
 
@@ -76,7 +83,8 @@ Ext.define('Proxmox.window.AuthEditBase', {
 		success: function(response, options) {
 		    var data = response.result.data || {};
 		    // just to be sure (should not happen)
-		    if (data.type !== me.authType) {
+		    // only check this when the type is not in the api path
+		    if (!me.useTypeInUrl && data.type !== me.authType) {
 			me.close();
 			throw "got wrong auth type";
 		    }
