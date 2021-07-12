@@ -10,6 +10,9 @@ Ext.define('Proxmox.panel.AuthView', {
 	trackOver: false,
     },
 
+    baseUrl: '/access/domains',
+    useTypeInUrl: false,
+
     columns: [
 	{
 	    header: gettext('Realm'),
@@ -43,6 +46,8 @@ Ext.define('Proxmox.panel.AuthView', {
     openEditWindow: function(authType, realm) {
 	let me = this;
 	Ext.create('Proxmox.window.AuthEditBase', {
+	    baseUrl: me.baseUrl,
+	    useTypeInUrl: me.useTypeInUrl,
 	    authType,
 	    realm,
 	    listeners: {
@@ -99,7 +104,14 @@ Ext.define('Proxmox.panel.AuthView', {
 	    },
 	    {
 		xtype: 'proxmoxStdRemoveButton',
-		baseurl: '/access/domains/',
+		getUrl: (rec) => {
+		    let url = me.baseUrl;
+		    if (me.useTypeInUrl) {
+			url += `/${rec.get('type')}`;
+		    }
+		    url += `/${rec.getId()}`;
+		    return url;
+		},
 		enableFn: (rec) => Proxmox.Schema.authDomains[rec.data.type].add,
 		callback: () => me.reload(),
 	    },
