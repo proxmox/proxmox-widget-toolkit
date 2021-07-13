@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (3.3-4) bullseye; urgency=medium
+
+  * acme: allow wildcards as domain
+
+  * service view: avoid showing not installed services as error
+
+  * service view: fix stale stop/restart button enabled behavior
+
+  * service view: disable all buttons for masked/not-found/unknown services
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 13 Jul 2021 18:42:51 +0200
+
 proxmox-widget-toolkit (3.3-3) bullseye; urgency=medium
 
   * realm view/edit: make more generic for better reuse
