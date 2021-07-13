@@ -115,21 +115,21 @@ Ext.define('Proxmox.node.ServiceView', {
 	    syslog_btn.enable();
 
 	    if (state === 'running') {
-		start_btn.disable();
-		restart_btn.enable();
+		if (me.startOnlyServices[service]) {
+		    stop_btn.disable();
+		    restart_btn.enable();
+		} else {
+		    stop_btn.enable();
+		    restart_btn.enable();
+		    start_btn.disable();
+		}
 	    } else if (unit !== undefined && (unit === 'masked' || unit === 'unknown')) {
 		start_btn.disable();
 		restart_btn.disable();
 	    } else {
 		start_btn.enable();
+		stop_btn.disable();
 		restart_btn.disable();
-	    }
-	    if (!me.startOnlyServices[service]) {
-		if (state === 'running') {
-		    stop_btn.enable();
-		} else {
-		    stop_btn.disable();
-		}
 	    }
 	};
 
