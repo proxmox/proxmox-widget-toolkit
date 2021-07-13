@@ -146,7 +146,7 @@ Ext.define('Proxmox.node.ServiceView', {
 		    if (!unitState) {
 			return '';
 		    }
-		    if (unitState === 'masked') {
+		    if (unitState === 'masked' || unitState === 'not-found') {
 			return "proxmox-disabled-row";
 		    } else if (unitState === 'unknown') {
 			if (record.get('name') === 'syslog') {
@@ -178,9 +178,16 @@ Ext.define('Proxmox.node.ServiceView', {
 		    width: 100,
 		    sortable: true,
 		    dataIndex: 'state',
-		    renderer: (v, meta, rec) => rec.get('unit-state') === 'masked'
-			    ? gettext('disabled')
-			    : v,
+		    renderer: (value, meta, rec) => {
+			const unitState = rec.get('unit-state');
+			if (unitState === 'masked') {
+			    return gettext('disabled');
+			} else if (unitState === 'not-found') {
+			    return gettext('not installed');
+			} else {
+			    return value;
+			}
+		    },
 		},
 		{
 		    header: gettext('Active'),
