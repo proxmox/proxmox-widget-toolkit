@@ -123,9 +123,10 @@ Ext.define('Proxmox.node.ServiceView', {
 		    restart_btn.enable();
 		    start_btn.disable();
 		}
-	    } else if (unit !== undefined && (unit === 'masked' || unit === 'unknown')) {
+	    } else if (unit !== undefined && (unit === 'masked' || unit === 'unknown' || unit === 'not-found')) {
 		start_btn.disable();
 		restart_btn.disable();
+		stop_btn.disable();
 	    } else {
 		start_btn.enable();
 		stop_btn.disable();
