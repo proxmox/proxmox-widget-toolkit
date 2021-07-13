@@ -79,27 +79,18 @@ Ext.define('Proxmox.node.ServiceView', {
 	let start_btn = new Ext.Button({
 	    text: gettext('Start'),
 	    disabled: true,
-	    handler: function() {
-		service_cmd("start");
-	    },
+	    handler: () => service_cmd("start"),
 	});
-
 	let stop_btn = new Ext.Button({
 	    text: gettext('Stop'),
 	    disabled: true,
-	    handler: function() {
-		service_cmd("stop");
-	    },
+	    handler: () => service_cmd("stop"),
 	});
-
 	let restart_btn = new Ext.Button({
 	    text: gettext('Restart'),
 	    disabled: true,
-	    handler: function() {
-		service_cmd(me.restartCommand || "restart");
-	    },
+	    handler: () => service_cmd(me.restartCommand || "restart"),
 	});
-
 	let syslog_btn = new Ext.Button({
 	    text: gettext('Syslog'),
 	    disabled: true,
@@ -168,7 +159,13 @@ Ext.define('Proxmox.node.ServiceView', {
 	    },
 	    store: store,
 	    stateful: false,
-	    tbar: [start_btn, stop_btn, restart_btn, syslog_btn],
+	    tbar: [
+		start_btn,
+		stop_btn,
+		restart_btn,
+		'-',
+		syslog_btn,
+	    ],
 	    columns: [
 		{
 		    header: gettext('Name'),
