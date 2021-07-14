@@ -141,6 +141,7 @@ Ext.define('Proxmox.node.APTRepositoriesErrors', {
 Ext.define('Proxmox.node.APTRepositoriesGrid', {
     extend: 'Ext.grid.GridPanel',
     xtype: 'proxmoxNodeAPTRepositoriesGrid',
+    mixins: ['Proxmox.Mixin.CBind'],
 
     title: gettext('APT Repositories'),
 
@@ -162,6 +163,9 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    name: 'addRepo',
 	    disabled: true,
 	    repoInfo: undefined,
+	    cbind: {
+		onlineHelp: '{onlineHelp}',
+	    },
 	    handler: function(button, event, record) {
 		Proxmox.Utils.checked_command(() => {
 		    let me = this;
@@ -177,6 +181,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 			url: `/api2/extjs/nodes/${panel.nodename}/apt/repositories`,
 			method: 'PUT',
 			extraRequestParams: extraParams,
+			onlineHelp: me.onlineHelp,
 			listeners: {
 			    destroy: function() {
 				panel.reload();
@@ -410,6 +415,8 @@ Ext.define('Proxmox.node.APTRepositories', {
 
     digest: undefined,
 
+    onlineHelp: undefined,
+
     product: 'Proxmox VE', // default
 
     controller: {
@@ -575,6 +582,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    flex: 1,
 	    cbind: {
 		nodename: '{nodename}',
+		onlineHelp: '{onlineHelp}',
 	    },
 	    majorUpgradeAllowed: false, // TODO get release information from an API call?
 	    listeners: {
