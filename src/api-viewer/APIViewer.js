@@ -160,7 +160,7 @@ Ext.onReady(function() {
 	    if (info) {
 		let endpoint = real_path(data.path);
 		let usage = `<table><tr><td>HTTP:&nbsp;&nbsp;&nbsp;</td><td>`;
-		usage += `${method} /api2/json/${endpoint}</td></tr>`;
+		usage += `${method} /api2/json${endpoint}</td></tr>`;
 
 		if (typeof cliUsageRenderer === 'function') {
 		    usage += cliUsageRenderer(method, endpoint); // eslint-disable-line no-undef
