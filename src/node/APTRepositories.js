@@ -360,7 +360,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		let cls = 'fa fa-fw fa-question-circle-o';
 		if (value.match(/^\s*Proxmox\s*$/i)) {
 		    cls = 'pmx-itype-icon pmx-itype-icon-proxmox-x';
-		} else if (value.match(/^\s*Debian\s*$/i)) {
+		} else if (value.match(/^\s*Debian\s*(:?Backports)?$/i)) {
 		    cls = 'pmx-itype-icon pmx-itype-icon-debian-swirl';
 		}
 		return `<i class='${cls}'></i> ${value}`;
