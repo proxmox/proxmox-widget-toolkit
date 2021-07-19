@@ -115,6 +115,9 @@ Ext.onReady(function() {
     };
 
     let real_path = function(path) {
+	if (!path.match(/^[/]/)) {
+	    path = `/${path}`;
+	}
 	return path.replace(/^.*\/_upgrade_(\/)?/, "/");
     };
 
