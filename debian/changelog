@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (3.3-5) bullseye; urgency=medium
+
+  * node: repos: add possibility to link online help
+
+  * api-viewer: drop extra slash in api path
+
+  * apt: match "Debian Backports" origin as Debian one
+
+  * add new shared component for the package version window
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 19 Jul 2021 17:52:08 +0200
+
 proxmox-widget-toolkit (3.3-4) bullseye; urgency=medium
 
   * acme: allow wildcards as domain
