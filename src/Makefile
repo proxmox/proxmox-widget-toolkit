@@ -64,6 +64,7 @@ JSSRC=					\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
+	window/PackageVersions.js	\
 	window/TaskViewer.js		\
 	window/LanguageEdit.js		\
 	window/DiskSmart.js		\
