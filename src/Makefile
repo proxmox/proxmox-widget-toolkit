@@ -51,6 +51,7 @@ JSSRC=					\
 	panel/InputPanel.js		\
 	panel/InfoWidget.js		\
 	panel/LogView.js		\
+	panel/NodeInfoRepoStatus.js	\
 	panel/JournalView.js		\
 	panel/PermissionView.js		\
 	panel/PruneKeepPanel.js		\
