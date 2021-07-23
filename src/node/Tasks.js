@@ -199,7 +199,7 @@ Ext.define('Proxmox.node.Tasks', {
 		    startParam: 'start',
 		    limitParam: 'limit',
 		    extraParams: '{extraParams}',
-		    url: "/api2/json/nodes/localhost/tasks",
+		    url: '{url}',
 		},
 		listeners: {
 		    prefetch: 'updateLayout',
@@ -442,6 +442,10 @@ Ext.define('Proxmox.node.Tasks', {
 
     initComponent: function() {
 	const me = this;
+
+	let nodename = me.nodename || 'localhost';
+	let url = me.url || `/api2/json/nodes/${nodename}/tasks`;
+	me.getViewModel().set('url', url);
 
 	let updateExtraFilters = function(name, value) {
 	    let vm = me.getViewModel();
