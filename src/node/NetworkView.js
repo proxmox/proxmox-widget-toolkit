@@ -422,7 +422,7 @@ Ext.define('Proxmox.node.NetworkView', {
 			    dataIndex: 'vlan-raw-device',
 			},
 			{
-			    header: gettext('MTU'),
+			    header: 'MTU',
 			    hidden: true,
 			    sortable: true,
 			    dataIndex: 'mtu',
