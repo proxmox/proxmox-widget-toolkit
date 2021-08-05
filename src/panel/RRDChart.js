@@ -155,6 +155,11 @@ Ext.define('Proxmox.widget.RRDChart', {
 	},
     },
 
+    touchAction: {
+	panX: true,
+	panY: true,
+    },
+
     constructor: function(config) {
 	let me = this;
 
