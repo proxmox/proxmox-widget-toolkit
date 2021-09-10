@@ -78,6 +78,10 @@ Ext.define('Proxmox.window.ZFSDetail', {
 		nodename: '{nodename}',
 	    },
 	    rows: {
+		state: {
+		    header: gettext('Health'),
+		    renderer: Proxmox.Utils.render_zfs_health,
+		},
 		scan: {
 		    header: gettext('Scan'),
 		},
@@ -98,7 +102,8 @@ Ext.define('Proxmox.window.ZFSDetail', {
 	    title: gettext('Devices'),
 	    stateful: true,
 	    stateId: 'grid-node-zfsstatus',
-	    rootVisible: true,
+	    // the root is the pool itself and the information is shown by the grid
+	    rootVisible: false,
 	    fields: ['name', 'status',
 		{
 		    type: 'string',
