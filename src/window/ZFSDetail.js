@@ -45,7 +45,7 @@ Ext.define('Proxmox.window.ZFSDetail', {
 
     modal: true,
     width: 800,
-    height: 400,
+    height: 600,
     resizable: true,
     cbind: {
 	title: '{title}',
