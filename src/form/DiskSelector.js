@@ -8,6 +8,9 @@ Ext.define('Proxmox.form.DiskSelector', {
     // journal_disk: all disks with gpt
     diskType: undefined,
 
+    // use include-partitions=1 as a parameter
+    includePartitions: false,
+
     // the property the backend wnats for the type ('type' by default)
     typeProperty: 'type',
 
@@ -51,6 +54,10 @@ Ext.define('Proxmox.form.DiskSelector', {
 
 	if (me.diskType) {
 	    extraParams[me.typeProperty] = me.diskType;
+	}
+
+	if (me.includePartitions) {
+	    extraParams['include-partitions'] = 1;
 	}
 
 	var store = Ext.create('Ext.data.Store', {

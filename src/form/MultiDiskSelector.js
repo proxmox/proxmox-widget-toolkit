@@ -24,6 +24,9 @@ Ext.define('Proxmox.form.MultiDiskSelector', {
     // the type of disks to show
     diskType: 'unused',
 
+    // add include-partitions=1 as a request parameter
+    includePartitions: false,
+
     disks: [],
 
     allowBlank: false,
@@ -141,22 +144,31 @@ Ext.define('Proxmox.form.MultiDiskSelector', {
     initComponent: function() {
 	let me = this;
 
+	let extraParams = {};
+
 	if (!me.url) {
 	    if (!me.nodename) {
 		throw "no url or nodename given";
 	    }
 
-	    let node = me.nodename;
-	    let param = me.typeParameter;
-	    let type = me.diskType;
-	    me.url = `/api2/json/nodes/${node}/disks/list?${param}=${type}`;
+	    me.url = `/api2/json/nodes/${me.nodename}/disks/list`;
+
+	    extraParams[me.typeParameter] = me.diskType;
+
+	    if (me.includePartitions) {
+		extraParams['include-partitions'] = 1;
+	    }
 	}
 
 	me.disks = [];
 
 	me.callParent();
 	let store = me.getStore();
-	store.getProxy().setUrl(me.url);
+	store.setProxy({
+	    type: 'proxmox',
+	    url: me.url,
+	    extraParams,
+	});
 	store.load();
 	store.sort({ property: me.valueField });
     },
