@@ -399,14 +399,6 @@ Ext.define('Proxmox.DiskList', {
 		    return `${mainMessage}<br><br>${additionalInfo}`;
 		},
 		disabled: true,
-		enableFn: function(rec) {
-		    // TODO enable for partitions once they can be selected for ZFS,LVM,etc. creation
-		    if (!rec || rec.data.parent) {
-			return false;
-		    } else {
-			return true;
-		    }
-		},
 		handler: 'wipeDisk',
 	    });
 	}
