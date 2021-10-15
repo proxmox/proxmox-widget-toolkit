@@ -12,7 +12,6 @@ Ext.define('Proxmox.window.DiskSmart', {
     minWidth: 400,
     minHeight: 300,
     bodyPadding: 5,
-    title: gettext('S.M.A.R.T. Values'),
 
     items: [
 	{
@@ -112,6 +111,8 @@ Ext.define('Proxmox.window.DiskSmart', {
 	if (!dev) {
 	    throw "no device specified";
 	}
+
+	me.title = gettext('S.M.A.R.T. Values') + ` (${dev})`;
 
 	me.store = Ext.create('Ext.data.Store', {
 	    model: 'pmx-disk-smart',
