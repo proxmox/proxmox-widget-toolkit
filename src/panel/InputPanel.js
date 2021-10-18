@@ -23,8 +23,7 @@ Ext.define('Proxmox.panel.InputPanel', {
     // will be set if the inputpanel has advanced items
     hasAdvanced: false,
 
-    // if the panel has advanced items,
-    // this will determine if they are shown by default
+    // if the panel has advanced items, this will determine if they are shown by default
     showAdvanced: false,
 
     // overwrite this to modify submit data
