@@ -22,7 +22,7 @@ Ext.define('Proxmox.window.DiskSmart', {
 	    emptyText: gettext('No S.M.A.R.T. Values'),
 	    scrollable: true,
 	    flex: 1,
-	    itemId: 'smarts',
+	    itemId: 'smartGrid',
 	    reserveScrollbar: true,
 	    columns: [
 		{
@@ -69,7 +69,7 @@ Ext.define('Proxmox.window.DiskSmart', {
 	},
 	{
 	    xtype: 'component',
-	    itemId: 'text',
+	    itemId: 'smartPlainText',
 	    hidden: true,
 	    autoScroll: true,
 	    padding: 5,
@@ -101,46 +101,42 @@ Ext.define('Proxmox.window.DiskSmart', {
     ],
 
     initComponent: function() {
-	var me = this;
+	let me = this;
 
 	if (!me.baseurl) {
 	    throw "no baseurl specified";
 	}
-
-	var dev = me.dev;
-	if (!dev) {
+	if (!me.dev) {
 	    throw "no device specified";
 	}
 
-	me.title = gettext('S.M.A.R.T. Values') + ` (${dev})`;
+	me.title = `${gettext('S.M.A.R.T. Values')} (${me.dev})`;
 
 	me.store = Ext.create('Ext.data.Store', {
 	    model: 'pmx-disk-smart',
 	    proxy: {
                 type: 'proxmox',
-		url: `${me.baseurl}/smart?disk=${dev}`,
+		url: `${me.baseurl}/smart?disk=${me.dev}`,
 	    },
 	});
 
 	me.callParent();
 
-	let grid = me.down('#smarts');
+	let grid = me.down('#smartGrid'), plainText = me.down('#smartPlainText');
 
 	Proxmox.Utils.monStoreErrors(grid, me.store);
-	me.mon(me.store, 'load', function(s, records, success) {
-	    if (success && records.length > 0) {
-		let rec = records[0];
-		if (rec.data.type === 'text') {
-		    grid.setVisible(false);
-
-		    me.down('#text').setHtml(Ext.String.htmlEncode(rec.data.text));
-		    me.down('#text').setVisible(true);
-		} else {
-		    grid.setVisible(true);
-		    me.down('#text').setVisible(false);
-		    grid.setStore(rec.attributes());
-		}
+	me.mon(me.store, 'load', function(_store, records, success) {
+	    if (!success || records.length <= 0) {
+		return; // FIXME: clear displayed info?
 	    }
+	    let isPlainText = records[0].data.type === 'text';
+	    if (isPlainText) {
+		plainText.setHtml(Ext.String.htmlEncode(records[0].data.text));
+	    } else {
+		grid.setStore(records[0].attributes());
+	    }
+	    grid.setVisible(!isPlainText);
+	    plainText.setVisible(isPlainText);
 	});
 
 	me.store.load();
