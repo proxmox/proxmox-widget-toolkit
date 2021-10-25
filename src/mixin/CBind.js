@@ -1,3 +1,99 @@
+/*
+ * The Proxmox CBind mixin is intended to supplement the 'bind' mechanism
+ * of ExtJS. In contrast to the 'bind', 'cbind' only acts during the creation
+ * of the component, not during its lifetime. It's only applied once before
+ * the 'initComponent' method is executed, and thus you have only access
+ * to the basic initial configuration of it.
+ *
+ * You can use it to get a 'declarative' approach to component declaration,
+ * even when you need to set some properties of sub-components dynamically
+ * (e.g., the 'nodename'). It overwrites the given properties of the 'cbind'
+ * object in the component with their computed values of the computed
+ * cbind configuration object of the 'cbindData' function (or object).
+ *
+ * The cbind syntax is inspired by ExtJS' bind syntax ('{property}'), where
+ * it is possible to negate values ('{!negated}'), access sub-properties of
+ * objects ('{object.property}') and even use a getter function,
+ * akin to viewModel formulas ('(get) => get("prop")') to execute more
+ * complicated dependencies (e.g., urls).
+ *
+ * The 'cbind' will be recursively applied to all properties (objects/arrays)
+ * that contain an 'xtype' or 'cbind' property, but stops for a subtree if the
+ * object in question does not have either (if you have one or more levels that
+ * have no cbind/xtype property, you can insert empty cbind objects there to
+ * reach deeper nested objects).
+ *
+ * This reduces the code in the 'initComponent' and instead we can statically
+ * declare items, buttons, tbars, etc. while the dynamic parts are contained
+ * in the 'cbind'.
+ *
+ * It is used like in the following example:
+ *
+ * Ext.define('Some.Component', {
+ *     extend: 'Some.other.Component',
+ *
+ *     // first it has to be enabled
+ *     mixins: ['Proxmox.Mixin.CBind'],
+ *
+ *     // then a base config has to be defined. this can be a function,
+ *     // which has access to the initial config and can store persistent
+ *     // properties, as well as return temporary ones (which only exist during
+ *     // the cbind process)
+ *     // this function will be called before 'initComponent'
+ *     cbindData: function(initialconfig) {
+ *         // 'this' here is the same as in 'initComponent'
+ *         let me = this;
+ *         me.persistentProperty = false;
+ *         return {
+ *             temporaryProperty: true,
+ *         };
+ *     },
+ *
+ *     // if there is no need for persistent properties, it can also simply be an object
+ *     cbindData: {
+ *         temporaryProperty: true,
+ *         // properties itself can also be functions that will be evaluated before
+ *         // replacing the values
+ *         dynamicProperty: (cfg) => !cfg.temporaryProperty,
+ *         numericProp: 0,
+ *         objectProp: {
+ *             foo: 'bar',
+ *             bar: 'baz',
+ *         }
+ *     },
+ *
+ *     // you can 'cbind' the component itself, here the 'target' property
+ *     // will be replaced with the content of 'temporaryProperty' (true)
+ *     // before the components initComponent
+ *     cbind: {
+ *          target: '{temporaryProperty}',
+ *     },
+ *
+ *     items: [
+ *         {
+ *             xtype: 'checkbox',
+ *             cbind: {
+ *                 value: '{!persistentProperty}',
+ *                 object: '{objectProp.foo}'
+ *                 dynamic: (get) => get('numericProp') + 1,
+ *             },
+ *         },
+ *         {
+ *             // empty cbind so that subitems are reached
+ *             cbind: {},
+ *             items: [
+ *                 {
+ *                     xtype: 'textfield',
+ *                     cbind: {
+ *                         value: '{objectProp.bar}',
+ *                     },
+ *                 },
+ *             ],
+ *         },
+ *     ],
+ * });
+ */
+
 Ext.define('Proxmox.Mixin.CBind', {
     extend: 'Ext.Mixin',
 
