@@ -78,6 +78,7 @@ JSSRC=					\
 	window/FileBrowser.js		\
 	window/AuthEditBase.js		\
 	window/AuthEditOpenId.js	\
+	window/TfaWindow.js		\
 	node/APT.js			\
 	node/APTRepositories.js		\
 	node/NetworkEdit.js		\
