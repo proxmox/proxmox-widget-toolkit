@@ -63,6 +63,7 @@ JSSRC=					\
 	panel/ACMEPlugin.js		\
 	panel/ACMEDomains.js		\
 	panel/StatusView.js		\
+	panel/TfaView.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
