@@ -45,7 +45,7 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 
 	    let lastTabId = me.getLastTabUsed();
 	    let initialTab = -1, i = 0;
-	    for (const k of ['webauthn', 'totp', 'recovery', 'u2f']) {
+	    for (const k of ['webauthn', 'totp', 'recovery', 'u2f', 'yubico']) {
 		const available = !!challenge[k];
 		vm.set(`availableChallenge.${k}`, available);
 
@@ -141,6 +141,13 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 
 	    let code = me.lookup('totp').getValue();
 	    let _promise = me.finishChallenge(`totp:${code}`);
+	},
+
+	loginYubico: function() {
+	    let me = this;
+
+	    let code = me.lookup('yubico').getValue();
+	    let _promise = me.finishChallenge(`yubico:${code}`);
 	},
 
 	loginWebauthn: async function() {
@@ -409,6 +416,28 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 			tpl: '<i class="fa fa-warning warning"></i> {error}',
 			reference: 'u2fError',
 			hidden: true,
+		    },
+		],
+	    },
+	    {
+		xtype: 'panel',
+		title: gettext('Yubico OTP'),
+		iconCls: 'fa fa-fw fa-yahoo',
+		handler: 'loginYubico',
+		bind: {
+		    disabled: '{!availableChallenge.yubico}',
+		},
+		items: [
+		    {
+			xtype: 'textfield',
+			fieldLabel: gettext('Please enter your Yubico OTP code'),
+			labelWidth: 300,
+			name: 'yubico',
+			disabled: true,
+			reference: 'yubico',
+			allowBlank: false,
+			regex: /^[a-z0-9]{30,60}$/, // *should* be 44 but not sure if that's "fixed"
+			regexText: gettext('TOTP codes consist of six decimal digits'),
 		    },
 		],
 	    },

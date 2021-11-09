@@ -83,6 +83,7 @@ JSSRC=					\
 	window/AddTfaRecovery.js	\
 	window/AddTotp.js		\
 	window/AddWebauthn.js		\
+	window/AddYubico.js		\
 	window/TfaEdit.js		\
 	node/APT.js			\
 	node/APTRepositories.js		\

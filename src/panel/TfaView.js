@@ -18,11 +18,20 @@ Ext.define('pmx-tfa-entry', {
 Ext.define('Proxmox.panel.TfaView', {
     extend: 'Ext.grid.GridPanel',
     alias: 'widget.pmxTfaView',
+    mixins: ['Proxmox.Mixin.CBind'],
 
     title: gettext('Second Factors'),
     reference: 'tfaview',
 
     issuerName: 'Proxmox',
+    yubicoEnabled: false,
+
+    cbindData: function(initialConfig) {
+	let me = this;
+	return {
+	    yubicoEnabled: me.yubicoEnabled,
+	};
+    },
 
     store: {
 	type: 'diff',
@@ -108,6 +117,19 @@ Ext.define('Proxmox.panel.TfaView', {
 	    let me = this;
 
 	    Ext.create('Proxmox.window.AddTfaRecovery', {
+		listeners: {
+		    destroy: function() {
+			me.reload();
+		    },
+		},
+	    }).show();
+	},
+
+	addYubico: function() {
+	    let me = this;
+
+	    Ext.create('Proxmox.window.AddYubico', {
+		isCreate: true,
 		listeners: {
 		    destroy: function() {
 			me.reload();
@@ -227,6 +249,7 @@ Ext.define('Proxmox.panel.TfaView', {
     tbar: [
 	{
 	    text: gettext('Add'),
+	    cbind: {},
 	    menu: {
 		xtype: 'menu',
 		items: [
@@ -247,6 +270,15 @@ Ext.define('Proxmox.panel.TfaView', {
 			itemId: 'recovery',
 			iconCls: 'fa fa-fw fa-file-text-o',
 			handler: 'addRecovery',
+		    },
+		    {
+			text: gettext('Yubico'),
+			itemId: 'yubico',
+			iconCls: 'fa fa-fw fa-yahoo',
+			handler: 'addYubico',
+			cbind: {
+			    hidden: '{!yubicoEnabled}',
+			},
 		    },
 		],
 	    },
