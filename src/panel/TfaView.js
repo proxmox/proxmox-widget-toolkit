@@ -268,9 +268,9 @@ Ext.define('Proxmox.panel.TfaView', {
 			handler: 'addRecovery',
 		    },
 		    {
-			text: gettext('Yubico'),
+			text: gettext('Yubico OTP'),
 			itemId: 'yubico',
-			iconCls: 'fa fa-fw fa-yahoo',
+			iconCls: 'fa fa-fw fa-yahoo', // close enough
 			handler: 'addYubico',
 			cbind: {
 			    hidden: '{!yubicoEnabled}',

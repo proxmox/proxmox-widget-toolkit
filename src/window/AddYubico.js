@@ -7,7 +7,7 @@ Ext.define('Proxmox.window.AddYubico', {
 
     modal: true,
     resizable: false,
-    title: gettext('Add a Yubico key'),
+    title: gettext('Add a Yubico OTP key'),
     width: 512,
 
     isAdd: true,
@@ -119,6 +119,11 @@ Ext.define('Proxmox.window.AddYubico', {
 			emptyText: () =>
 			    Ext.String.format(gettext("Confirm your ({0}) password"), Proxmox.UserName),
 		    },
+		},
+		{
+		    xtype: 'box',
+		    html: `<span class='pmx-hint'>${gettext('Tip:')}</span> `
+			+ gettext('YubiKeys also support WebAuthn, which is often a better alternative.'),
 		},
 	    ],
 	},
