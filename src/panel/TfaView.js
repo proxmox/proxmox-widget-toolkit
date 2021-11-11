@@ -105,24 +105,22 @@ Ext.define('Proxmox.panel.TfaView', {
 
 	    Ext.create('Proxmox.window.AddWebauthn', {
 		isCreate: true,
+		autoShow: true,
 		listeners: {
-		    destroy: function() {
-			me.reload();
-		    },
+		    destroy: () => me.reload(),
 		},
-	    }).show();
+	    });
 	},
 
 	addRecovery: async function() {
 	    let me = this;
 
 	    Ext.create('Proxmox.window.AddTfaRecovery', {
+		autoShow: true,
 		listeners: {
-		    destroy: function() {
-			me.reload();
-		    },
+		    destroy: () => me.reload(),
 		},
-	    }).show();
+	    });
 	},
 
 	addYubico: function() {
@@ -130,12 +128,11 @@ Ext.define('Proxmox.panel.TfaView', {
 
 	    Ext.create('Proxmox.window.AddYubico', {
 		isCreate: true,
+		autoShow: true,
 		listeners: {
-		    destroy: function() {
-			me.reload();
-		    },
+		    destroy: () => me.reload(),
 		},
-	    }).show();
+	    });
 	},
 
 	editItem: function() {
@@ -148,12 +145,11 @@ Ext.define('Proxmox.panel.TfaView', {
 
 	    Ext.create('Proxmox.window.TfaEdit', {
 		'tfa-id': selection[0].data.fullid,
+		autoShow: true,
 		listeners: {
-		    destroy: function() {
-			me.reload();
-		    },
+		    destroy: () => me.reload(),
 		},
-	    }).show();
+	    });
 	},
 
 	renderUser: fullid => fullid.split('/')[0],
@@ -172,8 +168,8 @@ Ext.define('Proxmox.panel.TfaView', {
 	    Ext.create('Proxmox.tfa.confirmRemove', {
 		...record.data,
 		callback: password => me.removeItem(password, record),
-	    })
-	    .show();
+		autoShow: true,
+	    });
 	},
 
 	removeItem: async function(password, record) {
