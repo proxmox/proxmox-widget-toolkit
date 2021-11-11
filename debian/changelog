@@ -1,3 +1,22 @@
+proxmox-widget-toolkit (3.4-1) bullseye; urgency=medium
+
+  * panel/RRDCharts: enable scrolling for RRDCharts on touchscreens
+
+  * disk selector: allow requesting partitions too
+
+  * fix #3589: show device name in title for SMART values window
+
+  * cbind: document cbind by adding a small summary and example
+
+  * add common utils used for u2f and webauthn, adapted from PVE and PBS,
+    respectively
+
+  * add TFA-login, TOTP, WebAuthn and recover-key edit windows for better reuse
+
+  * disk list: allow wiping individual partitions
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 11 Nov 2021 21:11:16 +0100
+
 proxmox-widget-toolkit (3.3-6) bullseye; urgency=medium
 
   * fix #3542: node: task logs: query correct node for tasks in clusters
