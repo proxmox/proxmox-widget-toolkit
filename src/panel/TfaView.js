@@ -234,7 +234,7 @@ Ext.define('Proxmox.panel.TfaView', {
 	    width: 150,
 	    sortable: true,
 	    dataIndex: 'created',
-	    renderer: Proxmox.Utils.render_timestamp,
+	    renderer: t => !t ? 'N/A' : Proxmox.Utils.render_timestamp(t),
 	},
 	{
 	    header: gettext('Description'),
