@@ -18,7 +18,7 @@ Ext.define('Proxmox.window.AddTotp', {
     isAdd: true,
     userid: undefined,
     tfa_id: undefined,
-    issuerName: 'Proxmox',
+    issuerName: `Proxmox - ${document?.location?.hostname || 'unknown'}`,
     fixedUser: false,
 
     updateQrCode: function() {
