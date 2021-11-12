@@ -384,7 +384,10 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 			reference: 'recoveryLow',
 			hidden: true,
 			html: '<i class="fa fa-exclamation-triangle warning"></i>'
-			    + gettext('Less than {0} recovery keys available. Please generate a new set after login!'),
+			    + Ext.String.format(
+				gettext('Less than {0} recovery keys available. Please generate a new set after login!'),
+				4,
+			    ),
 		    },
 		],
 	    },
