@@ -6,6 +6,7 @@ Ext.define('Proxmox.form.Checkbox', {
 	defaultValue: undefined,
 	deleteDefaultValue: false,
 	deleteEmpty: false,
+	clearOnDisable: false,
     },
 
     inputValue: '1',
@@ -29,6 +30,19 @@ Ext.define('Proxmox.form.Checkbox', {
 	    }
         }
         return data;
+    },
+
+    setDisabled: function(disabled) {
+	let me = this;
+
+	// only clear on actual transition
+	let toClearValue = me.clearOnDisable && !me.disabled && disabled;
+
+	me.callParent(arguments);
+
+	if (toClearValue) {
+	    me.setValue(false); // TODO: could support other "reset value" or use originalValue?
+	}
     },
 
     // also accept integer 1 as true
