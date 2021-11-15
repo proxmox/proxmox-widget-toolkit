@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (3.4-2) bullseye; urgency=medium
+
+  * TFA login window: fix a formatted label showed when being low on unused
+    recovery-keys
+
+  * proxmox checkbox: add clearOnDisable config
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 15 Nov 2021 10:23:34 +0100
+
 proxmox-widget-toolkit (3.4-1) bullseye; urgency=medium
 
   * panel/RRDCharts: enable scrolling for RRDCharts on touchscreens
