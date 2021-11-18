@@ -28,7 +28,7 @@ Ext.define('Proxmox.data.DiffStore', {
     // config is passed instead of an existing rstore instance
     autoDestroyRstore: false,
 
-    onDestroy: function() {
+    doDestroy: function() {
 	let me = this;
 	if (me.autoDestroyRstore) {
 	    if (Ext.isFunction(me.rstore.destroy)) {
