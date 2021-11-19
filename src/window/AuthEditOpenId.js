@@ -81,6 +81,16 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
 		editable: '{isCreate}',
 	    },
 	},
+	{
+	    xtype: 'proxmoxtextfield',
+	    name: 'scopes',
+	    fieldLabel: gettext('Scopes'),
+	    emptyText: `${Proxmox.Utils.defaultText} (email profile)`,
+	    submitEmpty: false,
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+	    },
+	},
     ],
 
     columnB: [
