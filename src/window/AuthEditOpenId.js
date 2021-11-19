@@ -120,5 +120,17 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
 	    },
 	},
     ],
+
+    advancedColumnB: [
+	{
+	    xtype: 'proxmoxtextfield',
+	    name: 'acr-values',
+	    fieldLabel: gettext('ACR Values'),
+	    submitEmpty: false,
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+	    },
+	},
+    ],
 });
 
