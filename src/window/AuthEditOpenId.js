@@ -91,6 +91,23 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
 		deleteEmpty: '{!isCreate}',
 	    },
 	},
+	{
+	    xtype: 'proxmoxKVComboBox',
+	    name: 'prompt',
+	    fieldLabel: gettext('Prompt'),
+	    editable: true,
+	    emptyText: gettext('Auth-Provider Default'),
+	    comboItems: [
+		['__default__', gettext('Auth-Provider Default')],
+		['none', 'none'],
+		['login', 'login'],
+		['consent', 'consent'],
+		['select_account', 'select_account'],
+	    ],
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+	    },
+	},
     ],
 
     columnB: [
