@@ -664,6 +664,22 @@ utilities: {
 	return `${size.toFixed(commaDigits)} ${unit}B`;
     },
 
+    SizeUnits: {
+	'B': 1,
+
+	'KiB': 1024,
+	'MiB': 1024*1024,
+	'GiB': 1024*1024*1024,
+	'TiB': 1024*1024*1024*1024,
+	'PiB': 1024*1024*1024*1024*1024,
+
+	'KB': 1000,
+	'MB': 1000*1000,
+	'GB': 1000*1000*1000,
+	'TB': 1000*1000*1000*1000,
+	'PB': 1000*1000*1000*1000*1000,
+    },
+
     render_upid: function(value, metaData, record) {
 	let task = record.data;
 	let type = task.type || task.worker_type;

@@ -21,18 +21,6 @@ Ext.define('Proxmox.form.SizeField', {
 	hideLabel: true,
     },
 
-    units: {
-	'B': 1,
-	'KiB': 1024,
-	'MiB': 1024*1024,
-	'GiB': 1024*1024*1024,
-	'TiB': 1024*1024*1024*1024,
-	'KB': 1000,
-	'MB': 1000*1000,
-	'GB': 1000*1000*1000,
-	'TB': 1000*1000*1000*1000,
-    },
-
     // display unit (TODO: make (optionally) selectable)
     unit: 'MiB',
     unitPostfix: '',
@@ -67,7 +55,7 @@ Ext.define('Proxmox.form.SizeField', {
 		    let vm = fieldContainer.getViewModel();
 		    let unit = vm.get('unit');
 
-		    v /= fieldContainer.units[unit];
+		    v /= Proxmox.Utils.SizeUnits[unit];
 		    v *= fieldContainer.backendFactor;
 
 		    this._transformed = true;
@@ -95,10 +83,9 @@ Ext.define('Proxmox.form.SizeField', {
 		let vm = fieldContainer.getViewModel();
 		let unit = vm.get('unit');
 
-		v = parseFloat(v) * fieldContainer.units[unit];
-		v /= fieldContainer.backendFactor;
+		v = parseFloat(v) * Proxmox.Utils.SizeUnits[unit];
 
-		return String(Math.floor(v));
+		return String(Math.floor(v / fieldContainer.backendFactor));
 	    },
 	    listeners: {
 		// our setValue gets only called if we have a value, avoid
@@ -127,16 +114,16 @@ Ext.define('Proxmox.form.SizeField', {
 	let me = this;
 
 	me.unit = me.unit || 'MiB';
-	if (!(me.unit in me.units)) {
+	if (!(me.unit in Proxmox.Utils.SizeUnits)) {
 	    throw "unknown unit: " + me.unit;
 	}
 
 	me.backendFactor = 1;
 	if (me.backendUnit !== undefined) {
-	    if (!(me.unit in me.units)) {
+	    if (!(me.unit in Proxmox.Utils.SizeUnits)) {
 		throw "unknown backend unit: " + me.backendUnit;
 	    }
-	    me.backendFactor = me.units[me.backendUnit];
+	    me.backendFactor = Proxmox.Utils.SizeUnits[me.backendUnit];
 	}
 
 	me.callParent(arguments);
