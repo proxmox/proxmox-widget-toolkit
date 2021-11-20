@@ -29,6 +29,9 @@ Ext.define('Proxmox.form.SizeField', {
     // for KiB set it to 'KiB'
     backendUnit: undefined,
 
+    // submit a canonical size unit, e.g., 20.5 MiB
+    submitAutoScaledSizeUnit: false,
+
     // allow setting 0 and using it as a submit value
     allowZero: false,
 
@@ -55,6 +58,9 @@ Ext.define('Proxmox.form.SizeField', {
 		    let vm = fieldContainer.getViewModel();
 		    let unit = vm.get('unit');
 
+		    if (typeof v === "string") {
+			v = Proxmox.Utils.size_unit_to_bytes(v);
+		    }
 		    v /= Proxmox.Utils.SizeUnits[unit];
 		    v *= fieldContainer.backendFactor;
 
@@ -85,7 +91,11 @@ Ext.define('Proxmox.form.SizeField', {
 
 		v = parseFloat(v) * Proxmox.Utils.SizeUnits[unit];
 
-		return String(Math.floor(v / fieldContainer.backendFactor));
+		if (fieldContainer.submitAutoScaledSizeUnit) {
+		    return Proxmox.Utils.format_size(v, !unit.endsWith('iB'));
+		} else {
+		    return String(Math.floor(v / fieldContainer.backendFactor));
+		}
 	    },
 	    listeners: {
 		// our setValue gets only called if we have a value, avoid
