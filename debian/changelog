@@ -1,3 +1,25 @@
+proxmox-widget-toolkit (3.4-3) bullseye; urgency=medium
+
+  * data: diffstore: fix autoDestroyRstore option (regression from ExtJS 7)
+
+  * ui: OpenID edit: make username-claim field editable for arbitrary values
+
+  * ui: OpenID realm: allow to edit scopes
+
+  * ui: OpenID realm: allow to edit prompt
+
+  * ui: OpenID realm: allow to edit acr values
+
+  * form: copy BandwidthSelector/SizeField from Proxmox VE's manager
+
+  * bandwidth/utils: move out SizeUnits definition to more common module
+
+  * utils: add size unit related helpers to parse/auto-scale/format
+
+  * bandwidth field: allow to submit auto-scaled size-units as string
+
+ -- Proxmox Support Team <support@proxmox.com>  Sat, 20 Nov 2021 21:41:37 +0100
+
 proxmox-widget-toolkit (3.4-2) bullseye; urgency=medium
 
   * TFA login window: fix a formatted label showed when being low on unused
