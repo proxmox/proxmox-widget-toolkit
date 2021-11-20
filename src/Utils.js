@@ -680,6 +680,37 @@ utilities: {
 	'PB': 1000*1000*1000*1000*1000,
     },
 
+    parse_size_unit: function(val) {
+	//let m = val.match(/([.\d])+\s?([KMGTP]?)(i?)B?\s*$/i);
+	let m = val.match(/(\d+(?:\.\d+)?)\s?([KMGTP]?)(i?)B?\s*$/i);
+	let size = parseFloat(m[1]);
+	let scale = m[2].toUpperCase();
+	let binary = m[3].toLowerCase();
+
+	let unit = `${scale}${binary}B`;
+	let factor = Proxmox.Utils.SizeUnits[unit];
+
+	return { size, factor, unit, binary }; // for convenience return all we got
+    },
+
+    size_unit_to_bytes: function(val) {
+	let { size, factor } = Proxmox.Utils.parse_size_unit(val);
+	return size * factor;
+    },
+
+    autoscale_size_unit: function(val) {
+	let { size, factor, binary } = Proxmox.Utils.parse_size_unit(val);
+	return Proxmox.Utils.format_size(size * factor, binary !== "i");
+    },
+
+    size_unit_ratios: function(a, b) {
+	a = typeof a !== "undefined" ? a : 0;
+	b = typeof b !== "undefined" ? b : Infinity;
+	let aBytes = typeof a === "number" ? a : Proxmox.Utils.size_unit_to_bytes(a);
+	let bBytes = typeof b === "number" ? b : Proxmox.Utils.size_unit_to_bytes(b);
+	return aBytes / (bBytes || Infinity); // avoid division by zero
+    },
+
     render_upid: function(value, metaData, record) {
 	let task = record.data;
 	let type = task.type || task.worker_type;
