@@ -198,7 +198,6 @@ Ext.define('Proxmox.panel.JournalView', {
 
 	    view.loadTask = new Ext.util.DelayedTask(me.doLoad, me, [true, false]);
 
-	    me.updateParams();
 	    view.task = Ext.TaskManager.start({
 		run: function() {
 		    if (!view.isVisible() || !view.scrollToEnd || !viewmodel.get('livemode')) {
