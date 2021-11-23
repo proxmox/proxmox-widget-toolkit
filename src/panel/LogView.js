@@ -45,27 +45,33 @@ Ext.define('Proxmox.panel.LogView', {
 	    return maxPos - pos;
 	},
 
-	updateView: function(text, first, total) {
+	updateView: function(lines, first, total) {
 	    let me = this;
 	    let view = me.getView();
 	    let viewModel = me.getViewModel();
 	    let content = me.lookup('content');
 	    let data = viewModel.get('data');
 
-	    if (first === data.first && total === data.total && text.length === data.textlen) {
+	    if (first === data.first && total === data.total && lines.length === data.lines) {
 		return; // same content, skip setting and scrolling
 	    }
 	    viewModel.set('data', {
 		first: first,
 		total: total,
-		textlen: text.length,
+		lines: lines.length,
 	    });
 
 	    let scrollPos = me.scrollPosBottom();
+	    let scrollToBottom = view.scrollToEnd && scrollPos <= 5;
 
-	    content.update(text);
+	    if (!scrollToBottom) {
+		// so that we have the 'correct' height for the text
+		lines.length = total;
+	    }
 
-	    if (view.scrollToEnd && scrollPos <= 5) {
+	    content.update(lines.join('<br>'));
+
+	    if (scrollToBottom) {
 		// we use setTimeout to work around scroll handling on touchscreens
 		setTimeout(function() { view.scrollTo(0, Infinity); }, 10);
 	    }
@@ -97,8 +103,7 @@ Ext.define('Proxmox.panel.LogView', {
 			lines[line.n - 1] = Ext.htmlEncode(line.t);
 		    });
 
-		    lines.length = total;
-		    me.updateView(lines.join('<br>'), first - 1, total);
+		    me.updateView(lines, first - 1, total);
 		    me.running = false;
 		    if (me.requested) {
 			me.requested = false;
