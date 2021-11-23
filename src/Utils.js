@@ -155,7 +155,7 @@ utilities: {
     // somewhat like a human would tell durations, omit zero values and do not
     // give seconds precision if we talk days already
     format_duration_human: function(ut) {
-	let seconds = 0, minutes = 0, hours = 0, days = 0;
+	let seconds = 0, minutes = 0, hours = 0, days = 0, years = 0;
 
 	if (ut <= 0.1) {
 	    return '<0.1s';
@@ -171,7 +171,11 @@ utilities: {
 		hours = remaining % 24;
 		remaining = Math.trunc(remaining / 24);
 		if (remaining > 0) {
-		    days = remaining;
+		    days = remaining % 365;
+		    remaining = Math.trunc(remaining / 365); // yea, just lets ignore leap years...
+		    if (remaining > 0) {
+			years = remaining;
+		    }
 		}
 	    }
 	}
@@ -182,11 +186,14 @@ utilities: {
 	    return t > 0;
 	};
 
+	let addMinutes = !add(years, 'y');
 	let addSeconds = !add(days, 'd');
 	add(hours, 'h');
-	add(minutes, 'm');
-	if (addSeconds) {
-	    add(seconds, 's');
+	if (addMinutes) {
+	    add(minutes, 'm');
+	    if (addSeconds) {
+		add(seconds, 's');
+	    }
 	}
 	return res.join(' ');
     },
