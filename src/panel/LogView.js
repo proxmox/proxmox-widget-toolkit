@@ -72,8 +72,11 @@ Ext.define('Proxmox.panel.LogView', {
 	    content.update(lines.join('<br>'));
 
 	    if (scrollToBottom) {
-		// we use setTimeout to work around scroll handling on touchscreens
-		setTimeout(function() { view.scrollTo(0, Infinity); }, 10);
+		let scroller = view.getScrollable();
+		scroller.suspendEvent('scroll');
+		view.scrollTo(0, Infinity);
+		me.updateStart(true);
+		scroller.resumeEvent('scroll');
 	    }
 	},
 
@@ -126,6 +129,25 @@ Ext.define('Proxmox.panel.LogView', {
 	    });
 	},
 
+	updateStart: function(scrolledToBottom, targetLine) {
+	    let me = this;
+	    let view = me.getView();
+	    let viewModel = me.getViewModel();
+
+	    let limit = viewModel.get('params.limit');
+
+	    if (scrolledToBottom) {
+		let total = viewModel.get('data.total');
+		viewModel.set('params.start',
+		    Math.max(parseInt(total - limit, 10), 0));
+	    } else {
+		viewModel.set('params.start',
+		    Math.max(parseInt(targetLine - (limit / 2) + 10, 10), 0));
+	    }
+
+	    view.loadTask.delay(200);
+	},
+
 	onScroll: function(x, y) {
 	    let me = this;
 	    let view = me.getView();
@@ -141,9 +163,7 @@ Ext.define('Proxmox.panel.LogView', {
 	    let viewEnd = parseInt(line + viewLines + 1 + view.viewBuffer, 10);
 
 	    if (viewStart < start || viewEnd > start+limit) {
-		viewModel.set('params.start',
-		    Math.max(parseInt(line - (limit / 2) + 10, 10), 0));
-		view.loadTask.delay(200);
+		me.updateStart(false, line);
 	    }
 	},
 
