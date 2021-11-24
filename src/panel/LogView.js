@@ -161,7 +161,9 @@ Ext.define('Proxmox.panel.LogView', {
 
 	    let { start, limit } = viewModel.get('params');
 
-	    if (viewStart < start || viewEnd > start + limit) {
+	    let margin = start < 20 ? 0 : 20;
+
+	    if (viewStart < start + margin || viewEnd > start + limit - margin) {
 		me.updateStart(false, line);
 	    }
 	},
