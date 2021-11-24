@@ -131,38 +131,33 @@ Ext.define('Proxmox.panel.LogView', {
 
 	updateStart: function(scrolledToBottom, targetLine) {
 	    let me = this;
-	    let view = me.getView();
-	    let viewModel = me.getViewModel();
+	    let view = me.getView(), viewModel = me.getViewModel();
 
 	    let limit = viewModel.get('params.limit');
+	    let total = viewModel.get('data.total');
 
-	    if (scrolledToBottom) {
-		let total = viewModel.get('data.total');
-		viewModel.set('params.start',
-		    Math.max(parseInt(total - limit, 10), 0));
-	    } else {
-		viewModel.set('params.start',
-		    Math.max(parseInt(targetLine - (limit / 2) + 10, 10), 0));
-	    }
+	    let newStart = scrolledToBottom
+		? Math.trunc(total - limit, 10)
+		: Math.trunc(targetLine - (limit / 2) + 10);
+
+	    viewModel.set('params.start', Math.max(newStart, 0));
 
 	    view.loadTask.delay(200);
 	},
 
 	onScroll: function(x, y) {
 	    let me = this;
-	    let view = me.getView();
-	    let viewModel = me.getViewModel();
+	    let view = me.getView(), viewModel = me.getViewModel();
 
-	    let lineHeight = view.lineHeight;
-	    let line = view.getScrollY()/lineHeight;
-	    let start = viewModel.get('params.start');
-	    let limit = viewModel.get('params.limit');
-	    let viewLines = view.getHeight()/lineHeight;
+	    let line = view.getScrollY() / view.lineHeight;
+	    let viewLines = view.getHeight() / view.lineHeight;
 
-	    let viewStart = Math.max(parseInt(line - 1 - view.viewBuffer, 10), 0);
-	    let viewEnd = parseInt(line + viewLines + 1 + view.viewBuffer, 10);
+	    let viewStart = Math.max(Math.trunc(line - 1 - view.viewBuffer), 0);
+	    let viewEnd = Math.trunc(line + viewLines + 1 + view.viewBuffer);
 
-	    if (viewStart < start || viewEnd > start+limit) {
+	    let { start, limit } = viewModel.get('params');
+
+	    if (viewStart < start || viewEnd > start + limit) {
 		me.updateStart(false, line);
 	    }
 	},
@@ -181,17 +176,16 @@ Ext.define('Proxmox.panel.LogView', {
 	    viewModel.set('since', since);
 	    viewModel.set('params.limit', view.pageSize);
 	    viewModel.set('hide_timespan', !view.log_select_timespan);
-	    me.lookup('content').setStyle('line-height', view.lineHeight + 'px');
+	    me.lookup('content').setStyle('line-height', `${view.lineHeight}px`);
 
 	    view.loadTask = new Ext.util.DelayedTask(me.doLoad, me);
 
 	    me.updateParams();
 	    view.task = Ext.TaskManager.start({
-		run: function() {
+		run: () => {
 		    if (!view.isVisible() || !view.scrollToEnd) {
 			return;
 		    }
-
 		    if (me.scrollPosBottom() <= 5) {
 			view.loadTask.delay(200);
 		    }
@@ -236,9 +230,8 @@ Ext.define('Proxmox.panel.LogView', {
 	x: 'auto',
 	y: 'auto',
 	listeners: {
-	    // we have to have this here, since we cannot listen to events
-	    // of the scroller in the viewcontroller (extjs bug?), nor does
-	    // the panel have a 'scroll' event'
+	    // we have to have this here, since we cannot listen to events of the scroller in
+	    // the viewcontroller (extjs bug?), nor does the panel have a 'scroll' event'
 	    scroll: {
 		fn: function(scroller, x, y) {
 		    let controller = this.component.getController();
