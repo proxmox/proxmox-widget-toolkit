@@ -7,7 +7,7 @@ Ext.define('Proxmox.panel.LogView', {
     extend: 'Ext.panel.Panel',
     xtype: 'proxmoxLogView',
 
-    pageSize: 500,
+    pageSize: 510,
     viewBuffer: 50,
     lineHeight: 16,
 
@@ -136,9 +136,13 @@ Ext.define('Proxmox.panel.LogView', {
 	    let limit = viewModel.get('params.limit');
 	    let total = viewModel.get('data.total');
 
+	    // heuristic: scroll up? -> load more in front; scroll down? -> load more at end
+	    let startRatio = view.lastTargetLine && view.lastTargetLine > targetLine ? 2/3 : 1/3;
+	    view.lastTargetLine = targetLine;
+
 	    let newStart = scrolledToBottom
 		? Math.trunc(total - limit, 10)
-		: Math.trunc(targetLine - (limit / 2) + 10);
+		: Math.trunc(targetLine - (startRatio * limit) + 10);
 
 	    viewModel.set('params.start', Math.max(newStart, 0));
 
@@ -219,7 +223,7 @@ Ext.define('Proxmox.panel.LogView', {
 	    },
 	    params: {
 		start: 0,
-		limit: 500,
+		limit: 510,
 	    },
 	},
     },
