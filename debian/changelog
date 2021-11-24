@@ -1,3 +1,23 @@
+proxmox-widget-toolkit (3.4-4) bullseye; urgency=medium
+
+  * utils: format duration: render years when we can avoid huge day numbers
+
+  * journalview: fix wrong initial load with default timespan on widget
+    creation
+
+  * logpanel: fix glitching on fast task logs
+
+  * logpanel: actually catch up when following the log for tasks with an
+    almost artifically high log output traffic
+
+  * log viewer: add heuristic for scroll-direction dependent ratio
+    distribution
+
+  * log viewer: add heuristic for triggering a new limit load earlier to
+    reduce latency on casual scrolling
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 24 Nov 2021 18:29:56 +0100
+
 proxmox-widget-toolkit (3.4-3) bullseye; urgency=medium
 
   * data: diffstore: fix autoDestroyRstore option (regression from ExtJS 7)
