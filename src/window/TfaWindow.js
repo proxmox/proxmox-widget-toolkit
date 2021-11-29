@@ -400,6 +400,11 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 		bind: {
 		    disabled: '{!availableChallenge.u2f}',
 		},
+		tabConfig: {
+		    bind: {
+			hidden: '{!availableChallenge.u2f}',
+		    },
+		},
 		items: [
 		    {
 			xtype: 'box',
@@ -429,6 +434,11 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 		handler: 'loginYubico',
 		bind: {
 		    disabled: '{!availableChallenge.yubico}',
+		},
+		tabConfig: {
+		    bind: {
+			hidden: '{!availableChallenge.yubico}',
+		    },
 		},
 		items: [
 		    {
