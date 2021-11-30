@@ -141,8 +141,13 @@ Ext.define('Proxmox.window.AddWebauthn', {
 		    params,
 		});
 	    } catch (response) {
-		let error = response.result.message;
+		let error = response;
 		console.error(error); // for debugging if it's not displayable...
+		if (typeof error === "object") {
+		    // in case it came from an api request:
+		    error = error.result?.message;
+		}
+
 		Ext.Msg.alert(gettext('Error'), error);
 	    }
 
