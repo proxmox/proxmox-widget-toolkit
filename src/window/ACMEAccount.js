@@ -45,7 +45,7 @@ Ext.define('Proxmox.window.ACMEAccountCreate', {
 		proxy: { type: 'proxmox' },
 		sorters: {
 		    property: 'name',
-		    order: 'ASC',
+		    direction: 'ASC',
 		},
 	    },
 	    listConfig: {
