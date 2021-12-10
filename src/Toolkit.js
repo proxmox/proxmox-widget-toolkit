@@ -195,6 +195,16 @@ Ext.define('PVE.form.field.Number', {
     submitLocaleSeparator: false,
 });
 
+// avois spamming the console and if we ever use this avoid a CORS block error too
+Ext.define('PVE.draw.Container', {
+    override: 'Ext.draw.Container',
+    defaultDownloadServerUrl: document.location.origin, // avoid that pointing to http://svg.sencha.io
+    applyDownloadServerUrl: function(url) { // avoid noisy warning, we don't really use that anyway
+	url = url || this.defaultDownloadServerUrl;
+	return url;
+    },
+});
+
 // ExtJs 5-6 has an issue with caching
 // see https://www.sencha.com/forum/showthread.php?308989
 Ext.define('Proxmox.UnderlayPool', {
