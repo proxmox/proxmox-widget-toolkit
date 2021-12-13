@@ -159,15 +159,12 @@ Ext.define('Proxmox.window.SafeDestroy', {
 			hidden: true,
 			layout: {
 			    type: 'vbox',
-			    align: 'middle',
 			},
-			height: 25,
 			items: [
 			    {
 				xtype: 'component',
 				reference: 'noteCmp',
-				width: '300px',
-				style: 'font-size: smaller; overflow: hidden; white-space: nowrap; text-overflow: ellipsis;',
+				userCls: 'pmx-hint',
 			    },
 			],
 		    },
