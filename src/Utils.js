@@ -90,7 +90,7 @@ utilities: {
     },
 
     render_language: function(value) {
-	if (!value) {
+	if (!value || value === '__default__') {
 	    return Proxmox.Utils.defaultText + ' (English)';
 	}
 	let text = Proxmox.Utils.language_map[value];
