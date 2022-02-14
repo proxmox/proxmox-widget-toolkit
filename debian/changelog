@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (3.4-6) bullseye; urgency=medium
+
+  * utils: render language: fix rendering special default value
+
+  * sorters: use correct property 'direction' and keep default 'ASC'
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 14 Feb 2022 11:34:42 +0100
+
 proxmox-widget-toolkit (3.4-5) bullseye; urgency=medium
 
   * login: tfa: hide u2f and yubico-otp if not available
