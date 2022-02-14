@@ -13,7 +13,7 @@ Ext.define('Proxmox.window.Edit', {
 
     resizable: false,
 
-    // use this to atimatically generate a title like `Create: <subject>`
+    // use this to automatically generate a title like `Create: <subject>`
     subject: undefined,
 
     // set isCreate to true if you want a Create button (instead OK and RESET)
@@ -22,7 +22,7 @@ Ext.define('Proxmox.window.Edit', {
     // set to true if you want an Add button (instead of Create)
     isAdd: false,
 
-    // set to true if you want an Remove button (instead of Create)
+    // set to true if you want a Remove button (instead of Create)
     isRemove: false,
 
     // set to false, if you don't want the reset button present
