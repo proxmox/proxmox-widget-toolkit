@@ -69,8 +69,8 @@ Ext.define('Proxmox.form.NetworkSelector', {
 	    },
 	],
 	listeners: {
-	    load: function(store, records, successfull) {
-		if (successfull) {
+	    load: function(store, records, successful) {
+		if (successful) {
 		    records.forEach(function(record) {
 			if (record.data.cidr6) {
 			    let dest = record.data.cidr ? record.copy(null) : record;

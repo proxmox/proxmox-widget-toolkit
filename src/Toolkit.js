@@ -334,7 +334,7 @@ Ext.define(null, {
 		navModel.setPosition();
 	    }
 
-	    // Do not leave the element in tht state in case refresh fails, and restoration
+	    // Do not leave the element in that state in case refresh fails, and restoration
 	    // closure not called.
 	    activeElement.resumeFocusEvents();
 
@@ -459,7 +459,7 @@ Ext.define(null, {
 
 // extj 6.7 reversed mousewheel direction... (fixed in 7.3)
 // https://forum.sencha.com/forum/showthread.php?472517-Mousewheel-scroll-direction-in-numberfield-with-spinners
-// alse use the 'wheel' event instead of 'mousewheel' (fixed in 7.3)
+// also use the 'wheel' event instead of 'mousewheel' (fixed in 7.3)
 Ext.define('Proxmox.form.field.Spinner', {
     override: 'Ext.form.field.Spinner',
 

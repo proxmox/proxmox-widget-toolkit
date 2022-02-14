@@ -1,7 +1,7 @@
 /*
  * Display log entries in a panel with scrollbar
  * The log entries are automatically refreshed via a background task,
- * with newest entries comming at the bottom
+ * with newest entries coming at the bottom
  */
 Ext.define('Proxmox.panel.JournalView', {
     extend: 'Ext.panel.Panel',

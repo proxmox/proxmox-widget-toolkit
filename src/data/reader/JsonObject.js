@@ -9,7 +9,7 @@
  * example2: [ {data1: "xyz", data2: "abc"} ]
  * returns [{key: "data1", value: "xyz"}, {key: "data2", value: "abc"}]
  *
- * If you set 'readArray', the reader expexts the object as array:
+ * If you set 'readArray', the reader expects the object as array:
  *
  * example3: [ { key: "data1", value: "xyz", p2: "cde" },  { key: "data2", value: "abc", p2: "efg" }]
  * returns [{key: "data1", value: "xyz", p2: "cde}, {key: "data2", value: "abc", p2: "efg"}]

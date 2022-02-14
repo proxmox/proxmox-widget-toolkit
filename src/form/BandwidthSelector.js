@@ -25,7 +25,7 @@ Ext.define('Proxmox.form.SizeField', {
     unit: 'MiB',
     unitPostfix: '',
 
-    // use this if the backend saves values in another unit tha bytes, e.g.,
+    // use this if the backend saves values in another unit than bytes, e.g.,
     // for KiB set it to 'KiB'
     backendUnit: undefined,
 

@@ -347,7 +347,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 			let values = option.Values.join(' ');
 			text += `${key}: ${values}<br>`;
 		    } else {
-			throw "unkown file type";
+			throw "unknown file type";
 		    }
 		});
 		return text;

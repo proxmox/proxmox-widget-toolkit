@@ -568,7 +568,7 @@ utilities: {
 	    return;
 	}
 
-	let items = container.query('>'); // direct childs
+	let items = container.query('>'); // direct children
 	factor = Math.min(factor, items.length);
 	container.oldFactor = factor;
 
@@ -1326,7 +1326,7 @@ Ext.define('Proxmox.Async', {
     singleton: true,
 
     // Returns a Promise resolving to the result of an `API2Request` or rejecting to the error
-    // repsonse on failure
+    // response on failure
     api2: function(reqOpts) {
 	return new Promise((resolve, reject) => {
 	    delete reqOpts.callback; // not allowed in this api

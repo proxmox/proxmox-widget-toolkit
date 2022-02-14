@@ -1,8 +1,8 @@
-/** Renders a list of key values objets
+/** Renders a list of key values objects
 
 Mandatory Config Parameters:
 
-rows: an object container where each propery is a key-value object we want to render
+rows: an object container where each property is a key-value object we want to render
 
   rows: {
      keyboard: {

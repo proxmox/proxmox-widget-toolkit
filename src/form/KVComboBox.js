@@ -18,7 +18,7 @@ Ext.define('Proxmox.form.KVComboBox', {
     valueField: 'key',
     queryMode: 'local',
 
-    // overide framework function to implement deleteEmpty behaviour
+    // override framework function to implement deleteEmpty behaviour
     getSubmitData: function() {
         let me = this,
             data = null,

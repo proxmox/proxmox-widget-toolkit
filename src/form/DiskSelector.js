@@ -11,7 +11,7 @@ Ext.define('Proxmox.form.DiskSelector', {
     // use include-partitions=1 as a parameter
     includePartitions: false,
 
-    // the property the backend wnats for the type ('type' by default)
+    // the property the backend wants for the type ('type' by default)
     typeProperty: 'type',
 
     valueField: 'devpath',
