@@ -22,7 +22,7 @@ proxmox-widget-toolkit (3.4-4) bullseye; urgency=medium
   * logpanel: fix glitching on fast task logs
 
   * logpanel: actually catch up when following the log for tasks with an
-    almost artifically high log output traffic
+    almost artificially high log output traffic
 
   * log viewer: add heuristic for scroll-direction dependent ratio
     distribution
@@ -246,7 +246,7 @@ proxmox-widget-toolkit (3.1-1) bullseye; urgency=medium
 
   * data/ProxmoxProxy: set responseType to undefined for XMLHTTPRequest
 
-  * ship api-viewer in new proxmox-widget-toolkit-dev pacakge to improve
+  * ship api-viewer in new proxmox-widget-toolkit-dev package to improve
     possibility for code reuse
 
  -- Proxmox Support Team <support@proxmox.com>  Wed, 02 Jun 2021 16:16:02 +0200
@@ -270,7 +270,7 @@ proxmox-widget-toolkit (2.5-4) pve pmg; urgency=medium
   * node disk: S.M.A.R.T.: improve the simple layout and enable autoscroll for
     long output
 
-  * format/render size: allow one to specifiy if base 2 or 10 (SI unit) is
+  * format/render size: allow one to specify if base 2 or 10 (SI unit) is
     desired
 
  -- Proxmox Support Team <support@proxmox.com>  Fri, 07 May 2021 18:00:29 +0200
@@ -286,7 +286,7 @@ proxmox-widget-toolkit (2.5-2) pve pmg; urgency=medium
 
   * rrd chart: add option to render values and Y-axis with a power-of-two base
 
-  * safe destroy: allow specifing additional items
+  * safe destroy: allow specifying additional items
 
   * utils: add several render and helper functions from Proxmox VE's manager
 
@@ -967,7 +967,7 @@ proxmox-widget-toolkit (1.0-6) unstable; urgency=medium
 
   * change 'create' parameter to 'isCreate'
 
-  * make network devices types configureable
+  * make network devices types configurable
 
   * use Proxmox.window.TaskProgress instead of PVE.window.TaskProgress
 
