@@ -222,7 +222,7 @@ Ext.define('Proxmox.window.Edit', {
 		method: 'GET',
 		success: function(response, opts) {
 		    form.clearInvalid();
-		    me.digest = response.result.digest || response.result.data.digest;
+		    me.digest = response.result?.digest || response.result?.data?.digest;
 		    if (successFn) {
 			successFn(response, opts);
 		    } else {
