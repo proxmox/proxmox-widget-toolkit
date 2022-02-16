@@ -256,7 +256,7 @@ Ext.define('Proxmox.panel.TfaView', {
 			handler: 'addTotp',
 		    },
 		    {
-			text: gettext('Webauthn'),
+			text: gettext('WebAuthn'),
 			itemId: 'webauthn',
 			iconCls: 'fa fa-fw fa-shield',
 			handler: 'addWebauthn',
