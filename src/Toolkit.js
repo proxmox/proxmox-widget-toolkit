@@ -686,6 +686,7 @@ Ext.define('Proxmox.Component', {
 });
 
 // Fix drag&drop for vms and desktops that detect 'pen' pointerType
+// NOTE: this part has been rewritten in ExtJS 7.4, so re-check once we can upgrade
 Ext.define('Proxmox.view.DragZone', {
     override: 'Ext.view.DragZone',
 
