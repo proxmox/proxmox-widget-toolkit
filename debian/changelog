@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (3.4-7) bullseye; urgency=medium
+
+  * extjs: fix check for 'touch' input event in drag and drop handler, making
+    the 'pen' pointer event source type, that chrome/chromium emits in some
+    setups, work again.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 23 Feb 2022 12:12:13 +0100
+
 proxmox-widget-toolkit (3.4-6) bullseye; urgency=medium
 
   * utils: render language: fix rendering special default value
