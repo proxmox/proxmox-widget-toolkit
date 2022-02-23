@@ -685,6 +685,19 @@ Ext.define('Proxmox.Component', {
     clearPropertiesOnDestroy: false,
 });
 
+// Fix drag&drop for vms and desktops that detect 'pen' pointerType
+Ext.define('Proxmox.view.DragZone', {
+    override: 'Ext.view.DragZone',
+
+    onItemMouseDown: function(view, record, item, index, e) {
+        // Ignore touchstart.
+        // For touch events, we use longpress.
+        if (e.pointerType !== 'touch') {
+            this.onTriggerGesture(view, record, item, index, e);
+        }
+    },
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
