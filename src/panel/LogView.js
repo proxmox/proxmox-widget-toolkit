@@ -53,7 +53,12 @@ Ext.define('Proxmox.panel.LogView', {
 	    let data = viewModel.get('data');
 
 	    if (first === data.first && total === data.total && lines.length === data.lines) {
-		return; // same content, skip setting and scrolling
+		// before there is any real output, we get 'no output' as a single line.
+		// so always update if we only have one to be sure to catch
+		// the first real line of output
+		if (total !== 1) {
+		    return; // same content, skip setting and scrolling
+		}
 	    }
 	    viewModel.set('data', {
 		first: first,
