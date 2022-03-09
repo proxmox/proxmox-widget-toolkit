@@ -325,6 +325,7 @@ Ext.define('Proxmox.form.ComboGrid', {
             me.changingFilters = true;
             me.store.removeFilter(filter, true);
             me.changingFilters = false;
+	    me.store.fireEvent('refresh');
         }
     },
 
