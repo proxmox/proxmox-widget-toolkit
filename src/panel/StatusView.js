@@ -47,7 +47,7 @@ Ext.define('Proxmox.panel.StatusView', {
 	     */
 	    if (used.used !== undefined &&
 		used.total !== undefined) {
-		return used.used/used.total;
+		return used.total > 0 ? used.used/used.total : 0;
 	    }
 	}
 
