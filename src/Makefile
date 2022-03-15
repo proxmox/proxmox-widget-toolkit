@@ -50,6 +50,7 @@ JSSRC=					\
 	grid/PendingObjectGrid.js	\
 	panel/AuthView.js		\
 	panel/DiskList.js		\
+	panel/EOLNotice.js		\
 	panel/InputPanel.js		\
 	panel/InfoWidget.js		\
 	panel/LogView.js		\
