@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (2.6-2) buster; urgency=medium
+
+  * add EOL notice component
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 15 Mar 2022 17:29:26 +0100
+
 proxmox-widget-toolkit (2.6-1) buster; urgency=medium
 
   * combo grid: load: rework auto-selection and validity logic to ensure it's
