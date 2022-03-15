@@ -43,6 +43,14 @@
     color: #FF6C59;
 }
 
+.pwt-eol-icon {
+    position: relative;
+    float: left;
+    margin-right: 5px;
+    font-size: 1.3em;
+    color: #FF6C59;
+}
+
 /* reduce chart legend space usage to something more sane */
 .x-legend-item {
 	padding: 0.4em 0.8em 0.4em 1.8em;
