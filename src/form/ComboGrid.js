@@ -317,16 +317,15 @@ Ext.define('Proxmox.form.ComboGrid', {
     },
 
     clearLocalFilter: function() {
-        let me = this,
-            filter = me.queryFilter;
+        let me = this;
 
-        if (filter) {
-            me.queryFilter = null;
-            me.changingFilters = true;
-            me.store.removeFilter(filter, true);
-            me.changingFilters = false;
+	if (me.queryFilter) {
+	    me.changingFilters = true; // FIXME: unused?
+	    me.store.removeFilter(me.queryFilter, true);
+	    me.queryFilter = null;
+	    me.changingFilters = false;
 	    me.store.fireEvent('refresh');
-        }
+	}
     },
 
     isValueInStore: function(value) {
