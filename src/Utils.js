@@ -306,7 +306,7 @@ utilities: {
 	if (Proxmox.LoggedOut) {
 	    return;
 	}
-	Ext.util.Cookies.clear(Proxmox.Setup.auth_cookie_name);
+	Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, "", new Date(0), null, null, true);
 	window.localStorage.removeItem("ProxmoxUser");
     },
 
