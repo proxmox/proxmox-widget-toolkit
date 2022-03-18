@@ -306,6 +306,7 @@ utilities: {
 	if (Proxmox.LoggedOut) {
 	    return;
 	}
+	// ExtJS clear is basically the same, but browser may complain if any cookie isn't "secure"
 	Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, "", new Date(0), null, null, true);
 	window.localStorage.removeItem("ProxmoxUser");
     },
