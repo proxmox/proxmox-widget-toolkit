@@ -300,6 +300,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	//
 	// we save the minheight to reset it after the load
 	picker.on('show', function() {
+	    me.store.fireEvent('refresh');
 	    if (me.enableLoadMask) {
 		me.savedMinHeight = picker.getMinHeight();
 		picker.setMinHeight(100);
@@ -324,7 +325,6 @@ Ext.define('Proxmox.form.ComboGrid', {
 	    me.store.removeFilter(me.queryFilter, true);
 	    me.queryFilter = null;
 	    me.changingFilters = false;
-	    me.store.fireEvent('refresh');
 	}
     },
 
