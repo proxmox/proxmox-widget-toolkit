@@ -193,8 +193,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	},
 	'-',
 	{
-	    xtype: 'proxmoxButton',
-	    text: gettext('Enable'),
+	    xtype: 'proxmoxAltTextButton',
 	    defaultText: gettext('Enable'),
 	    altText: gettext('Disable'),
 	    name: 'repoEnable',
@@ -228,18 +227,6 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 			panel.reload();
 		    },
 		});
-	    },
-	    listeners: {
-		render: function(btn) {
-		    // HACK: calculate the max button width on first render to avoid toolbar glitches
-		    let defSize = btn.getSize().width;
-
-		    btn.setText(btn.altText);
-		    let altSize = btn.getSize().width;
-
-		    btn.setText(btn.defaultText);
-		    btn.setSize({ width: altSize > defSize ? altSize : defSize });
-		},
 	    },
 	},
     ],
