@@ -45,6 +45,7 @@ JSSRC=					\
 	form/ACME.js			\
 	form/UserSelector.js		\
 	button/Button.js		\
+	button/AltText.js		\
 	button/HelpButton.js		\
 	grid/ObjectGrid.js		\
 	grid/PendingObjectGrid.js	\
