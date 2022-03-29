@@ -165,9 +165,11 @@ Ext.define('Proxmox.node.Tasks', {
 		}
 
 		if (get('extraFilter')) {
+		    let preFilter = get('preFilter') || {};
 		    let extraFilter = get('extraFilter');
-		    for (const value of Object.values(extraFilter)) {
-			if (value !== undefined && value !== null && value !== "") {
+		    for (const [name, value] of Object.entries(extraFilter)) {
+			if (value !== undefined && value !== null && value !== "" &&
+			    preFilter[name] === undefined) {
 			    count++;
 			}
 		    }
@@ -457,6 +459,8 @@ Ext.define('Proxmox.node.Tasks', {
 	for (const [name, value] of Object.entries(me.preFilter)) {
 	    updateExtraFilters(name, value);
 	}
+
+	me.getViewModel().set('preFilter', me.preFilter);
 
 	me.callParent();
 
