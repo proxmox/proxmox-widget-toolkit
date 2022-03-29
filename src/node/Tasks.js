@@ -169,7 +169,8 @@ Ext.define('Proxmox.node.Tasks', {
 		    let extraFilter = get('extraFilter');
 		    for (const [name, value] of Object.entries(extraFilter)) {
 			if (value !== undefined && value !== null && value !== "" &&
-			    preFilter[name] === undefined) {
+			    preFilter[name] === undefined
+			) {
 			    count++;
 			}
 		    }
