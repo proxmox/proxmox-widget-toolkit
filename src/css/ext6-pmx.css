@@ -119,14 +119,15 @@ div.right-aligned {
     background-repeat: no-repeat;
     background-position:3px center;
     padding-left: 20px;
+    background-size: 16px 16px; /* Chrom* needs both as else it gets cut-off due do non 1:1 ratio */
 }
 
 .pmx-itype-icon-memory {
-    background-image:url(../images/icon-ram.png);
+    background-image:url(../images/icon-ram.svg);
 }
 
 .pmx-itype-icon-processor {
-    background-image:url(../images/icon-cpu.png);
+    background-image:url(../images/icon-cpu.svg);
 }
 
 .pmx-itype-icon-debian-swirl {

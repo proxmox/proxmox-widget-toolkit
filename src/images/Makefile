@@ -1,12 +1,9 @@
-# icon-cpu, icon-ram
-# are self made (sources as .xcf)
-
 include ../defines.mk
 
 IMAGES=pmx-clear-trigger.png		\
        openid-icon-100x100.png		\
-       icon-cpu.png			\
-       icon-ram.png			\
+       icon-cpu.svg			\
+       icon-ram.svg			\
        debian-swirl-openlogo.svg	\
        proxmox-symbol-x.svg		\
 
