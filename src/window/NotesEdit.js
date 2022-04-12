@@ -5,7 +5,7 @@ Ext.define('Proxmox.window.NotesEdit', {
     onlineHelp: 'markdown_basics',
 
     width: 800,
-    height: '600px',
+    height: 600,
 
     resizable: true,
     layout: 'fit',
