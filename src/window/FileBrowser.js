@@ -75,6 +75,9 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    'f': true, // "normal" files
 	    'd': true, // directories
 	},
+
+	// set to true to show the tar download button
+	enableTar: false,
     },
 
     controller: {
@@ -89,7 +92,15 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    return url.href;
 	},
 
-	downloadFile: function() {
+	downloadTar: function() {
+	    this.downloadFile(true);
+	},
+
+	downloadZip: function() {
+	    this.downloadFile(false);
+	},
+
+	downloadFile: function(tar) {
 	    let me = this;
 	    let view = me.getView();
 	    let tree = me.lookup('tree');
@@ -105,7 +116,12 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    params.filepath = data.filepath;
 	    atag.download = data.text;
 	    if (data.type === 'd') {
-		atag.download += ".zip";
+		if (tar) {
+		    params.tar = 1;
+		    atag.download += ".tar.zst";
+		} else {
+		    atag.download += ".zip";
+		}
 	    }
 	    atag.href = me.buildUrl(view.downloadURL, params);
 	    atag.click();
@@ -120,12 +136,18 @@ Ext.define("Proxmox.window.FileBrowser", {
 
 	    let data = selection[0].data;
 	    let canDownload = view.downloadURL && view.downloadableFileTypes[data.type];
-	    me.lookup('downloadBtn').setDisabled(!canDownload);
+	    let zipBtn = me.lookup('downloadBtn');
+	    let tarBtn = me.lookup('downloadTar');
+	    zipBtn.setDisabled(!canDownload);
+	    tarBtn.setDisabled(!canDownload);
+	    zipBtn.setText(data.type === 'd' ? gettext('Download .zip') : gettext('Download'));
+	    tarBtn.setVisible(data.type === 'd' && view.enableTar);
 	},
 
 	errorHandler: function(error, msg) {
 	    let me = this;
 	    me.lookup('downloadBtn').setDisabled(true);
+	    me.lookup('downloadTar').setDisabled(true);
 	    if (me.initialLoadDone) {
 		Ext.Msg.alert(gettext('Error'), msg);
 		return true;
@@ -245,8 +267,15 @@ Ext.define("Proxmox.window.FileBrowser", {
 
     buttons: [
 	{
-	    text: gettext('Download'),
-	    handler: 'downloadFile',
+	    text: gettext('Download .tar.zst'),
+	    handler: 'downloadTar',
+	    reference: 'downloadTar',
+	    hidden: true,
+	    disabled: true,
+	},
+	{
+	    text: gettext('Download .zip'),
+	    handler: 'downloadZip',
 	    reference: 'downloadBtn',
 	    disabled: true,
 	},
