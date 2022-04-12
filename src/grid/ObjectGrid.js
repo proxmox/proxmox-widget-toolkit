@@ -248,7 +248,7 @@ Ext.define('Proxmox.grid.ObjectGrid', {
 
 	let renderer = rowdef.renderer;
 	if (renderer) {
-	    return renderer(value, metaData, record, rowIndex, colIndex, store);
+	    return renderer.call(me, value, metaData, record, rowIndex, colIndex, store);
 	}
 
 	return value;
