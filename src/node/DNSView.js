@@ -9,15 +9,13 @@ Ext.define('Proxmox.node.DNSView', {
 	    throw "no node name specified";
 	}
 
-	let run_editor = function() {
-	    let win = Ext.create('Proxmox.node.DNSEdit', {
-		nodename: me.nodename,
-	    });
-	    win.show();
-	};
+	let run_editor = () => Ext.create('Proxmox.node.DNSEdit', {
+	    autoShow: true,
+	    nodename: me.nodename,
+	});
 
 	Ext.apply(me, {
-	    url: "/api2/json/nodes/" + me.nodename + "/dns",
+	    url: `/api2/json/nodes/${me.nodename}/dns`,
 	    cwidth1: 130,
 	    interval: 1000,
 	    run_editor: run_editor,

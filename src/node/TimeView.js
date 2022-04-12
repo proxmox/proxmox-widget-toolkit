@@ -9,21 +9,19 @@ Ext.define('Proxmox.node.TimeView', {
 	    throw "no node name specified";
 	}
 
-	let tzoffset = new Date().getTimezoneOffset()*60000;
-	let renderlocaltime = function(value) {
-	    let servertime = new Date((value * 1000) + tzoffset);
+	let tzOffset = new Date().getTimezoneOffset() * 60000;
+	let renderLocaltime = function(value) {
+	    let servertime = new Date((value * 1000) + tzOffset);
 	    return Ext.Date.format(servertime, 'Y-m-d H:i:s');
 	};
 
-	let run_editor = function() {
-	    let win = Ext.create('Proxmox.node.TimeEdit', {
-		nodename: me.nodename,
-	    });
-	    win.show();
-	};
+	let run_editor = () => Ext.create('Proxmox.node.TimeEdit', {
+	    autoShow: true,
+	    nodename: me.nodename,
+	});
 
 	Ext.apply(me, {
-	    url: "/api2/json/nodes/" + me.nodename + "/time",
+	    url: `/api2/json/nodes/${me.nodename}/time`,
 	    cwidth1: 150,
 	    interval: 1000,
 	    run_editor: run_editor,
@@ -35,7 +33,7 @@ Ext.define('Proxmox.node.TimeView', {
 		localtime: {
 		    header: gettext('Server time'),
 		    required: true,
-		    renderer: renderlocaltime,
+		    renderer: renderLocaltime,
 		},
 	    },
 	    tbar: [
