@@ -1,3 +1,23 @@
+proxmox-widget-toolkit (3.4-8) bullseye; urgency=medium
+
+  * fix #3919: log view: show first task output line correctly
+
+  * combo grid: clear filter on blur
+
+  * utils: clear cookies with secure flag set to avoid bogus browser
+    warning
+
+  * node tasks: do not count preset filters as normal filters to avoid
+    "clear filter" button glitch
+
+  * icons: switch cpu and ram bitmaps to svg
+
+  * object grid: call rendere with our scope
+
+  * dns view: increase api polling intervall from 1s to 10s
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 12 Apr 2022 16:45:50 +0200
+
 proxmox-widget-toolkit (3.4-7) bullseye; urgency=medium
 
   * extjs: fix check for 'touch' input event in drag and drop handler, making
