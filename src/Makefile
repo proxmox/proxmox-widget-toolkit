@@ -66,6 +66,7 @@ JSSRC=					\
 	panel/ACMEDomains.js		\
 	panel/StatusView.js		\
 	panel/TfaView.js		\
+	panel/NotesView.js		\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
@@ -87,6 +88,7 @@ JSSRC=					\
 	window/AddWebauthn.js		\
 	window/AddYubico.js		\
 	window/TfaEdit.js		\
+	window/NotesEdit.js		\
 	node/APT.js			\
 	node/APTRepositories.js		\
 	node/NetworkEdit.js		\
