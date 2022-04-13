@@ -179,6 +179,30 @@ div.right-aligned {
     height: 100%;
 }
 
+/* Fix icon/text baseline */
+.x-tab-default {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+}
+.x-tab-default > span {
+    text-align: center;
+    vertical-align: middle;
+}
+.x-tab-button {
+    line-height: unset;
+}
+.x-tab-inner {
+    display: unset;
+    vertical-align: text-top;
+}
+.x-tab-wrap {
+    display: unset;
+}
+.x-tab-default-top {
+    padding: 2px 6px 2px 6px;
+}
+
 /* rules for the markdown content, prefix with the .pmx-md class */
 .pmx-md {
     font-size: 1.0em;
