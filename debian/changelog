@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (3.4-9) bullseye; urgency=medium
+
+  * file browser: optionally allow showing a "download as tar.zst"
+    button, if supported
+
+  * tab buttons: fix vertial centering of text and reduce padding
+    slightly
+
+  * move over the markdown based notes view panel and edit window from
+    pve-manager for reuse
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 14 Apr 2022 07:56:54 +0200
+
 proxmox-widget-toolkit (3.4-8) bullseye; urgency=medium
 
   * fix #3919: log view: show first task output line correctly
