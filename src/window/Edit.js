@@ -229,9 +229,7 @@ Ext.define('Proxmox.window.Edit', {
 			me.setValues(response.result.data);
 		    }
 		    // hack: fix ExtJS bug
-		    Ext.Array.each(me.query('radiofield'), function(f) {
-			f.resetOriginalValue();
-		    });
+		    Ext.Array.each(me.query('radiofield'), f => f.resetOriginalValue());
 		},
 		failure: function(response, opts) {
 		    Ext.Msg.alert(gettext('Error'), response.htmlStatus, function() {
@@ -256,8 +254,9 @@ Ext.define('Proxmox.window.Edit', {
 	) {
 	    throw "neither 'url' nor both, submitUrl and loadUrl specified";
 	}
-
-	if (me.create) {throw "deprecated parameter, use isCreate";}
+	if (me.create) {
+	    throw "deprecated parameter, use isCreate";
+	}
 
 	let items = Ext.isArray(me.items) ? me.items : [me.items];
 
