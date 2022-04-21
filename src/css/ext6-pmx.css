@@ -23,6 +23,10 @@
     background-color: #f5e5d8;
 }
 
+.proxmox-good-row {
+    background-color: #21BF4B;
+}
+
 /* some icons have to be color manually */
 .black {
     color: #000;
