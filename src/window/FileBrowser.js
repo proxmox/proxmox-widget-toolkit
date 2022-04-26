@@ -146,6 +146,9 @@ Ext.define("Proxmox.window.FileBrowser", {
 
 	errorHandler: function(error, msg) {
 	    let me = this;
+	    if (error?.status === 503) {
+		return false;
+	    }
 	    me.lookup('downloadBtn').setDisabled(true);
 	    me.lookup('downloadTar').setDisabled(true);
 	    if (me.initialLoadDone) {
@@ -167,9 +170,37 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let proxy = store.getProxy();
 
 	    let errorCallback = (error, msg) => me.errorHandler(error, msg);
-	    Proxmox.Utils.monStoreErrors(tree, store, true, errorCallback);
 	    proxy.setUrl(view.listURL);
+	    proxy.setTimeout(60*1000);
 	    proxy.setExtraParams(view.extraParams);
+
+	    tree.mon(store, 'beforeload', () => {
+		Proxmox.Utils.setErrorMask(tree, true);
+	    });
+	    tree.mon(store, 'load', (treestore, rec, success, operation, node) => {
+		if (success) {
+		    Proxmox.Utils.setErrorMask(tree, false);
+		    return;
+		}
+		if (!node.loadCount) {
+		    node.loadCount = 0; // ensure its numeric
+		}
+		// trigger a reload if we got a 503 answer from the proxy
+		if (operation?.error?.status === 503 && node.loadCount < 10) {
+		    node.collapse();
+		    node.expand();
+		    node.loadCount++;
+		    return;
+		}
+
+		let error = operation.getError();
+		let msg = Proxmox.Utils.getResponseErrorMessage(error);
+		if (!errorCallback(error, msg)) {
+		    Proxmox.Utils.setErrorMask(tree, msg);
+		} else {
+		    Proxmox.Utils.setErrorMask(tree, false);
+		}
+	    });
 	    store.load((rec, op, success) => {
 		let root = store.getRoot();
 		root.expand(); // always expand invisible root node
@@ -215,6 +246,10 @@ Ext.define("Proxmox.window.FileBrowser", {
 		    appendId: false,
 		    type: 'proxmox',
 		},
+	    },
+
+	    viewConfig: {
+		loadMask: false,
 	    },
 
 	    columns: [
