@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (3.4-10) bullseye; urgency=medium
+
+  * css: add proxmox-good-row class
+
+  * status view: fix usage calculation for fields without valid values, like
+    for example SWAP can often be.
+
+  * buttons: add AltText to unify the hack to detect the max size of a button
+    that switches its text dynamically
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 27 Apr 2022 18:58:21 +0200
+
 proxmox-widget-toolkit (3.4-9) bullseye; urgency=medium
 
   * file browser: optionally allow showing a "download as tar.zst"
