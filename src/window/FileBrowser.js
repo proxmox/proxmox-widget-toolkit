@@ -76,7 +76,9 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    'd': true, // directories
 	},
 
-	// set to true to show the tar download button
+	// enable tar download, this will add a menu to the
+	// "Download" button when the selection can be downloaded as
+	// .tar files
 	enableTar: false,
     },
 
@@ -135,13 +137,19 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    if (!selection || selection.length < 1) return;
 
 	    let data = selection[0].data;
+	    let st = Ext.String.format(gettext('Selected "{0}"'), atob(data.filepath));
+	    view.lookup('selectText').setText(st);
+
 	    let canDownload = view.downloadURL && view.downloadableFileTypes[data.type];
-	    let zipBtn = me.lookup('downloadBtn');
-	    let tarBtn = me.lookup('downloadTar');
-	    zipBtn.setDisabled(!canDownload);
-	    tarBtn.setDisabled(!canDownload);
-	    zipBtn.setText(data.type === 'd' ? gettext('Download .zip') : gettext('Download'));
-	    tarBtn.setVisible(data.type === 'd' && view.enableTar);
+	    let enableMenu = view.enableTar && data.type === 'd';
+
+	    let downloadBtn = view.lookup('downloadBtn');
+	    downloadBtn.setDisabled(!canDownload || enableMenu);
+	    downloadBtn.setHidden(!canDownload || enableMenu);
+
+	    let menuBtn = view.lookup('menuBtn');
+	    menuBtn.setDisabled(!canDownload || !enableMenu);
+	    menuBtn.setHidden(!canDownload || !enableMenu);
 	},
 
 	errorHandler: function(error, msg) {
@@ -150,7 +158,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 		return false;
 	    }
 	    me.lookup('downloadBtn').setDisabled(true);
-	    me.lookup('downloadTar').setDisabled(true);
+	    me.lookup('menuBtn').setDisabled(true);
 	    if (me.initialLoadDone) {
 		Ext.Msg.alert(gettext('Error'), msg);
 		return true;
@@ -300,19 +308,40 @@ Ext.define("Proxmox.window.FileBrowser", {
 	},
     ],
 
-    buttons: [
+    fbar: [
 	{
-	    text: gettext('Download .tar.zst'),
-	    handler: 'downloadTar',
-	    reference: 'downloadTar',
-	    hidden: true,
-	    disabled: true,
+	    text: '',
+	    xtype: 'label',
+	    reference: 'selectText',
 	},
 	{
-	    text: gettext('Download .zip'),
+	    text: gettext('Download'),
+	    xtype: 'button',
 	    handler: 'downloadZip',
 	    reference: 'downloadBtn',
 	    disabled: true,
+	    hidden: true,
+	},
+	{
+	    text: gettext('Download as'),
+	    xtype: 'button',
+	    reference: 'menuBtn',
+	    menu: {
+		items: [
+		    {
+			iconCls: 'fa fa-fw fa-file-zip-o',
+			text: gettext('.zip'),
+			handler: 'downloadZip',
+			reference: 'downloadZip',
+		    },
+		    {
+			iconCls: 'fa fa-fw fa-archive',
+			text: gettext('.tar.zst'),
+			handler: 'downloadTar',
+			reference: 'downloadTar',
+		    },
+		],
+	    },
 	},
     ],
 });
