@@ -93,6 +93,9 @@ Ext.define("Proxmox.window.FileBrowser", {
 	// "Download" button when the selection can be downloaded as
 	// .tar files
 	enableTar: false,
+
+	// prefix to prepend to downloaded file names
+	downloadPrefix: '',
     },
 
     controller: {
@@ -124,12 +127,11 @@ Ext.define("Proxmox.window.FileBrowser", {
 
 	    let data = selection[0].data;
 
-	    let atag = document.createElement('a');
-
-	    atag.download = data.text;
 	    let params = { ...view.extraParams };
 	    params.filepath = data.filepath;
-	    atag.download = data.text;
+
+	    let atag = document.createElement('a');
+	    atag.download = view.downloadPrefix + data.text;
 	    if (data.type === 'd') {
 		if (tar) {
 		    params.tar = 1;
