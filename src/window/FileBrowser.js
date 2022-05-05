@@ -3,6 +3,19 @@ Ext.define('proxmox-file-tree', {
 
     fields: ['filepath', 'text', 'type', 'size',
 	{
+	    name: 'sizedisplay',
+	    calculate: data => {
+		if (data.size === undefined) {
+		    return '';
+		} else if (data.type === 'd') {
+		    let fs = data.size === 1 ? gettext('{0} item') : gettext('{0} items');
+		    return Ext.String.format(fs, data.size);
+		}
+
+		return Proxmox.Utils.format_size(data.size);
+	    },
+	},
+	{
 	    name: 'mtime',
 	    type: 'date',
 	    dateFormat: 'timestamp',
@@ -270,10 +283,15 @@ Ext.define("Proxmox.window.FileBrowser", {
 		},
 		{
 		    text: gettext('Size'),
-		    dataIndex: 'size',
-		    renderer: value => value === undefined ? '' : Proxmox.Utils.format_size(value),
+		    dataIndex: 'sizedisplay',
 		    sorter: {
 			sorterFn: function(a, b) {
+			    if (a.data.type === 'd' && b.data.type !== 'd') {
+				return -1;
+			    } else if (a.data.type !== 'd' && b.data.type === 'd') {
+				return 1;
+			    }
+
 			    let asize = a.data.size || 0;
 			    let bsize = b.data.size || 0;
 
