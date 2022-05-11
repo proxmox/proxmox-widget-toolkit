@@ -124,9 +124,11 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	me.items = [
 	    {
 		xtype: 'component',
-		cls: [Ext.baseCSSPrefix + 'message-box-icon',
-		       Ext.baseCSSPrefix + 'message-box-warning',
-		       Ext.baseCSSPrefix + 'dlg-icon'],
+		cls: [
+		    Ext.baseCSSPrefix + 'message-box-icon',
+		    Ext.baseCSSPrefix + 'message-box-warning',
+		    Ext.baseCSSPrefix + 'dlg-icon',
+		],
 	    },
 	    {
 		xtype: 'container',
