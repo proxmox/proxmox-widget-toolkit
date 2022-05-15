@@ -1,7 +1,8 @@
 Ext.define('proxmox-file-tree', {
     extend: 'Ext.data.Model',
 
-    fields: ['filepath', 'text', 'type', 'size',
+    fields: [
+	'filepath', 'text', 'type', 'size',
 	{
 	    name: 'sizedisplay',
 	    calculate: data => {
@@ -23,40 +24,10 @@ Ext.define('proxmox-file-tree', {
 	{
 	    name: 'iconCls',
 	    calculate: function(data) {
-		let icon = 'file-o';
-		switch (data.type) {
-		    case 'b': // block device
-			icon = 'cube';
-			break;
-		    case 'c': // char device
-			icon = 'tty';
-			break;
-		    case 'd':
-			icon = data.expanded ? 'folder-open-o' : 'folder-o';
-			break;
-		    case 'f': //regular file
-			icon = 'file-text-o';
-			break;
-		    case 'h': // hardlink
-			icon = 'file-o';
-			break;
-		    case 'l': // softlink
-			icon = 'link';
-			break;
-		    case 'p': // pipe/fifo
-			icon = 'exchange';
-			break;
-		    case 's': // socket
-			icon = 'plug';
-			break;
-		    case 'v': // virtual
-			icon = 'cube';
-			break;
-		    default:
-			icon = 'file-o';
-			break;
+		let icon = Proxmox.Schema.pxarFileTypes[data.type]?.icon ?? 'file-o';
+		if (data.expanded && data.type === 'd') {
+		    icon = 'folder-open-o';
 		}
-
 		return `fa fa-${icon}`;
 	    },
 	},
@@ -309,20 +280,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 		{
 		    text: gettext('Type'),
 		    dataIndex: 'type',
-		    renderer: function(value) {
-			switch (value) {
-			    case 'b': return gettext('Block Device');
-			    case 'c': return gettext('Character Device');
-			    case 'd': return gettext('Directory');
-			    case 'f': return gettext('File');
-			    case 'h': return gettext('Hardlink');
-			    case 'l': return gettext('Softlink');
-			    case 'p': return gettext('Pipe/Fifo');
-			    case 's': return gettext('Socket');
-			    case 'v': return gettext('Virtual');
-			    default: return Proxmox.Utils.unknownText;
-			}
-		    },
+		    renderer: (v) => Proxmox.Schema.pxarFileTypes[v]?.label ?? Proxmox.Utils.unknownText,
 		},
 	    ],
 	},
