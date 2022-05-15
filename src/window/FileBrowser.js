@@ -257,6 +257,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 		{
 		    text: gettext('Size'),
 		    dataIndex: 'sizedisplay',
+		    align: 'end',
 		    sorter: {
 			sorterFn: function(a, b) {
 			    if (a.data.type === 'd' && b.data.type !== 'd') {
