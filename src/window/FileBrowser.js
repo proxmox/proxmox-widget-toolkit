@@ -130,7 +130,16 @@ Ext.define("Proxmox.window.FileBrowser", {
 
 	    let downloadBtn = view.lookup('downloadBtn');
 	    downloadBtn.setDisabled(!canDownload || enableMenu);
-	    downloadBtn.setHidden(!canDownload || enableMenu);
+	    downloadBtn.setHidden(canDownload && enableMenu);
+	    let typeLabel = Proxmox.Schema.pxarFileTypes[data.type]?.label ?? Proxmox.Utils.unknownText;
+	    let ttip = Ext.String.format(
+	        gettext('File of type {0} cannot be downloaded directly, download a parent directory instead.'),
+	        typeLabel,
+	    );
+	    if (!canDownload) { // ensure tooltip gets shown
+		downloadBtn.setStyle({ pointerEvents: 'all' });
+	    }
+	    downloadBtn.setTooltip(canDownload ? null : ttip);
 
 	    let menuBtn = view.lookup('menuBtn');
 	    menuBtn.setDisabled(!canDownload || !enableMenu);
