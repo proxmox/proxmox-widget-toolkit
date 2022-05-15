@@ -1,3 +1,24 @@
+proxmox-widget-toolkit (3.5.0) bullseye; urgency=medium
+
+  * file browser: try reload again when getting a 503 error
+
+  * ui: acl role selector: make the picker grid wider and ensure that the
+    text wraps in the privilege column
+
+  * fix #4001: file browser: add a configurable prefix to downloaded files
+
+  * fix #4001: file browser: show number of items in a directory as size, if
+    available
+
+  * file browser: align size column to end/right
+
+  * file browser: only disable, not hide button if not downloadable and add
+    hint for why and what to do in tooltip
+
+  * switch to native version format for native package
+
+ -- Proxmox Support Team <support@proxmox.com>  Sun, 15 May 2022 11:46:54 +0200
+
 proxmox-widget-toolkit (3.4-10) bullseye; urgency=medium
 
   * css: add proxmox-good-row class
