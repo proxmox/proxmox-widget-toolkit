@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (3.5.1) bullseye; urgency=medium
+
+  * pxar file types: fix over-eager s/text/label/ so that text file icon is
+    shown again
+
+  * file browser: disable item # size rendering
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 16 May 2022 18:03:35 +0200
+
 proxmox-widget-toolkit (3.5.0) bullseye; urgency=medium
 
   * file browser: try reload again when getting a 503 error
