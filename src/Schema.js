@@ -29,7 +29,7 @@ Ext.define('Proxmox.Schema', { // a singleton
 	b: { icon: 'cube', label: gettext('Block Device') },
 	c: { icon: 'tty', label: gettext('Character Device') },
 	d: { icon: 'folder-o', label: gettext('Directory') },
-	f: { icon: 'file-label-o', label: gettext('File') },
+	f: { icon: 'file-text-o', label: gettext('File') },
 	h: { icon: 'file-o', label: gettext('Hardlink') },
 	l: { icon: 'link', label: gettext('Softlink') },
 	p: { icon: 'exchange', label: gettext('Pipe/Fifo') },
