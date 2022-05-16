@@ -172,8 +172,7 @@ Ext.define('Proxmox.window.Edit', {
 		me.apiCallDone(true, response, options);
 
 		if (hasProgressBar) {
-		    // stay around so we can trigger our close events
-		    // when background action is completed
+		    // only hide to allow delaying our close event until task is done
 		    me.hide();
 
 		    let upid = response.result.data;
