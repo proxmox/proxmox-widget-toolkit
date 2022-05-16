@@ -4,6 +4,11 @@ Ext.define('Proxmox.window.TaskProgress', {
 
     taskDone: Ext.emptyFn,
 
+    width: 300,
+    layout: 'auto',
+    modal: true,
+    bodyPadding: 5,
+
     initComponent: function() {
         let me = this;
 
@@ -14,7 +19,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 	let task = Proxmox.Utils.parse_task_upid(me.upid);
 
 	let statstore = Ext.create('Proxmox.data.ObjectStore', {
-            url: "/api2/json/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid) + "/status",
+	    url: `/api2/json/nodes/${task.node}/tasks/${encodeURIComponent(me.upid)}/status`,
 	    interval: 1000,
 	    rows: {
 		status: { defaultValue: 'unknown' },
@@ -54,20 +59,16 @@ Ext.define('Proxmox.window.TaskProgress', {
 
 	Ext.apply(me, {
 	    title: gettext('Task') + ': ' + descr,
-	    width: 300,
-	    layout: 'auto',
-	    modal: true,
-	    bodyPadding: 5,
 	    items: pbar,
 	    buttons: [
 		{
 		    text: gettext('Details'),
 		    handler: function() {
-			let win = Ext.create('Proxmox.window.TaskViewer', {
+			Ext.create('Proxmox.window.TaskViewer', {
+			    autoShow: true,
 			    taskDone: me.taskDone,
 			    upid: me.upid,
 			});
-			win.show();
 			me.close();
 		    },
 		},
