@@ -8,8 +8,9 @@ Ext.define('proxmox-file-tree', {
 	    calculate: data => {
 		if (data.size === undefined) {
 		    return '';
-		} else if (data.type === 'd') {
-		    let fs = data.size === 1 ? gettext('{0} item') : gettext('{0} items');
+		} else if (false && data.type === 'd') { // eslint-disable-line no-constant-condition
+		    // FIXME: enable again once we fixed trouble with confusing size vs item #
+		    let fs = data.size === 1 ? gettext('{0} Item') : gettext('{0} Items');
 		    return Ext.String.format(fs, data.size);
 		}
 
