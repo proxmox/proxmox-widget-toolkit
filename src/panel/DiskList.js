@@ -167,10 +167,19 @@ Ext.define('Proxmox.DiskList', {
 
 	    for (const item of records) {
 		let data = item.data;
-		data.leaf = true;
 		data.expanded = true;
-		data.children = [];
+		data.children = data.partitions ?? [];
+		for (let p of data.children) {
+		    p['disk-type'] = 'partition';
+		    p.iconCls = 'fa fa-fw fa-hdd-o x-fa-tree';
+		    p.used = p.used === 'filesystem' ? p.filesystem : p.used;
+		    p.parent = data.devpath;
+		    p.children = [];
+		    p.leaf = true;
+		}
 		data.iconCls = 'fa fa-fw fa-hdd-o x-fa-tree';
+		data.leaf = data.children.length === 0;
+
 		if (!data.parent) {
 		    disks[data.devpath] = data;
 		}
@@ -227,6 +236,15 @@ Ext.define('Proxmox.DiskList', {
 		extendedInfo = `, Ceph (${types.join(', ')})`;
 	    }
 	}
+	const formatMap = {
+	    'bios': 'BIOS boot',
+	    'zfsreserved': 'ZFS reserved',
+	    'efi': 'EFI',
+	    'lvm': 'LVM',
+	    'zfs': 'ZFS',
+	};
+
+	v = formatMap[v] || v;
 	return v ? `${v}${extendedInfo}` : Proxmox.Utils.noText;
     },
 
