@@ -35,7 +35,7 @@ Ext.define('pmx-disk-list', {
 		return undefined;
 	    },
 	},
-	'vendor', 'model', 'serial', 'rpm', 'type', 'wearout', 'health',
+	'vendor', 'model', 'serial', 'rpm', 'type', 'wearout', 'health', 'mounted',
     ],
     idProperty: 'devpath',
 });
@@ -301,6 +301,13 @@ Ext.define('Proxmox.DiskList', {
 	    sortable: true,
 	    renderer: Ext.String.htmlEncode,
 	    dataIndex: 'status',
+	},
+	{
+	    header: 'Mounted',
+	    width: 60,
+	    align: 'right',
+	    renderer: Proxmox.Utils.format_boolean,
+	    dataIndex: 'mounted',
 	},
 	{
 	    header: 'Wearout',
