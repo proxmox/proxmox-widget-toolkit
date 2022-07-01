@@ -121,6 +121,26 @@ Ext.apply(Ext.form.field.VTypes, {
     },
     HttpProxyText: gettext('Example') + ": http://username:password&#64;host:port/",
 
+    CpuSet: function(v) {
+	if (!Proxmox.Utils.CpuSet_match.test(v)) {
+	    return false;
+	}
+	let groups = v.split(",");
+	for (let i = 0; i < groups.length; i++) {
+	    if (!groups[i].includes("-")) {
+		continue;
+	    }
+	    let values = groups[i].split("-");
+	    let left = parseInt(values[0], 10);
+	    let right = parseInt(values[1], 10);
+	    if (left > right) {
+		return false;
+	    }
+	}
+	return true;
+    },
+    CpuSetText: gettext('This is not a valid CpuSet'),
+
     DnsName: function(v) {
 	return Proxmox.Utils.DnsName_match.test(v);
     },
