@@ -37,7 +37,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 	    return defaultValue;
 	};
 
-	let pbar = Ext.create('Ext.ProgressBar', { text: 'running...' });
+	let pbar = Ext.create('Ext.ProgressBar');
 
 	me.mon(statstore, 'load', function() {
 	    let status = getObjectValue('status');
@@ -79,7 +79,7 @@ Ext.define('Proxmox.window.TaskProgress', {
 
 	statstore.startUpdate();
 
-	pbar.wait();
+	pbar.wait({ text: gettext('running...') });
     },
 });
 
