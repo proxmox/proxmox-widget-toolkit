@@ -31,7 +31,7 @@ Ext.define('Proxmox.form.RoleSelector', {
 		dataIndex: 'privs',
 		cellWrap: true,
 		// join manually here, as ExtJS joins without whitespace which breaks cellWrap
-		renderer: v => v.join(', '),
+		renderer: v => Ext.isArray(v) ? v.join(', ') : v.replaceAll(',', ', '),
 		flex: 5,
 	    },
 	],
