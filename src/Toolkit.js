@@ -464,35 +464,17 @@ Ext.define('Proxmox.form.field.Spinner', {
     override: 'Ext.form.field.Spinner',
 
     onRender: function() {
-	var me = this,
-	    spinnerTrigger = me.getTrigger('spinner');
+	let me = this;
 
 	me.callParent();
 
-	// Init up/down arrow keys
-	if (me.keyNavEnabled) {
-	    me.spinnerKeyNav = new Ext.util.KeyNav({
-		target: me.inputEl,
-		scope: me,
-		up: me.spinUp,
-		down: me.spinDown,
-	    });
-
-	    me.inputEl.on({
-		keyup: me.onInputElKeyUp,
-		scope: me,
-	    });
-	}
-
 	// Init mouse wheel
 	if (me.mouseWheelEnabled) {
+	    // Unlisten Ext generated listener ('mousewheel' is deprecated anyway)
+	    me.mun(me.bodyEl, 'mousewheel', me.onMouseWheel, me);
+
 	    me.mon(me.bodyEl, 'wheel', me.onMouseWheel, me);
 	}
-
-	// in v4 spinUpEl/spinDownEl were childEls, now they are children of the trigger.
-	// create references for compatibility
-	me.spinUpEl = spinnerTrigger.upEl;
-	me.spinDownEl = spinnerTrigger.downEl;
     },
 
     onMouseWheel: function(e) {
