@@ -131,9 +131,9 @@ Ext.apply(Ext.form.field.VTypes, {
     },
     DnsNameOrWildcardText: gettext('This is not a valid DNS name'),
 
-    // workaround for https://www.sencha.com/forum/showthread.php?302150
+    // email regex used by pve-common
     proxmoxMail: function(v) {
-        return (/^(\w+)([-+.][\w]+)*@(\w[-\w]*\.){1,5}([A-Za-z]){2,63}$/).test(v);
+        return (/^[\w+-~]+(\.[\w+-~]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/).test(v);
     },
     proxmoxMailText: gettext('Example') + ": user@example.com",
 
