@@ -274,3 +274,20 @@ div.right-aligned {
 /* markdown tables end */
 
 /* markdown content end */
+
+/* action column fix start */
+.x-action-col-icon {
+    margin: 0 1px;
+    font-size: 14px;
+}
+.x-action-col-icon:before, .x-action-col-icon:after {
+    font-size: 14px;
+}
+.x-action-col-icon:hover:before, .x-action-col-icon:hover:after {
+    text-shadow: 1px 1px 1px #AAA;
+    font-weight: 800;
+}
+.x-action-col-icon:before {
+	color: #555;
+    }
+/* action column fix end */
