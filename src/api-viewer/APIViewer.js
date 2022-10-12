@@ -119,6 +119,9 @@ Ext.onReady(function() {
 	if (type_fallback && pdef.type) {
 	    return `<${pdef.type}>`;
 	}
+	if (pdef.minimum || pdef.maximum) {
+	    return `${pdef.minimum || 'N'} - ${pdef.maximum || 'N'}`;
+	}
 	return '';
     };
 
