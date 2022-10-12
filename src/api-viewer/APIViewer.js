@@ -79,6 +79,27 @@ Ext.onReady(function() {
 	return pdef.enum ? 'enum' : pdef.type || 'string';
     };
 
+    const renderFormatString = function(obj) {
+	if (!Ext.isObject(obj)) {
+	    return obj;
+	}
+	const mandatory = [];
+	const optional = [];
+	Object.entries(obj).forEach(function([name, param]) {
+	    let list = param.optional ? optional : mandatory;
+	    let str = param.default_key ? `[${name}=]` : `${name}=`;
+	    if (param.alias) {
+		return;
+	    } else if (param.enum) {
+		str += `(${param.enum?.join(' | ')})`;
+	    } else {
+		str += `<${param.format_description || param.pattern || param.type}>`;
+	    }
+	    list.push(str);
+	});
+	return mandatory.join(", ") + ' ' + optional.map(each => `[,${each}]`).join(' ');
+    };
+
     let render_simple_format = function(pdef, type_fallback) {
 	if (pdef.typetext) {
 	    return pdef.typetext;
@@ -87,7 +108,7 @@ Ext.onReady(function() {
 	    return pdef.enum.join(' | ');
 	}
 	if (pdef.format) {
-	    return pdef.format;
+	    return renderFormatString(pdef.format);
 	}
 	if (pdef.pattern) {
 	    return pdef.pattern;
