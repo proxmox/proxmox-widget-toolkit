@@ -246,6 +246,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    value: me.iface,
 	    vtype: iface_vtype,
 	    allowBlank: false,
+	    maxLength: 15,
 	    autoEl: {
 		tag: 'div',
 		 'data-qtip': gettext('For example, vmbr0.100, vmbr0, vlan0.100, vlan0'),
