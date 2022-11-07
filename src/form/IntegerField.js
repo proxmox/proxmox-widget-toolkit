@@ -11,20 +11,19 @@ Ext.define('Proxmox.form.field.Integer', {
     step: 1,
 
    getSubmitData: function() {
-        let me = this,
-            data = null,
-            val;
-        if (!me.disabled && me.submitValue && !me.isFileUpload()) {
-            val = me.getSubmitValue();
-            if (val !== undefined && val !== null && val !== '') {
-                data = {};
-                data[me.getName()] = val;
-            } else if (me.getDeleteEmpty()) {
+	let me = this;
+	let data = null;
+	if (!me.disabled && me.submitValue && !me.isFileUpload()) {
+	    let val = me.getSubmitValue();
+	    if (val !== undefined && val !== null && val !== '') {
 		data = {};
-                data.delete = me.getName();
+		data[me.getName()] = val;
+	    } else if (me.getDeleteEmpty()) {
+		data = {};
+		data.delete = me.getName();
 	    }
-        }
-        return data;
+	}
+	return data;
     },
 
 });
