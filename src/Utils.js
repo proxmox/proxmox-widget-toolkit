@@ -1315,7 +1315,7 @@ utilities: {
 	me.DnsName_match = new RegExp("^" + DnsName_REGEXP + "$");
 	me.DnsName_or_Wildcard_match = new RegExp("^(?:\\*\\.)?" + DnsName_REGEXP + "$");
 
-	me.CpuSet_match = /^(?:(?:[0-9]+,)|(?:[0-9]+-[0-9]+,))*(?:(?:[0-9]+)$|(?:[0-9]+-[0-9]+)$)/;
+	me.CpuSet_match = /^[0-9]+(?:-[0-9]+)?(?:,[0-9]+(?:-[0-9]+)?)*$/;
 
 	me.HostPort_match = new RegExp("^(" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")(?::(\\d+))?$");
 	me.HostPortBrackets_match = new RegExp("^\\[(" + IPV6_REGEXP + "|" + IPV4_REGEXP + "|" + DnsName_REGEXP + ")\\](?::(\\d+))?$");
