@@ -686,6 +686,22 @@ Ext.define('Proxmox.view.DragZone', {
     },
 });
 
+// Fix text selection on drag when using DragZone,
+// see https://forum.sencha.com/forum/showthread.php?335100
+Ext.define('Proxmox.dd.DragDropManager', {
+    override: 'Ext.dd.DragDropManager',
+
+    stopEvent: function(e) {
+	if (this.stopPropagation) {
+	    e.stopPropagation();
+	}
+
+	if (this.preventDefault) {
+	    e.preventDefault();
+	}
+    },
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
