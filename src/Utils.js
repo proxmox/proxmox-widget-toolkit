@@ -1272,6 +1272,94 @@ utilities: {
 	    .map(val => val.charCodeAt(0)),
 	);
     },
+
+    stringToRGB: function(string) {
+	let hash = 0;
+	if (!string) {
+	    return hash;
+	}
+	string += 'prox'; // give short strings more variance
+	for (let i = 0; i < string.length; i++) {
+	    hash = string.charCodeAt(i) + ((hash << 5) - hash);
+	    hash = hash & hash; // to int
+	}
+
+	let alpha = 0.7; // make the color a bit brighter
+	let bg = 255; // assume white background
+
+	return [
+	    (hash & 255) * alpha + bg * (1 - alpha),
+	    ((hash >> 8) & 255) * alpha + bg * (1 - alpha),
+	    ((hash >> 16) & 255) * alpha + bg * (1 - alpha),
+	];
+    },
+
+    rgbToCss: function(rgb) {
+	return `rgb(${rgb[0]}, ${rgb[1]}, ${rgb[2]})`;
+    },
+
+    rgbToHex: function(rgb) {
+	let r = Math.round(rgb[0]).toString(16);
+	let g = Math.round(rgb[1]).toString(16);
+	let b = Math.round(rgb[2]).toString(16);
+	return `${r}${g}${b}`;
+    },
+
+    hexToRGB: function(hex) {
+	if (!hex) {
+	    return undefined;
+	}
+	if (hex.length === 7) {
+	    hex = hex.slice(1);
+	}
+	let r = parseInt(hex.slice(0, 2), 16);
+	let g = parseInt(hex.slice(2, 4), 16);
+	let b = parseInt(hex.slice(4, 6), 16);
+	return [r, g, b];
+    },
+
+    // optimized & simplified SAPC function
+    // https://github.com/Myndex/SAPC-APCA
+    getTextContrastClass: function(rgb) {
+	    const blkThrs = 0.022;
+	    const blkClmp = 1.414;
+
+	    // linearize & gamma correction
+	    let r = (rgb[0] / 255) ** 2.4;
+	    let g = (rgb[1] / 255) ** 2.4;
+	    let b = (rgb[2] / 255) ** 2.4;
+
+	    // relative luminance sRGB
+	    let bg = r * 0.2126729 + g * 0.7151522 + b * 0.0721750;
+
+	    // black clamp
+	    bg = bg > blkThrs ? bg : bg + (blkThrs - bg) ** blkClmp;
+
+	    // SAPC with white text
+	    let contrastLight = bg ** 0.65 - 1;
+	    // SAPC with black text
+	    let contrastDark = bg ** 0.56 - 0.046134502;
+
+	    if (Math.abs(contrastLight) >= Math.abs(contrastDark)) {
+		return 'light';
+	    } else {
+		return 'dark';
+	    }
+    },
+
+    getTagElement: function(string, color_overrides) {
+	let rgb = color_overrides?.[string] || Proxmox.Utils.stringToRGB(string);
+	let style = `background-color: ${Proxmox.Utils.rgbToCss(rgb)};`;
+	let cls;
+	if (rgb.length > 3) {
+	    style += `color: ${Proxmox.Utils.rgbToCss([rgb[3], rgb[4], rgb[5]])}`;
+	    cls = "proxmox-tag-dark";
+	} else {
+	    let txtCls = Proxmox.Utils.getTextContrastClass(rgb);
+	    cls = `proxmox-tag-${txtCls}`;
+	}
+	return `<span class="${cls}" style="${style}">${string}</span>`;
+    },
 },
 
     singleton: true,

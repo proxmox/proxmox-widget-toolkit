@@ -6,6 +6,58 @@
     background-color: LightYellow;
 }
 
+.proxmox-tags-full .proxmox-tag-light,
+.proxmox-tags-full .proxmox-tag-dark {
+    border-radius: 3px;
+    padding: 1px 6px;
+    margin: 0px 1px;
+    display: inline-block;
+}
+
+.x-boundlist-item > .proxmox-tag-light,
+.x-boundlist-item > .proxmox-tag-dark {
+    line-height: 15px;
+}
+
+
+.proxmox-tags-circle .proxmox-tag-light,
+.proxmox-tags-circle .proxmox-tag-dark {
+    margin: 0px 1px;
+    position: relative;
+    top: 2px;
+    border-radius: 6px;
+    height: 12px;
+    width: 12px;
+    display: inline-block;
+    color: transparent !important;
+    overflow: hidden;
+}
+
+.proxmox-tags-none .proxmox-tag-light,
+.proxmox-tags-none .proxmox-tag-dark {
+    display: none;
+}
+
+.proxmox-tags-dense .proxmox-tag-light,
+.proxmox-tags-dense .proxmox-tag-dark {
+    width: 6px;
+    margin-right: 1px;
+    display: inline-block;
+    color: transparent !important;
+    overflow: hidden;
+    vertical-align: bottom;
+}
+
+.proxmox-tags-full .proxmox-tag-light {
+    color: #fff;
+    background-color: #383838;
+}
+
+.proxmox-tags-full .proxmox-tag-dark {
+    color: #000;
+    background-color: #f0f0f0;
+}
+
 .x-mask-msg-text {
     text-align: center;
 }
