@@ -1,3 +1,39 @@
+proxmox-widget-toolkit (3.5.2) bullseye; urgency=medium
+
+  * host disks: add 'mounted' column
+
+  * host disk: handle partition data from Proxmox Backup Server backend
+
+  * number field: avoid that a single up/down arrow key press
+    increment or decrements twice
+
+  * toolkit: make email regex pattern match pve-common
+
+  * css: import action column fix from pbs, pmg
+
+  * fix #2703: networkedit: limit custom interface name field to 15
+    characters.
+
+  * task progress: show text instead of bogus percentage
+
+  * fix #3593: add CPU affinity task set type
+
+  * input panel: add onSetValues hook
+
+  * add tag related helpers
+
+  * toolkit: add override for ExtJS DragDropManager to fix selection behavior
+    in the drag zone
+
+  * rdd charts: don't display power-of-two suffix 'i' for values without unit
+    suffix
+
+  * fix #4271: api-viewer: display nested formats instead of `[object Object]`
+
+  * api-viewer: show min/max for values without any other format
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 17 Nov 2022 08:37:26 +0100
+
 proxmox-widget-toolkit (3.5.1) bullseye; urgency=medium
 
   * pxar file types: fix over-eager s/text/label/ so that text file icon is
