@@ -14,6 +14,11 @@
     display: inline-block;
 }
 
+.proxmox-tags-full .x-grid-cell-inner-treecolumn .proxmox-tag-light,
+.proxmox-tags-full .x-grid-cell-inner-treecolumn .proxmox-tag-dark {
+    display: inherit;
+}
+
 .x-boundlist-item > .proxmox-tag-light,
 .x-boundlist-item > .proxmox-tag-dark {
     line-height: 15px;
