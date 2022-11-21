@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (3.5.3) bullseye; urgency=medium
+
+  * css: do not make full-style tags display as inline-block in the tree
+    to avoid height jumps
+
+  * log, journal view: fix access to `me` after destroying
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 21 Nov 2022 11:14:27 +0100
+
 proxmox-widget-toolkit (3.5.2) bullseye; urgency=medium
 
   * host disks: add 'mounted' column
