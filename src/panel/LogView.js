@@ -98,6 +98,9 @@ Ext.define('Proxmox.panel.LogView', {
 		params: viewModel.get('params'),
 		method: 'GET',
 		success: function(response) {
+		    if (me.isDestroyed) {
+			return;
+		    }
 		    Proxmox.Utils.setErrorMask(me, false);
 		    let total = response.result.total;
 		    let lines = [];

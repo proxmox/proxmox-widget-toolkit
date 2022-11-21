@@ -143,6 +143,9 @@ Ext.define('Proxmox.panel.JournalView', {
 		waitMsgTarget: !livemode ? view : undefined,
 		method: 'GET',
 		success: function(response) {
+		    if (me.isDestroyed) {
+			return;
+		    }
 		    Proxmox.Utils.setErrorMask(me, false);
 		    let lines = response.result.data;
 		    me.updateView(lines, livemode, top);
