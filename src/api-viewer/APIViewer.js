@@ -241,6 +241,7 @@ Ext.onReady(function() {
 			viewConfig: {
 			    trackOver: false,
 			    stripeRows: true,
+			    enableTextSelection: true,
 			},
 			columns: [
 			    {
@@ -339,6 +340,7 @@ Ext.onReady(function() {
 			viewConfig: {
 			    trackOver: false,
 			    stripeRows: true,
+			    enableTextSelection: true,
 			},
 			columns: [
 			    {
