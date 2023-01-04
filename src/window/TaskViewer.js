@@ -230,11 +230,23 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    border: false,
 	});
 
+	let downloadBtn = new Ext.Button({
+	    text: gettext('Download'),
+	    iconCls: 'fa fa-download',
+	    handler: function() {
+		let url = '/api2/extjs/nodes/' +
+		    `${task.node}/tasks/${encodeURIComponent(me.upid)}/log?download=1`;
+
+		Proxmox.Utils.downloadAsFile(url);
+	    },
+	});
+
+
 	let logView = Ext.create('Proxmox.panel.LogView', {
 	    title: gettext('Output'),
-	    tbar: [stop_btn2],
+	    tbar: [stop_btn2, '->', downloadBtn],
 	    border: false,
-	    url: "/api2/extjs/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid) + "/log",
+	    url: `/api2/extjs/nodes/${task.node}/tasks/${encodeURIComponent(me.upid)}/log`,
 	});
 
 	me.mon(statstore, 'load', function() {
@@ -249,6 +261,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 
 	    stop_btn1.setDisabled(status !== 'running');
 	    stop_btn2.setDisabled(status !== 'running');
+	    downloadBtn.setDisabled(status === 'running');
 	});
 
 	statstore.startUpdate();
