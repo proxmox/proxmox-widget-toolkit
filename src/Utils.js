@@ -1360,6 +1360,19 @@ utilities: {
 	}
 	return `<span class="${cls}" style="${style}">${string}</span>`;
     },
+
+    // Setting filename here when downloading from a remote url sometimes fails in chromium browsers
+    // because of a bug when using attribute download in conjunction with a self signed certificate.
+    // For more info see https://bugs.chromium.org/p/chromium/issues/detail?id=993362
+    downloadAsFile: function(source, fileName) {
+	let hiddenElement = document.createElement('a');
+	hiddenElement.href = source;
+	hiddenElement.target = '_blank';
+	if (fileName) {
+	    hiddenElement.download = fileName;
+	}
+	hiddenElement.click();
+    },
 },
 
     singleton: true,

@@ -101,18 +101,17 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    let params = { ...view.extraParams };
 	    params.filepath = data.filepath;
 
-	    let atag = document.createElement('a');
-	    atag.download = view.downloadPrefix + data.text;
+	    let filename = view.downloadPrefix + data.text;
 	    if (data.type === 'd') {
 		if (tar) {
 		    params.tar = 1;
-		    atag.download += ".tar.zst";
+		    filename += ".tar.zst";
 		} else {
-		    atag.download += ".zip";
+		    filename += ".zip";
 		}
 	    }
-	    atag.href = me.buildUrl(view.downloadURL, params);
-	    atag.click();
+
+	    Proxmox.Utils.downloadAsFile(me.buildUrl(view.downloadURL, params), filename);
 	},
 
 	fileChanged: function() {
