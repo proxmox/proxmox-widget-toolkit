@@ -290,9 +290,7 @@ Ext.define('Proxmox.node.NetworkView', {
 			    callback: function() {
 				reload();
 			    },
-			    failure: function(response, opts) {
-				Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-			    },
+			    failure: response => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
 			});
 		    },
 		},

@@ -203,9 +203,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 		url: "/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid),
 		waitMsgTarget: me,
 		method: 'DELETE',
-		failure: function(response, opts) {
-		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		},
+		failure: response => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
 	    });
 	};
 
