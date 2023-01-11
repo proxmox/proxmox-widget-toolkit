@@ -150,7 +150,7 @@ Ext.define('Proxmox.node.NetworkView', {
 	    del_btn.setDisabled(!rec);
 	};
 
-	let find_next_iface_id = function(prefix) {
+	let findNextFreeInterfaceId = function(prefix) {
 	    for (let next = 0; next <= 9999; next++) {
 		let id = `${prefix}${next.toString()}`;
 		if (!store.getById(id)) {
@@ -162,53 +162,32 @@ Ext.define('Proxmox.node.NetworkView', {
 	};
 
 	let menu_items = [];
+	let addEditWindowToMenu = (iType, iDefault) => {
+	    menu_items.push({
+		text: Proxmox.Utils.render_network_iface_type(iType),
+		handler: () => Ext.create('Proxmox.node.NetworkEdit', {
+		    autoShow: true,
+		    nodename: me.nodename,
+		    iftype: iType,
+		    iface_default: findNextFreeInterfaceId(iDefault ?? iType),
+		    onlineHelp: 'sysadmin_network_configuration',
+		    listeners: {
+			destroy: () => reload(),
+		    },
+		}),
+	    });
+	};
 
 	if (me.types.indexOf('bridge') !== -1) {
-	    menu_items.push({
-		text: Proxmox.Utils.render_network_iface_type('bridge'),
-		handler: function() {
-		    let win = Ext.create('Proxmox.node.NetworkEdit', {
-			nodename: me.nodename,
-			iftype: 'bridge',
-			iface_default: find_next_iface_id('vmbr'),
-			onlineHelp: 'sysadmin_network_configuration',
-		    });
-		    win.on('destroy', reload);
-		    win.show();
-		},
-	    });
+	    addEditWindowToMenu('bridge', 'vmbr');
 	}
 
 	if (me.types.indexOf('bond') !== -1) {
-	    menu_items.push({
-		text: Proxmox.Utils.render_network_iface_type('bond'),
-		handler: function() {
-		    let win = Ext.create('Proxmox.node.NetworkEdit', {
-			nodename: me.nodename,
-			iftype: 'bond',
-			iface_default: find_next_iface_id('bond'),
-			onlineHelp: 'sysadmin_network_configuration',
-		    });
-		    win.on('destroy', reload);
-		    win.show();
-		},
-	    });
+	    addEditWindowToMenu('bond');
 	}
 
 	if (me.types.indexOf('vlan') !== -1) {
-	    menu_items.push({
-		text: Proxmox.Utils.render_network_iface_type('vlan'),
-		handler: function() {
-		    let win = Ext.create('Proxmox.node.NetworkEdit', {
-			nodename: me.nodename,
-			iftype: 'vlan',
-			iface_default: find_next_iface_id('vlan'),
-			onlineHelp: 'sysadmin_network_configuration',
-		    });
-		    win.on('destroy', reload);
-		    win.show();
-		},
-	    });
+	    addEditWindowToMenu('vlan');
 	}
 
 	if (me.types.indexOf('ovs') !== -1) {
@@ -216,43 +195,20 @@ Ext.define('Proxmox.node.NetworkView', {
 		menu_items.push({ xtype: 'menuseparator' });
 	    }
 
-	    menu_items.push(
-		{
-		    text: Proxmox.Utils.render_network_iface_type('OVSBridge'),
-		    handler: function() {
-			let win = Ext.create('Proxmox.node.NetworkEdit', {
-			    nodename: me.nodename,
-			    iftype: 'OVSBridge',
-			    iface_default: find_next_iface_id('vmbr'),
-			});
-			win.on('destroy', reload);
-			win.show();
+	    addEditWindowToMenu('OVSBridge', 'vmbr');
+	    addEditWindowToMenu('OVSBond', 'bond');
+
+	    menu_items.push({
+		text: Proxmox.Utils.render_network_iface_type('OVSIntPort'),
+		handler: () => Ext.create('Proxmox.node.NetworkEdit', {
+		    autoShow: true,
+		    nodename: me.nodename,
+		    iftype: 'OVSIntPort',
+		    listeners: {
+			destroy: () => reload(),
 		    },
-		},
-		{
-		    text: Proxmox.Utils.render_network_iface_type('OVSBond'),
-		    handler: function() {
-			let win = Ext.create('Proxmox.node.NetworkEdit', {
-			    nodename: me.nodename,
-			    iftype: 'OVSBond',
-			    iface_default: find_next_iface_id('bond'),
-			});
-			win.on('destroy', reload);
-			win.show();
-		    },
-		},
-		{
-		    text: Proxmox.Utils.render_network_iface_type('OVSIntPort'),
-		    handler: function() {
-			let win = Ext.create('Proxmox.node.NetworkEdit', {
-			    nodename: me.nodename,
-			    iftype: 'OVSIntPort',
-			});
-			win.on('destroy', reload);
-			win.show();
-		    },
-		},
-	    );
+		}),
+	    });
 	}
 
 	let renderer_generator = function(fieldname) {
