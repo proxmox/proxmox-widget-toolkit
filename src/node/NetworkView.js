@@ -95,13 +95,15 @@ Ext.define('Proxmox.node.NetworkView', {
 		return;
 	    }
 
-	    let win = Ext.create('Proxmox.node.NetworkEdit', {
+	    Ext.create('Proxmox.node.NetworkEdit', {
+		autoShow: true,
 		nodename: me.nodename,
 		iface: rec.data.iface,
 		iftype: rec.data.type,
+		listeners: {
+		    destroy: () => reload(),
+		},
 	    });
-	    win.show();
-	    win.on('destroy', reload);
 	};
 
 	let edit_btn = new Ext.Button({
@@ -129,18 +131,14 @@ Ext.define('Proxmox.node.NetworkView', {
 		    url: baseUrl,
 		    method: 'PUT',
 		    waitMsgTarget: me,
-		    success: function(response, opts) {
-			let upid = response.result.data;
-
-			let win = Ext.create('Proxmox.window.TaskProgress', {
+		    success: function({ result }, opts) {
+			Ext.create('Proxmox.window.TaskProgress', {
+			    autoShow: true,
 			    taskDone: reload,
-			    upid: upid,
+			    upid: result.data,
 			});
-			win.show();
 		    },
-		    failure: function(response, opts) {
-			Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		    },
+		    failure: response => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
 		});
 	    },
 	});
