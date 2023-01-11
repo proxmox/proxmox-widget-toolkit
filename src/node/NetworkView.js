@@ -151,13 +151,14 @@ Ext.define('Proxmox.node.NetworkView', {
 	};
 
 	let find_next_iface_id = function(prefix) {
-	    let next;
-	    for (next = 0; next <= 9999; next++) {
-		if (!store.getById(prefix + next.toString())) {
-		    break;
+	    for (let next = 0; next <= 9999; next++) {
+		let id = `${prefix}${next.toString()}`;
+		if (!store.getById(id)) {
+		    return id;
 		}
 	    }
-	    return prefix + next.toString();
+	    Ext.Msg.alert('Error', `No free ID for ${prefix} found!`);
+	    return '';
 	};
 
 	let menu_items = [];
