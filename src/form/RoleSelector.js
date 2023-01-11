@@ -18,7 +18,8 @@ Ext.define('Proxmox.form.RoleSelector', {
     displayField: 'roleid',
 
     listConfig: {
-	width: 500,
+	width: 560,
+	resizable: true,
 	columns: [
 	    {
 		header: gettext('Role'),
