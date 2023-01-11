@@ -1,3 +1,19 @@
+proxmox-widget-toolkit (3.5.4) bullseye; urgency=medium
+
+  * api-viewer: allow text selection in the parameter and the return grids
+
+  * task viewer: add optional button to download full task-log
+
+  * permission role selector: fix renderer for column of included privileges
+    for Proxmox VE
+
+  * permission role selector: make slightly more wide and resizeable
+
+  * node network view: rework finding free interface ID and move add-menu
+    generation to common helper (no semantic change intended)
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 11 Jan 2023 16:09:53 +0100
+
 proxmox-widget-toolkit (3.5.3) bullseye; urgency=medium
 
   * css: do not make full-style tags display as inline-block in the tree
