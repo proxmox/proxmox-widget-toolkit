@@ -83,8 +83,6 @@ Ext.define('Proxmox.window.TaskProgress', {
     },
 });
 
-// fixme: how can we avoid those lint errors?
-
 Ext.define('Proxmox.window.TaskViewer', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxTaskViewer',
@@ -191,7 +189,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	};
 
 	let statstore = Ext.create('Proxmox.data.ObjectStore', {
-            url: "/api2/json/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid) + "/status",
+            url: `/api2/json/nodes/${task.node}/tasks/${encodeURIComponent(me.upid)}/status`,
 	    interval: 1000,
 	    rows: rows,
 	});
@@ -200,7 +198,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 
 	let stop_task = function() {
 	    Proxmox.Utils.API2Request({
-		url: "/nodes/" + task.node + "/tasks/" + encodeURIComponent(me.upid),
+		url: `/nodes/${task.node}/tasks/${encodeURIComponent(me.upid)}`,
 		waitMsgTarget: me,
 		method: 'DELETE',
 		failure: response => Ext.Msg.alert(gettext('Error'), response.htmlStatus),
@@ -231,12 +229,8 @@ Ext.define('Proxmox.window.TaskViewer', {
 	let downloadBtn = new Ext.Button({
 	    text: gettext('Download'),
 	    iconCls: 'fa fa-download',
-	    handler: function() {
-		let url = '/api2/extjs/nodes/' +
-		    `${task.node}/tasks/${encodeURIComponent(me.upid)}/log?download=1`;
-
-		Proxmox.Utils.downloadAsFile(url);
-	    },
+	    handler: () => Proxmox.Utils.downloadAsFile(
+	        `/api2/json/nodes/${task.node}/tasks/${encodeURIComponent(me.upid)}/log?download=1`),
 	});
 
 
