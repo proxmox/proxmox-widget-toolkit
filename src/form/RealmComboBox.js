@@ -6,7 +6,12 @@ Ext.define('Proxmox.form.RealmComboBox', {
 	xclass: 'Ext.app.ViewController',
 
 	init: function(view) {
-	    view.store.on('load', this.onLoad, view);
+	    let store = view.getStore();
+	    if (view.storeFilter) {
+		store.setFilters(view.storeFilter);
+	    }
+	    store.on('load', this.onLoad, view);
+	    store.load();
 	},
 
 	onLoad: function(store, records, success) {
@@ -26,6 +31,9 @@ Ext.define('Proxmox.form.RealmComboBox', {
 	    }
 	},
     },
+
+    // define custom filters for the underlying store
+    storeFilter: undefined,
 
     fieldLabel: gettext('Realm'),
     name: 'realm',
@@ -52,6 +60,6 @@ Ext.define('Proxmox.form.RealmComboBox', {
 
     store: {
 	model: 'pmx-domains',
-	autoLoad: true,
+	autoLoad: false,
     },
 });
