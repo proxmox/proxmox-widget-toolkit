@@ -31,6 +31,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	skipEmptyText: false,
 	notFoundIsValid: false,
 	deleteEmpty: false,
+	errorHeight: 100,
     },
 
     // needed to trigger onKeyUp etc.
@@ -302,8 +303,8 @@ Ext.define('Proxmox.form.ComboGrid', {
 	picker.on('show', function() {
 	    me.store.fireEvent('refresh');
 	    if (me.enableLoadMask) {
-		me.savedMinHeight = picker.getMinHeight();
-		picker.setMinHeight(100);
+		me.savedMinHeight = me.savedMinHeight ?? picker.getMinHeight();
+		picker.setMinHeight(me.errorHeight);
 	    }
 	    if (me.loadError) {
 		Proxmox.Utils.setErrorMask(picker.getView(), me.loadError);
@@ -463,7 +464,10 @@ Ext.define('Proxmox.form.ComboGrid', {
 	    } else {
 		let msg = Proxmox.Utils.getResponseErrorMessage(o.getError());
 		if (me.picker) {
+		    me.savedMinHeight = me.savedMinHeight ?? me.picker.getMinHeight();
+		    me.picker.setMinHeight(me.errorHeight);
 		    Proxmox.Utils.setErrorMask(me.picker.getView(), msg);
+		    me.picker.updateLayout();
 		}
 		me.loadError = msg;
 	    }
