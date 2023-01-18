@@ -306,7 +306,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 		picker.setMinHeight(100);
 	    }
 	    if (me.loadError) {
-		Proxmox.Utils.setErrorMask(picker, me.loadError);
+		Proxmox.Utils.setErrorMask(picker.getView(), me.loadError);
 		delete me.loadError;
 		picker.updateLayout();
 	    }
@@ -428,7 +428,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 		    // if the picker exists, we reset its minHeight to the previous saved one or 0
 		    if (me.picker) {
 			me.picker.setMinHeight(me.savedMinHeight || 0);
-			Proxmox.Utils.setErrorMask(me.picker);
+			Proxmox.Utils.setErrorMask(me.picker.getView());
 			delete me.savedMinHeight;
 			// we have to update the layout, otherwise the height gets not recalculated
 			me.picker.updateLayout();
@@ -463,7 +463,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	    } else {
 		let msg = Proxmox.Utils.getResponseErrorMessage(o.getError());
 		if (me.picker) {
-		    Proxmox.Utils.setErrorMask(me.picker, msg);
+		    Proxmox.Utils.setErrorMask(me.picker.getView(), msg);
 		}
 		me.loadError = msg;
 	    }
