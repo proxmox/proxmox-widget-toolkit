@@ -239,12 +239,10 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 
     columns: [
 	{
-	    xtype: 'checkcolumn',
 	    header: gettext('Enabled'),
 	    dataIndex: 'Enabled',
-	    listeners: {
-		beforecheckchange: () => false, // veto, we don't want to allow inline change - to subtle
-	    },
+	    align: 'center',
+	    renderer: Proxmox.Utils.renderEnabledIcon,
 	    width: 90,
 	},
 	{

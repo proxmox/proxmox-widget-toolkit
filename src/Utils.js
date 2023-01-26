@@ -100,6 +100,8 @@ utilities: {
 	return value;
     },
 
+    renderEnabledIcon: enabled => `<i class="fa fa-${enabled ? 'check' : 'minus'}"></i>`,
+
     language_array: function() {
 	let data = [['__default__', Proxmox.Utils.render_language('')]];
 	Ext.Object.each(Proxmox.Utils.language_map, function(key, value) {
