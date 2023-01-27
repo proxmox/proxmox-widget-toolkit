@@ -290,7 +290,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	if (!me.multiSelect) {
 	    picker.on('itemclick', function(sm, record) {
 		if (picker.getSelection()[0] === record) {
-		    picker.hide();
+		    me.collapse();
 		}
 	    });
 	}
