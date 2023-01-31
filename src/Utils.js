@@ -396,7 +396,7 @@ utilities: {
 	if (!result.success) {
 	    msg = gettext("Unknown error");
 	    if (result.message) {
-		msg = result.message;
+		msg = Ext.htmlEncode(result.message);
 		if (result.status) {
 		    msg += ` (${result.status})`;
 		}
