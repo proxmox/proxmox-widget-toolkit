@@ -1,3 +1,25 @@
+proxmox-widget-toolkit (3.5.5) bullseye; urgency=medium
+
+  * combobox grid: use the grids view for the error message
+
+  * combobox grid: make height for the error configurable
+
+  * combobox grid: instead of hiding the picker collapse it, keeping the
+    internal state consitent which avoids, among other things, the need
+    fo two clicks after re-selecting an item
+
+  * utils: always html-encode response message from errors to avoid rendering
+    glitches, that while not known to be problematic from a safety POV, are
+    possibly odd for people to find.
+
+  * form: display-edit: add safe default renderer for display field to avoid
+    unproblematic, but possible odd and glitchy side-effects from the
+    value-bind if the display-edit field is in iput mode.
+
+  * api request: add wide spread alert-error logic as smart-on option
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 31 Jan 2023 17:27:41 +0100
+
 proxmox-widget-toolkit (3.5.4) bullseye; urgency=medium
 
   * api-viewer: allow text selection in the parameter and the return grids
