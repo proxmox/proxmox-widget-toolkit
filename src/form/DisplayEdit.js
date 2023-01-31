@@ -68,6 +68,10 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 	    delete displayConfig.displayConfig;
 	}
 
+	Ext.applyIf(displayConfig, {
+	    renderer: v => Ext.htmlEncode(v),
+	});
+
 	Ext.applyIf(displayConfig.bind, {
 	    hidden: '{editable}',
 	    disabled: '{editable}',
