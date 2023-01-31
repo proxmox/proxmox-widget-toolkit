@@ -418,6 +418,10 @@ utilities: {
 	    waitMsg: gettext('Please wait...'),
 	}, reqOpts);
 
+	// default to enable if user isn't handling the failure already explicitly
+	let autoErrorAlert = reqOpts.autoErrorAlert ??
+	    (typeof reqOpts.failure !== 'function' && typeof reqOpts.callback !== 'function');
+
 	if (!newopts.url.match(/^\/api2/)) {
 	    newopts.url = '/api2/extjs' + newopts.url;
 	}
@@ -439,6 +443,9 @@ utilities: {
 			response.htmlStatus = Proxmox.Utils.extractRequestError(result, true);
 			Ext.callback(callbackFn, options.scope, [options, false, response]);
 			Ext.callback(failureFn, options.scope, [response, options]);
+			if (autoErrorAlert) {
+			    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+			}
 			return;
 		    }
 		    Ext.callback(callbackFn, options.scope, [options, true, response]);
