@@ -398,14 +398,13 @@ utilities: {
 	    if (result.message) {
 		msg = result.message;
 		if (result.status) {
-		    msg += ' (' + result.status + ')';
+		    msg += ` (${result.status})`;
 		}
 	    }
 	    if (verbose && Ext.isObject(result.errors)) {
 		msg += "<br>";
-		Ext.Object.each(result.errors, function(prop, desc) {
-		    msg += "<br><b>" + Ext.htmlEncode(prop) + "</b>: " +
-			Ext.htmlEncode(desc);
+		Ext.Object.each(result.errors, (prop, desc) => {
+		    msg += `<br><b>${Ext.htmlEncode(prop)}</b>: ${Ext.htmlEncode(desc)}`;
 		});
 	    }
 	}
