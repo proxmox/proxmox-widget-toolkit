@@ -1,7 +1,9 @@
 Ext.define('apt-pkglist', {
     extend: 'Ext.data.Model',
-    fields: ['Package', 'Title', 'Description', 'Section', 'Arch',
-	      'Priority', 'Version', 'OldVersion', 'ChangeLogUrl', 'Origin'],
+    fields: [
+        'Package', 'Title', 'Description', 'Section', 'Arch', 'Priority', 'Version', 'OldVersion',
+        'ChangeLogUrl', 'Origin',
+    ],
     idProperty: 'Package',
 });
 
@@ -56,7 +58,7 @@ Ext.define('Proxmox.node.APT', {
 	    groupField: 'Origin',
 	    proxy: {
 		type: 'proxmox',
-		url: "/api2/json/nodes/" + me.nodename + "/apt/update",
+		url: `/api2/json/nodes/${me.nodename}/apt/update`,
 	    },
 	    sorters: [
 		{
@@ -65,6 +67,7 @@ Ext.define('Proxmox.node.APT', {
 		},
 	    ],
 	});
+	Proxmox.Utils.monStoreErrors(me, store, true);
 
 	let groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
             groupHeaderTpl: '{[ "Origin: " + values.name ]} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
@@ -76,37 +79,24 @@ Ext.define('Proxmox.node.APT', {
 		let headerCt = this.view.headerCt;
 		let colspan = headerCt.getColumnCount();
 		return {
-		    rowBody: '<div style="padding: 1em">' +
-			Ext.String.htmlEncode(data.Description) +
-			'</div>',
+		    rowBody: `<div style="padding: 1em">${Ext.htmlEncode(data.Description)}</div>`,
 		    rowBodyCls: me.full_description ? '' : Ext.baseCSSPrefix + 'grid-row-body-hidden',
 		    rowBodyColspan: colspan,
 		};
 	    },
 	});
 
-	let reload = function() {
-	    store.load();
-	};
-
-	Proxmox.Utils.monStoreErrors(me, store, true);
-
 	let apt_command = function(cmd) {
 	    Proxmox.Utils.API2Request({
-		url: "/nodes/" + me.nodename + "/apt/" + cmd,
+		url: `/nodes/${me.nodename}/apt/${cmd}`,
 		method: 'POST',
-		failure: function(response, opts) {
-		    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-		},
-		success: function(response, opts) {
-		    let upid = response.result.data;
-
-		    let win = Ext.create('Proxmox.window.TaskViewer', {
-			upid: upid,
-		    });
-		    win.show();
-		    me.mon(win, 'close', reload);
-		},
+		success: ({ result }) => Ext.create('Proxmox.window.TaskViewer', {
+		    autoShow: true,
+		    upid: result.data,
+		    listeners: {
+			close: () => store.load(),
+		    },
+		}),
 	    });
 	};
 
@@ -114,13 +104,12 @@ Ext.define('Proxmox.node.APT', {
 
 	let update_btn = new Ext.Button({
 	    text: gettext('Refresh'),
-	    handler: function() {
-		Proxmox.Utils.checked_command(function() { apt_command('update'); });
-	    },
+	    handler: () => Proxmox.Utils.checked_command(function() { apt_command('update'); }),
 	});
 
 	let show_changelog = function(rec) {
-	    if (!rec || !rec.data || !(rec.data.ChangeLogUrl && rec.data.Package)) {
+	    if (!rec?.data?.ChangeLogUrl || !rec?.data?.Package) {
+		console.debug('cannot show changelog, missing Package and/or ChangeLogUrl', rec);
 		return;
 	    }
 
@@ -166,15 +155,8 @@ Ext.define('Proxmox.node.APT', {
 	    text: gettext('Changelog'),
 	    selModel: sm,
 	    disabled: true,
-	    enableFn: function(rec) {
-		if (!rec || !rec.data || !(rec.data.ChangeLogUrl && rec.data.Package)) {
-		    return false;
-		}
-		return true;
-	    },
-	    handler: function(b, e, rec) {
-		show_changelog(rec);
-	    },
+	    enableFn: rec => !!rec?.data?.ChangeLogUrl && !!rec?.data?.Package,
+	    handler: (b, e, rec) => show_changelog(rec),
 	});
 
 	let verbose_desc_checkbox = new Ext.form.field.Checkbox({
@@ -205,10 +187,8 @@ Ext.define('Proxmox.node.APT', {
 	    },
 	    features: [groupingFeature, rowBodyFeature],
 	    listeners: {
-		activate: reload,
-		itemdblclick: function(v, rec) {
-		    show_changelog(rec);
-		},
+		activate: () => store.load(),
+		itemdblclick: (v, rec) => show_changelog(rec),
 	    },
 	});
 
