@@ -126,7 +126,7 @@ Ext.define('Proxmox.node.APT', {
 	    let win = Ext.create('Ext.window.Window', {
 		title: gettext('Changelog') + ": " + rec.data.Package,
 		width: 800,
-		height: 400,
+		height: 600,
 		layout: 'fit',
 		modal: true,
 		items: [view],
