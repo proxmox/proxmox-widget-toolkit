@@ -67,12 +67,20 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		xtype: 'textfield',
 		fieldLabel: gettext('Bridge ports'),
 		name: 'bridge_ports',
+		autoEl: {
+		    tag: 'div',
+		    'data-qtip': gettext('Space-separated list of interfaces, for example: enp0s0 enp1s0'),
+		},
 	    });
 	} else if (me.iftype === 'OVSBridge') {
 	    column2.push({
 		xtype: 'textfield',
 		fieldLabel: gettext('Bridge ports'),
 		name: 'ovs_ports',
+		autoEl: {
+		    tag: 'div',
+		    'data-qtip': gettext('Space-separated list of interfaces, for example: enp0s0 enp1s0'),
+		},
 	    });
 	    column2.push({
 		xtype: 'textfield',
