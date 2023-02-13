@@ -38,12 +38,12 @@ Ext.define('Proxmox.window.DiskSmart', {
 		},
 		{
 		    text: gettext('Value'),
-		    dataIndex: 'raw',
+		    dataIndex: 'real-value',
 		    renderer: Ext.String.htmlEncode,
 		},
 		{
 		    text: gettext('Normalized'),
-		    dataIndex: 'value',
+		    dataIndex: 'real-normalized',
 		    width: 60,
 		},
 		{
@@ -154,7 +154,18 @@ Ext.define('Proxmox.window.DiskSmart', {
     Ext.define('pmx-smart-attribute', {
 	extend: 'Ext.data.Model',
 	fields: [
-	    { name: 'id', type: 'number' }, 'name', 'value', 'worst', 'threshold', 'flags', 'fail', 'raw',
+	    { name: 'id', type: 'number' }, 'name', 'value', 'worst', 'threshold', 'flags', 'fail',
+	    'raw', 'normalized',
+	    {
+		name: 'real-value',
+		// FIXME remove with next major release (PBS 3.0)
+		calculate: data => (data.normalized ?? false) ? data.raw : data.value,
+	    },
+	    {
+		name: 'real-normalized',
+		// FIXME remove with next major release (PBS 3.0)
+		calculate: data => data.normalized ?? data.raw,
+	    },
 	],
 	idProperty: 'name',
     });
