@@ -183,7 +183,7 @@ Ext.define('Proxmox.node.APT', {
 	    selModel: sm,
             viewConfig: {
 		stripeRows: false,
-		emptyText: '<div style="display:table; width:100%; height:100%;"><div style="display:table-cell; vertical-align: middle; text-align:center;"><b>' + gettext('No updates available.') + '</div></div>',
+		emptyText: `<div style="display:flex;justify-content:center;"><p>${gettext('No updates available.')}</p></div>`,
 	    },
 	    features: [groupingFeature, rowBodyFeature],
 	    listeners: {
