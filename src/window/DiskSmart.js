@@ -159,12 +159,12 @@ Ext.define('Proxmox.window.DiskSmart', {
 	    {
 		name: 'real-value',
 		// FIXME remove with next major release (PBS 3.0)
-		calculate: data => (data.normalized ?? false) ? data.raw : data.value,
+		calculate: data => data.raw ?? data.value,
 	    },
 	    {
 		name: 'real-normalized',
 		// FIXME remove with next major release (PBS 3.0)
-		calculate: data => data.normalized ?? data.raw,
+		calculate: data => data.normalized ?? data.value,
 	    },
 	],
 	idProperty: 'name',
