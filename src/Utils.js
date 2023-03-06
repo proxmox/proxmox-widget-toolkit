@@ -1451,3 +1451,18 @@ Ext.define('Proxmox.Async', {
 	return new Promise((resolve, _reject) => setTimeout(resolve, millis));
     },
 });
+
+Ext.override(Ext.data.Store, {
+    // If the store's proxy is changed while it is waiting for an AJAX
+    // response, `onProxyLoad` will still be called for the outdated response.
+    // To avoid displaying inconsistent information, only process responses
+    // belonging to the current proxy.
+    onProxyLoad: function(operation) {
+	let me = this;
+	if (operation.getProxy() === me.getProxy()) {
+	    me.callParent(arguments);
+	} else {
+	    console.log(`ignored outdated response: ${operation.getRequest().getUrl()}`);
+	}
+    },
+});
