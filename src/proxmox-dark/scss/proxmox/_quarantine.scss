@@ -45,3 +45,9 @@ tr.bounced,
 .x-keyboard-mode tr.bounced .x-grid-item-focused {
   background-color: $background-warning;
 }
+
+.pmg-mail-preview-themed div > iframe {
+  // by reducing the brightness first, pure blacks won't get inverted
+  // to pure white.
+  filter: brightness(95%) invert(95%);
+}
