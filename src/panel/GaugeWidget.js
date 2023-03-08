@@ -61,6 +61,36 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 
     initialValue: 0,
 
+    checkThemeColors: function() {
+	let me = this;
+	let rootStyle = getComputedStyle(document.documentElement);
+
+	// get colors
+	let panelBg = rootStyle.getPropertyValue("--pwt-panel-background").trim() || "#ffffff";
+	let textColor = rootStyle.getPropertyValue("--pwt-text-color").trim() || "#000000";
+	me.defaultColor = rootStyle.getPropertyValue("--pwt-gauge-default").trim() || '#c2ddf2';
+	me.criticalColor = rootStyle.getPropertyValue("--pwt-gauge-crit").trim() || '#ff6c59';
+	me.warningColor = rootStyle.getPropertyValue("--pwt-gauge-warn").trim() || '#fc0';
+	me.backgroundColor = rootStyle.getPropertyValue("--pwt-gauge-back").trim() || '#f5f5f5';
+
+	// set gauge colors
+	let value = me.chart.series[0].getValue() / 100;
+
+	let color = me.defaultColor;
+
+	if (value >= me.criticalThreshold) {
+	    color = me.criticalColor;
+	} else if (value >= me.warningThreshold) {
+	    color = me.warningColor;
+	}
+
+	me.chart.series[0].setColors([color, me.backgroundColor]);
+
+	// set text and background colors
+	me.chart.setBackground(panelBg);
+	me.valueSprite.setAttributes({ fillStyle: textColor }, true);
+	me.chart.redraw();
+    },
 
     updateValue: function(value, text) {
 	let me = this;
@@ -100,5 +130,20 @@ Ext.define('Proxmox.panel.GaugeWidget', {
 	me.text = me.getComponent('text');
 	me.chart = me.getComponent('chart');
 	me.valueSprite = me.chart.getSurface('chart').get('valueSprite');
+
+	me.checkThemeColors();
+
+	// switch colors on media query changes
+	me.mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
+	me.themeListener = (e) => { me.checkThemeColors(); };
+	me.mediaQueryList.addEventListener("change", me.themeListener);
+    },
+
+    doDestroy: function() {
+	let me = this;
+
+	me.mediaQueryList.removeEventListener("change", me.themeListener);
+
+	me.callParent();
     },
 });
