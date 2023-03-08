@@ -224,7 +224,6 @@ Ext.define('Proxmox.window.AddTotp', {
 			visible: '{!secretEmpty}',
 		    },
 		    style: {
-			'background-color': 'white',
 			'margin-left': 'auto',
 			'margin-right': 'auto',
 			padding: '5px',

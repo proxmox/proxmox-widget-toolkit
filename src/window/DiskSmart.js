@@ -74,7 +74,6 @@ Ext.define('Proxmox.window.DiskSmart', {
 	    autoScroll: true,
 	    padding: 5,
 	    style: {
-		'background-color': 'white',
 		'white-space': 'pre',
 		'font-family': 'monospace',
 	    },

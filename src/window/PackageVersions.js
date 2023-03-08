@@ -45,7 +45,6 @@ Ext.define('Proxmox.window.PackageVersions', {
 		html: '{packageList}',
 	    },
 	    style: {
-		'background-color': 'white',
 		'white-space': 'pre',
 		'font-family': 'monospace',
 	    },

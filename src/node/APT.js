@@ -116,7 +116,6 @@ Ext.define('Proxmox.node.APT', {
 	    let view = Ext.createWidget('component', {
 		autoScroll: true,
 		style: {
-		    'background-color': 'white',
 		    'white-space': 'pre',
 		    'font-family': 'monospace',
 		    padding: '5px',
