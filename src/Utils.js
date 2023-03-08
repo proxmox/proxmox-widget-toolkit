@@ -109,6 +109,31 @@ utilities: {
 	return data;
     },
 
+    theme_map: {
+	auto: 'auto',
+	"proxmox-dark": 'Proxmox Dark',
+    },
+
+    render_theme: function(value) {
+	if (!value || value === '__default__') {
+	    return Proxmox.Utils.defaultText + ' (Light theme)';
+	}
+	let text = Proxmox.Utils.theme_map[value];
+	if (text) {
+	    return text;
+	}
+	return value;
+    },
+
+    theme_array: function() {
+	let data = [['__default__', Proxmox.Utils.render_theme('')]];
+	Ext.Object.each(Proxmox.Utils.theme_map, function(key, value) {
+	    data.push([key, Proxmox.Utils.render_theme(value)]);
+	});
+
+	return data;
+    },
+
     bond_mode_gettext_map: {
 	'802.3ad': 'LACP (802.3ad)',
 	'lacp-balance-slb': 'LACP (balance-slb)',

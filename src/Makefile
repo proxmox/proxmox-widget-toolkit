@@ -44,6 +44,7 @@ JSSRC=					\
 	form/TaskTypeSelector.js	\
 	form/ACME.js			\
 	form/UserSelector.js		\
+	form/ThemeSelector.js		\
 	button/Button.js		\
 	button/AltText.js		\
 	button/HelpButton.js		\
@@ -90,6 +91,7 @@ JSSRC=					\
 	window/AddYubico.js		\
 	window/TfaEdit.js		\
 	window/NotesEdit.js		\
+	window/ThemeEdit.js		\
 	node/APT.js			\
 	node/APTRepositories.js		\
 	node/NetworkEdit.js		\
