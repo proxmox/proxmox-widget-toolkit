@@ -1,0 +1,56 @@
+// Swapping out the logo with CSS rather than using javascript
+img[id^="proxmoxlogo-"][id$="-img"] {
+  filter: invert(1) hue-rotate(180deg);
+}
+
+// removes the gray line in the header of the mail gateway
+div[id^="versioninfo-"] + div[id^="panel-"] > div[id^="panel-"][id$="-bodyWrap"] > div {
+  background-color: transparent;
+  border-color: transparent;
+}
+
+// border around the main datacenter view
+div[id^="PVE-dc-Config-"][id$="-body"],
+// border around the main pool view
+div[id^="pvePoolConfig-"][id$="-body"],
+// Container content config views
+div[id^="pveLXCConfig-"][id$="-body"],
+// VM content config views
+div[id^="PVE-qemu-Config-"][id$="-body"],
+div[id^="PVE-storage-Browser-"][id$="-body"],
+div[id^="PVE-node-Config-"][id$="-body"] {
+  @include content-border;
+}
+
+// Section header in the "My Settings" page
+.x-fieldset-header-default > .x-fieldset-header-text {
+  color: $text-color;
+}
+
+// Errors and bad configuration (Taskviewer / no repository enabled)
+.proxmox-invalid-row {
+  background-color: $background-invalid;
+}
+
+// Warning rows, e.g. when enabling staging or no-subscription
+// repository
+.proxmox-warning-row {
+  background-color: $background-warning;
+}
+
+// Disabled rows (e.g. disabled repos in Repository view)
+.proxmox-disabled-row td {
+  color: $text-color-inactive;
+}
+
+.pmx-hint {
+  background-color: $background-warning;
+}
+
+.pmx-hint a {
+  color: $highlighted-text-alt;
+}
+
+.pmx-hint a:active {
+  color: $highlighted-text;
+}

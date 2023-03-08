@@ -1,0 +1,14 @@
+.pve-edit-tag.editable span {
+  background-color: $form-field-body-color;
+  color: $text-color;
+  border-color: $border-color;
+}
+
+// adds a bit of outline to make tags stand out more
+.proxmox-tags-full,
+.proxmox-tags-circle {
+  .proxmox-tag-light,
+  .proxmox-tag-dark {
+    outline: 1px solid rgba($background-dark, 0.3);
+  }
+}

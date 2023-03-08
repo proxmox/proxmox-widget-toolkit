@@ -1,0 +1,12 @@
+// A border to the left and on top of the content panels for the
+// selected resource
+@mixin content-border {
+  border-top: solid 3px $background-darkest;
+  border-left: solid 3px $background-darkest;
+}
+
+// selected items in dropdown etc
+@mixin selection {
+  background-color: $selection-background-color;
+  color: $selection-background-text-color;
+}

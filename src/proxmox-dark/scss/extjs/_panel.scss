@@ -1,0 +1,25 @@
+.x-panel-header-default {
+  background-color: $content-background-color;
+  border: none;
+
+  // The small navigation elements in the panel header bar e.g. to
+  // collapse a panel
+  .x-tool-tool-el {
+    background-color: transparent;
+    filter: brightness(120%);
+  }
+
+  .x-tool-over .x-tool-tool-el {
+    filter: brightness(140%);
+  }
+}
+
+.x-panel-header-title-default {
+  color: $highlighted-text;
+}
+
+.x-panel-body-default {
+  background-color: $background-darker;
+  border-color: $border-color-alt;
+  color: $text-color;
+}

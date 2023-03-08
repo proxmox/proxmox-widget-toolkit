@@ -1,0 +1,40 @@
+// displayfields in forms (e.g. the guest os header in the vm creation
+// form)
+.x-form-display-field-default {
+  color: $text-color;
+}
+
+// The body of a text form field
+.x-form-text-default {
+  background-color: $form-field-body-color;
+  color: $text-color;
+}
+
+// Unselected form field
+.x-form-trigger-wrap-default {
+  border-color: $form-field-body-color;
+
+  // Focused form field
+  &.x-form-trigger-wrap-focus {
+    border-color: mix(black, $primary-color, 3%);
+  }
+}
+
+// Labels
+.x-form-item-label-default {
+  color: $text-color;
+}
+
+// number field arrow up and down buttons
+.x-form-spinner-default {
+  background-color: $form-field-body-color;
+}
+
+.x-form-cb-label-default {
+  color: $icon-color;
+}
+
+// Fieldsets used in e.g. the personal settings
+.x-fieldset-default {
+  border-color: $border-color-alt;
+}

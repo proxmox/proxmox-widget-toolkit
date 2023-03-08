@@ -1,0 +1,9 @@
+// Table headers under Node > "Updates" > "Repositories"
+.proxmox-apt-repos .x-grid-group-hd {
+  background-color: $background-darker;
+  border-bottom-width: 0;
+}
+
+.proxmox-apt-repos .x-grid-group-title {
+  color: $text-color;
+}

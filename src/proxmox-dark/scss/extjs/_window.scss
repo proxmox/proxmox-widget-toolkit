@@ -1,0 +1,39 @@
+.x-window-default {
+  background-color: $background-darkest;
+
+  // make the color transparent so the border doesn't appear visibly,
+  // like in crisp, but keep to keep the layout intact
+  border-color: transparent;
+}
+
+.x-window-header-default {
+  background-color: $background-darker;
+
+  // make the color transparent so the border doesn't appear visibly,
+  // like in crisp, but keep to keep the layout intact
+  border-color: transparent;
+}
+
+.x-window-header-title-default {
+  color: $highlighted-text;
+}
+
+.x-window-body-default {
+  background-color: $background-darker;
+  border-color: $border-color-alt;
+  color: $text-color;
+}
+
+// Window when dragged
+.x-window-ghost {
+  background-color: $background-darker;
+}
+
+// The X in the right upper corner of closable windows
+.x-window-header-default .x-tool-img {
+  background-color: transparent;
+}
+
+.x-message-box .x-window-body {
+  background-color: $background-dark;
+}

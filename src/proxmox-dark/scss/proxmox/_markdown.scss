@@ -1,0 +1,31 @@
+.pmx-md {
+  code {
+    background-color: $background-darkest;
+  }
+
+  pre code {
+    border-color: $border-color-alt;
+  }
+
+  tbody tr {
+    & td {
+      border-color: $border-color;
+    }
+
+    &:nth-of-type(2n) {
+      background-color: $background-darkest;
+    }
+
+    &:hover td {
+      background-color: $content-background-selected;
+    }
+  }
+
+  a {
+    color: $highlighted-text;
+
+    &:active {
+      color: $highlighted-text-alt;
+    }
+  }
+}

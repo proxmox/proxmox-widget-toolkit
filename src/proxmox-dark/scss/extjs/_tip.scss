@@ -1,0 +1,18 @@
+.x-tip-default {
+  background-color: $background-darkest;
+  border-color: $border-color-alt;
+}
+
+.x-tip-body-default {
+  color: $text-color;
+}
+
+// Form error tip
+.x-tip-form-invalid {
+  background-color: $background-dark;
+  border-color: $border-color-alt;
+}
+
+.x-tip-body-form-invalid {
+  color: $text-color;
+}

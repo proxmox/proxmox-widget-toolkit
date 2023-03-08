@@ -1,0 +1,200 @@
+// these styling fix all kinds of icons in grid, treeview etc.
+
+// most icons just use the color attribute..
+// Running containers and VMS
+.x-grid-icon-custom.running,
+.x-tree-icon-custom.running,
+// Icons in trees (e.g. Resource tree)
+.x-tree-icon-custom,
+// Icons in panels, e.g. Search tab
+.fa-database::before,
+// Icon for pools
+.fa-tags::before,
+// The template icon
+.fa-file-o::before,
+// Icon for cluster nodes
+.fa-building::before,
+// e.g. storage list when creating a guest
+.x-action-col-icon::before,
+.fa-shield::before,
+.fa-file-text-o::before,
+.fa-clock-o::before,
+// tab bar icons
+.x-tab-icon-el-default,
+.pve-icon-verify-lettering::after,
+// the small plane when migrating a vm
+.x-tree-icon-custom.lock-migrate::after,
+.x-grid-icon-custom.lock-migrate::after,
+// e.g. permission tree view in pve
+.x-tree-icon-leaf:not(.x-tree-icon-custom)::before,
+.x-tree-icon-parent:not(.x-tree-icon-custom)::before,
+.x-tree-icon-parent-expanded:not(.x-tree-icon-custom)::before {
+  color: $icon-color;
+}
+
+// but some are implement as background SVGs or PNGs. invert them via
+// filters:
+.fa-ceph::before,
+.fa-sdn::before,
+.fa-network-wired::before,
+// Icon for "ISO Images" for storages
+.pve-itype-treelist-item-icon-cdrom,
+// Arrow to the right
+.fa-chevron-right::before,
+// icon indicating a currently open shell session in the task viewer
+.x-grid-row-console,
+// the "triangle" that appears when the sidebar becomes scrollable
+.x-box-scroller-toolbar-default.x-box-scroller,
+// the small triangles in the tree view next to nodes etc.
+.x-tree-elbow-img,
+// the computer icon in the resource pool add menu
+.pve-itype-icon-qemu,
+.x-tree-node-computer,
+.x-grid-tree-node-expanded .x-tree-node-computer,
+.pbs-icon-tape,
+.pbs-icon-tape-drive,
+.x-tree-icon-leaf:not(.x-tree-icon-custom),
+// default tree panel icons (api viewer, pbs backup panel)
+.x-tree-icon-parent:not(.x-tree-icon-custom),
+.x-tree-icon-parent-expanded:not(.x-tree-icon-custom) {
+  filter: invert($icon-brightness);
+}
+
+// the following icons need some additional fix-ups to work well in
+// grids (e.g. when hovered etc.)
+// Icon for the processor in VM hardware settings
+.pve-itype-icon-cpu,
+// Icon for memory in VM hardware settings
+.pve-itype-icon-cdrom,
+// Icon for memory in VM hardware settings
+.pve-itype-icon-memory,
+// the pcie device icon in the vm hardware section
+.pve-itype-icon-pci,
+// the serial device icon in the vm hardware section
+.pve-itype-icon-serial,
+// the rng icon in the vm hardware section
+.pve-itype-icon-die,
+// Processor icon for summary page
+.pmx-itype-icon-processor,
+// Memory icon on summary page
+.pmx-itype-icon-memory,
+// the mount point icon for containers
+.pve-itype-icon-storage,
+.x-tree-node-harddisk,
+.x-grid-tree-node-expanded .x-tree-node-harddisk {
+  filter: invert($icon-brightness);
+
+  // the filter also applies to the text next to the icon
+  .x-grid-cell-inner {
+    color: black;
+  }
+
+  .x-grid-cell-inner::before {
+    // this is a somewhat hacky work-around for the focus borders on
+    // these elements. since we use the invert filter to fix the icon
+    // color we need to also invert the border color first too, not
+    // just the text. add "!important" to properly override.
+    border-color: invert($primary-color, $weight: 90%) !important;
+  }
+}
+
+// pbs show task log in longest task list column
+.x-action-col-icon.fa-chevron-right::before {
+  filter: none;
+}
+
+// checkboxes and radio buttons
+.x-form-checkbox-default,
+.x-form-radio-default,
+.x-column-header-checkbox .x-column-header-checkbox::after,
+.x-grid-checkcolumn::after {
+  filter: invert($icon-brightness) hue-rotate(180deg);
+}
+
+.x-tree-icon-custom,
+.x-grid-icon-custom {
+  &::after {
+    color: $icon-color;
+    text-shadow: -1px 0 1px $background-darker;
+  }
+
+  // stopped containers and VMs
+  &.stopped,
+  // vms/cts that are offline
+  &.offline,
+  // question mark at the bottom right of e.g. unreachable storages
+  &.unknown::after {
+    color: $icon-color-alt;
+  }
+
+  &.lxc::after,
+  &.qemu::after {
+    background-color: $background-darker;
+    color: $icon-color;
+  }
+}
+
+// icons for templates in the storages view
+.x-treelist-item-icon {
+  &.lxc::after,
+  &.qemu::after {
+    background-color: $background-darker;
+    color: $icon-color;
+  }
+}
+
+.x-grid-item .x-grid-icon-custom {
+  &.lxc::after,
+  &.qemu::after {
+    background-color: $background-darker;
+  }
+}
+
+.x-grid-item-alt .x-grid-icon-custom {
+  &.lxc::after,
+  &.qemu::after {
+    background-color: $background-darkest;
+  }
+}
+
+.x-treelist-item-selected {
+  .lxc::after,
+  .qemu::after {
+    background-color: $primary-color;
+    text-shadow: -1px 0 1px $primary-color;
+  }
+}
+
+.x-grid-item-over,
+// hovered items in treelists
+.x-treelist-item-over,
+// template icons when in selected menu item or table row
+.x-grid-item-selected,
+// vm/ct that is focused (e.g. by mouse-down)
+.x-keyboard-mode .x-grid-item-focused {
+  .lxc::after,
+  .qemu::after {
+    background-color: $selection-background-color !important;
+    text-shadow: -1px 0 1px $selection-background-color;
+  }
+}
+
+.x-action-col-icon:hover {
+  &::before,
+  &::after {
+    text-shadow: -1px 0 1px $background-darker;
+  }
+}
+
+// The usage icons dynamically displaying how full a storage is
+.usage-wrapper {
+  border: 1px solid $icon-color;
+}
+
+.usage-negative {
+  background-color: transparent;
+}
+
+.usage {
+  background-color: $icon-color;
+}

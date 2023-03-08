@@ -1,0 +1,21 @@
+.x-toolbar {
+  background-color: $background-darker;
+}
+
+.x-toolbar-default {
+  background-color: $background-darker;
+  border: solid 3px $background-darkest;
+
+  &.x-docked-top {
+    border-width: 1px;
+    border-color: $border-color-alt;
+  }
+
+  .x-toolbar-separator {
+    border-color: $border-color;
+  }
+}
+
+.x-toolbar-text-default {
+  color: $text-color;
+}

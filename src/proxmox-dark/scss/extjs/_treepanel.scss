@@ -1,0 +1,24 @@
+// individual rows in tree lists (e.g. the menu in the "middle")
+.x-treelist-item {
+  background-color: $background-darker;
+}
+
+.x-treelist-item-text,
+.x-treelist-item-icon,
+.x-treelist-row-over .x-treelist-item-icon,
+.x-treelist-row-over .x-treelist-item-text {
+  color: $text-color;
+}
+
+.x-treelist-item-selected > .x-treelist-row {
+  background-color: $primary-color;
+}
+
+.x-treelist-row-over {
+  background-color: $selection-background-color;
+}
+
+.x-treelist-pve-nav {
+  background-color: $background-darker;
+  border-color: $border-color;
+}

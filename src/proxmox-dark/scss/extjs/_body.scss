@@ -1,0 +1,23 @@
+// Chrome 81, Firefox 96 and Safari 13 support a dark version of the
+// scrollbar and form controls source
+// https://stackoverflow.com/q/65940522
+:root {
+  color-scheme: dark;
+}
+
+.x-body {
+  color: $text-color;
+  background-color: $background-darkest;
+}
+
+// Should be the absolute background of the document
+.x-viewport > .x-body {
+  background-color: $background-darkest;
+}
+
+// necessary for some masks to work properly (e.g. when hidding the
+// attachment grid in pmg)
+body.x-border-layout-ct,
+div.x-border-layout-ct {
+  background-color: $background-darkest;
+}

@@ -1,0 +1,39 @@
+.x-menu-default {
+  border-color: $form-field-body-color;
+}
+
+.x-menu-body-default {
+  background-color: $form-field-body-color;
+}
+
+// E.g. the content menu in the resource tree displays a header
+.x-menu-header {
+  background-color: $primary-color;
+}
+
+.x-menu-item-default {
+  // Horizontal divider in menu (e.g. in UserInfo above "Logout")
+  &.x-menu-item-separator {
+    background-color: $background-dark;
+    border-color: $border-color;
+  }
+
+  // When hovering over a menu item
+  &.x-menu-item-focus {
+    @include selection;
+  }
+}
+
+.x-menu-item-text-default {
+  color: $text-color;
+}
+
+.x-menu-item-icon-default {
+  color: $icon-color;
+}
+
+// Vertical divider (e.g. in UserInfo between icons and text)
+.x-menu-icon-separator-default {
+  background-color: $background-dark;
+  border-color: $border-color;
+}

@@ -1,0 +1,37 @@
+@charset "utf-8";
+
+// Abstracts
+@import "abstracts/mixins";
+@import "abstracts/variables";
+
+// Chart, Icon, Keyboar-mode fixups
+@import "other/charts";
+@import "other/icons";
+
+// ExtJS re-stylings
+@import "extjs/form/button";
+@import "extjs/form/combobox";
+@import "extjs/form/formfield";
+@import "extjs/grid";
+@import "extjs/menu";
+@import "extjs/panel";
+@import "extjs/progress";
+@import "extjs/splitter";
+@import "extjs/tabbar";
+@import "extjs/tip";
+@import "extjs/toolbar";
+@import "extjs/treepanel";
+@import "extjs/window";
+@import "extjs/body";
+@import "extjs/presentation";
+
+// Proxmox re-stylings
+@import "proxmox/general";
+@import "proxmox/helpbutton";
+@import "proxmox/loadingindicator";
+@import "proxmox/markdown";
+@import "proxmox/nodes";
+@import "proxmox/quarantine";
+@import "proxmox/storages";
+@import "proxmox/tags";
+@import "proxmox/datepicker";

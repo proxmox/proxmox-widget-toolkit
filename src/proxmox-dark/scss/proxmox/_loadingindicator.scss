@@ -1,0 +1,14 @@
+// loading spinners
+.x-grid-row-loading,
+.x-treelist-item-loading .x-treelist-item-icon,
+.x-treelist-nav .x-treelist-item-loading .x-treelist-item-icon,
+.x-mask-msg-text,
+.x-grid-tree-loading .x-tree-icon {
+  filter: invert($icon-brightness);
+  color: black;
+}
+
+.x-mask-msg {
+  background-color: $form-field-body-color;
+  border: solid 1px mix(black, $form-field-body-color, 25%);
+}

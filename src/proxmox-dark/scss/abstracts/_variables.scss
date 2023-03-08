@@ -1,0 +1,67 @@
+// Primary colors
+$primary-color: hsl(205deg, 100%, 32.25%);
+$primary-light: hsl(205deg, 100%, 40.5%);
+$primary-dark: hsl(205deg, 100%, 25%);
+
+// Hightlighted Text (Links, Headers, etc.)
+$highlighted-text: hsl(205deg, 100%, 65%);
+$highlighted-text-alt: hsl(205deg, 100%, 80%);
+$highlighted-text-crit: hsl(360deg, 100%, 65%);
+
+// Icon and Text colors
+$text-color: hsl(0deg, 0%, 95%);
+$text-color-inactive: hsl(0deg, 0%, 60%);
+$icon-color: hsl(0deg, 0%, 90%);
+$icon-color-alt: hsl(0deg, 0%, 55%);
+
+// Borders
+$border-color: hsl(0deg, 0%, 40%);
+$border-color-alt: hsl(0deg, 0%, 25%);
+
+// Backgrounds
+$content-background-color: hsl(0deg, 0%, 20%);
+$content-background-selected: hsl(0deg, 0%, 30%);
+$background-dark: hsl(0deg, 0%, 20%);
+$background-darker: hsl(0deg, 0%, 15%);
+$background-darkest: hsl(0deg, 0%, 10%);
+$background-invalid: hsl(360deg, 60%, 30%);
+$background-warning: hsl(40deg, 100%, 30%);
+
+// Buttons
+$neutral-button-color: hsl(0deg, 0%, 35%);
+$neutral-button-color-alt: hsl(0deg, 0%, 55%);
+$neutral-button-text-color: hsl(0deg, 0%, 100%);
+$neutral-button-icon-color: $neutral-button-text-color;
+
+// Help Buttons
+$help-button-color: hsl(0deg, 0%, 70%);
+$help-button-color-alt: hsl(0deg, 0%, 60%);
+$help-button-text-color: hsl(0deg, 0%, 10%);
+$help-button-icon-color: $help-button-text-color;
+
+// Selection Colors
+$selection-background-color: hsl(0deg, 0%, 35%);
+$selection-background-text-color: hsl(0deg, 0%, 100%);
+
+// Other
+$form-field-body-color: $background-dark;
+$bottom-splitter-color: hsl(0deg, 0%, 5%);
+
+// Some icons are black and do not respect the 'color' style property.
+// For the dark mode these can be turned grey or white with the
+// 'filter: invert(value)' attribute
+$icon-brightness: lightness($icon-color);
+
+// Spam score colors
+
+// for spam scores with an absolute score >= 3
+$spam-high-neg: hsl(205deg, 65%, 20%);
+$spam-high-pos: hsl(360deg, 55%, 20%);
+
+// for spam scores with an absolute score between 0.1 and 3
+$spam-mid-neg: hsl(205deg, 65%, 30%);
+$spam-mid-pos: hsl(360deg, 55%, 30%);
+
+// for spam scores with an absolute score <= 0.1
+$spam-low-neg: hsl(205deg, 65%, 40%);
+$spam-low-pos: hsl(360deg, 55%, 40%);

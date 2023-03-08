@@ -1,0 +1,146 @@
+.x-column-header {
+  border-color: $border-color-alt;
+}
+
+.x-grid-item,
+.x-column-header-default,
+// the row number field (e.g. in the ipsets in pve)
+.x-grid-cell-row-numberer {
+  color: $text-color;
+  background-color: $background-darker;
+}
+
+// Trigger in grid/table header cells
+.x-column-header-trigger {
+  border-color: $border-color;
+}
+
+.x-grid-cell-special {
+  border-color: $border-color-alt;
+}
+
+.x-grid-group-hd {
+  background-color: $background-darker;
+  border-color: $border-color-alt;
+}
+
+.x-grid-group-title {
+  color: $text-color;
+}
+
+// Border-top in tables
+.x-grid-header-ct {
+  border: solid 1px $background-dark;
+  background-color: $background-dark;
+}
+
+// alternating row colors
+.x-grid-item-alt {
+  background-color: $background-darkest;
+}
+
+.x-grid-with-row-lines {
+  .x-grid-item {
+    border-color: $border-color-alt;
+    border-right: 0;
+
+    // A border at the bottom of tables
+    &:last-child {
+      border-color: $border-color-alt;
+    }
+
+    // A border at the top of tables
+    &:first-child {
+      border-color: $border-color-alt;
+    }
+
+    // hovered row in a grid
+    &.x-grid-item-over,
+    &.x-grid-item-selected {
+      background-color: $selection-background-color;
+      border-color: $border-color-alt;
+    }
+  }
+
+  // borders on selected elements
+  .x-grid-item-selected + .x-grid-item,
+  .x-grid-item-over + .x-grid-item {
+    border-color: $border-color-alt;
+  }
+}
+
+// Sometimes a selected node in the ResourceTree loses the
+// selection-background-color
+.x-grid-item-over,
+.x-grid-item-selected {
+  // Otherwise .x-grid-item overrides the background color
+  background-color: $selection-background-color;
+}
+
+// Hovering over a grid/table header cell
+.x-column-header-over,
+// When opening the sort/settings header of a table/grid header cell
+.x-column-header-open,
+.x-column-header-last .x-column-header-over .x-column-header-trigger, {
+  background-color: $content-background-selected;
+}
+
+// header element that the grid is currently sorted by
+.x-column-header-sort-ASC,
+.x-column-header-sort-DESC {
+  background-color: $primary-dark;
+}
+
+// summary rows (e.g. ceph pools last row)
+.x-grid-row-summary {
+  .x-grid-cell,
+  .x-grid-rowwrap,
+  .x-grid-cell-rowbody {
+    border-color: $border-color-alt;
+    background-color: $background-darker;
+  }
+}
+
+.x-grid-with-col-lines {
+  .x-grid-cell,
+  .x-grid-item-over .x-grid-cell,
+  .x-grid-item-selected .x-grid-cell {
+    border-color: $border-color-alt;
+  }
+}
+
+// drag and drop proxy
+.x-dd-drag-proxy {
+  background-color: $background-darkest;
+  border-color: $border-color-alt;
+  color: $text-color;
+}
+
+.x-keyboard-mode .x-grid-item-focused {
+  @include selection;
+
+  .x-grid-cell-inner::before {
+    border-color: $primary-color;
+  }
+}
+
+// Grid/table headers that are selected and active
+.x-keyboard-mode .x-column-header.x-column-header-focus {
+  color: $text-color;
+
+  // Elements in table
+  .x-column-header-inner::after {
+    border-color: $primary-color;
+  }
+}
+
+.x-keyboard-mode .proxmox-invalid-row .x-grid-item-focused {
+  background-color: $background-invalid;
+}
+
+// As far as I can tell only used under Node > "System" >
+// "Certificates"
+.x-grid-empty {
+  background-color: $background-darker;
+  color: $text-color;
+}

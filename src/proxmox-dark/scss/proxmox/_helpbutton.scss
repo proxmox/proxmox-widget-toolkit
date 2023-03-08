@@ -1,0 +1,16 @@
+// help buttons
+.proxmox-inline-button {
+  background-color: $help-button-color;
+  color: $help-button-text-color;
+
+  &.x-btn-over,
+  &.x-btn.x-btn-pressed.x-btn-default-toolbar-small {
+    background-color: $help-button-color-alt;
+    border-color: $help-button-color-alt;
+  }
+
+  .x-btn-inner,
+  .x-btn-icon-el {
+    color: $help-button-icon-color;
+  }
+}

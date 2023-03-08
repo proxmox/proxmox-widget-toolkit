@@ -5,6 +5,7 @@ Maintainer: Proxmox Support Team <support@proxmox.com>
 Build-Depends: debhelper (>= 12~),
                libjs-marked,
                pve-eslint (>= 7.28.0),
+               sassc,
 Standards-Version: 4.5.1
 Homepage: https://www.proxmox.com
 

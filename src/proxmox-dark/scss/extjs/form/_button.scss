@@ -1,0 +1,57 @@
+// The "main" buttons like Login, Create, ...
+.x-btn-default-small {
+  background-color: $primary-color;
+  border-color: $primary-color;
+
+  &.x-btn-over,
+  .x-keyboard-mode &.x-btn-focus {
+    background-color: $primary-light;
+    border-color: $primary-light;
+  }
+
+  &.x-btn.x-btn-disabled {
+    background-color: $primary-color;
+  }
+
+  &.x-btn.x-btn-pressed {
+    background-color: $primary-dark;
+    border-color: $primary-color;
+  }
+}
+
+// toolbar butons
+.x-btn-default-toolbar-small {
+  background-color: $neutral-button-color;
+  border-color: $neutral-button-color-alt;
+
+  .x-btn-inner-default-toolbar-small {
+    color: $neutral-button-text-color;
+  }
+
+  .x-btn-icon-el-default-toolbar-small {
+    color: $neutral-button-icon-color;
+  }
+
+  &.x-btn-over,
+  .x-keyboard-mode &.x-btn-focus {
+    background-color: $neutral-button-color-alt;
+
+    // the little arrow in certain toolbar buttons with dropdowns
+    .x-btn-wrap-default-toolbar-small.x-btn-arrow-right::after,
+    .x-btn-wrap-default-toolbar-small.x-btn-split-right::after {
+      filter: invert($icon-brightness);
+    }
+  }
+
+  &.x-btn.x-btn-disabled {
+    // Note: extJS already sets transparency on disabled buttons
+    background-color: $neutral-button-color;
+  }
+
+  // toggled state of toggle buttons (e.g. filter in task history)
+  &.x-btn.x-btn-menu-active,
+  &.x-btn.x-btn-pressed {
+    background-color: $primary-dark;
+    border-color: $primary-color;
+  }
+}

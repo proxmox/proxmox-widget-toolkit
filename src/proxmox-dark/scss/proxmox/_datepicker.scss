@@ -1,0 +1,61 @@
+.x-datepicker,
+.x-datepicker-column-header,
+.x-monthpicker {
+  background-color: $background-darker;
+  color: $text-color;
+
+  // make the border invisible but keep it to keep the layout intact
+  border-color: transparent;
+}
+
+.x-datepicker-month .x-btn-over.x-btn-default-small {
+  background-color: $selection-background-color;
+}
+
+.x-monthpicker-months {
+  border-color: $border-color-alt;
+}
+
+.x-datepicker-header {
+  background-color: $background-darkest;
+}
+
+.x-datepicker-cell,
+.x-monthpicker-item-inner {
+  // make the border invisible but keep it to keep the layout intact
+  border-color: transparent;
+}
+
+.x-datepicker-date,
+.x-monthpicker-item-inner {
+  color: $text-color;
+}
+
+.x-datepicker-prevday,
+.x-datepicker-nextday {
+  .x-datepicker-date {
+    color: $text-color-inactive;
+  }
+}
+
+.x-datepicker-footer,
+.x-monthpicker-buttons {
+  background-color: $background-darkest;
+}
+
+.x-datepicker-selected div.x-datepicker-date,
+.x-monthpicker-item a.x-monthpicker-selected,
+a.x-monthpicker-item-inner:hover,
+div.x-datepicker-date:hover {
+  @include selection;
+}
+
+.x-datepicker-disabled {
+  .x-datepicker-date {
+    background-color: $background-darkest;
+  }
+
+  div.x-datepicker-date:hover {
+    background-color: $background-darker;
+  }
+}

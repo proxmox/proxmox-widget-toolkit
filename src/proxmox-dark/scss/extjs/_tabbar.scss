@@ -1,0 +1,43 @@
+// The header of the tabbar
+.x-tab-bar-default {
+  background-color: $background-darker;
+}
+
+.x-tab-default {
+  // Hovering over a tab button
+  &.x-tab-over {
+    background-color: $primary-dark;
+    border-color: $primary-dark;
+  }
+
+  // Selected tab buttons
+  &.x-tab.x-tab-active {
+    background-color: $primary-light;
+    border-color: $primary-light;
+  }
+
+  // Disabled tab buttons
+  &.x-tab.x-tab-disabled {
+    background-color: $background-darker;
+
+    // make the border invisible so it matches the light theme, setting
+    // it to none messes with the allignment of the elements.
+    border-color: transparent;
+    color: $text-color;
+  }
+
+  .x-keyboard-mode &.x-tab-focus.x-tab-active {
+    background-color: $primary-color;
+    border-color: $primary-color;
+  }
+}
+
+// Not selected tab buttons
+.x-tab-default-top {
+  background-color: $background-darker;
+  border-color: $background-darker;
+}
+
+.x-tab-inner-default {
+  color: $text-color;
+}

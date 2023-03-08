@@ -1,0 +1,23 @@
+// Combobox "expand" trigger
+.x-form-trigger-default {
+  background-color: $form-field-body-color;
+}
+
+.x-boundlist {
+  border-color: $form-field-body-color;
+}
+
+// Combobox item
+.x-boundlist-item {
+  background-color: $form-field-body-color;
+  border-color: $form-field-body-color;
+  color: $text-color;
+}
+
+.x-boundlist-selected {
+  background-color: mix(black, $selection-background-color, 20%);
+}
+
+.x-boundlist-item-over {
+  background-color: $selection-background-color;
+}

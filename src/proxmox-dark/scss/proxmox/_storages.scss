@@ -1,0 +1,19 @@
+// ceph page
+table.osds {
+  tr {
+    border-color: $border-color;
+  }
+
+  td {
+    border-color: $border-color;
+  }
+}
+
+.install-mask {
+  background-color: $background-darker;
+  color: $text-color;
+}
+
+div.monitor {
+  border-color: $border-color;
+}

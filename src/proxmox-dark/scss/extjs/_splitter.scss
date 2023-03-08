@@ -1,0 +1,18 @@
+// Splitters separating two views (e.g. Firewall > "Security Group",
+// "IPSet", ...)
+.x-splitter {
+  background-color: $background-darkest;
+}
+
+.x-splitter-horizontal {
+  background-color: $bottom-splitter-color;
+}
+
+// Splitters that separate content and resize parts of the window
+.x-keyboard-mode .x-splitter-focus::after {
+  border-color: $primary-color;
+}
+
+.x-layout-split-bottom {
+  opacity: 0.7;
+}

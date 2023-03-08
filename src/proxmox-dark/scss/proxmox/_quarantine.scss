@@ -1,0 +1,47 @@
+// these css variables define the look of the spamscore grid in pmg
+:root {
+  // using interpolation here may avoid compatability issues between
+  // sass and css. see:
+  // https://sass-lang.com/documentation/breaking-changes/css-vars
+  // for spam with an absolute score >= 3
+  --pmg-spam-high-neg: #{$spam-high-neg};
+  --pmg-spam-high-pos: #{$spam-high-pos};
+
+  // for spam with an absolute score between 0.1 and 3
+  --pmg-spam-mid-neg: #{$spam-mid-neg};
+  --pmg-spam-mid-pos: #{$spam-mid-pos};
+
+  // for spam with an absolute score <= 0.1
+  --pmg-spam-low-neg: #{$spam-low-neg};
+  --pmg-spam-low-pos: #{$spam-low-pos};
+}
+
+.info-blue {
+  // the selector for the button icons have higher specificity than
+  // this one, so we need "!important"
+  color: $highlighted-text !important;
+}
+
+.critical {
+  // the selector for the button icons have higher specificity than
+  // this one, so we need "!important"
+  color: $highlighted-text-crit !important;
+}
+
+// pmg tracking center quarantined rows
+tr.blocked,
+.x-keyboard-mode tr.blocked .x-grid-item-focused {
+  background-color: $background-invalid;
+}
+
+// pmg tracking center quarantined rows
+tr.quarantine,
+.x-keyboard-mode tr.quarantine .x-grid-item-focused {
+  background-color: mix($background-warning, $background-invalid, 50%);
+}
+
+// pmg tracking center blocked rows
+tr.bounced,
+.x-keyboard-mode tr.bounced .x-grid-item-focused {
+  background-color: $background-warning;
+}

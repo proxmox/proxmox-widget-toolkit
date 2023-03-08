@@ -1,0 +1,19 @@
+.x-progress-default {
+  background-color: $form-field-body-color;
+
+  .x-progress-bar-default {
+    background-color: $primary-color; // Taken from the chart
+  }
+
+  .x-progress-text {
+    color: $text-color;
+  }
+}
+
+.x-progress.warning .x-progress-bar {
+  background-color: $background-warning;
+}
+
+.x-progress.critical .x-progress-bar {
+  background-color: $background-invalid;
+}

@@ -1,0 +1,39 @@
+// these css variables define the look of all charts and gauges
+:root {
+  // using interpolation here may avoid compatability issues between
+  // sass and css. see:
+  // https://sass-lang.com/documentation/breaking-changes/css-vars
+  --pwt-panel-background: #{$background-darker};
+  --pwt-text-color: #{$text-color};
+  --pwt-gauge-default: #{$primary-color};
+  --pwt-gauge-back: #{$background-dark};
+  --pwt-gauge-warn: #{$background-warning};
+  --pwt-gauge-crit: #{$background-invalid};
+  --pwt-chart-primary: #{$primary-color};
+  --pwt-chart-grid-stroke: #{$content-background-selected};
+}
+
+// Peeks out on the edges of the legend item border
+.x-legend-container {
+  background-color: $content-background-color;
+}
+
+.x-legend-horizontal .x-legend-item {
+  background-color: $background-dark;
+  color: $text-color;
+  border-top: solid 1px $background-darkest;
+  border-right: solid 1px $background-darkest;
+  border-bottom: solid 1px $background-darkest;
+
+  &:first-child {
+    border-left: solid 1px $background-darkest;
+  }
+}
+
+// The "undo zoom" button in the upper right corner of charts when
+// disabled
+.x-tool .x-mask {
+  backdrop-filter: none;
+  background-color: $background-dark;
+  opacity: 0.6;
+}

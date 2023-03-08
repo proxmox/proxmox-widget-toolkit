@@ -1,6 +1,6 @@
 include defines.mk
 
-SUBDIRS= css images
+SUBDIRS= css images proxmox-dark
 
 # bundle it for now from the libjs-marked debian package to avoid touching our proxies file mapper,
 # we could also just ship a link to the packages file and load from same path as the widget-toolkit
