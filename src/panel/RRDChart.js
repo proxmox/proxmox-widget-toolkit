@@ -183,6 +183,27 @@ Ext.define('Proxmox.widget.RRDChart', {
 	me.callParent([config]);
     },
 
+    checkThemeColors: function() {
+	let me = this;
+	let rootStyle = getComputedStyle(document.documentElement);
+
+	// get colors
+	let background = rootStyle.getPropertyValue("--pwt-panel-background").trim() || "#ffffff";
+	let text = rootStyle.getPropertyValue("--pwt-text-color").trim() || "#000000";
+	let primary = rootStyle.getPropertyValue("--pwt-chart-primary").trim() || "#000000";
+	let gridStroke = rootStyle.getPropertyValue("--pwt-chart-grid-stroke").trim() || "#dddddd";
+
+	// set the colors
+	me.setBackground(background);
+	me.axes.forEach((axis) => {
+		axis.setLabel({ color: text });
+		axis.setTitle({ color: text });
+		axis.setStyle({ strokeStyle: primary });
+		axis.setGrid({ stroke: gridStroke });
+	});
+	me.redraw();
+    },
+
     initComponent: function() {
 	let me = this;
 
@@ -275,5 +296,21 @@ Ext.define('Proxmox.widget.RRDChart', {
 		easing: 'easeIn',
 	    });
 	}, this, { single: true });
+
+
+	me.checkThemeColors();
+
+	// switch colors on media query changes
+	me.mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
+	me.themeListener = (e) => { me.checkThemeColors(); };
+	me.mediaQueryList.addEventListener("change", me.themeListener);
+    },
+
+    doDestroy: function() {
+	let me = this;
+
+	me.mediaQueryList.removeEventListener("change", me.themeListener);
+
+	me.callParent();
     },
 });
