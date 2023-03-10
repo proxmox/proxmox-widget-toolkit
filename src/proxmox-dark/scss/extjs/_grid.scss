@@ -96,8 +96,10 @@
   .x-grid-cell,
   .x-grid-rowwrap,
   .x-grid-cell-rowbody {
+    // the "!important" is needed here, because crisp also sets this
+    // as important
+    background-color: $background-darker !important;
     border-color: $border-color-alt;
-    background-color: $background-darker;
   }
 }
 
