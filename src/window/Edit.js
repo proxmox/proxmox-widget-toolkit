@@ -318,21 +318,6 @@ Ext.define('Proxmox.window.Edit', {
 	    let dirty = form.isDirty();
 	    submitBtn.setDisabled(!valid || !(dirty || me.isCreate));
 	    resetBtn.setDisabled(!dirty);
-
-	    if (inputPanel && inputPanel.hasAdvanced) {
-		// we want to show the advanced options as soon as some of it is not valid
-		let advancedItems = me.down('#advancedContainer').query('field');
-		let allAdvancedValid = true;
-		advancedItems.forEach(function(field) {
-		    if (!field.isValid()) {
-			allAdvancedValid = false;
-		    }
-		});
-
-		if (!allAdvancedValid) {
-		    inputPanel.setAdvancedVisible(true);
-		}
-	    }
 	};
 
 	form.on('dirtychange', set_button_status);
@@ -394,6 +379,18 @@ Ext.define('Proxmox.window.Edit', {
 	});
 
 	me.callParent();
+
+
+	if (inputPanel?.hasAdvanced) {
+	    let advancedItems = inputPanel.down('#advancedContainer').query('field');
+	    advancedItems.forEach(function(field) {
+		me.mon(field, 'validitychange', (f, valid) => {
+		    if (!valid) {
+			f.up('inputpanel').setAdvancedVisible(true);
+		    }
+		});
+	    });
+	}
 
 	// always mark invalid fields
 	me.on('afterlayout', function() {
