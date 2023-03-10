@@ -9,19 +9,6 @@ div[id^="versioninfo-"] + div[id^="panel-"] > div[id^="panel-"][id$="-bodyWrap"]
   border-color: transparent;
 }
 
-// border around the main datacenter view
-div[id^="PVE-dc-Config-"][id$="-body"],
-// border around the main pool view
-div[id^="pvePoolConfig-"][id$="-body"],
-// Container content config views
-div[id^="pveLXCConfig-"][id$="-body"],
-// VM content config views
-div[id^="PVE-qemu-Config-"][id$="-body"],
-div[id^="PVE-storage-Browser-"][id$="-body"],
-div[id^="PVE-node-Config-"][id$="-body"] {
-  @include content-border;
-}
-
 // Section header in the "My Settings" page
 .x-fieldset-header-default > .x-fieldset-header-text {
   color: $text-color;

@@ -4,7 +4,7 @@
 
 .x-toolbar-default {
   background-color: $background-darker;
-  border: solid 3px $background-darkest;
+  border-color: $border-color-alt;
 
   &.x-docked-top {
     border-width: 1px;
