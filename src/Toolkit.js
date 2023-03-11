@@ -110,7 +110,7 @@ Ext.apply(Ext.form.field.VTypes, {
 		   gettext("Must end with") + ": 'A-Z', 'a-z', '0-9'<br />",
 
     ConfigId: function(v) {
-        return (/^[a-z][a-z0-9_]+$/i).test(v);
+        return (/^[a-z][a-z0-9_-]+$/i).test(v);
     },
     ConfigIdText: gettext("Allowed characters") + ": 'A-Z', 'a-z', '0-9', '_'<br />" +
 		  gettext("Minimum characters") + ": 2<br />" +
