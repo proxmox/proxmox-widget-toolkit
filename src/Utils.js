@@ -110,13 +110,13 @@ utilities: {
     },
 
     theme_map: {
-	auto: 'auto',
+	crisp: 'Light theme',
 	"proxmox-dark": 'Proxmox Dark',
     },
 
     render_theme: function(value) {
 	if (!value || value === '__default__') {
-	    return Proxmox.Utils.defaultText + ' (Light theme)';
+	    return Proxmox.Utils.defaultText + ' (auto)';
 	}
 	let text = Proxmox.Utils.theme_map[value];
 	if (text) {
