@@ -108,7 +108,7 @@
 .x-form-radio-default,
 .x-column-header-checkbox .x-column-header-checkbox::after,
 .x-grid-checkcolumn::after {
-  filter: invert($icon-brightness) hue-rotate(180deg);
+  filter: invert($icon-brightness) hue-rotate(180deg) brightness(125%);
 }
 
 .x-tree-icon-custom,
