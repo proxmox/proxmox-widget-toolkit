@@ -1,3 +1,38 @@
+proxmox-widget-toolkit (3.6.0) bullseye; urgency=medium
+
+  * node apt: make changelog window taller for 4:3 ratio and cleanup/modernize
+    code
+
+  * ui: SMART: show SMART data in correct columns with correct values
+
+  * fix #4421: ui: guard setProxy against races of slow vs fast requests
+
+  * dark-theme: add initial version of the proxmox-dark theme
+
+  * subscription/summary/backup: stop setting the background color
+
+  * gauge widget: add support for a dark theme and dynamic theme switching
+
+  * rrd chart: add support for the dark theme and dynamic theme switching
+
+  * form: add a theme selector window
+
+  * dark-theme:
+    - fix summary row background
+    - increase contrast on check-boxes
+    - visually remove the border around the pve resource tree
+    - remove thicker borders around content
+    - re-work buttons colors to appear dimmer
+    - make windows stand out more against the background mask
+
+  * fix #4585 : toolkit: configid type: add missing "-" character support
+
+  * input panel: improve validity change check for advanced fields
+
+  * auth-realm selector: add custom store filters for callers
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 14 Mar 2023 16:25:37 +0100
+
 proxmox-widget-toolkit (3.5.5) bullseye; urgency=medium
 
   * combobox grid: use the grids view for the error message
