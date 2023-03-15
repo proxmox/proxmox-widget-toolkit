@@ -702,6 +702,39 @@ Ext.define('Proxmox.dd.DragDropManager', {
     },
 });
 
+// make it possible to set the SameSite attribute on cookies
+Ext.define('Proxmox.Cookies', {
+    override: 'Ext.util.Cookies',
+
+    set: function(name, value, expires, path, domain, secure, samesite) {
+	let attrs = [];
+
+	if (expires) {
+	    attrs.push("expires=" + expires.toUTCString());
+	}
+
+	if (path === undefined) { // mimic original function's behaviour
+	    attrs.push("path=/");
+	} else if (path) {
+	    attrs.push("path=" + path);
+	}
+
+	if (domain) {
+	    attrs.push("domain=" + domain);
+	}
+
+	if (secure === true) {
+	    attrs.push("secure");
+	}
+
+	if (samesite && ["lax", "none", "strict"].includes(samesite.toLowerCase())) {
+	    attrs.push("samesite=" + samesite);
+	}
+
+	document.cookie = name + "=" + escape(value) + "; " + attrs.join("; ");
+    },
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
