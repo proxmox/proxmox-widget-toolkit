@@ -565,7 +565,7 @@ utilities: {
     },
 
     assemble_field_data: function(values, data) {
-        if (!Ext.isObject(data)) {
+	if (!Ext.isObject(data)) {
 	    return;
 	}
 	Ext.Object.each(data, function(name, val) {

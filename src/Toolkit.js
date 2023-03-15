@@ -21,7 +21,7 @@ Ext.apply(Ext.form.field.VTypes, {
     IPCIDRAddressMask: /[\d./]/i,
 
     IP6Address: function(v) {
-        return Proxmox.Utils.IP6_match.test(v);
+	return Proxmox.Utils.IP6_match.test(v);
     },
     IP6AddressText: gettext('Example') + ': 2001:DB8::42',
     IP6AddressMask: /[A-Fa-f0-9:]/,
@@ -42,7 +42,7 @@ Ext.apply(Ext.form.field.VTypes, {
     IP6PrefixLengthMask: /[0-9]/,
 
     IP64Address: function(v) {
-        return Proxmox.Utils.IP64_match.test(v);
+	return Proxmox.Utils.IP64_match.test(v);
     },
     IP64AddressText: gettext('Example') + ': 192.168.1.1 2001:DB8::42',
     IP64AddressMask: /[A-Fa-f0-9.:]/,
@@ -76,25 +76,25 @@ Ext.apply(Ext.form.field.VTypes, {
     MacPrefixText: gettext('Example') + ': 02:8f - ' + gettext('only unicast addresses are allowed'),
 
     BridgeName: function(v) {
-        return (/^vmbr\d{1,4}$/).test(v);
+	return (/^vmbr\d{1,4}$/).test(v);
     },
     VlanName: function(v) {
        if (Proxmox.Utils.VlanInterface_match.test(v)) {
-         return true;
+	 return true;
        } else if (Proxmox.Utils.Vlan_match.test(v)) {
-         return true;
+	 return true;
        }
        return true;
     },
     BridgeNameText: gettext('Format') + ': vmbr<b>N</b>, where 0 <= <b>N</b> <= 9999',
 
     BondName: function(v) {
-        return (/^bond\d{1,4}$/).test(v);
+	return (/^bond\d{1,4}$/).test(v);
     },
     BondNameText: gettext('Format') + ': bond<b>N</b>, where 0 <= <b>N</b> <= 9999',
 
     InterfaceName: function(v) {
-        return (/^[a-z][a-z0-9_]{1,20}$/).test(v);
+	return (/^[a-z][a-z0-9_]{1,20}$/).test(v);
     },
     InterfaceNameText: gettext("Allowed characters") + ": 'a-z', '0-9', '_'<br />" +
 		       gettext("Minimum characters") + ": 2<br />" +
@@ -102,7 +102,7 @@ Ext.apply(Ext.form.field.VTypes, {
 		       gettext("Must start with") + ": 'a-z'",
 
     StorageId: function(v) {
-        return (/^[a-z][a-z0-9\-_.]*[a-z0-9]$/i).test(v);
+	return (/^[a-z][a-z0-9\-_.]*[a-z0-9]$/i).test(v);
     },
     StorageIdText: gettext("Allowed characters") + ":  'A-Z', 'a-z', '0-9', '-', '_', '.'<br />" +
 		   gettext("Minimum characters") + ": 2<br />" +
@@ -110,14 +110,14 @@ Ext.apply(Ext.form.field.VTypes, {
 		   gettext("Must end with") + ": 'A-Z', 'a-z', '0-9'<br />",
 
     ConfigId: function(v) {
-        return (/^[a-z][a-z0-9_-]+$/i).test(v);
+	return (/^[a-z][a-z0-9_-]+$/i).test(v);
     },
     ConfigIdText: gettext("Allowed characters") + ": 'A-Z', 'a-z', '0-9', '_'<br />" +
 		  gettext("Minimum characters") + ": 2<br />" +
 		  gettext("Must start with") + ": " + gettext("letter"),
 
     HttpProxy: function(v) {
-        return (/^http:\/\/.*$/).test(v);
+	return (/^http:\/\/.*$/).test(v);
     },
     HttpProxyText: gettext('Example') + ": http://username:password&#64;host:port/",
 
@@ -138,7 +138,7 @@ Ext.apply(Ext.form.field.VTypes, {
 
     // email regex used by pve-common
     proxmoxMail: function(v) {
-        return (/^[\w+-~]+(\.[\w+-~]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/).test(v);
+	return (/^[\w+-~]+(\.[\w+-~]+)*@[a-zA-Z0-9-]+(\.[a-zA-Z0-9-]+)*$/).test(v);
     },
     proxmoxMailText: gettext('Example') + ": user@example.com",
 
@@ -179,11 +179,11 @@ Ext.apply(Ext.form.field.VTypes, {
     HostListText: gettext('Not a valid list of hosts'),
 
     password: function(val, field) {
-        if (field.initialPassField) {
-            let pwd = field.up('form').down(`[name=${field.initialPassField}]`);
-            return val === pwd.getValue();
-        }
-        return true;
+	if (field.initialPassField) {
+	    let pwd = field.up('form').down(`[name=${field.initialPassField}]`);
+	    return val === pwd.getValue();
+	}
+	return true;
     },
 
     passwordText: gettext('Passwords do not match'),
@@ -216,30 +216,30 @@ Ext.define('Proxmox.UnderlayPool', {
     override: 'Ext.dom.UnderlayPool',
 
     checkOut: function() {
-        let cache = this.cache,
-            len = cache.length,
-            el;
+	let cache = this.cache,
+	    len = cache.length,
+	    el;
 
-        // do cleanup because some of the objects might have been destroyed
+	// do cleanup because some of the objects might have been destroyed
 	while (len--) {
-            if (cache[len].destroyed) {
-                cache.splice(len, 1);
-            }
-        }
-        // end do cleanup
+	    if (cache[len].destroyed) {
+		cache.splice(len, 1);
+	    }
+	}
+	// end do cleanup
 
 	el = cache.shift();
 
-        if (!el) {
-            el = Ext.Element.create(this.elementConfig);
-            el.setVisibilityMode(2);
-            //<debug>
-            // tell the spec runner to ignore this element when checking if the dom is clean
+	if (!el) {
+	    el = Ext.Element.create(this.elementConfig);
+	    el.setVisibilityMode(2);
+	    //<debug>
+	    // tell the spec runner to ignore this element when checking if the dom is clean
 	    el.dom.setAttribute('data-sticky', true);
-            //</debug>
+	    //</debug>
 	}
 
-        return el;
+	return el;
     },
 });
 
@@ -515,28 +515,28 @@ Ext.define('Proxmox.selection.CheckboxModel', {
     // [ P: optimized to remove all records at once as single remove is O(n^3) slow ]
     // records can be an index, a record or an array of records
     doDeselect: function(records, suppressEvent) {
-        var me = this,
-            selected = me.selected,
-            i = 0,
-            len, record,
-            commit;
-        if (me.locked || !me.store) {
-            return false;
-        }
-        if (typeof records === "number") {
-            // No matching record, jump out
-            record = me.store.getAt(records);
-            if (!record) {
-                return false;
-            }
-            records = [
-                record,
-            ];
-        } else if (!Ext.isArray(records)) {
-            records = [
-                records,
-            ];
-        }
+	var me = this,
+	    selected = me.selected,
+	    i = 0,
+	    len, record,
+	    commit;
+	if (me.locked || !me.store) {
+	    return false;
+	}
+	if (typeof records === "number") {
+	    // No matching record, jump out
+	    record = me.store.getAt(records);
+	    if (!record) {
+		return false;
+	    }
+	    records = [
+		record,
+	    ];
+	} else if (!Ext.isArray(records)) {
+	    records = [
+		records,
+	    ];
+	}
 	// [P] a beforedeselection, triggered by me.onSelectChange below, can block removal by
 	// returning false, thus the original implementation removed only here in the commit fn,
 	// which has an abysmal performance O(n^3). As blocking removal is not the norm, go do the
@@ -550,119 +550,119 @@ Ext.define('Proxmox.selection.CheckboxModel', {
 	    }
 	};
 	let removalBlocked = [];
-        len = records.length;
-        me.suspendChanges();
-        for (; i < len; i++) {
-            record = records[i];
-            if (me.isSelected(record)) {
+	len = records.length;
+	me.suspendChanges();
+	for (; i < len; i++) {
+	    record = records[i];
+	    if (me.isSelected(record)) {
 		committed = false;
-                me.onSelectChange(record, false, suppressEvent, commit);
+		me.onSelectChange(record, false, suppressEvent, commit);
 		if (!committed) {
 		    removalBlocked.push(record);
 		}
-                if (me.destroyed) {
-                    return false;
-                }
-            }
-        }
+		if (me.destroyed) {
+		    return false;
+		}
+	    }
+	}
 	if (removalBlocked.length > 0) {
 	    records.remove(removalBlocked);
 	}
 	selected.remove(records); // [P] FAST(er)
 	me.lastSelected = selected.last();
-        me.resumeChanges();
-        // fire selchange if there was a change and there is no suppressEvent flag
+	me.resumeChanges();
+	// fire selchange if there was a change and there is no suppressEvent flag
 	me.maybeFireSelectionChange(records.length > 0 && !suppressEvent);
 	return records.length;
     },
 
 
     doMultiSelect: function(records, keepExisting, suppressEvent) {
-        var me = this,
-            selected = me.selected,
-            change = false,
-            result, i, len, record, commit;
+	var me = this,
+	    selected = me.selected,
+	    change = false,
+	    result, i, len, record, commit;
 
-        if (me.locked) {
-            return;
-        }
+	if (me.locked) {
+	    return;
+	}
 
-        records = !Ext.isArray(records) ? [records] : records;
-        len = records.length;
-        if (!keepExisting && selected.getCount() > 0) {
-            result = me.deselectDuringSelect(records, suppressEvent);
-            if (me.destroyed) {
-                return;
-            }
-            if (result[0]) {
-                // We had a failure during selection, so jump out
-                // Fire selection change if we did deselect anything
-                me.maybeFireSelectionChange(result[1] > 0 && !suppressEvent);
-                return;
-            } else {
-                // Means something has been deselected, so we've had a change
-                change = result[1] > 0;
-            }
-        }
+	records = !Ext.isArray(records) ? [records] : records;
+	len = records.length;
+	if (!keepExisting && selected.getCount() > 0) {
+	    result = me.deselectDuringSelect(records, suppressEvent);
+	    if (me.destroyed) {
+		return;
+	    }
+	    if (result[0]) {
+		// We had a failure during selection, so jump out
+		// Fire selection change if we did deselect anything
+		me.maybeFireSelectionChange(result[1] > 0 && !suppressEvent);
+		return;
+	    } else {
+		// Means something has been deselected, so we've had a change
+		change = result[1] > 0;
+	    }
+	}
 
 	let gotBlocked, blockedRecords = [];
-        commit = function() {
-            if (!selected.getCount()) {
-                me.selectionStart = record;
-            }
+	commit = function() {
+	    if (!selected.getCount()) {
+		me.selectionStart = record;
+	    }
 	    gotBlocked = false;
-            change = true;
-        };
+	    change = true;
+	};
 
-        for (i = 0; i < len; i++) {
-            record = records[i];
-            if (me.isSelected(record)) {
-                continue;
-            }
+	for (i = 0; i < len; i++) {
+	    record = records[i];
+	    if (me.isSelected(record)) {
+		continue;
+	    }
 
 	    gotBlocked = true;
-            me.onSelectChange(record, true, suppressEvent, commit);
-            if (me.destroyed) {
-                return;
-            }
+	    me.onSelectChange(record, true, suppressEvent, commit);
+	    if (me.destroyed) {
+		return;
+	    }
 	    if (gotBlocked) {
 		blockedRecords.push(record);
 	    }
-        }
+	}
 	if (blockedRecords.length > 0) {
 	    records.remove(blockedRecords);
 	}
-        selected.add(records);
-        me.lastSelected = record;
+	selected.add(records);
+	me.lastSelected = record;
 
-        // fire selchange if there was a change and there is no suppressEvent flag
-        me.maybeFireSelectionChange(change && !suppressEvent);
+	// fire selchange if there was a change and there is no suppressEvent flag
+	me.maybeFireSelectionChange(change && !suppressEvent);
     },
     deselectDuringSelect: function(toSelect, suppressEvent) {
-        var me = this,
-            selected = me.selected.getRange(),
-            changed = 0,
-            failed = false;
-        // Prevent selection change events from firing, will happen during select
-        me.suspendChanges();
-        me.deselectingDuringSelect = true;
+	var me = this,
+	    selected = me.selected.getRange(),
+	    changed = 0,
+	    failed = false;
+	// Prevent selection change events from firing, will happen during select
+	me.suspendChanges();
+	me.deselectingDuringSelect = true;
 	let toDeselect = selected.filter(item => !Ext.Array.contains(toSelect, item));
 	if (toDeselect.length > 0) {
 	    changed = me.doDeselect(toDeselect, suppressEvent);
 	    if (!changed) {
 		failed = true;
-            }
-            if (me.destroyed) {
-                failed = true;
-                changed = 0;
-            }
-        }
-        me.deselectingDuringSelect = false;
-        me.resumeChanges();
-        return [
-            failed,
-            changed,
-        ];
+	    }
+	    if (me.destroyed) {
+		failed = true;
+		changed = 0;
+	    }
+	}
+	me.deselectingDuringSelect = false;
+	me.resumeChanges();
+	return [
+	    failed,
+	    changed,
+	];
     },
 });
 
@@ -678,11 +678,11 @@ Ext.define('Proxmox.view.DragZone', {
     override: 'Ext.view.DragZone',
 
     onItemMouseDown: function(view, record, item, index, e) {
-        // Ignore touchstart.
-        // For touch events, we use longpress.
-        if (e.pointerType !== 'touch') {
-            this.onTriggerGesture(view, record, item, index, e);
-        }
+	// Ignore touchstart.
+	// For touch events, we use longpress.
+	if (e.pointerType !== 'touch') {
+	    this.onTriggerGesture(view, record, item, index, e);
+	}
     },
 });
 
@@ -766,154 +766,154 @@ Ext.define('Ext.ux.IFrame', {
     src: 'about:blank',
 
     renderTpl: [
-        '<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>',
+	'<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>',
     ],
     childEls: ['iframeEl'],
 
     initComponent: function() {
-        this.callParent();
+	this.callParent();
 
-        this.frameName = this.frameName || this.id + '-frame';
+	this.frameName = this.frameName || this.id + '-frame';
     },
 
     initEvents: function() {
-        let me = this;
-        me.callParent();
-        me.iframeEl.on('load', me.onLoad, me);
+	let me = this;
+	me.callParent();
+	me.iframeEl.on('load', me.onLoad, me);
     },
 
     initRenderData: function() {
-        return Ext.apply(this.callParent(), {
-            src: this.src,
-            frameName: this.frameName,
-        });
+	return Ext.apply(this.callParent(), {
+	    src: this.src,
+	    frameName: this.frameName,
+	});
     },
 
     getBody: function() {
-        let doc = this.getDoc();
-        return doc.body || doc.documentElement;
+	let doc = this.getDoc();
+	return doc.body || doc.documentElement;
     },
 
     getDoc: function() {
-        try {
-            return this.getWin().document;
-        } catch (ex) {
-            return null;
-        }
+	try {
+	    return this.getWin().document;
+	} catch (ex) {
+	    return null;
+	}
     },
 
     getWin: function() {
-        let me = this,
-            name = me.frameName,
-            win = Ext.isIE
-                ? me.iframeEl.dom.contentWindow
-                : window.frames[name];
-        return win;
+	let me = this,
+	    name = me.frameName,
+	    win = Ext.isIE
+		? me.iframeEl.dom.contentWindow
+		: window.frames[name];
+	return win;
     },
 
     getFrame: function() {
-        let me = this;
-        return me.iframeEl.dom;
+	let me = this;
+	return me.iframeEl.dom;
     },
 
     beforeDestroy: function() {
-        this.cleanupListeners(true);
-        this.callParent();
+	this.cleanupListeners(true);
+	this.callParent();
     },
 
     cleanupListeners: function(destroying) {
-        let doc, prop;
+	let doc, prop;
 
-        if (this.rendered) {
-            try {
-                doc = this.getDoc();
-                if (doc) {
-                    Ext.get(doc).un(this._docListeners);
-                    if (destroying && doc.hasOwnProperty) {
-                        for (prop in doc) {
-                            if (Object.prototype.hasOwnProperty.call(doc, prop)) {
-                                delete doc[prop];
-                            }
-                        }
-                    }
-                }
-            } catch (e) {
-                // do nothing
-            }
-        }
+	if (this.rendered) {
+	    try {
+		doc = this.getDoc();
+		if (doc) {
+		    Ext.get(doc).un(this._docListeners);
+		    if (destroying && doc.hasOwnProperty) {
+			for (prop in doc) {
+			    if (Object.prototype.hasOwnProperty.call(doc, prop)) {
+				delete doc[prop];
+			    }
+			}
+		    }
+		}
+	    } catch (e) {
+		// do nothing
+	    }
+	}
     },
 
     onLoad: function() {
-        let me = this,
-            doc = me.getDoc(),
-            fn = me.onRelayedEvent;
+	let me = this,
+	    doc = me.getDoc(),
+	    fn = me.onRelayedEvent;
 
-        if (doc) {
-            try {
-                // These events need to be relayed from the inner document (where they stop
-                // bubbling) up to the outer document. This has to be done at the DOM level so
-                // the event reaches listeners on elements like the document body. The effected
-                // mechanisms that depend on this bubbling behavior are listed to the right
-                // of the event.
-                Ext.get(doc).on(
-                    me._docListeners = {
-                        mousedown: fn, // menu dismisal (MenuManager) and Window onMouseDown (toFront)
-                        mousemove: fn, // window resize drag detection
-                        mouseup: fn, // window resize termination
-                        click: fn, // not sure, but just to be safe
-                        dblclick: fn, // not sure again
-                        scope: me,
-                    },
-                );
-            } catch (e) {
-                // cannot do this xss
-            }
+	if (doc) {
+	    try {
+		// These events need to be relayed from the inner document (where they stop
+		// bubbling) up to the outer document. This has to be done at the DOM level so
+		// the event reaches listeners on elements like the document body. The effected
+		// mechanisms that depend on this bubbling behavior are listed to the right
+		// of the event.
+		Ext.get(doc).on(
+		    me._docListeners = {
+			mousedown: fn, // menu dismisal (MenuManager) and Window onMouseDown (toFront)
+			mousemove: fn, // window resize drag detection
+			mouseup: fn, // window resize termination
+			click: fn, // not sure, but just to be safe
+			dblclick: fn, // not sure again
+			scope: me,
+		    },
+		);
+	    } catch (e) {
+		// cannot do this xss
+	    }
 
-            // We need to be sure we remove all our events from the iframe on unload or we're going to LEAK!
-            Ext.get(this.getWin()).on('beforeunload', me.cleanupListeners, me);
+	    // We need to be sure we remove all our events from the iframe on unload or we're going to LEAK!
+	    Ext.get(this.getWin()).on('beforeunload', me.cleanupListeners, me);
 
-            this.el.unmask();
-            this.fireEvent('load', this);
-        } else if (me.src) {
-            this.el.unmask();
-            this.fireEvent('error', this);
-        }
+	    this.el.unmask();
+	    this.fireEvent('load', this);
+	} else if (me.src) {
+	    this.el.unmask();
+	    this.fireEvent('error', this);
+	}
     },
 
     onRelayedEvent: function(event) {
-        // relay event from the iframe's document to the document that owns the iframe...
+	// relay event from the iframe's document to the document that owns the iframe...
 
-        let iframeEl = this.iframeEl,
+	let iframeEl = this.iframeEl,
 
-            // Get the left-based iframe position
-            iframeXY = iframeEl.getTrueXY(),
-            originalEventXY = event.getXY(),
+	    // Get the left-based iframe position
+	    iframeXY = iframeEl.getTrueXY(),
+	    originalEventXY = event.getXY(),
 
-            // Get the left-based XY position.
-            // This is because the consumer of the injected event will
-            // perform its own RTL normalization.
-            eventXY = event.getTrueXY();
+	    // Get the left-based XY position.
+	    // This is because the consumer of the injected event will
+	    // perform its own RTL normalization.
+	    eventXY = event.getTrueXY();
 
-        // the event from the inner document has XY relative to that document's origin,
-        // so adjust it to use the origin of the iframe in the outer document:
-        event.xy = [iframeXY[0] + eventXY[0], iframeXY[1] + eventXY[1]];
+	// the event from the inner document has XY relative to that document's origin,
+	// so adjust it to use the origin of the iframe in the outer document:
+	event.xy = [iframeXY[0] + eventXY[0], iframeXY[1] + eventXY[1]];
 
-        event.injectEvent(iframeEl); // blame the iframe for the event...
+	event.injectEvent(iframeEl); // blame the iframe for the event...
 
-        event.xy = originalEventXY; // restore the original XY (just for safety)
+	event.xy = originalEventXY; // restore the original XY (just for safety)
     },
 
     load: function(src) {
-        let me = this,
-            text = me.loadMask,
-            frame = me.getFrame();
+	let me = this,
+	    text = me.loadMask,
+	    frame = me.getFrame();
 
-        if (me.fireEvent('beforeload', me, src) !== false) {
-            if (text && me.el) {
-                me.el.mask(text);
-            }
+	if (me.fireEvent('beforeload', me, src) !== false) {
+	    if (text && me.el) {
+		me.el.mask(text);
+	    }
 
-            frame.src = me.src = src || me.src;
-        }
+	    frame.src = me.src = src || me.src;
+	}
     },
 });
