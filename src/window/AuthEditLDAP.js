@@ -192,3 +192,168 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 
 });
 
+
+Ext.define('Proxmox.panel.LDAPSyncInputPanel', {
+    extend: 'Proxmox.panel.InputPanel',
+    xtype: 'pmxAuthLDAPSyncPanel',
+    mixins: ['Proxmox.Mixin.CBind'],
+
+    editableAttributes: ['email'],
+    editableDefaults: ['scope', 'enable-new'],
+    default_opts: {},
+    sync_attributes: {},
+
+    type: 'ldap',
+
+    // (de)construct the sync-attributes from the list above,
+    // not touching all others
+    onGetValues: function(values) {
+	let me = this;
+
+	me.editableDefaults.forEach((attr) => {
+	    if (values[attr]) {
+		me.default_opts[attr] = values[attr];
+		delete values[attr];
+	    } else {
+		delete me.default_opts[attr];
+	    }
+	});
+	let vanished_opts = [];
+	['acl', 'entry', 'properties'].forEach((prop) => {
+	    if (values[`remove-vanished-${prop}`]) {
+		vanished_opts.push(prop);
+	    }
+	    delete values[`remove-vanished-${prop}`];
+	});
+	me.default_opts['remove-vanished'] = vanished_opts.join(';');
+
+	values['sync-defaults-options'] = Proxmox.Utils.printPropertyString(me.default_opts);
+	me.editableAttributes.forEach((attr) => {
+	    if (values[attr]) {
+		me.sync_attributes[attr] = values[attr];
+		delete values[attr];
+	    } else {
+		delete me.sync_attributes[attr];
+	    }
+	});
+	values['sync-attributes'] = Proxmox.Utils.printPropertyString(me.sync_attributes);
+
+	Proxmox.Utils.delete_if_default(values, 'sync-defaults-options');
+	Proxmox.Utils.delete_if_default(values, 'sync-attributes');
+
+	if (me.isCreate) {
+	    delete values.delete; // on create we cannot delete values
+	}
+
+	return values;
+    },
+
+    setValues: function(values) {
+	let me = this;
+
+	if (values['sync-attributes']) {
+	    me.sync_attributes = Proxmox.Utils.parsePropertyString(values['sync-attributes']);
+	    delete values['sync-attributes'];
+	    me.editableAttributes.forEach((attr) => {
+		if (me.sync_attributes[attr]) {
+		    values[attr] = me.sync_attributes[attr];
+		}
+	    });
+	}
+	if (values['sync-defaults-options']) {
+	    me.default_opts = Proxmox.Utils.parsePropertyString(values['sync-defaults-options']);
+	    delete values.default_opts;
+	    me.editableDefaults.forEach((attr) => {
+		if (me.default_opts[attr]) {
+		    values[attr] = me.default_opts[attr];
+		}
+	    });
+
+	    if (me.default_opts['remove-vanished']) {
+		let opts = me.default_opts['remove-vanished'].split(';');
+		for (const opt of opts) {
+		    values[`remove-vanished-${opt}`] = 1;
+		}
+	    }
+	}
+	return me.callParent([values]);
+    },
+
+    column1: [
+	{
+	    xtype: 'proxmoxtextfield',
+	    name: 'email',
+	    fieldLabel: gettext('E-Mail attribute'),
+	},
+	{
+	    xtype: 'displayfield',
+	    value: gettext('Default Sync Options'),
+	},
+	{
+	    xtype: 'proxmoxKVComboBox',
+	    value: '__default__',
+	    deleteEmpty: false,
+	    comboItems: [
+		[
+		    '__default__',
+		    Ext.String.format(
+			gettext("{0} ({1})"),
+			Proxmox.Utils.yesText,
+			Proxmox.Utils.defaultText,
+		    ),
+		],
+		['true', Proxmox.Utils.yesText],
+		['false', Proxmox.Utils.noText],
+	    ],
+	    name: 'enable-new',
+	    fieldLabel: gettext('Enable new users'),
+	},
+    ],
+
+    column2: [
+	{
+	    xtype: 'proxmoxtextfield',
+	    name: 'user-classes',
+	    fieldLabel: gettext('User classes'),
+	    deleteEmpty: true,
+	    emptyText: 'inetorgperson, posixaccount, person, user',
+	    autoEl: {
+		tag: 'div',
+		'data-qtip': gettext('Default user classes: inetorgperson, posixaccount, person, user'),
+	    },
+	},
+	{
+	    xtype: 'proxmoxtextfield',
+	    name: 'filter',
+	    fieldLabel: gettext('User Filter'),
+	    deleteEmpty: true,
+	},
+    ],
+
+    columnB: [
+	{
+	    xtype: 'fieldset',
+	    title: gettext('Remove Vanished Options'),
+	    items: [
+		{
+		    xtype: 'proxmoxcheckbox',
+		    fieldLabel: gettext('ACL'),
+		    name: 'remove-vanished-acl',
+		    boxLabel: gettext('Remove ACLs of vanished users'),
+		},
+		{
+		    xtype: 'proxmoxcheckbox',
+		    fieldLabel: gettext('Entry'),
+		    name: 'remove-vanished-entry',
+		    boxLabel: gettext('Remove vanished user'),
+		},
+		{
+		    xtype: 'proxmoxcheckbox',
+		    fieldLabel: gettext('Properties'),
+		    name: 'remove-vanished-properties',
+		    boxLabel: gettext('Remove vanished properties from synced users.'),
+		},
+	    ],
+	},
+    ],
+});

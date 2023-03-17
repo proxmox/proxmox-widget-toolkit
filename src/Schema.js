@@ -7,6 +7,7 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    add: false,
 	    edit: false,
 	    pwchange: true,
+	    sync: false,
 	},
 	openid: {
 	    name: gettext('OpenID Connect Server'),
@@ -15,15 +16,18 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    edit: true,
 	    tfa: false,
 	    pwchange: false,
+	    sync: false,
 	    iconCls: 'pmx-itype-icon-openid-logo',
 	},
 	ldap: {
 	    name: gettext('LDAP Server'),
 	    ipanel: 'pmxAuthLDAPPanel',
+	    syncipanel: 'pmxAuthLDAPSyncPanel',
 	    add: true,
 	    edit: true,
 	    tfa: true,
 	    pwchange: false,
+	    sync: true,
 	},
     },
     // to add or change existing for product specific ones

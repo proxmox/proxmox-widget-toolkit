@@ -75,6 +75,23 @@ Ext.define('Proxmox.panel.AuthView', {
 	me.openEditWindow(rec.data.type, rec.data.realm);
     },
 
+    open_sync_window: function() {
+	let rec = this.getSelection()[0];
+	if (!rec) {
+	    return;
+	}
+	if (!Proxmox.Schema.authDomains[rec.data.type].sync) {
+	    return;
+	}
+	Ext.create('Proxmox.window.SyncWindow', {
+	    type: rec.data.type,
+	    realm: rec.data.realm,
+	    listeners: {
+		destroy: () => this.reload(),
+	    },
+	}).show();
+    },
+
     initComponent: function() {
 	var me = this;
 
@@ -114,6 +131,13 @@ Ext.define('Proxmox.panel.AuthView', {
 		},
 		enableFn: (rec) => Proxmox.Schema.authDomains[rec.data.type].add,
 		callback: () => me.reload(),
+	    },
+	    {
+		xtype: 'proxmoxButton',
+		text: gettext('Sync'),
+		disabled: true,
+		enableFn: (rec) => Proxmox.Schema.authDomains[rec.data.type].sync,
+		handler: () => me.open_sync_window(),
 	    },
 	];
 

@@ -93,6 +93,7 @@ JSSRC=					\
 	window/TfaEdit.js		\
 	window/NotesEdit.js		\
 	window/ThemeEdit.js		\
+	window/SyncWindow.js	\
 	node/APT.js			\
 	node/APTRepositories.js		\
 	node/NetworkEdit.js		\
