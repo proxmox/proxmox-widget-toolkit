@@ -84,6 +84,7 @@ JSSRC=					\
 	window/FileBrowser.js		\
 	window/AuthEditBase.js		\
 	window/AuthEditOpenId.js	\
+	window/AuthEditLDAP.js		\
 	window/TfaWindow.js		\
 	window/AddTfaRecovery.js	\
 	window/AddTotp.js		\

@@ -17,6 +17,14 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    pwchange: false,
 	    iconCls: 'pmx-itype-icon-openid-logo',
 	},
+	ldap: {
+	    name: gettext('LDAP Server'),
+	    ipanel: 'pmxAuthLDAPPanel',
+	    add: true,
+	    edit: true,
+	    tfa: true,
+	    pwchange: false,
+	},
     },
     // to add or change existing for product specific ones
     overrideAuthDomains: function(extra) {
