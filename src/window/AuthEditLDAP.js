@@ -243,6 +243,11 @@ Ext.define('Proxmox.panel.LDAPSyncInputPanel', {
 	Proxmox.Utils.delete_if_default(values, 'sync-defaults-options');
 	Proxmox.Utils.delete_if_default(values, 'sync-attributes');
 
+	// Force values.delete to be an array
+	if (typeof values.delete === 'string') {
+	   values.delete = values.delete.split(',');
+	}
+
 	if (me.isCreate) {
 	    delete values.delete; // on create we cannot delete values
 	}
