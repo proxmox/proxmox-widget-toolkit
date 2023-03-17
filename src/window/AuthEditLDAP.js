@@ -200,7 +200,7 @@ Ext.define('Proxmox.panel.LDAPSyncInputPanel', {
     xtype: 'pmxAuthLDAPSyncPanel',
     mixins: ['Proxmox.Mixin.CBind'],
 
-    editableAttributes: ['email'],
+    editableAttributes: ['firstname', 'lastname', 'email'],
     editableDefaults: ['scope', 'enable-new'],
     default_opts: {},
     sync_attributes: {},
@@ -282,6 +282,16 @@ Ext.define('Proxmox.panel.LDAPSyncInputPanel', {
     },
 
     column1: [
+	{
+	    xtype: 'proxmoxtextfield',
+	    name: 'firstname',
+	    fieldLabel: gettext('First Name attribute'),
+	},
+	{
+	    xtype: 'proxmoxtextfield',
+	    name: 'lastname',
+	    fieldLabel: gettext('Last Name attribute'),
+	},
 	{
 	    xtype: 'proxmoxtextfield',
 	    name: 'email',
