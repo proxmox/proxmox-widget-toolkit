@@ -1,3 +1,21 @@
+proxmox-widget-toolkit (3.6.1) bullseye; urgency=medium
+
+  * repo view: replace non-clickable checkbox with icons
+
+  * auth ui: add LDAP realm-edit panel and sync UI, refactored & adapted from
+    the pve-manager implementation for future reuse
+
+  * dark-theme: improve help button contrast ratios in focused state
+
+  * dark-theme: make "sorted-by" header highlight more subtle
+
+  * dark-theme: dim warning and invalid colors more
+
+  * dark-theme: let the background "shine through" mask more to avoid that
+    information on it becomes unreadable
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 20 Mar 2023 14:13:42 +0100
+
 proxmox-widget-toolkit (3.6.0) bullseye; urgency=medium
 
   * node apt: make changelog window taller for 4:3 ratio and cleanup/modernize
