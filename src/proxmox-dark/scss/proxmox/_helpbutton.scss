@@ -5,7 +5,8 @@
   color: $help-button-text-color;
 
   &.x-btn-over,
-  &.x-btn.x-btn-pressed.x-btn-default-toolbar-small {
+  &.x-btn.x-btn-pressed.x-btn-default-toolbar-small,
+  .x-keyboard-mode &.x-btn-default-toolbar-small.x-btn-focus {
     background-color: $help-button-color-alt;
     border-color: $help-button-color-alt;
   }
