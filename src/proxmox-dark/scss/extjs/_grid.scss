@@ -88,7 +88,7 @@
 // header element that the grid is currently sorted by
 .x-column-header-sort-ASC,
 .x-column-header-sort-DESC {
-  background-color: $primary-dark;
+  background-color: mix($background-darker, $primary-color, 70%);
 }
 
 // summary rows (e.g. ceph pools last row)
