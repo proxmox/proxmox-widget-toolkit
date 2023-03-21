@@ -27,14 +27,14 @@ Ext.define('Proxmox.window.ThemeEditWindow', {
 
     cookieName: 'PVEThemeCookie',
 
-    title: gettext('Theme'),
+    title: gettext('Color Theme'),
     modal: true,
     bodyPadding: 10,
     resizable: false,
     items: [
 	{
 	    xtype: 'proxmoxThemeSelector',
-	    fieldLabel: gettext('Theme'),
+	    fieldLabel: gettext('Color Theme'),
 	    bind: {
 		value: '{theme}',
 	    },
