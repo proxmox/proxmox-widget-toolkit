@@ -10,5 +10,5 @@
 .x-css-shadow {
   // the additional styling from the pve css overwrites the setting on
   // the element with "!important", that's why we need it here.
-  box-shadow: $background-darkest 0 0 5px !important;
+  box-shadow: black 0 0 10px !important;
 }
