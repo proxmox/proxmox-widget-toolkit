@@ -1,3 +1,17 @@
+proxmox-widget-toolkit (3.6.2) bullseye; urgency=medium
+
+  * network edit: add tooltip to bridge ports inputs
+
+  * dark-mode: reduce background mask opacity to 0.5
+
+  * dark-mode: make window shadow black again to avoid a backlight that some
+    have very strong opionions against
+
+  * rename "Theme" selector to "Color Theme" to add some context for
+    translation
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 21 Mar 2023 16:46:27 +0100
+
 proxmox-widget-toolkit (3.6.1) bullseye; urgency=medium
 
   * repo view: replace non-clickable checkbox with icons
