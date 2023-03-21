@@ -1,8 +1,8 @@
 // The mask that is applied when the window is unaccessible (Login
 // screen, Loading, ...)
 .x-mask {
-  background-color: $background-darker;
-  opacity: 0.75;
+  background-color: black;
+  opacity: 0.85;
 }
 
 // Shadows of floating windows like window modals, form selectors and
@@ -10,5 +10,5 @@
 .x-css-shadow {
   // the additional styling from the pve css overwrites the setting on
   // the element with "!important", that's why we need it here.
-  box-shadow: $background-dark 0 -1px 15px 7px !important;
+  box-shadow: $background-darkest 0 0 5px !important;
 }
