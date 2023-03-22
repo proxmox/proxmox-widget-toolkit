@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (3.6.3) bullseye; urgency=medium
+
+  * dark-mode fine-tuning:
+    - fix highlighting of active elements in drop down menus
+    - set the icon color of filtered column headers properly
+    - style checkboxes that don't use blueish active states
+    - style locked guest icons properly
+    - tone down border on ceph install card-like window
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 22 Mar 2023 13:25:05 +0100
+
 proxmox-widget-toolkit (3.6.2) bullseye; urgency=medium
 
   * network edit: add tooltip to bridge ports inputs
