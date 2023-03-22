@@ -28,7 +28,8 @@
 // e.g. permission tree view in pve
 .x-tree-icon-leaf:not(.x-tree-icon-custom)::before,
 .x-tree-icon-parent:not(.x-tree-icon-custom)::before,
-.x-tree-icon-parent-expanded:not(.x-tree-icon-custom)::before {
+.x-tree-icon-parent-expanded:not(.x-tree-icon-custom)::before,
+.x-grid-filters-filtered-column .x-column-header-text::after {
   color: $icon-color;
 }
 
