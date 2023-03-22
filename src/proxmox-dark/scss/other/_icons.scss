@@ -108,7 +108,10 @@
 .x-form-checkbox-default,
 .x-form-radio-default,
 .x-column-header-checkbox .x-column-header-checkbox::after,
-.x-grid-checkcolumn::after {
+.x-grid-checkcolumn::after,
+// checkboxes without the extra "blueish" active states
+.x-menu-item-checked .x-menu-item-icon-default.x-menu-item-checkbox,
+.x-menu-item-unchecked .x-menu-item-icon-default.x-menu-item-checkbox {
   filter: invert($icon-brightness) hue-rotate(180deg) brightness(125%);
 }
 
