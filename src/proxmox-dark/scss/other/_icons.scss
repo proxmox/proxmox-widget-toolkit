@@ -131,6 +131,10 @@
     color: $icon-color-alt;
   }
 
+  &.locked::after {
+    color: $icon-color;
+  }
+
   &.lxc::after,
   &.qemu::after {
     background-color: $background-darker;
