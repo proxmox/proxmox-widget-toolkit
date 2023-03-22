@@ -19,7 +19,8 @@
   }
 
   // When hovering over a menu item
-  &.x-menu-item-focus {
+  &.x-menu-item-focus,
+  &.x-menu-item-active {
     @include selection;
   }
 }
