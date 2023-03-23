@@ -117,6 +117,8 @@
 
 .x-tree-icon-custom,
 .x-grid-icon-custom {
+  color: $icon-color;
+
   &::after {
     color: $icon-color;
     text-shadow: -1px 0 1px $background-darker;
