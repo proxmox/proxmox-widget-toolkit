@@ -32,16 +32,16 @@
     color: $neutral-button-icon-color;
   }
 
+  // the little arrow in certain toolbar buttons with dropdowns
+  .x-btn-wrap-default-toolbar-small.x-btn-arrow-right::after,
+  .x-btn-wrap-default-toolbar-small.x-btn-split-right::after {
+    filter: brightness(150%);
+  }
+
   &.x-btn-over,
   .x-keyboard-mode &.x-btn-focus {
     background-color: $neutral-button-color-alt;
     border-color: $neutral-button-color-alt;
-
-    // the little arrow in certain toolbar buttons with dropdowns
-    .x-btn-wrap-default-toolbar-small.x-btn-arrow-right::after,
-    .x-btn-wrap-default-toolbar-small.x-btn-split-right::after {
-      filter: invert($icon-brightness);
-    }
   }
 
   &.x-btn.x-btn-disabled {
