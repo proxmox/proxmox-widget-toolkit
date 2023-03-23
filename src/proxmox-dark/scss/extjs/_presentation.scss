@@ -1,8 +1,7 @@
 // The mask that is applied when the window is unaccessible (Login
 // screen, Loading, ...)
 .x-mask {
-  background-color: $background-darker;
-  opacity: 0.5;
+  background-color: rgba($background-darker, 0.5);
 }
 
 // Shadows of floating windows like window modals, form selectors and
