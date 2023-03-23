@@ -1,6 +1,6 @@
 Ext.define('Proxmox.DateTimeField', {
     extend: 'Ext.form.FieldContainer',
-    xtype: 'promxoxDateTimeField',
+    xtype: 'proxmoxDateTimeField',
 
     layout: 'hbox',
 
