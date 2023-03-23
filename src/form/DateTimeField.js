@@ -8,21 +8,34 @@ Ext.define('Proxmox.DateTimeField', {
 
     referenceHolder: true,
 
-    submitFormat: 'U',
+    config: {
+	submitFormat: 'U',
+	disabled: false,
+    },
+
+    setValue: function(value) {
+	let me = this;
+	me.setDate(value);
+	me.setTime(value);
+
+	// Notify all 'value' bindings of state change
+	me.publishState('value', value);
+    },
 
     getValue: function() {
 	let me = this;
-	let d = me.lookupReference('dateentry').getValue();
+	let date = me.lookupReference('dateentry').getValue();
 
-	if (d === undefined || d === null) { return null; }
+	if (date === undefined || date === null) { return null; }
 
-	let t = me.lookupReference('timeentry').getValue();
+	let time = me.lookupReference('timeentry').getValue();
 
-	if (t === undefined || t === null) { return null; }
+	if (time === undefined || time === null) { return null; }
 
-	let offset = (t.getHours() * 3600 + t.getMinutes() * 60) * 1000;
-
-	return new Date(d.getTime() + offset);
+	date.setHours(time.getHours());
+	date.setMinutes(time.getMinutes());
+	date.setSeconds(time.getSeconds());
+	return date;
     },
 
     getSubmitValue: function() {
@@ -33,6 +46,20 @@ Ext.define('Proxmox.DateTimeField', {
         return value ? Ext.Date.format(value, format) : null;
     },
 
+    setDate: function(date) {
+	let me = this;
+	let dateEntry = me.lookupReference('dateentry');
+	dateEntry.setValue(date);
+	dateEntry.publishState('value', date);
+    },
+
+    setTime: function(time) {
+	let me = this;
+	let timeEntry = me.lookupReference('timeentry');
+	timeEntry.setValue(time);
+	timeEntry.publishState('value', time);
+    },
+
     items: [
 	{
 	    xtype: 'datefield',
@@ -40,6 +67,17 @@ Ext.define('Proxmox.DateTimeField', {
 	    reference: 'dateentry',
 	    flex: 1,
 	    format: 'Y-m-d',
+	    bind: {
+		disabled: '{disabled}',
+	    },
+	    listeners: {
+		'change': function(field, newValue, oldValue) {
+		    let dateTimeField = field.up('fieldcontainer');
+		    dateTimeField.setDate(newValue);
+		    let value = dateTimeField.getValue();
+		    dateTimeField.publishState('value', value);
+		},
+	    },
 	},
 	{
 	    xtype: 'timefield',
@@ -48,6 +86,17 @@ Ext.define('Proxmox.DateTimeField', {
 	    width: 80,
 	    value: '00:00',
 	    increment: 60,
+	    bind: {
+		disabled: '{disabled}',
+	    },
+	    listeners: {
+		'change': function(field, newValue, oldValue) {
+		    let dateTimeField = field.up('fieldcontainer');
+		    dateTimeField.setTime(newValue);
+		    let value = dateTimeField.getValue();
+		    dateTimeField.publishState('value', value);
+		},
+	    },
 	},
     ],
 
@@ -58,21 +107,23 @@ Ext.define('Proxmox.DateTimeField', {
 	    return;
 	}
 
-	let minhours = value.getHours();
-	let minminutes = value.getMinutes();
+	// Clone to avoid modifying the referenced value
+	let clone = new Date(value);
+	let minhours = clone.getHours();
+	let minminutes = clone.getMinutes();
 
 	let hours = current.getHours();
 	let minutes = current.getMinutes();
 
-	value.setHours(0);
-	value.setMinutes(0);
-	value.setSeconds(0);
+	clone.setHours(0);
+	clone.setMinutes(0);
+	clone.setSeconds(0);
 	current.setHours(0);
 	current.setMinutes(0);
 	current.setSeconds(0);
 
 	let time = new Date();
-	if (current-value > 0) {
+	if (current-clone > 0) {
 	    time.setHours(0);
 	    time.setMinutes(0);
 	    time.setSeconds(0);
@@ -86,9 +137,9 @@ Ext.define('Proxmox.DateTimeField', {
 	// current time is smaller than the time part of the new minimum
 	// so we have to add 1 to the day
 	if (minhours*60+minminutes > hours*60+minutes) {
-	    value.setDate(value.getDate()+1);
+	    clone.setDate(clone.getDate()+1);
 	}
-	me.lookup('dateentry').setMinValue(value);
+	me.lookup('dateentry').setMinValue(clone);
     },
 
     setMaxValue: function(value) {
@@ -98,19 +149,25 @@ Ext.define('Proxmox.DateTimeField', {
 	    return;
 	}
 
-	let maxhours = value.getHours();
-	let maxminutes = value.getMinutes();
+	// Clone to avoid modifying the referenced value
+	let clone = new Date(value);
+	let maxhours = clone.getHours();
+	let maxminutes = clone.getMinutes();
 
 	let hours = current.getHours();
 	let minutes = current.getMinutes();
 
-	value.setHours(0);
-	value.setMinutes(0);
+	clone.setHours(0);
+	clone.setMinutes(0);
+	clone.setSeconds(0);
+	clone.setMilliseconds(0);
 	current.setHours(0);
 	current.setMinutes(0);
+	current.setSeconds(0);
+	current.setMilliseconds(0);
 
 	let time = new Date();
-	if (value-current > 0) {
+	if (clone-current > 0) {
 	    time.setHours(23);
 	    time.setMinutes(59);
 	    time.setSeconds(59);
@@ -120,13 +177,13 @@ Ext.define('Proxmox.DateTimeField', {
 	}
 	me.lookup('timeentry').setMaxValue(time);
 
-	// current time is biger than the time part of the new maximum
+	// current time is bigger than the time part of the new maximum
 	// so we have to subtract 1 to the day
 	if (maxhours*60+maxminutes < hours*60+minutes) {
-	    value.setDate(value.getDate()-1);
+	    clone.setDate(clone.getDate()-1);
 	}
 
-	me.lookup('dateentry').setMaxValue(value);
+	me.lookup('dateentry').setMaxValue(clone);
     },
 
     initComponent: function() {
