@@ -38,6 +38,7 @@ Ext.define('Proxmox.window.LanguageEditWindow', {
 	    bind: {
 		value: '{language}',
 	    },
+	    width: 400,
 	},
     ],
     buttons: [
