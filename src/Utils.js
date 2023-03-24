@@ -1483,10 +1483,11 @@ Ext.override(Ext.data.Store, {
     // If the store's proxy is changed while it is waiting for an AJAX
     // response, `onProxyLoad` will still be called for the outdated response.
     // To avoid displaying inconsistent information, only process responses
-    // belonging to the current proxy.
+    // belonging to the current proxy. However, do not apply this workaround
+    // to the mobile UI, as Sencha Touch has an incompatible internal API.
     onProxyLoad: function(operation) {
 	let me = this;
-	if (operation.getProxy() === me.getProxy()) {
+	if (Proxmox.Utils.toolkit === 'touch' || operation.getProxy() === me.getProxy()) {
 	    me.callParent(arguments);
 	} else {
 	    console.log(`ignored outdated response: ${operation.getRequest().getUrl()}`);
