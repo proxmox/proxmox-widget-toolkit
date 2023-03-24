@@ -35,10 +35,10 @@ Ext.define('Proxmox.window.LanguageEditWindow', {
 	{
 	    xtype: 'proxmoxLanguageSelector',
 	    fieldLabel: gettext('Language'),
+	    labelWidth: 75,
 	    bind: {
 		value: '{language}',
 	    },
-	    width: 400,
 	},
     ],
     buttons: [
