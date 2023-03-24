@@ -4,14 +4,17 @@ Ext.define('Proxmox.window.ThemeEditWindow', {
 
     viewModel: {
 	parent: null,
-	data: {
-	    language: '__default__',
-	},
+	data: {},
     },
     controller: {
 	xclass: 'Ext.app.ViewController',
 	init: function(view) {
-	    let theme = Ext.util.Cookies.get(view.cookieName) || '__default__';
+	    let theme = '__default__';
+
+	    let savedTheme = Ext.util.Cookies.get(view.cookieName);
+	    if (savedTheme && savedTheme in Proxmox.Utils.theme_map) {
+		theme = savedTheme;
+	    }
 	    this.getViewModel().set('theme', theme);
 	},
 	applyTheme: function(button) {
