@@ -1,3 +1,25 @@
+proxmox-widget-toolkit (3.6.4) bullseye; urgency=medium
+
+  * dark-mode:
+    - improve contrast on split buttons
+    - color the custom grid and tree icons
+    - set boundlist (combo box picker) background so that loading progress or
+      errors are styled correctly too
+    - add a small white padding to the TOTP QR-code, as some apps are confused
+      otherwise
+    - fix #4617: increase brightness of tree expand/collapse arrows to avoid
+      overly low contrast
+
+  * fix #4612: mobile: avoid crash due to missing getProxy method
+
+  * theme edit window: ensure that the saved theme is actually valid
+
+  * language selector: translate entries to both native and localized variants
+
+  * language selector: increase picker list view width
+
+ -- Proxmox Support Team <support@proxmox.com>  Sun, 26 Mar 2023 17:52:48 +0200
+
 proxmox-widget-toolkit (3.6.3) bullseye; urgency=medium
 
   * dark-mode fine-tuning:
