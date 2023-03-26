@@ -104,6 +104,14 @@
   filter: none;
 }
 
+/* a bit of a hack, but otherwise the expanders and collapsers are barely visible */
+.x-tree-arrows .x-tree-expander {
+    filter: brightness(200%);
+}
+.x-tree-arrows .x-tree-expander-over .x-tree-expander {
+    filter: brightness(0);
+}
+
 // checkboxes and radio buttons
 .x-form-checkbox-default,
 .x-form-radio-default,
