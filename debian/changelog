@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (3.6.5) bullseye; urgency=medium
+
+  * window: ldap auth edit: avoid relying on the default bind property
+
+  * window: ldap auth edit: set view-model form data explicitly on edit to
+    avoid a data race in chromium based browser that could result in a
+    mismatch of the configured value and the initially shown one.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 28 Mar 2023 17:56:10 +0200
+
 proxmox-widget-toolkit (3.6.4) bullseye; urgency=medium
 
   * dark-mode:
