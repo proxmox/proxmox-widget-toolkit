@@ -92,7 +92,9 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	    xtype: 'proxmoxcheckbox',
 	    fieldLabel: gettext('Anonymous Search'),
 	    name: 'anonymous_search',
-	    bind: '{anonymous_search}',
+	    bind: {
+		value: '{anonymous_search}',
+	    },
 	},
 	{
 	    xtype: 'proxmoxtextfield',
