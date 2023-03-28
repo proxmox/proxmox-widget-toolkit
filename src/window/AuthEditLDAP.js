@@ -57,7 +57,9 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
     },
 
     onSetValues: function(values) {
+	let me = this;
 	values.anonymous_search = values["bind-dn"] ? 0 : 1;
+	me.getViewModel().set('anonymous_search', values.anonymous_search);
 
 	return values;
     },
