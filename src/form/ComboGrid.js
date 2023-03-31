@@ -408,7 +408,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 
 	// Create the picker at an early stage, so it is available to store the previous selection
 	if (!me.picker) {
-	    me.createPicker();
+	    me.getPicker();
 	}
 
 	me.mon(me.store, 'beforeload', function() {
