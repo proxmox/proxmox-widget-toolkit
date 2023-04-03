@@ -220,5 +220,6 @@ ${keyString}
 
 	printFrame.src = "data:text/html;base64," + btoa(html);
 	document.body.appendChild(printFrame);
+	me.on('destroy', () => document.body.removeChild(printFrame));
     },
 });
