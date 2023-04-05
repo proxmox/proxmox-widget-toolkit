@@ -156,6 +156,20 @@
   }
 }
 
+.pmx-tree-icon-custom {
+  &::after {
+    text-shadow: -1px 0 1px $background-darker;
+  }
+
+  &.maintenance::before {
+    color: $icon-color-alt;
+  }
+
+  &.maintenance::after {
+    color: $icon-color;
+  }
+}
+
 // icons for templates in the storages view
 .x-treelist-item-icon {
   &.lxc::after,
