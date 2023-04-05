@@ -8,6 +8,14 @@
   color: black;
 }
 
+.x-keyboard-mode .x-grid-item-focused.x-grid-row-loading {
+  background-color: invert($selection-background-color, $weight: 90%);
+
+  .x-grid-cell-inner::before {
+    border-color: invert($primary-color, $weight: 90%) !important;
+  }
+}
+
 .x-mask-msg {
   background-color: $form-field-body-color;
   border: solid 1px $border-color-alt;

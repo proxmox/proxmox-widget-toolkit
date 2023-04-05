@@ -90,12 +90,16 @@
     color: black;
   }
 
-  .x-grid-cell-inner::before {
-    // this is a somewhat hacky work-around for the focus borders on
-    // these elements. since we use the invert filter to fix the icon
-    // color we need to also invert the border color first too, not
-    // just the text. add "!important" to properly override.
-    border-color: invert($primary-color, $weight: 90%) !important;
+  // this is a somewhat hacky work-around for the focus borders and
+  // background on these elements. since we use the invert filter to
+  // fix the icon color we need to also invert the border color first
+  // too, not just the text.
+  .x-keyboard-mode &.x-grid-item-focused {
+    background-color: invert($selection-background-color, $weight: 90%);
+
+    .x-grid-cell-inner::before {
+      border-color: invert($primary-color, $weight: 90%);
+    }
   }
 }
 
