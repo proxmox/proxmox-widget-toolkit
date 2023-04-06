@@ -688,21 +688,23 @@ utilities: {
     },
 
     format_size: function(size, useSI) {
-	let units = ['', 'K', 'M', 'G', 'T', 'P', 'E', 'Z', 'Y'];
+	let unitsSI = [gettext('B'), gettext('KB'), gettext('MB'), gettext('GB'),
+	    gettext('TB'), gettext('PB'), gettext('EB'), gettext('ZB'), gettext('YB')];
+	let unitsIEC = [gettext('B'), gettext('KiB'), gettext('MiB'), gettext('GiB'),
+	    gettext('TiB'), gettext('PiB'), gettext('EiB'), gettext('ZiB'), gettext('YiB')];
 	let order = 0;
+	let commaDigits = 2;
 	const baseValue = useSI ? 1000 : 1024;
-	while (size >= baseValue && order < units.length) {
+	while (size >= baseValue && order < unitsSI.length) {
 	    size = size / baseValue;
 	    order++;
 	}
 
-	let unit = units[order], commaDigits = 2;
+	let unit = useSI ? unitsSI[order] : unitsIEC[order];
 	if (order === 0) {
 	    commaDigits = 0;
-	} else if (!useSI) {
-	    unit += 'i';
 	}
-	return `${size.toFixed(commaDigits)} ${unit}B`;
+	return `${size.toFixed(commaDigits)} ${unit}`;
     },
 
     SizeUnits: {
