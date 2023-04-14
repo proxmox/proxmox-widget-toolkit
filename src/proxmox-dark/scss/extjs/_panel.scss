@@ -2,15 +2,42 @@
   background-color: $content-background-color;
   border: none;
 
-  // The small navigation elements in the panel header bar e.g. to
-  // collapse a panel
   .x-tool-tool-el {
     background-color: transparent;
-    filter: brightness(120%);
+  }
+}
+
+// The small navigation elements in the panel header bar e.g. to
+// collapse a panel
+.x-tool-img {
+  filter: brightness(175%);
+
+  // these are brighter per default, so they don't need to be
+  // brigthened as much
+  &.x-tool-expand,
+  &.x-tool-collapse,
+  &.x-tool-refresh {
+    filter: brightness(125%);
   }
 
-  .x-tool-over .x-tool-tool-el {
-    filter: brightness(140%);
+  // this icon uses multiple tones, to have them behave appropriatelly
+  // invert them before brightening them
+  &.x-tool-print {
+    filter: invert(100%) hue-rotate(180deg) brightness(125%);
+  }
+
+  .x-tool-over & {
+    filter: brightness(200%);
+  }
+
+  .x-tool-over &.x-tool-expand,
+  .x-tool-over &.x-tool-collapse,
+  .x-tool-over &.x-tool-refresh {
+    filter: brightness(150%);
+  }
+
+  .x-tool-over &.x-tool-print {
+    filter: invert(100%) hue-rotate(180deg) brightness(150%);
   }
 }
 
