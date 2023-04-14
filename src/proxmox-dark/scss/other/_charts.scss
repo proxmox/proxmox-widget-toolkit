@@ -7,8 +7,8 @@
   --pwt-text-color: #{$text-color};
   --pwt-gauge-default: #{$primary-color};
   --pwt-gauge-back: #{$background-dark};
-  --pwt-gauge-warn: #{$background-warning};
-  --pwt-gauge-crit: #{$background-invalid};
+  --pwt-gauge-warn: #{adjust-color($background-warning, $lightness: lightness($primary-color))};
+  --pwt-gauge-crit: #{adjust-color($background-invalid, $lightness: lightness($primary-color))};
   --pwt-chart-primary: #{$primary-color};
   --pwt-chart-grid-stroke: #{$content-background-selected};
 }

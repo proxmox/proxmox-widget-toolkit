@@ -11,9 +11,9 @@
 }
 
 .x-progress.warning .x-progress-bar {
-  background-color: $background-warning;
+  background-color: var(--pwt-gauge-warn);
 }
 
 .x-progress.critical .x-progress-bar {
-  background-color: $background-invalid;
+  background-color: var(--pwt-gauge-crit);
 }
