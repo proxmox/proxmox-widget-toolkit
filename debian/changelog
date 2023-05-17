@@ -1,3 +1,18 @@
+proxmox-widget-toolkit (3.7.0) bullseye; urgency=medium
+
+  * dark-mode:
+    - fix focus and focus-over states for tabs
+    - fix the focused state for background image grid icons
+    - style the icon for the datastore maintenance mode
+    - improve apt repo group header contrast ratios
+    - adjust panel header tool icons
+    - fix #4618: lighten critical/warning charts/gauges colors
+
+  * form: combo grid: use correct method to initialize the picker to ensure
+    it's cleaned up again after closed.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 17 May 2023 14:02:50 +0200
+
 proxmox-widget-toolkit (3.6.5) bullseye; urgency=medium
 
   * window: ldap auth edit: avoid relying on the default bind property
