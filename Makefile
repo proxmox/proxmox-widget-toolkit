@@ -36,9 +36,10 @@ lint: $(JSSRC)
 	$(MAKE) -C src lint
 
 .PHONY: upload
+upload: UPLOAD_DIST ?= $(DEB_DISTRIBUTION)
 upload: $(DEBS)
-	tar cf - $(DEB) | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg,pbs --dist bullseye
-	tar cf - $(DEV_DEB) | ssh -X repoman@repo.proxmox.com -- upload --product devel --dist bullseye
+	tar cf - $(DEB) | ssh -X repoman@repo.proxmox.com -- upload --product pve,pmg,pbs --dist $(UPLOAD_DIST)
+	tar cf - $(DEV_DEB) | ssh -X repoman@repo.proxmox.com -- upload --product devel --dist $(UPLOAD_DIST)
 
 distclean: clean
 clean:
