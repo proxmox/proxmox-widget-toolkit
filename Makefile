@@ -44,7 +44,7 @@ upload: $(DEBS)
 distclean: clean
 clean:
 	$(MAKE) -C src clean
-	rm -rf $(BUILDDIR) $(BUILDDIR).tmp *.tar.gz *.dsc *.deb *.changes *.buildinfo
+	rm -rf $(PACKAGE)-[0-9]*/ *.tar.* *.dsc *.deb *.changes *.buildinfo *.build
 
 .PHONY: dinstall
 dinstall: $(DEBS)
