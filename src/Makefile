@@ -135,4 +135,4 @@ install: proxmoxlib.js
 
 .PHONY: clean
 clean:
-	rm -f proxmoxlib.js
+	rm -f proxmoxlib.js proxmoxlib.js.tmp .lint-incremental
