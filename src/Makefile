@@ -106,30 +106,30 @@ JSSRC=					\
 	node/TimeEdit.js		\
 	node/TimeView.js
 
-all: ${SUBDIRS}
-	set -e && for i in ${SUBDIRS}; do ${MAKE} -C $$i; done
+all: $(SUBDIRS)
+	set -e && for i in $(SUBDIRS); do $(MAKE) -C $$i; done
 
-.lint-incremental: ${JSSRC}
+.lint-incremental: $(JSSRC)
 	eslint $?
 	touch "$@"
 
 .PHONY: lint
 check: lint
 	eslint --strict api-viewer/APIViewer.js
-lint: ${JSSRC}
-	eslint --strict ${JSSRC}
+lint: $(JSSRC)
+	eslint --strict $(JSSRC)
 	touch ".lint-incremental"
 
-proxmoxlib.js: .lint-incremental ${JSSRC}
+proxmoxlib.js: .lint-incremental $(JSSRC)
 	# add the version as comment in the file
-	echo "// ${DEB_VERSION_UPSTREAM_REVISION}" > $@.tmp
-	cat ${JSSRC} ${MARKEDJS}  >> $@.tmp
+	echo "// $(DEB_VERSION_UPSTREAM_REVISION)" > $@.tmp
+	cat $(JSSRC) $(MARKEDJS)  >> $@.tmp
 	mv $@.tmp $@
 
 install: proxmoxlib.js
-	install -d -m 755 ${WWWBASEDIR}
-	install -m 0644 proxmoxlib.js ${WWWBASEDIR}
-	set -e && for i in ${SUBDIRS}; do ${MAKE} -C $$i $@; done
+	install -d -m 755 $(WWWBASEDIR)
+	install -m 0644 proxmoxlib.js $(WWWBASEDIR)
+	set -e && for i in $(SUBDIRS); do $(MAKE) -C $$i $@; done
 
 .PHONY: clean
 clean:

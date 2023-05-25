@@ -35,10 +35,10 @@ all: theme-proxmox-dark.css
 
 .PHONY: install
 install: theme-proxmox-dark.css
-	install -d ${WWWTHEMEDIR}/
-	install -m 0664 theme-proxmox-dark.css ${WWWTHEMEDIR}/
+	install -d $(WWWTHEMEDIR)/
+	install -m 0664 theme-proxmox-dark.css $(WWWTHEMEDIR)/
 
-theme-proxmox-dark.css: ${SCSSSRC}
+theme-proxmox-dark.css: $(SCSSSRC)
 	sassc -t compressed $< $@.tmp
 	mv $@.tmp $@
 
