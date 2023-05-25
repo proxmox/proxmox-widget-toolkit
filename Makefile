@@ -26,9 +26,15 @@ $(DEBS): $(BUILDDIR)
 
 .PHONY: dsc
 dsc: $(DSC)
+	$(MAKE) clean
+	$(MAKE) $(DSC)
+	lintian $(DSC)
+
 $(DSC): $(BUILDDIR)
 	cd $(BUILDDIR); dpkg-buildpackage -S -us -uc -d
-	lintian $(DSC)
+
+sbuild: $(DSC)
+	sbuild $(DSC)
 
 .PHONY: lint
 lint: $(JSSRC)
