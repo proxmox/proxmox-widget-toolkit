@@ -2,11 +2,11 @@ Source: proxmox-widget-toolkit
 Section: web
 Priority: optional
 Maintainer: Proxmox Support Team <support@proxmox.com>
-Build-Depends: debhelper-compat (= 12),
+Build-Depends: debhelper-compat (= 13),
                libjs-marked,
                pve-eslint (>= 7.28.0),
                sassc,
-Standards-Version: 4.5.1
+Standards-Version: 4.6.2
 Homepage: https://www.proxmox.com
 
 Package: proxmox-widget-toolkit
