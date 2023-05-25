@@ -1,7 +1,6 @@
 include /usr/share/dpkg/pkg-info.mk
-export DEB_VERSION_UPSTREAM_REVISION
 
-export PACKAGE=proxmox-widget-toolkit
+PACKAGE=proxmox-widget-toolkit
 
 DEB=$(PACKAGE)_$(DEB_VERSION_UPSTREAM_REVISION)_all.deb
 DEV_DEB=$(PACKAGE)-dev_$(DEB_VERSION_UPSTREAM_REVISION)_all.deb

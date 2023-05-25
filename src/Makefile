@@ -120,9 +120,11 @@ lint: $(JSSRC)
 	eslint --strict $(JSSRC)
 	touch ".lint-incremental"
 
+BUILD_TIME=$(or $(SOURCE_DATE_EPOCH),$(shell date '+%s.%N'))
+BUILD_VERSION=$(or $(DEB_VERSION),$(shell git rev-parse HEAD),unknown version)
 proxmoxlib.js: .lint-incremental $(JSSRC)
 	# add the version as comment in the file
-	echo "// $(DEB_VERSION_UPSTREAM_REVISION)" > $@.tmp
+	echo "// v$(BUILD_VERSION) - t$(BUILD_TIME)" > $@.tmp
 	cat $(JSSRC) $(MARKEDJS)  >> $@.tmp
 	mv $@.tmp $@
 

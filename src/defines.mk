@@ -1,3 +1,5 @@
+PACKAGE ?= $(or $(DEB_SOURCE), proxmox-widget-toolkit)
+
 DESTDIR=
 DOCDIR=$(DESTDIR)/usr/share/doc/$(PACKAGE)
 WWWBASEDIR=$(DESTDIR)/usr/share/javascript/$(PACKAGE)
