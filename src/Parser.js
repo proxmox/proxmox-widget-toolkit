@@ -55,7 +55,7 @@ Ext.define('Proxmox.Markdown', {
 
     parse: function(markdown) {
 	/*global marked*/
-	let unsafeHTML = marked(markdown);
+	let unsafeHTML = marked.parse(markdown);
 
 	return `<div class="pmx-md">${this.sanitizeHTML(unsafeHTML)}</div>`;
     },
