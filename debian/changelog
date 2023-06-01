@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (4.0.1) bookworm; urgency=medium
+
+  * tfa: paperkey: cleanup iframes for printing after window close
+
+  * parser: adapt to calling convention of updated Markdown renderer library
+    "marked" has since its v4.0.0
+
+  * fix #4551: ui: translate byte unit in `format_size`
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 01 Jun 2023 16:35:32 +0200
+
 proxmox-widget-toolkit (4.0.0) bookworm; urgency=medium
 
   * re-build for Debian 12 Bookworm based releases
