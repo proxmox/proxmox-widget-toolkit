@@ -26,7 +26,7 @@ Ext.define('Proxmox.Markdown', {
 		const value = node.attributes[i].value;
 		// TODO: we may want to also disallow class and id attrs
 		if (
-		    !/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type)$/i.test(name)
+		    !/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type|target)$/i.test(name)
 		) {
 		    node.attributes.removeNamedItem(name);
 		} else if ((name === 'href' || name === 'src') && !_isHTTPLike(value)) {
@@ -44,6 +44,8 @@ Ext.define('Proxmox.Markdown', {
 		    } catch (e) {
 			node.attributes.removeNamedItem(name);
 		    }
+		} else if (name === 'target' && node.tagName.toLowerCase() !== 'a') {
+		    node.attributes.removeNamedItem(name);
 		}
 	    }
 	    for (let i=node.childNodes.length; i--;) _sanitize(node.childNodes[i]);
