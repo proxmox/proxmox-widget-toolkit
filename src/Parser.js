@@ -34,6 +34,7 @@ Ext.define('Proxmox.Markdown', {
 			let url = new URL(value, window.location.origin);
 			if (
 			    _isHTTPLike(url.protocol) ||
+			    node.tagName.toLowerCase() === 'a' ||
 			    (node.tagName.toLowerCase() === 'img' && url.protocol.toLowerCase() === 'data:')
 			) {
 			    node.attributes[i].value = url.href;
