@@ -38,7 +38,7 @@ Ext.define('Proxmox.Markdown', {
 			    node.attributes.removeNamedItem(name);
 			}
 		    } catch (e) {
-			node.attributes[i].removeNamedItem(name);
+			node.attributes.removeNamedItem(name);
 		    }
 		}
 	    }
