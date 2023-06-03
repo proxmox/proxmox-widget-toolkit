@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (4.0.2) bookworm; urgency=medium
+
+  * markdown parser: allow setting "target" attribute for links
+
+  * fix #4756: markdown parser: allow any valid URL for link (a) tags,
+    allowing one to add short-cuts like a RDP url to quickly open the remote
+    viewer.
+
+  * ship a minified version of the widget-toolkit JS library
+
+ -- Proxmox Support Team <support@proxmox.com>  Sat, 03 Jun 2023 13:45:27 +0200
+
 proxmox-widget-toolkit (4.0.1) bookworm; urgency=medium
 
   * tfa: paperkey: cleanup iframes for printing after window close
