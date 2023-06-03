@@ -6,6 +6,7 @@ Build-Depends: debhelper-compat (= 13),
                libjs-marked,
                pve-eslint (>= 7.28.0),
                sassc,
+               uglifyjs,
 Standards-Version: 4.6.2
 Homepage: https://www.proxmox.com
 

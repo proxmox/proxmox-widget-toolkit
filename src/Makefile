@@ -4,7 +4,7 @@ SUBDIRS= css images proxmox-dark
 
 # bundle it for now from the libjs-marked debian package to avoid touching our proxies file mapper,
 # we could also just ship a link to the packages file and load from same path as the widget-toolkit
-MARKEDJS=/usr/share/javascript/marked/marked.min.js
+MARKEDJS=/usr/share/javascript/marked/marked.js
 
 JSSRC=					\
 	Utils.js			\
@@ -128,11 +128,15 @@ proxmoxlib.js: .lint-incremental $(JSSRC)
 	cat $(JSSRC) $(MARKEDJS)  >> $@.tmp
 	mv $@.tmp $@
 
-install: proxmoxlib.js
+proxmoxlib.min.js: proxmoxlib.js
+	uglifyjs $< -c -m -o $@.tmp
+	mv $@.tmp $@
+
+install: proxmoxlib.js proxmoxlib.min.js
 	install -d -m 755 $(WWWBASEDIR)
-	install -m 0644 proxmoxlib.js $(WWWBASEDIR)
+	install -m 0644 proxmoxlib.js proxmoxlib.min.js $(WWWBASEDIR)
 	set -e && for i in $(SUBDIRS); do $(MAKE) -C $$i $@; done
 
 .PHONY: clean
 clean:
-	rm -f proxmoxlib.js proxmoxlib.js.tmp .lint-incremental
+	rm -f proxmoxlib.js* proxmoxlib.min.js* .lint-incremental
