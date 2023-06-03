@@ -124,7 +124,7 @@ BUILD_TIME=$(or $(SOURCE_DATE_EPOCH),$(shell date '+%s.%N'))
 BUILD_VERSION=$(or $(DEB_VERSION),$(shell git rev-parse HEAD),unknown version)
 proxmoxlib.js: .lint-incremental $(JSSRC)
 	# add the version as comment in the file
-	echo "// v$(BUILD_VERSION) - t$(BUILD_TIME)" > $@.tmp
+	echo "// v$(BUILD_VERSION)-t$(BUILD_TIME)" > $@.tmp
 	cat $(JSSRC) $(MARKEDJS)  >> $@.tmp
 	mv $@.tmp $@
 
