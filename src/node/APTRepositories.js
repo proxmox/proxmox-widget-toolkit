@@ -460,6 +460,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let nosubscription = vm.get('noSubscriptionRepo');
 	    let test = vm.get('testRepo');
 	    let wrongSuites = vm.get('suitesWarning');
+	    let mixedSuites = vm.get('mixedSuites');
 
 	    if (!enterprise && !nosubscription && !test) {
 		addCritical(
@@ -475,6 +476,10 @@ Ext.define('Proxmox.node.APTRepositories', {
 
 	    if (wrongSuites) {
 		addWarn(gettext('Some suites are misconfigured'));
+	    }
+
+	    if (mixedSuites) {
+		addWarn(gettext('Detected mixed suites before upgrade'));
 	    }
 
 	    if (!activeSubscription && enterprise) {
@@ -507,6 +512,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    product: 'Proxmox VE', // default
 	    errors: [],
 	    suitesWarning: false,
+	    mixedSuites: false, // used before major upgrade
 	    subscriptionActive: '',
 	    noSubscriptionRepo: '',
 	    enterpriseRepo: '',
@@ -641,6 +647,11 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let digest;
 	    let suitesWarning = false;
 
+	    // Usually different suites will give errors anyways, but before a major upgrade the
+	    // current and the next suite are allowed, so it makes sense to check for mixed suites.
+	    let checkMixedSuites = false;
+	    let mixedSuites = false;
+
 	    if (success && records.length > 0) {
 		let data = records[0].data;
 		let files = data.files;
@@ -659,6 +670,9 @@ Ext.define('Proxmox.node.APTRepositories', {
 			infos[path][idx] = {
 			    origin: '',
 			    warnings: [],
+			    // Used as a heuristic to detect mixed repositories pre-upgrade. The
+			    // warning is set on all repositories that do configure the next suite.
+			    gotIgnorePreUpgradeWarning: false,
 			};
 		    }
 
@@ -667,8 +681,11 @@ Ext.define('Proxmox.node.APTRepositories', {
 		    } else if (info.kind === 'warning') {
 			infos[path][idx].warnings.push(info);
 		    } else if (info.kind === 'ignore-pre-upgrade-warning') {
+			infos[path][idx].gotIgnorePreUpgradeWarning = true;
 			if (!repoGrid.majorUpgradeAllowed) {
 			    infos[path][idx].warnings.push(info);
+			} else {
+			    checkMixedSuites = true;
 			}
 		    }
 		}
@@ -683,8 +700,21 @@ Ext.define('Proxmox.node.APTRepositories', {
 			    repo.Origin = infos[file.path][n].origin || Proxmox.Utils.UnknownText;
 			    repo.warnings = infos[file.path][n].warnings || [];
 
-			    if (repo.Enabled && repo.warnings.some(w => w.property === 'Suites')) {
-				suitesWarning = true;
+			    if (repo.Enabled) {
+				if (repo.warnings.some(w => w.property === 'Suites')) {
+				    suitesWarning = true;
+				}
+
+				let originType = me.classifyOrigin(repo.Origin);
+				// Only Proxmox and Debian repositories checked here, because the
+				// warning can be missing for others for a different reason (e.g.
+				// using 'stable' or non-Debian code names).
+				if (checkMixedSuites && repo.Types.includes('deb') &&
+				    (originType === 'Proxmox' || originType === 'Debian') &&
+				    !infos[file.path][n].gotIgnorePreUpgradeWarning
+				) {
+				    mixedSuites = true;
+				}
 			    }
 			}
 			gridData.push(repo);
@@ -700,6 +730,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 
 	    vm.set('errors', errors);
 	    vm.set('suitesWarning', suitesWarning);
+	    vm.set('mixedSuites', mixedSuites);
 	    me.getController().updateState();
 	});
 
