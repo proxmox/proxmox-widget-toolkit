@@ -654,10 +654,12 @@ Ext.define('Proxmox.node.APTRepositories', {
 
 		    if (info.kind === 'origin') {
 			infos[path][idx].origin = info.message;
-		    } else if (info.kind === 'warning' ||
-			(info.kind === 'ignore-pre-upgrade-warning' && !repoGrid.majorUpgradeAllowed)
-		    ) {
+		    } else if (info.kind === 'warning') {
 			infos[path][idx].warnings.push(info);
+		    } else if (info.kind === 'ignore-pre-upgrade-warning') {
+			if (!repoGrid.majorUpgradeAllowed) {
+			    infos[path][idx].warnings.push(info);
+			}
 		    } else {
 			throw 'unknown info';
 		    }
