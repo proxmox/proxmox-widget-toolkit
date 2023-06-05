@@ -343,14 +343,15 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    header: gettext('Origin'),
 	    dataIndex: 'Origin',
 	    width: 120,
-	    renderer: (value, meta, rec) => {
+	    renderer: function(value, meta, rec) {
 		if (typeof value !== 'string' || value.length === 0) {
 		    value = gettext('Other');
 		}
 		let cls = 'fa fa-fw fa-question-circle-o';
-		if (value.match(/^\s*Proxmox\s*$/i)) {
+		let originType = this.up('proxmoxNodeAPTRepositories').classifyOrigin(value);
+		if (originType === 'Proxmox') {
 		    cls = 'pmx-itype-icon pmx-itype-icon-proxmox-x';
-		} else if (value.match(/^\s*Debian\s*(:?Backports)?$/i)) {
+		} else if (originType === 'Debian') {
 		    cls = 'pmx-itype-icon pmx-itype-icon-debian-swirl';
 		}
 		return `<i class='${cls}'></i> ${value}`;
@@ -403,6 +404,15 @@ Ext.define('Proxmox.node.APTRepositories', {
     onlineHelp: undefined,
 
     product: 'Proxmox VE', // default
+
+    classifyOrigin: function(origin) {
+	if (origin.match(/^\s*Proxmox\s*$/i)) {
+	    return 'Proxmox';
+	} else if (origin.match(/^\s*Debian\s*(:?Backports)?$/i)) {
+	    return 'Debian';
+	}
+	return 'Other';
+    },
 
     controller: {
 	xclass: 'Ext.app.ViewController',
