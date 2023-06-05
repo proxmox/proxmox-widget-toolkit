@@ -670,8 +670,6 @@ Ext.define('Proxmox.node.APTRepositories', {
 			if (!repoGrid.majorUpgradeAllowed) {
 			    infos[path][idx].warnings.push(info);
 			}
-		    } else {
-			throw 'unknown info';
 		    }
 		}
 
