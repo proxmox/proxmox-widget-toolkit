@@ -67,8 +67,11 @@ Ext.define('Proxmox.panel.TfaView', {
 	onLoad: function(store, data, success) {
 	    if (!success) return;
 
+	    let now = new Date().getTime() / 1000;
 	    let records = [];
 	    Ext.Array.each(data, user => {
+		let tfa_locked = (user.data['tfa-locked-until'] || 0) > now;
+		let totp_locked = user.data['totp-locked'];
 		Ext.Array.each(user.data.entries, entry => {
 		    records.push({
 			fullid: `${user.id}/${entry.id}`,
@@ -77,6 +80,7 @@ Ext.define('Proxmox.panel.TfaView', {
 			description: entry.description,
 			created: entry.created,
 			enable: entry.enable,
+			locked: tfa_locked || (entry.type === 'totp' && totp_locked),
 		    });
 		});
 	    });
@@ -154,8 +158,10 @@ Ext.define('Proxmox.panel.TfaView', {
 
 	renderUser: fullid => fullid.split('/')[0],
 
-	renderEnabled: enabled => {
-	    if (enabled === undefined) {
+	renderEnabled: function(enabled, metaData, record) {
+	    if (record.data.locked) {
+		return gettext("Locked");
+	    } else if (enabled === undefined) {
 		return Proxmox.Utils.yesText;
 	    } else {
 		return Proxmox.Utils.format_boolean(enabled);
