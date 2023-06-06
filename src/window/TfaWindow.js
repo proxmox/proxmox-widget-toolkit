@@ -45,11 +45,17 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 
 	    let lastTabId = me.getLastTabUsed();
 	    let initialTab = -1, i = 0;
+	    let count2nd = 0;
+	    let hasRecovery = false;
 	    for (const k of ['webauthn', 'totp', 'recovery', 'u2f', 'yubico']) {
 		const available = !!challenge[k];
 		vm.set(`availableChallenge.${k}`, available);
 
 		if (available) {
+		    count2nd++;
+		    if (k === 'recovery') {
+			hasRecovery = true;
+		    }
 		    if (i === lastTabId) {
 			initialTab = i;
 		    } else if (initialTab < 0) {
@@ -58,15 +64,32 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 		}
 		i++;
 	    }
+	    if (!count2nd || (count2nd === 1 && hasRecovery && !challenge.recovery.length)) {
+		// no 2nd factors available (and if recovery keys are configured they're empty)
+		me.lookup('cannotLogin').setVisible(true);
+		me.lookup('recoveryKey').setVisible(false);
+		view.down('tabpanel').setActiveTab(2); // recovery
+		return;
+	    }
 	    view.down('tabpanel').setActiveTab(initialTab);
 
 	    if (challenge.recovery) {
-		me.lookup('availableRecovery').update(Ext.String.htmlEncode(
-		    gettext('Available recovery keys: ') + view.challenge.recovery.join(', '),
-		));
-		me.lookup('availableRecovery').setVisible(true);
-		if (view.challenge.recovery.length <= 3) {
-		    me.lookup('recoveryLow').setVisible(true);
+		if (!view.challenge.recovery.length) {
+		    me.lookup('recoveryEmpty').setVisible(true);
+		    me.lookup('recoveryKey').setVisible(false);
+		} else {
+		    let idList = view
+			    .challenge
+			    .recovery
+			    .map((id) => Ext.String.format(gettext('ID {0}'), id))
+			    .join(', ');
+		    me.lookup('availableRecovery').update(Ext.String.htmlEncode(
+			Ext.String.format(gettext('Available recovery keys: {0}'), idList),
+		    ));
+		    me.lookup('availableRecovery').setVisible(true);
+		    if (view.challenge.recovery.length <= 3) {
+			me.lookup('recoveryLow').setVisible(true);
+		    }
 		}
 	    }
 
@@ -365,6 +388,36 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 		items: [
 		    {
 			xtype: 'box',
+			reference: 'cannotLogin',
+			hidden: true,
+			html: '<i class="fa fa-exclamation-triangle warning"></i>'
+			    + Ext.String.format(
+				gettext('No second factor left! Please contact an administrator!'),
+				4,
+			    ),
+		    },
+		    {
+			xtype: 'box',
+			reference: 'recoveryEmpty',
+			hidden: true,
+			html: '<i class="fa fa-exclamation-triangle warning"></i>'
+			    + Ext.String.format(
+				gettext('No more recovery keys left! Please generate a new set!'),
+				4,
+			    ),
+		    },
+		    {
+			xtype: 'box',
+			reference: 'recoveryLow',
+			hidden: true,
+			html: '<i class="fa fa-exclamation-triangle warning"></i>'
+			    + Ext.String.format(
+				gettext('Less than {0} recovery keys available. Please generate a new set after login!'),
+				4,
+			    ),
+		    },
+		    {
+			xtype: 'box',
 			reference: 'availableRecovery',
 			hidden: true,
 		    },
@@ -378,16 +431,6 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 			allowBlank: false,
 			regex: /^[0-9a-f]{4}(-[0-9a-f]{4}){3}$/,
 			regexText: gettext('Does not look like a valid recovery key'),
-		    },
-		    {
-			xtype: 'box',
-			reference: 'recoveryLow',
-			hidden: true,
-			html: '<i class="fa fa-exclamation-triangle warning"></i>'
-			    + Ext.String.format(
-				gettext('Less than {0} recovery keys available. Please generate a new set after login!'),
-				4,
-			    ),
 		    },
 		],
 	    },
