@@ -1,7 +1,7 @@
 Ext.define('Proxmox.DateTimeField', {
     extend: 'Ext.form.FieldContainer',
     // FIXME: remove once all use sites upgraded (with versioned depends on new WTK!)
-    alias: ['widget.promxoxDateTimeField']
+    alias: ['widget.promxoxDateTimeField'],
     xtype: 'proxmoxDateTimeField',
 
     layout: 'hbox',
