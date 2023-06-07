@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (3.7.1) bullseye; urgency=medium
+
+  * tfa: paperkey: cleanup iframes for printing after window close
+
+  * apt repositoires: allow major upgrade
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 07 Jun 2023 17:25:57 +0200
+
 proxmox-widget-toolkit (3.7.0) bullseye; urgency=medium
 
   * dark-mode:
