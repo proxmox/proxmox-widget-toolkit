@@ -406,6 +406,7 @@ Ext.define('Proxmox.node.APTRepositories', {
     product: 'Proxmox VE', // default
 
     classifyOrigin: function(origin) {
+	origin ||= '';
 	if (origin.match(/^\s*Proxmox\s*$/i)) {
 	    return 'Proxmox';
 	} else if (origin.match(/^\s*Debian\s*(:?Backports)?$/i)) {
