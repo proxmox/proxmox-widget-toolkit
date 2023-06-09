@@ -697,7 +697,7 @@ Ext.define('Proxmox.node.APTRepositories', {
 			repo.Path = file.path;
 			repo.Index = n;
 			if (infos[file.path] && infos[file.path][n]) {
-			    repo.Origin = infos[file.path][n].origin || Proxmox.Utils.UnknownText;
+			    repo.Origin = infos[file.path][n].origin || Proxmox.Utils.unknownText;
 			    repo.warnings = infos[file.path][n].warnings || [];
 
 			    if (repo.Enabled) {
