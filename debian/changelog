@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (3.7.2) bullseye; urgency=medium
+
+  * apt repositories: actually ignore ignore-pre-upgrade-warning
+
+  * apt repositories: add classifyOrigin helper
+
+  * apt repositories: just ignore unknown info rather than throwing an error
+
+  * apt repositories: detect mixed suites before major upgrade
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 09 Jun 2023 13:00:41 +0200
+
 proxmox-widget-toolkit (3.7.1) bullseye; urgency=medium
 
   * tfa: paperkey: cleanup iframes for printing after window close
