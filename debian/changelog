@@ -1,3 +1,22 @@
+proxmox-widget-toolkit (4.0.3) bookworm; urgency=medium
+
+  * date time field: fix typo in xtype name but add alias for backward compat
+
+  * set 'SameSite' attr of auth cookie to 'strict', which modern browsers
+    already ensured in practice
+
+  * apt repositories: actually ignore ignore-pre-upgrade-warning
+
+  * apt repositories: just ignore unknown info rather than throwing an error
+
+  * apt repositories: detect mixed suites before major upgrade
+
+  * tfa: improve UX for recovery keys and when none are left
+
+  * tfa: show 'Locked' in 'Enabled' column if tfa is locked
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 09 Jun 2023 08:07:01 +0200
+
 proxmox-widget-toolkit (4.0.2) bookworm; urgency=medium
 
   * markdown parser: allow setting "target" attribute for links
