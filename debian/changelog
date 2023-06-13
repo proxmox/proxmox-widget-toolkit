@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (3.7.3) bullseye; urgency=medium
+
+  * apt repositories: fix typo for getting the default unknown text
+
+  * apt repositories: avoid potential type error in classifyOrigin helper
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 13 Jun 2023 12:25:28 +0200
+
 proxmox-widget-toolkit (3.7.2) bullseye; urgency=medium
 
   * apt repositories: actually ignore ignore-pre-upgrade-warning
