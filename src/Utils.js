@@ -85,6 +85,7 @@ utilities: {
 	sl: `Slovenščina - ${gettext("Slovenian")}`,
 	sv: `Svenska - ${gettext("Swedish")}`,
 	tr: `Türkçe - ${gettext("Turkish")}`,
+	ukr: `Українська - ${gettext("Ukrainian")}`,
 	zh_CN: `中文（简体）- ${gettext("Chinese (Simplified)")}`,
 	zh_TW: `中文（繁體）- ${gettext("Chinese (Traditional)")}`,
     },
