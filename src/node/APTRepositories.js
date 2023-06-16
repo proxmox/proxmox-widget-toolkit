@@ -460,6 +460,11 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    let enterprise = vm.get('enterpriseRepo');
 	    let nosubscription = vm.get('noSubscriptionRepo');
 	    let test = vm.get('testRepo');
+	    let cephRepos = {
+		enterprise: vm.get('cephEnterpriseRepo'),
+		nosubscription: vm.get('cephNoSubscriptionRepo'),
+		test: vm.get('cephTestRepo'),
+	    };
 	    let wrongSuites = vm.get('suitesWarning');
 	    let mixedSuites = vm.get('mixedSuites');
 
@@ -483,17 +488,33 @@ Ext.define('Proxmox.node.APTRepositories', {
 		addWarn(gettext('Detected mixed suites before upgrade'));
 	    }
 
-	    if (!activeSubscription && enterprise) {
-		addWarn(gettext('The enterprise repository is enabled, but there is no active subscription!'));
-	    }
+	    let productionReadyCheck = (repos, type, noSubAlternateName) => {
+		if (!activeSubscription && repos.enterprise) {
+		    addWarn(Ext.String.format(
+			gettext('The {0}enterprise repository is enabled, but there is no active subscription!'),
+			type,
+		    ));
+		}
 
-	    if (nosubscription) {
-		addWarn(gettext('The no-subscription repository is not recommended for production use!'));
-	    }
+		if (repos.nosubscription) {
+		    addWarn(Ext.String.format(
+			gettext('The {0}no-subscription{1} repository is not recommended for production use!'),
+			type,
+			noSubAlternateName,
+		    ));
+		}
 
-	    if (test) {
-		addWarn(gettext('The test repository may pull in unstable updates and is not recommended for production use!'));
-	    }
+		if (repos.test) {
+		    addWarn(Ext.String.format(
+			gettext('The {0}test repository may pull in unstable updates and is not recommended for production use!'),
+			type,
+		    ));
+		}
+	    };
+
+	    productionReadyCheck({ enterprise, nosubscription, test }, '', '');
+	    // TODO drop alternate 'main' name when no longer relevant
+	    productionReadyCheck(cephRepos, 'Ceph ', '/main');
 
 	    if (errors.length > 0) {
 		text = gettext('Fatal parsing error for at least one repository');
@@ -518,6 +539,9 @@ Ext.define('Proxmox.node.APTRepositories', {
 	    noSubscriptionRepo: '',
 	    enterpriseRepo: '',
 	    testRepo: '',
+	    cephEnterpriseRepo: '',
+	    cephNoSubscriptionRepo: '',
+	    cephTestRepo: '',
 	    selectionenabled: false,
 	    state: {},
 	},
@@ -627,6 +651,12 @@ Ext.define('Proxmox.node.APTRepositories', {
 		vm.set('noSubscriptionRepo', status);
 	    } else if (handle === 'test') {
 		vm.set('testRepo', status);
+	    } else if (handle.match(/^ceph-[a-zA-Z]+-enterprise$/)) {
+		vm.set('cephEnterpriseRepo', status);
+	    } else if (handle.match(/^ceph-[a-zA-Z]+-no-subscription$/)) {
+		vm.set('cephNoSubscriptionRepo', status);
+	    } else if (handle.match(/^ceph-[a-zA-Z]+-test$/)) {
+		vm.set('cephTestRepo', status);
 	    }
 	    me.getController().updateState();
 
