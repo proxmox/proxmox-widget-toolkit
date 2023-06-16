@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (4.0.5) bookworm; urgency=medium
+
+  * add Українська - Ukrainian to language map
+
+  * apt repositories: add production ready warnings for Ceph repositories
+
+  * add TOTP second factor: increase the size of the quiet zone for the QR
+    code, following general recommendation to make scanning it more robust
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 16 Jun 2023 15:58:27 +0200
+
 proxmox-widget-toolkit (4.0.4) bookworm; urgency=medium
 
   * apt repositories: fix typo for getting the default unknown text
