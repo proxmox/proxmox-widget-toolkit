@@ -1,5 +1,7 @@
 include defines.mk
 
+ESLINT ?= $(if $(shell command -v pve-eslint), pve-eslint, eslint)
+
 SUBDIRS= css images proxmox-dark
 
 # bundle it for now from the libjs-marked debian package to avoid touching our proxies file mapper,
@@ -110,14 +112,14 @@ all: $(SUBDIRS)
 	set -e && for i in $(SUBDIRS); do $(MAKE) -C $$i; done
 
 .lint-incremental: $(JSSRC)
-	eslint $?
+	$(ESLINT) $?
 	touch "$@"
 
 .PHONY: lint
 check: lint
-	eslint --strict api-viewer/APIViewer.js
+	$(ESLINT) --strict api-viewer/APIViewer.js
 lint: $(JSSRC)
-	eslint --strict $(JSSRC)
+	$(ESLINT) --strict $(JSSRC)
 	touch ".lint-incremental"
 
 BUILD_TIME=$(or $(SOURCE_DATE_EPOCH),$(shell date '+%s.%N'))
