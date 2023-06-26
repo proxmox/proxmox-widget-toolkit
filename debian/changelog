@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (4.0.6) bookworm; urgency=medium
+
+  * LDAP realm edit: forbid specifying a bind_dn without a password
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 26 Jun 2023 20:24:57 +0200
+
 proxmox-widget-toolkit (4.0.5) bookworm; urgency=medium
 
   * add Українська - Ukrainian to language map
