@@ -113,9 +113,9 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	    inputType: 'password',
 	    fieldLabel: gettext('Bind Password'),
 	    name: 'password',
-	    allowBlank: true,
 	    cbind: {
 		emptyText: get => !get('isCreate') ? gettext('Unchanged') : '',
+		allowBlank: '{!isCreate}',
 	    },
 	    bind: {
 		disabled: "{anonymous_search}",
