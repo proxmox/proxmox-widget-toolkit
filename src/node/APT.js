@@ -2,7 +2,7 @@ Ext.define('apt-pkglist', {
     extend: 'Ext.data.Model',
     fields: [
         'Package', 'Title', 'Description', 'Section', 'Arch', 'Priority', 'Version', 'OldVersion',
-        'ChangeLogUrl', 'Origin',
+        'Origin',
     ],
     idProperty: 'Package',
 });
@@ -108,8 +108,8 @@ Ext.define('Proxmox.node.APT', {
 	});
 
 	let show_changelog = function(rec) {
-	    if (!rec?.data?.ChangeLogUrl || !rec?.data?.Package) {
-		console.debug('cannot show changelog, missing Package and/or ChangeLogUrl', rec);
+	    if (!rec?.data?.Package) {
+		console.debug('cannot show changelog, missing Package', rec);
 		return;
 	    }
 
@@ -154,7 +154,7 @@ Ext.define('Proxmox.node.APT', {
 	    text: gettext('Changelog'),
 	    selModel: sm,
 	    disabled: true,
-	    enableFn: rec => !!rec?.data?.ChangeLogUrl && !!rec?.data?.Package,
+	    enableFn: rec => !!rec?.data?.Package,
 	    handler: (b, e, rec) => show_changelog(rec),
 	});
 
