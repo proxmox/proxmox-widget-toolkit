@@ -112,7 +112,7 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
 
     columnB: [
 	{
-	    xtype: 'textfield',
+	    xtype: 'proxmoxtextfield',
 	    name: 'comment',
 	    fieldLabel: gettext('Comment'),
 	    cbind: {

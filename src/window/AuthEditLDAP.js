@@ -187,7 +187,7 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 
     columnB: [
 	{
-	    xtype: 'textfield',
+	    xtype: 'proxmoxtextfield',
 	    name: 'comment',
 	    fieldLabel: gettext('Comment'),
 	    cbind: {
