@@ -45,10 +45,6 @@ Ext.define('Proxmox.form.NetworkSelector', {
 	    networkSelectorStore.load();
 	}
     },
-    // set default value to empty array, else it inits it with
-    // null and after the store load it is an empty array,
-    // triggering dirtychange
-    value: [],
     valueField: 'cidr',
     displayField: 'cidr',
     store: {

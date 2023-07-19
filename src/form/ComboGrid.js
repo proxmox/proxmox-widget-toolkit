@@ -400,7 +400,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	    matchFieldWidth: false,
 	});
 
-	Ext.applyIf(me, { value: '' }); // hack: avoid ExtJS validate() bug
+	Ext.applyIf(me, { value: [] }); // hack: avoid ExtJS validate() bug
 
 	Ext.applyIf(me.listConfig, { width: 400 });
 
