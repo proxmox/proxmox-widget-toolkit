@@ -361,6 +361,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 	    header: gettext('Comment'),
 	    dataIndex: 'Comment',
 	    flex: 2,
+	    renderer: Ext.String.htmlEncode,
 	},
     ],
 

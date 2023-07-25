@@ -123,6 +123,7 @@ Ext.define('Proxmox.form.NetworkSelector', {
 		header: gettext('Comment'),
 		flex: 2,
 		dataIndex: 'comments',
+		renderer: Ext.String.htmlEncode,
 	    },
 	],
     },
