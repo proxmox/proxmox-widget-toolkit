@@ -145,6 +145,10 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
     initComponent: function() {
 	let me = this;
 
+	if (!me.baseUrl) {
+	    throw "baseUrl is not set!";
+	}
+
 	let menuItems = [];
 	for (const [endpointType, config] of Object.entries(
 	    Proxmox.Schema.notificationEndpointTypes).sort()) {

@@ -43,6 +43,7 @@ Ext.define('Proxmox.window.EndpointEditBase', {
 		name: me.name,
 		xtype: endpointConfig.ipanel,
 		isCreate: me.isCreate,
+		baseUrl: me.baseUrl,
 		type: me.type,
 	    }],
 	});

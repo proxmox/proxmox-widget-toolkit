@@ -44,6 +44,7 @@ JSSRC=					\
 	form/RoleSelector.js		\
 	form/DiskSelector.js		\
 	form/MultiDiskSelector.js	\
+	form/NotificationFilterSelector.js	\
 	form/TaskTypeSelector.js	\
 	form/ACME.js			\
 	form/UserSelector.js		\

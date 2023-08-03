@@ -89,6 +89,15 @@ Ext.define('Proxmox.panel.SendmailEditPanel', {
 	    },
 	},
 	{
+	    xtype: 'pmxNotificationFilterSelector',
+	    name: 'filter',
+	    fieldLabel: gettext('Filter'),
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+		baseUrl: '{baseUrl}',
+	    },
+	},
+	{
 	    xtype: 'proxmoxtextfield',
 	    name: 'comment',
 	    fieldLabel: gettext('Comment'),
