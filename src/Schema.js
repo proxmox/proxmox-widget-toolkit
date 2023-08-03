@@ -43,6 +43,11 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    ipanel: 'pmxSendmailEditPanel',
 	    iconCls: 'fa-envelope-o',
 	},
+	gotify: {
+	    name: gettext('Gotify'),
+	    ipanel: 'pmxGotifyEditPanel',
+	    iconCls: 'fa-bell-o',
+	},
     },
 
     pxarFileTypes: {

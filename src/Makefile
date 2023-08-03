@@ -66,6 +66,7 @@ JSSRC=					\
 	panel/PruneKeepPanel.js		\
 	panel/RRDChart.js		\
 	panel/GaugeWidget.js		\
+	panel/GotifyEditPanel.js	\
 	panel/Certificates.js		\
 	panel/ACMEAccount.js		\
 	panel/ACMEPlugin.js		\
