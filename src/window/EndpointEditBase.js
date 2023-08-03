@@ -18,7 +18,11 @@ Ext.define('Proxmox.window.EndpointEditBase', {
 	    throw "baseUrl not set";
 	}
 
-	me.url = `/api2/extjs${me.baseUrl}/endpoints/${me.type}`;
+	if (me.type === 'group') {
+	    me.url = `/api2/extjs${me.baseUrl}/groups`;
+	} else {
+	    me.url = `/api2/extjs${me.baseUrl}/endpoints/${me.type}`;
+	}
 
 	if (me.isCreate) {
 	    me.method = 'POST';

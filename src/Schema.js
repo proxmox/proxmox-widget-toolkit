@@ -48,6 +48,11 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    ipanel: 'pmxGotifyEditPanel',
 	    iconCls: 'fa-bell-o',
 	},
+	group: {
+	    name: gettext('Notification Group'),
+	    ipanel: 'pmxNotificationGroupEditPanel',
+	    iconCls: 'fa-bell-o',
+	},
     },
 
     pxarFileTypes: {
