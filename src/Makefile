@@ -89,7 +89,8 @@ JSSRC=					\
 	window/ACMEAccount.js		\
 	window/ACMEPluginEdit.js	\
 	window/ACMEDomains.js		\
-	window/EndpointEditBase.js		\
+	window/EndpointEditBase.js	\
+	window/NotificationFilterEdit.js \
 	window/FileBrowser.js		\
 	window/AuthEditBase.js		\
 	window/AuthEditOpenId.js	\

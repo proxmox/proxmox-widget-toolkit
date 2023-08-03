@@ -15,6 +15,17 @@ Ext.define('Proxmox.panel.NotificationConfigView', {
 		baseUrl: '{baseUrl}',
 	    },
 	},
+	{
+	    region: 'south',
+	    height: '50%',
+	    border: false,
+	    collapsible: true,
+	    animCollapse: false,
+	    xtype: 'pmxNotificationFilterView',
+	    cbind: {
+		baseUrl: '{baseUrl}',
+	    },
+	},
     ],
 });
 
@@ -196,5 +207,113 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 
 	me.callParent();
 	me.store.rstore.proxy.setUrl(`/api2/json/${me.baseUrl}/targets`);
+    },
+});
+
+Ext.define('Proxmox.panel.NotificationFilterView', {
+    extend: 'Ext.grid.Panel',
+    alias: 'widget.pmxNotificationFilterView',
+
+    title: gettext('Notification Filters'),
+
+    controller: {
+	xclass: 'Ext.app.ViewController',
+
+	openEditWindow: function(filter) {
+	    let me = this;
+
+	    Ext.create('Proxmox.window.NotificationFilterEdit', {
+		baseUrl: me.getView().baseUrl,
+		name: filter,
+		autoShow: true,
+		listeners: {
+		    destroy: () => me.reload(),
+		},
+	    });
+	},
+
+	openEditForSelectedItem: function() {
+	    let me = this;
+	    let view = me.getView();
+
+	    let selection = view.getSelection();
+	    if (selection.length < 1) {
+		return;
+	    }
+
+	    me.openEditWindow(selection[0].data.name);
+	},
+
+	reload: function() {
+	    this.getView().getStore().rstore.load();
+	},
+    },
+
+    listeners: {
+	itemdblclick: 'openEditForSelectedItem',
+	activate: 'reload',
+    },
+
+    emptyText: gettext('No notification filters configured'),
+
+    columns: [
+	{
+	    dataIndex: 'name',
+	    text: gettext('Filter Name'),
+	    renderer: Ext.String.htmlEncode,
+	    flex: 1,
+	},
+	{
+	    dataIndex: 'comment',
+	    text: gettext('Comment'),
+	    renderer: Ext.String.htmlEncode,
+	    flex: 2,
+	},
+    ],
+
+    store: {
+	type: 'diff',
+	autoDestroy: true,
+	autoDestroyRstore: true,
+	rstore: {
+	    type: 'update',
+	    storeid: 'proxmox-notification-filters',
+	    model: 'proxmox-notification-filters',
+	    autoStart: true,
+	},
+	sorters: 'name',
+    },
+
+    initComponent: function() {
+	let me = this;
+
+	if (!me.baseUrl) {
+	    throw "baseUrl is not set!";
+	}
+
+	Ext.apply(me, {
+	    tbar: [
+		{
+		    xtype: 'proxmoxButton',
+		    text: gettext('Add'),
+		    handler: () => me.getController().openEditWindow(),
+		    selModel: false,
+		},
+		{
+		    xtype: 'proxmoxButton',
+		    text: gettext('Modify'),
+		    handler: 'openEditForSelectedItem',
+		    disabled: true,
+		},
+		{
+		    xtype: 'proxmoxStdRemoveButton',
+		    callback: 'reload',
+		    baseurl: `${me.baseUrl}/filters`,
+		},
+	    ],
+	});
+
+	me.callParent();
+	me.store.rstore.proxy.setUrl(`/api2/json/${me.baseUrl}/filters`);
     },
 });
