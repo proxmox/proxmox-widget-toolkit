@@ -75,6 +75,7 @@ utilities: {
 	he: `עברית - ${gettext("Hebrew")}`,
 	it: `Italiano - ${gettext("Italian")}`,
 	ja: `日本語 - ${gettext("Japanese")}`,
+	ka: `ქართული - ${gettext("Georgian")}`,
 	kr: `한국어 - ${gettext("Korean")}`,
 	nb: `Bokmål - ${gettext("Norwegian (Bokmal)")}`,
 	nl: `Nederlands - ${gettext("Dutch")}`,
