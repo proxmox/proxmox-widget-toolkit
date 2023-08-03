@@ -37,6 +37,14 @@ Ext.define('Proxmox.Schema', { // a singleton
 	}
     },
 
+    notificationEndpointTypes: {
+	sendmail: {
+	    name: gettext('Sendmail'),
+	    ipanel: 'pmxSendmailEditPanel',
+	    iconCls: 'fa-envelope-o',
+	},
+    },
+
     pxarFileTypes: {
 	b: { icon: 'cube', label: gettext('Block Device') },
 	c: { icon: 'tty', label: gettext('Character Device') },

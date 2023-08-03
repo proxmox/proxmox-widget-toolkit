@@ -22,6 +22,7 @@ JSSRC=					\
 	data/ObjectStore.js		\
 	data/RRDStore.js		\
 	data/TimezoneStore.js		\
+	data/model/NotificationConfig.js	\
 	data/model/Realm.js		\
 	data/model/Certificates.js	\
 	data/model/ACME.js		\
@@ -59,6 +60,7 @@ JSSRC=					\
 	panel/InfoWidget.js		\
 	panel/LogView.js		\
 	panel/NodeInfoRepoStatus.js	\
+	panel/NotificationConfigView.js	\
 	panel/JournalView.js		\
 	panel/PermissionView.js		\
 	panel/PruneKeepPanel.js		\
@@ -68,6 +70,7 @@ JSSRC=					\
 	panel/ACMEAccount.js		\
 	panel/ACMEPlugin.js		\
 	panel/ACMEDomains.js		\
+	panel/SendmailEditPanel.js	\
 	panel/StatusView.js		\
 	panel/TfaView.js		\
 	panel/NotesView.js		\
@@ -83,6 +86,7 @@ JSSRC=					\
 	window/ACMEAccount.js		\
 	window/ACMEPluginEdit.js	\
 	window/ACMEDomains.js		\
+	window/EndpointEditBase.js		\
 	window/FileBrowser.js		\
 	window/AuthEditBase.js		\
 	window/AuthEditOpenId.js	\
