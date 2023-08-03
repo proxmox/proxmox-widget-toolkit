@@ -129,12 +129,12 @@ Ext.apply(Ext.form.field.VTypes, {
     DnsName: function(v) {
 	return Proxmox.Utils.DnsName_match.test(v);
     },
-    DnsNameText: gettext('This is not a valid DNS name'),
+    DnsNameText: gettext('This is not a valid hostname'),
 
     DnsNameOrWildcard: function(v) {
 	return Proxmox.Utils.DnsName_or_Wildcard_match.test(v);
     },
-    DnsNameOrWildcardText: gettext('This is not a valid DNS name'),
+    DnsNameOrWildcardText: gettext('This is not a valid hostname'),
 
     // email regex used by pve-common
     proxmoxMail: function(v) {
