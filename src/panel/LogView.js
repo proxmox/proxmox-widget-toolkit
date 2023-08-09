@@ -22,19 +22,28 @@ Ext.define('Proxmox.panel.LogView', {
 	updateParams: function() {
 	    let me = this;
 	    let viewModel = me.getViewModel();
-	    let since = viewModel.get('since');
-	    let until = viewModel.get('until');
-	    if (viewModel.get('hide_timespan')) {
+
+	    if (viewModel.get('hide_timespan') || viewModel.get('livemode')) {
 		return;
 	    }
+
+	    let since = viewModel.get('since');
+	    let until = viewModel.get('until');
 
 	    if (since > until) {
 		Ext.Msg.alert('Error', 'Since date must be less equal than Until date.');
 		return;
 	    }
 
-	    viewModel.set('params.since', Ext.Date.format(since, 'Y-m-d'));
-	    viewModel.set('params.until', Ext.Date.format(until, 'Y-m-d') + ' 23:59:59');
+	    let submitFormat = viewModel.get('submitFormat');
+
+	    viewModel.set('params.since', Ext.Date.format(since, submitFormat));
+	    if (submitFormat === 'Y-m-d') {
+		viewModel.set('params.until', Ext.Date.format(until, submitFormat) + ' 23:59:59');
+	    } else {
+		viewModel.set('params.until', Ext.Date.format(until, submitFormat));
+	    }
+
 	    me.getView().loadTask.delay(200);
 	},
 
@@ -175,6 +184,27 @@ Ext.define('Proxmox.panel.LogView', {
 	    }
 	},
 
+	onLiveMode: function() {
+	    let me = this;
+	    let viewModel = me.getViewModel();
+	    viewModel.set('livemode', true);
+	    viewModel.set('params', { start: 0, limit: 510 });
+
+	    let view = me.getView();
+	    delete view.content;
+	    view.scrollToEnd = true;
+	    me.updateView([], true, false);
+	},
+
+	onTimespan: function() {
+	    let me = this;
+	    me.getViewModel().set('livemode', false);
+	    me.updateView([], false);
+	    // Directly apply currently selected values without update
+	    // button click.
+	    me.updateParams();
+	},
+
 	init: function(view) {
 	    let me = this;
 
@@ -189,6 +219,7 @@ Ext.define('Proxmox.panel.LogView', {
 	    viewModel.set('since', since);
 	    viewModel.set('params.limit', view.pageSize);
 	    viewModel.set('hide_timespan', !view.log_select_timespan);
+	    viewModel.set('submitFormat', view.submitFormat);
 	    me.lookup('content').setStyle('line-height', `${view.lineHeight}px`);
 
 	    view.loadTask = new Ext.util.DelayedTask(me.doLoad, me);
@@ -224,6 +255,8 @@ Ext.define('Proxmox.panel.LogView', {
 	data: {
 	    until: null,
 	    since: null,
+	    submitFormat: 'Y-m-d',
+	    livemode: true,
 	    hide_timespan: false,
 	    data: {
 		start: 0,
@@ -263,32 +296,70 @@ Ext.define('Proxmox.panel.LogView', {
 	},
 	items: [
 	    '->',
-	    'Since: ',
 	    {
-		xtype: 'datefield',
+		xtype: 'segmentedbutton',
+		items: [
+		    {
+			text: gettext('Live Mode'),
+			bind: {
+			    pressed: '{livemode}',
+			},
+			handler: 'onLiveMode',
+		    },
+		    {
+			text: gettext('Select Timespan'),
+			bind: {
+			    pressed: '{!livemode}',
+			},
+			handler: 'onTimespan',
+		    },
+		],
+	    },
+	    {
+		xtype: 'box',
+		autoEl: { cn: gettext('Since') + ':' },
+		bind: {
+		    disabled: '{livemode}',
+		},
+	    },
+	    {
+		xtype: 'proxmoxDateTimeField',
 		name: 'since_date',
 		reference: 'since',
 		format: 'Y-m-d',
 		bind: {
+		    disabled: '{livemode}',
 		    value: '{since}',
 		    maxValue: '{until}',
+		    submitFormat: '{submitFormat}',
 		},
 	    },
-	    'Until: ',
 	    {
-		xtype: 'datefield',
+		xtype: 'box',
+		autoEl: { cn: gettext('Until') + ':' },
+		bind: {
+		    disabled: '{livemode}',
+		},
+	    },
+	    {
+		xtype: 'proxmoxDateTimeField',
 		name: 'until_date',
 		reference: 'until',
 		format: 'Y-m-d',
 		bind: {
+		    disabled: '{livemode}',
 		    value: '{until}',
 		    minValue: '{since}',
+		    submitFormat: '{submitFormat}',
 		},
 	    },
 	    {
 		xtype: 'button',
 		text: 'Update',
 		handler: 'updateParams',
+		bind: {
+		    disabled: '{livemode}',
+		},
 	    },
 	],
     },
