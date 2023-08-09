@@ -6,205 +6,166 @@ Ext.define('Proxmox.DateTimeField', {
 
     layout: 'hbox',
 
-    referenceHolder: true,
+    viewModel: {
+	data: {
+	    datetime: null,
+	    minDatetime: null,
+	    maxDatetime: null,
+	},
+
+	formulas: {
+	    date: {
+		get: function(get) {
+		    return get('datetime');
+		},
+		set: function(date) {
+		    if (!date) {
+			this.set('datetime', null);
+			return;
+		    }
+		    let datetime = new Date(this.get('datetime'));
+		    datetime.setDate(date.getDate());
+		    datetime.setMonth(date.getMonth());
+		    datetime.setFullYear(date.getFullYear());
+		    this.set('datetime', datetime);
+		},
+	    },
+
+	    time: {
+		get: function(get) {
+		    return get('datetime');
+		},
+		set: function(time) {
+		    if (!time) {
+			this.set('datetime', null);
+			return;
+		    }
+		    let datetime = new Date(this.get('datetime'));
+		    datetime.setHours(time.getHours());
+		    datetime.setMinutes(time.getMinutes());
+		    datetime.setSeconds(time.getSeconds());
+		    datetime.setMilliseconds(time.getMilliseconds());
+		    this.set('datetime', datetime);
+		},
+	    },
+
+	    minDate: {
+		get: function(get) {
+		    let datetime = get('minDatetime');
+		    return datetime ? new Date(datetime) : null;
+		},
+	    },
+
+	    maxDate: {
+		get: function(get) {
+		    let datetime = get('maxDatetime');
+		    return datetime ? new Date(datetime) : null;
+		},
+	    },
+
+	    minTime: {
+		get: function(get) {
+		    let current = get('datetime');
+		    let min = get('minDatetime');
+		    if (min && current && !this.isSameDay(current, min)) {
+			return new Date(min).setHours('00', '00', '00', '000');
+		    }
+		    return min;
+		},
+	    },
+
+	    maxTime: {
+		get: function(get) {
+		    let current = get('datetime');
+		    let max = get('maxDatetime');
+		    if (max && current && !this.isSameDay(current, max)) {
+			return new Date(max).setHours('23', '59', '59', '999');
+		    }
+		    return max;
+		},
+	    },
+	},
+
+	// Helper function to check if dates are the same day of the year
+	isSameDay: function(date1, date2) {
+	    return date1.getDate() === date2.getDate() &&
+		date1.getMonth() === date2.getMonth() &&
+		date1.getFullYear() === date2.getFullYear();
+	},
+    },
 
     config: {
+	value: null,
 	submitFormat: 'U',
 	disabled: false,
     },
 
     setValue: function(value) {
-	let me = this;
-	me.setDate(value);
-	me.setTime(value);
-
-	// Notify all 'value' bindings of state change
-	me.publishState('value', value);
+	this.getViewModel().set('datetime', value);
     },
 
     getValue: function() {
-	let me = this;
-	let date = me.lookupReference('dateentry').getValue();
-
-	if (date === undefined || date === null) { return null; }
-
-	let time = me.lookupReference('timeentry').getValue();
-
-	if (time === undefined || time === null) { return null; }
-
-	date.setHours(time.getHours());
-	date.setMinutes(time.getMinutes());
-	date.setSeconds(time.getSeconds());
-	return date;
+	return this.getViewModel().get('datetime');
     },
 
     getSubmitValue: function() {
-        let me = this;
-        let format = me.submitFormat;
-        let value = me.getValue();
-
-        return value ? Ext.Date.format(value, format) : null;
+	let me = this;
+	let value = me.getValue();
+	return value ? Ext.Date.format(value, me.submitFormat) : null;
     },
 
-    setDate: function(date) {
-	let me = this;
-	let dateEntry = me.lookupReference('dateentry');
-	dateEntry.setValue(date);
-	dateEntry.publishState('value', date);
+    setMinValue: function(value) {
+	this.getViewModel().set('minDatetime', value);
     },
 
-    setTime: function(time) {
+    getMinValue: function() {
+	return this.getViewModel().get('minDatetime');
+    },
+
+    setMaxValue: function(value) {
+	this.getViewModel().set('maxDatetime', value);
+    },
+
+    getMaxValue: function() {
+	return this.getViewModel().get('maxDatetime');
+    },
+
+    initComponent: function() {
 	let me = this;
-	let timeEntry = me.lookupReference('timeentry');
-	timeEntry.setValue(time);
-	timeEntry.publishState('value', time);
+	me.callParent();
+
+	let vm = me.getViewModel();
+	vm.set('datetime', me.config.value);
+	// Propagate state change to binding
+	vm.bind('{datetime}', function(value) {
+	    me.publishState('value', value);
+	    me.fireEvent('change', value);
+	});
     },
 
     items: [
 	{
 	    xtype: 'datefield',
 	    editable: false,
-	    reference: 'dateentry',
 	    flex: 1,
 	    format: 'Y-m-d',
 	    bind: {
-		disabled: '{disabled}',
-	    },
-	    listeners: {
-		'change': function(field, newValue, oldValue) {
-		    let dateTimeField = field.up('fieldcontainer');
-		    dateTimeField.setDate(newValue);
-		    let value = dateTimeField.getValue();
-		    dateTimeField.publishState('value', value);
-		},
+		value: '{date}',
+		minValue: '{minDate}',
+		maxValue: '{maxDate}',
 	    },
 	},
 	{
 	    xtype: 'timefield',
-	    reference: 'timeentry',
 	    format: 'H:i',
 	    width: 80,
 	    value: '00:00',
 	    increment: 60,
 	    bind: {
-		disabled: '{disabled}',
-	    },
-	    listeners: {
-		'change': function(field, newValue, oldValue) {
-		    let dateTimeField = field.up('fieldcontainer');
-		    dateTimeField.setTime(newValue);
-		    let value = dateTimeField.getValue();
-		    dateTimeField.publishState('value', value);
-		},
+		value: '{time}',
+		minValue: '{minTime}',
+		maxValue: '{maxTime}',
 	    },
 	},
     ],
-
-    setMinValue: function(value) {
-	let me = this;
-	let current = me.getValue();
-	if (!value || !current) {
-	    return;
-	}
-
-	// Clone to avoid modifying the referenced value
-	let clone = new Date(value);
-	let minhours = clone.getHours();
-	let minminutes = clone.getMinutes();
-
-	let hours = current.getHours();
-	let minutes = current.getMinutes();
-
-	clone.setHours(0);
-	clone.setMinutes(0);
-	clone.setSeconds(0);
-	current.setHours(0);
-	current.setMinutes(0);
-	current.setSeconds(0);
-
-	let time = new Date();
-	if (current-clone > 0) {
-	    time.setHours(0);
-	    time.setMinutes(0);
-	    time.setSeconds(0);
-	    time.setMilliseconds(0);
-	} else {
-	    time.setHours(minhours);
-	    time.setMinutes(minminutes);
-	}
-	me.lookup('timeentry').setMinValue(time);
-
-	// current time is smaller than the time part of the new minimum
-	// so we have to add 1 to the day
-	if (minhours*60+minminutes > hours*60+minutes) {
-	    clone.setDate(clone.getDate()+1);
-	}
-	me.lookup('dateentry').setMinValue(clone);
-    },
-
-    setMaxValue: function(value) {
-	let me = this;
-	let current = me.getValue();
-	if (!value || !current) {
-	    return;
-	}
-
-	// Clone to avoid modifying the referenced value
-	let clone = new Date(value);
-	let maxhours = clone.getHours();
-	let maxminutes = clone.getMinutes();
-
-	let hours = current.getHours();
-	let minutes = current.getMinutes();
-
-	clone.setHours(0);
-	clone.setMinutes(0);
-	clone.setSeconds(0);
-	clone.setMilliseconds(0);
-	current.setHours(0);
-	current.setMinutes(0);
-	current.setSeconds(0);
-	current.setMilliseconds(0);
-
-	let time = new Date();
-	if (clone-current > 0) {
-	    time.setHours(23);
-	    time.setMinutes(59);
-	    time.setSeconds(59);
-	} else {
-	    time.setHours(maxhours);
-	    time.setMinutes(maxminutes);
-	}
-	me.lookup('timeentry').setMaxValue(time);
-
-	// current time is bigger than the time part of the new maximum
-	// so we have to subtract 1 to the day
-	if (maxhours*60+maxminutes < hours*60+minutes) {
-	    clone.setDate(clone.getDate()-1);
-	}
-
-	me.lookup('dateentry').setMaxValue(clone);
-    },
-
-    initComponent: function() {
-	let me = this;
-
-	me.callParent();
-
-	let value = me.value || new Date();
-
-	me.lookupReference('dateentry').setValue(value);
-	me.lookupReference('timeentry').setValue(value);
-
-	if (me.minValue) {
-	    me.setMinValue(me.minValue);
-	}
-
-	if (me.maxValue) {
-	    me.setMaxValue(me.maxValue);
-	}
-
-	me.relayEvents(me.lookupReference('dateentry'), ['change']);
-	me.relayEvents(me.lookupReference('timeentry'), ['change']);
-    },
 });
