@@ -85,7 +85,7 @@ Ext.define('Proxmox.panel.Certificates', {
 	    url: `/api2/extjs/${url}?restart=1`,
 	    method: 'DELETE',
 	    success: function(response, opt) {
-		if (cert.reloadUid) {
+		if (cert.reloadUi) {
 		    Ext.getBody().mask(
 			gettext('API server will be restarted to use new certificates, please reload web-interface!'),
 			['pve-static-mask'],
