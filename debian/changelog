@@ -1,3 +1,21 @@
+proxmox-widget-toolkit (4.0.7) bookworm; urgency=medium
+
+  * fix #4874: improve error message for invalid hostname
+
+  * add entry for Georgian translation
+
+  * fix the UI not refreshing after successful certificate deletion
+
+  * add missing htmlEncode calls to network selector and apt repository panel
+
+  * add panels for notification system:
+    - sendmail endpoint panel
+    - gotify endpoint panel
+    - notification group management panel
+    - notification filter management panel
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 16 Aug 2023 10:43:02 +0200
+
 proxmox-widget-toolkit (4.0.6) bookworm; urgency=medium
 
   * LDAP realm edit: forbid specifying a bind_dn without a password
