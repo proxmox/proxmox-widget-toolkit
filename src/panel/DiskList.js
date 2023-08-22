@@ -220,7 +220,11 @@ Ext.define('Proxmox.DiskList', {
 	let extendedInfo = '';
 	if (rec) {
 	    let types = [];
-	    if (rec.data.osdid !== undefined && rec.data.osdid >= 0) {
+	    if (rec.data['osdid-list'] && rec.data['osdid-list'].length > 0) {
+		for (const id of rec.data['osdid-list'].sort()) {
+		    types.push(`OSD.${id.toString()}`);
+		}
+	    } else if (rec.data.osdid !== undefined && rec.data.osdid >= 0) {
 		types.push(`OSD.${rec.data.osdid.toString()}`);
 	    }
 	    if (rec.data.journals > 0) {
