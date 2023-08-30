@@ -127,6 +127,7 @@ Ext.define('Proxmox.window.ACMEPluginEdit', {
 		    if (me.createdFields[key]) {
 			me.createdFields[key].setValue(value);
 			me.createdFields[key].originalValue = me.originalValues[key];
+			me.createdFields[key].checkDirty();
 		    } else {
 			extradata.push(`${key}=${value}`);
 		    }
