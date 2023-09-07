@@ -39,6 +39,8 @@ Ext.define('Proxmox.form.MultiDiskSelector', {
     setValue: function(value) {
 	let me = this;
 
+	value ??= [];
+
 	if (!Ext.isArray(value)) {
 	    value = value.split(/;, /);
 	}
