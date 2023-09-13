@@ -72,6 +72,7 @@ utilities: {
 	eu: `Euskera (Basque) - ${gettext("Euskera (Basque)")}`,
 	fa: `فارسی - ${gettext("Persian (Farsi)")}`,
 	fr: `Français - ${gettext("French")}`,
+	hr: `Hrvatski - ${gettext("Croatian")}`,
 	he: `עברית - ${gettext("Hebrew")}`,
 	it: `Italiano - ${gettext("Italian")}`,
 	ja: `日本語 - ${gettext("Japanese")}`,
