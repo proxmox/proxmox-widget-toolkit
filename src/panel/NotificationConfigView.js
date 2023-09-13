@@ -88,7 +88,7 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 
 	    Ext.Msg.confirm(
 		gettext("Notification Target Test"),
-		gettext(`Do you want to send a test notification to '${target}'?`),
+		Ext.String.format(gettext("Do you want to send a test notification to '{0}'?"), target),
 		function(decision) {
 		    if (decision !== "yes") {
 			return;
