@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (4.0.8) bookworm; urgency=medium
+
+  * fix #4531: acme plugins: correct change detection of dirty form fields
+
+  * fix #4951: accept undefined as value for the multi-disk selector
+
+  * auth: ldap: openid: use our proxmox textfield variant for the comment
+    field to avoid that an empty comments are saved in the config
+
+  * utils: language map: add entry for new Croatian translation
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 13 Sep 2023 17:16:01 +0200
+
 proxmox-widget-toolkit (4.0.7) bookworm; urgency=medium
 
   * fix #4874: improve error message for invalid hostname
