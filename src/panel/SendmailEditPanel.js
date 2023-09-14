@@ -80,9 +80,7 @@ Ext.define('Proxmox.panel.SendmailEditPanel', {
 	    },
 	    autoEl: {
 		tag: 'div',
-		'data-qtip': gettext(
-		    'Multiple recipients must be separated by spaces, commas or semicolons',
-		),
+		'data-qtip': gettext('Multiple recipients must be separated by spaces, commas or semicolons'),
 	    },
 	    validator: function() {
 		return this.up('pmxSendmailEditPanel').mailValidator();
