@@ -101,7 +101,10 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 			success: function(response, opt) {
 			    Ext.Msg.show({
 				title: gettext('Notification Target Test'),
-				message: Ext.String.format(gettext("Sent test notification to '{0}'.")),
+				message: Ext.String.format(
+				    gettext("Sent test notification to '{0}'."),
+				    target,
+				),
 				buttons: Ext.Msg.OK,
 				icon: Ext.Msg.INFO,
 			    });
