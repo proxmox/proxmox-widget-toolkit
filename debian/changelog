@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (4.0.9) bookworm; urgency=medium
+
+  * fix using gettext with parameter in various newly added notification and
+    sendmail widgets
+
+  * parser: split checking IMG and A tags, make the latter more strict
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 03 Oct 2023 10:39:31 +0200
+
 proxmox-widget-toolkit (4.0.8) bookworm; urgency=medium
 
   * fix #4531: acme plugins: correct change detection of dirty form fields
