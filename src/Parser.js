@@ -35,11 +35,11 @@ Ext.define('Proxmox.Markdown', {
 		    try {
 			let url = new URL(value, window.location.origin);
 			safeURL = _isHTTPLike(url.protocol);
-			if (
-			    canonicalTagName === 'a' ||
-			    (canonicalTagName === 'img' && url.protocol.toLowerCase() === 'data:')
-			) {
+			if (canonicalTagName === 'img' && url.protocol.toLowerCase() === 'data:') {
 			    safeURL = true;
+			} else if (canonicalTagName === 'a') {
+			    // allow most link protocols so admins can use short-cuts to, e.g., RDP
+			    safeURL = url.protocol.toLowerCase() !== 'javascript:'; // eslint-disable-line no-script-url
 			}
 			if (safeURL) {
 			    node.attributes[i].value = url.href;
