@@ -31,6 +31,7 @@ Ext.define('Proxmox.Markdown', {
 		) {
 		    node.attributes.removeNamedItem(name);
 		} else if ((name === 'href' || name === 'src') && !_isHTTPLike(value)) {
+		    let safeURL = false;
 		    try {
 			let url = new URL(value, window.location.origin);
 			if (
@@ -38,6 +39,9 @@ Ext.define('Proxmox.Markdown', {
 			    canonicalTagName === 'a' ||
 			    (canonicalTagName === 'img' && url.protocol.toLowerCase() === 'data:')
 			) {
+			    safeURL = true;
+			}
+			if (safeURL) {
 			    node.attributes[i].value = url.href;
 			} else {
 			    node.attributes.removeNamedItem(name);
