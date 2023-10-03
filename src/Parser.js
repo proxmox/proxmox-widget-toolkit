@@ -34,8 +34,8 @@ Ext.define('Proxmox.Markdown', {
 		    let safeURL = false;
 		    try {
 			let url = new URL(value, window.location.origin);
+			safeURL = _isHTTPLike(url.protocol);
 			if (
-			    _isHTTPLike(url.protocol) ||
 			    canonicalTagName === 'a' ||
 			    (canonicalTagName === 'img' && url.protocol.toLowerCase() === 'data:')
 			) {
