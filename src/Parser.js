@@ -24,6 +24,7 @@ Ext.define('Proxmox.Markdown', {
 	    for (let i=node.attributes.length; i--;) {
 		const name = node.attributes[i].name;
 		const value = node.attributes[i].value;
+		const canonicalTagName = node.tagName.toLowerCase();
 		// TODO: we may want to also disallow class and id attrs
 		if (
 		    !/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type|target)$/i.test(name)
@@ -34,8 +35,8 @@ Ext.define('Proxmox.Markdown', {
 			let url = new URL(value, window.location.origin);
 			if (
 			    _isHTTPLike(url.protocol) ||
-			    node.tagName.toLowerCase() === 'a' ||
-			    (node.tagName.toLowerCase() === 'img' && url.protocol.toLowerCase() === 'data:')
+			    canonicalTagName === 'a' ||
+			    (canonicalTagName === 'img' && url.protocol.toLowerCase() === 'data:')
 			) {
 			    node.attributes[i].value = url.href;
 			} else {
@@ -44,7 +45,7 @@ Ext.define('Proxmox.Markdown', {
 		    } catch (e) {
 			node.attributes.removeNamedItem(name);
 		    }
-		} else if (name === 'target' && node.tagName.toLowerCase() !== 'a') {
+		} else if (name === 'target' && canonicalTagName !== 'a') {
 		    node.attributes.removeNamedItem(name);
 		}
 	    }
