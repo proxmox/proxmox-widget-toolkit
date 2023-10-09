@@ -39,12 +39,12 @@ Ext.define('Proxmox.Schema', { // a singleton
 
     notificationEndpointTypes: {
 	sendmail: {
-	    name: gettext('Sendmail'),
+	    name: 'Sendmail',
 	    ipanel: 'pmxSendmailEditPanel',
 	    iconCls: 'fa-envelope-o',
 	},
 	gotify: {
-	    name: gettext('Gotify'),
+	    name: 'Gotify',
 	    ipanel: 'pmxGotifyEditPanel',
 	    iconCls: 'fa-bell-o',
 	},
