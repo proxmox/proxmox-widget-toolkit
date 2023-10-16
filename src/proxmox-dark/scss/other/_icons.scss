@@ -104,6 +104,9 @@
 }
 
 // pbs show task log in longest task list column
+.fa.black,
+.fa.black::after,
+.fa.black::before,
 .x-action-col-icon.fa-chevron-right::before {
   filter: none;
 }
@@ -220,6 +223,12 @@
   &::after {
     text-shadow: -1px 0 1px $background-darker;
   }
+}
+
+// set icon color of intentional black icons (e.g.: pencil icon for
+// quickly changing the ACME account)
+.fa.black {
+  color: $icon-color;
 }
 
 // The usage icons dynamically displaying how full a storage is
