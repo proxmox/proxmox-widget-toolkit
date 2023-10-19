@@ -61,10 +61,6 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    'd': true, // directories
 	},
 
-	// enable tar download, this will add a menu to the "Download" button when the selection
-	// can be downloaded as `.tar` files
-	enableTar: false,
-
 	// prefix to prepend to downloaded file names
 	downloadPrefix: '',
     },
@@ -126,7 +122,7 @@ Ext.define("Proxmox.window.FileBrowser", {
 	    view.lookup('selectText').setText(st);
 
 	    let canDownload = view.downloadURL && view.downloadableFileTypes[data.type];
-	    let enableMenu = view.enableTar && data.type === 'd';
+	    let enableMenu = data.type === 'd';
 
 	    let downloadBtn = view.lookup('downloadBtn');
 	    downloadBtn.setDisabled(!canDownload || enableMenu);
