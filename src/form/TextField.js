@@ -6,6 +6,8 @@ Ext.define('Proxmox.form.field.Textfield', {
 	skipEmptyText: true,
 
 	deleteEmpty: false,
+
+	trimValue: false,
     },
 
     getSubmitData: function() {
@@ -29,6 +31,9 @@ Ext.define('Proxmox.form.field.Textfield', {
 	let me = this;
 
         let value = this.processRawValue(this.getRawValue());
+	if (me.getTrimValue() && typeof value === 'string') {
+	    value = value.trim();
+	}
 	if (value !== '') {
 	    return value;
 	}
