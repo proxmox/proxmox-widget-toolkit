@@ -527,7 +527,7 @@ utilities: {
     // Proxmox.Async.api2({
     //     ...
     // }).catch(Proxmox.Utils.alertResponseFailure);
-    alertResponseFailure: res => Ext.Msg.alert(gettext('Error') res.htmlStatus || res.result.message),
+    alertResponseFailure: res => Ext.Msg.alert(gettext('Error'), res.htmlStatus || res.result.message),
 
     checked_command: function(orig_cmd) {
 	Proxmox.Utils.API2Request(
