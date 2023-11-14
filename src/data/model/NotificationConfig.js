@@ -1,6 +1,6 @@
 Ext.define('proxmox-notification-endpoints', {
     extend: 'Ext.data.Model',
-    fields: ['name', 'type', 'comment'],
+    fields: ['name', 'type', 'comment', 'disable'],
     proxy: {
         type: 'proxmox',
     },
@@ -9,7 +9,7 @@ Ext.define('proxmox-notification-endpoints', {
 
 Ext.define('proxmox-notification-matchers', {
     extend: 'Ext.data.Model',
-    fields: ['name', 'comment'],
+    fields: ['name', 'comment', 'disable'],
     proxy: {
         type: 'proxmox',
     },

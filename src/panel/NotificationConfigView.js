@@ -120,6 +120,12 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 
     columns: [
 	{
+	    dataIndex: 'disable',
+	    text: gettext('Enable'),
+	    renderer: (disable) => Proxmox.Utils.renderEnabledIcon(!disable),
+	    align: 'center',
+	},
+	{
 	    dataIndex: 'name',
 	    text: gettext('Target Name'),
 	    renderer: Ext.String.htmlEncode,
@@ -250,6 +256,12 @@ Ext.define('Proxmox.panel.NotificationMatcherView', {
     emptyText: gettext('No notification matchers configured'),
 
     columns: [
+	{
+	    dataIndex: 'disable',
+	    text: gettext('Enable'),
+	    renderer: (disable) => Proxmox.Utils.renderEnabledIcon(!disable),
+	    align: 'center',
+	},
 	{
 	    dataIndex: 'name',
 	    text: gettext('Matcher Name'),

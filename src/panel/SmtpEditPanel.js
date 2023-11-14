@@ -49,6 +49,13 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
 	    fieldLabel: gettext('Endpoint Name'),
 	    allowBlank: false,
 	},
+	{
+	    xtype: 'proxmoxcheckbox',
+	    name: 'enable',
+	    fieldLabel: gettext('Enable'),
+	    allowBlank: false,
+	    checked: true,
+	},
     ],
 
     column1: [
@@ -161,14 +168,26 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
     ],
 
     onGetValues: function(values) {
+	let me = this;
+
 	if (values.mailto) {
 	    values.mailto = values.mailto.split(/[\s,;]+/);
 	}
 
-	if (!values.authentication && !this.isCreate) {
+	if (!values.authentication && !me.isCreate) {
 	    Proxmox.Utils.assemble_field_data(values, { 'delete': 'username' });
 	    Proxmox.Utils.assemble_field_data(values, { 'delete': 'password' });
 	}
+
+	if (values.enable) {
+	    if (!me.isCreate) {
+		Proxmox.Utils.assemble_field_data(values, { 'delete': 'disable' });
+	    }
+	} else {
+	    values.disable = 1;
+	}
+
+	delete values.enable;
 
 	delete values.authentication;
 
@@ -177,6 +196,8 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
 
     onSetValues: function(values) {
 	values.authentication = !!values.username;
+	values.enable = !values.disable;
+	delete values.disable;
 
 	return values;
     },

@@ -28,6 +28,13 @@ Ext.define('Proxmox.panel.SendmailEditPanel', {
 	    allowBlank: false,
 	},
 	{
+	    xtype: 'proxmoxcheckbox',
+	    name: 'enable',
+	    fieldLabel: gettext('Enable'),
+	    allowBlank: false,
+	    checked: true,
+	},
+	{
 	    // provides 'mailto' and 'mailto-user' fields
 	    xtype: 'pmxEmailRecipientPanel',
 	    cbind: {
@@ -67,7 +74,26 @@ Ext.define('Proxmox.panel.SendmailEditPanel', {
 	},
     ],
 
-    onGetValues: (values) => {
+    onSetValues: (values) => {
+	values.enable = !values.disable;
+
+	delete values.disable;
+	return values;
+    },
+
+    onGetValues: function(values) {
+	let me = this;
+
+	if (values.enable) {
+	    if (!me.isCreate) {
+		Proxmox.Utils.assemble_field_data(values, { 'delete': 'disable' });
+	    }
+	} else {
+	    values.disable = 1;
+	}
+
+	delete values.enable;
+
 	if (values.mailto) {
 	    values.mailto = values.mailto.split(/[\s,;]+/);
 	}

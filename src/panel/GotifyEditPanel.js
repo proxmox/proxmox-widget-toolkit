@@ -17,6 +17,13 @@ Ext.define('Proxmox.panel.GotifyEditPanel', {
 	    allowBlank: false,
 	},
 	{
+	    xtype: 'proxmoxcheckbox',
+	    name: 'enable',
+	    fieldLabel: gettext('Enable'),
+	    allowBlank: false,
+	    checked: true,
+	},
+	{
 	    xtype: 'proxmoxtextfield',
 	    fieldLabel: gettext('Server URL'),
 	    name: 'server',
@@ -41,4 +48,27 @@ Ext.define('Proxmox.panel.GotifyEditPanel', {
 	    },
 	},
     ],
+
+    onSetValues: (values) => {
+	values.enable = !values.disable;
+
+	delete values.disable;
+	return values;
+    },
+
+    onGetValues: function(values) {
+	let me = this;
+
+	if (values.enable) {
+	    if (!me.isCreate) {
+		Proxmox.Utils.assemble_field_data(values, { 'delete': 'disable' });
+	    }
+	} else {
+	    values.disable = 1;
+	}
+
+	delete values.enable;
+
+	return values;
+    },
 });
