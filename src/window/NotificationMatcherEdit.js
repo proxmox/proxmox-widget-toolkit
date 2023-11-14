@@ -1,6 +1,6 @@
-Ext.define('Proxmox.panel.NotificationFilterEditPanel', {
+Ext.define('Proxmox.panel.NotificationMatcherEditPanel', {
     extend: 'Proxmox.panel.InputPanel',
-    xtype: 'pmxNotificationFilterEditPanel',
+    xtype: 'pmxNotificationMatcherEditPanel',
     mixins: ['Proxmox.Mixin.CBind'],
 
     items: [
@@ -11,7 +11,7 @@ Ext.define('Proxmox.panel.NotificationFilterEditPanel', {
 		value: '{name}',
 		editable: '{isCreate}',
 	    },
-	    fieldLabel: gettext('Filter Name'),
+	    fieldLabel: gettext('Matcher Name'),
 	    allowBlank: false,
 	},
 	{
@@ -65,7 +65,7 @@ Ext.define('Proxmox.panel.NotificationFilterEditPanel', {
     ],
 });
 
-Ext.define('Proxmox.window.NotificationFilterEdit', {
+Ext.define('Proxmox.window.NotificationMatcherEdit', {
     extend: 'Proxmox.window.Edit',
 
     isAdd: true,
@@ -85,7 +85,7 @@ Ext.define('Proxmox.window.NotificationFilterEdit', {
 	    throw "baseUrl not set";
 	}
 
-	me.url = `/api2/extjs${me.baseUrl}/filters`;
+	me.url = `/api2/extjs${me.baseUrl}/matchers`;
 
 	if (me.isCreate) {
 	    me.method = 'POST';
@@ -94,12 +94,12 @@ Ext.define('Proxmox.window.NotificationFilterEdit', {
 	    me.method = 'PUT';
 	}
 
-	me.subject = gettext('Notification Filter');
+	me.subject = gettext('Notification Matcher');
 
 	Ext.apply(me, {
 	    items: [{
 		name: me.name,
-		xtype: 'pmxNotificationFilterEditPanel',
+		xtype: 'pmxNotificationMatcherEditPanel',
 		isCreate: me.isCreate,
 		baseUrl: me.baseUrl,
 	    }],

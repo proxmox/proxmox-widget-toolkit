@@ -7,7 +7,7 @@ Ext.define('proxmox-notification-endpoints', {
     idProperty: 'name',
 });
 
-Ext.define('proxmox-notification-filters', {
+Ext.define('proxmox-notification-matchers', {
     extend: 'Ext.data.Model',
     fields: ['name', 'comment'],
     proxy: {

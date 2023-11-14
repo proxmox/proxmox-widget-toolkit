@@ -21,7 +21,7 @@ Ext.define('Proxmox.panel.NotificationConfigView', {
 	    border: false,
 	    collapsible: true,
 	    animCollapse: false,
-	    xtype: 'pmxNotificationFilterView',
+	    xtype: 'pmxNotificationMatcherView',
 	    cbind: {
 		baseUrl: '{baseUrl}',
 	    },
@@ -209,21 +209,21 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
     },
 });
 
-Ext.define('Proxmox.panel.NotificationFilterView', {
+Ext.define('Proxmox.panel.NotificationMatcherView', {
     extend: 'Ext.grid.Panel',
-    alias: 'widget.pmxNotificationFilterView',
+    alias: 'widget.pmxNotificationMatcherView',
 
-    title: gettext('Notification Filters'),
+    title: gettext('Notification Matchers'),
 
     controller: {
 	xclass: 'Ext.app.ViewController',
 
-	openEditWindow: function(filter) {
+	openEditWindow: function(matcher) {
 	    let me = this;
 
-	    Ext.create('Proxmox.window.NotificationFilterEdit', {
+	    Ext.create('Proxmox.window.NotificationMatcherEdit', {
 		baseUrl: me.getView().baseUrl,
-		name: filter,
+		name: matcher,
 		autoShow: true,
 		listeners: {
 		    destroy: () => me.reload(),
@@ -253,12 +253,12 @@ Ext.define('Proxmox.panel.NotificationFilterView', {
 	activate: 'reload',
     },
 
-    emptyText: gettext('No notification filters configured'),
+    emptyText: gettext('No notification matchers configured'),
 
     columns: [
 	{
 	    dataIndex: 'name',
-	    text: gettext('Filter Name'),
+	    text: gettext('Matcher Name'),
 	    renderer: Ext.String.htmlEncode,
 	    flex: 1,
 	},
@@ -276,8 +276,8 @@ Ext.define('Proxmox.panel.NotificationFilterView', {
 	autoDestroyRstore: true,
 	rstore: {
 	    type: 'update',
-	    storeid: 'proxmox-notification-filters',
-	    model: 'proxmox-notification-filters',
+	    storeid: 'proxmox-notification-matchers',
+	    model: 'proxmox-notification-matchers',
 	    autoStart: true,
 	},
 	sorters: 'name',
@@ -307,12 +307,12 @@ Ext.define('Proxmox.panel.NotificationFilterView', {
 		{
 		    xtype: 'proxmoxStdRemoveButton',
 		    callback: 'reload',
-		    baseurl: `${me.baseUrl}/filters`,
+		    baseurl: `${me.baseUrl}/matchers`,
 		},
 	    ],
 	});
 
 	me.callParent();
-	me.store.rstore.proxy.setUrl(`/api2/json/${me.baseUrl}/filters`);
+	me.store.rstore.proxy.setUrl(`/api2/json/${me.baseUrl}/matchers`);
     },
 });
