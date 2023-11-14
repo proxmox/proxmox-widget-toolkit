@@ -129,7 +129,7 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 	    dataIndex: 'name',
 	    text: gettext('Target Name'),
 	    renderer: Ext.String.htmlEncode,
-	    flex: 1,
+	    flex: 2,
 	},
 	{
 	    dataIndex: 'type',
@@ -141,7 +141,21 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 	    dataIndex: 'comment',
 	    text: gettext('Comment'),
 	    renderer: Ext.String.htmlEncode,
-	    flex: 1,
+	    flex: 3,
+	},
+	{
+	    dataIndex: 'origin',
+	    text: gettext('Origin'),
+	    renderer: (origin) => {
+		switch (origin) {
+		    case 'user-created': return gettext('Custom');
+		    case 'modified-builtin': return gettext('Built-In (modified)');
+		    case 'builtin': return gettext('Built-In');
+		}
+
+		// Should not happen...
+		return 'unknown';
+	    },
 	},
     ],
 
@@ -273,6 +287,20 @@ Ext.define('Proxmox.panel.NotificationMatcherView', {
 	    text: gettext('Comment'),
 	    renderer: Ext.String.htmlEncode,
 	    flex: 2,
+	},
+	{
+	    dataIndex: 'origin',
+	    text: gettext('Origin'),
+	    renderer: (origin) => {
+		switch (origin) {
+		    case 'user-created': return gettext('Custom');
+		    case 'modified-builtin': return gettext('Built-In (modified)');
+		    case 'builtin': return gettext('Built-In');
+		}
+
+		// Should not happen...
+		return 'unknown';
+	    },
 	},
     ],
 
