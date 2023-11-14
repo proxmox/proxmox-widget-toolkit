@@ -28,62 +28,10 @@ Ext.define('Proxmox.panel.SendmailEditPanel', {
 	    allowBlank: false,
 	},
 	{
-	    xtype: 'pmxUserSelector',
-	    name: 'mailto-user',
-	    reference: 'mailto-user',
-	    multiSelect: true,
-	    allowBlank: true,
-	    editable: false,
-	    skipEmptyText: true,
-	    fieldLabel: gettext('User(s)'),
+	    // provides 'mailto' and 'mailto-user' fields
+	    xtype: 'pmxEmailRecipientPanel',
 	    cbind: {
-		deleteEmpty: '{!isCreate}',
-	    },
-	    validator: function() {
-		return this.up('pmxSendmailEditPanel').mailValidator();
-	    },
-	    listConfig: {
-		width: 600,
-		columns: [
-		    {
-			header: gettext('User'),
-			sortable: true,
-			dataIndex: 'userid',
-			renderer: Ext.String.htmlEncode,
-			flex: 1,
-		    },
-		    {
-			header: gettext('E-Mail'),
-			sortable: true,
-			dataIndex: 'email',
-			renderer: Ext.String.htmlEncode,
-			flex: 1,
-		    },
-		    {
-			header: gettext('Comment'),
-			sortable: false,
-			dataIndex: 'comment',
-			renderer: Ext.String.htmlEncode,
-			flex: 1,
-		    },
-		],
-	    },
-	},
-	{
-	    xtype: 'proxmoxtextfield',
-	    fieldLabel: gettext('Additional Recipient(s)'),
-	    name: 'mailto',
-	    reference: 'mailto',
-	    allowBlank: true,
-	    cbind: {
-		deleteEmpty: '{!isCreate}',
-	    },
-	    autoEl: {
-		tag: 'div',
-		'data-qtip': gettext('Multiple recipients must be separated by spaces, commas or semicolons'),
-	    },
-	    validator: function() {
-		return this.up('pmxSendmailEditPanel').mailValidator();
+		isCreate: '{isCreate}',
 	    },
 	},
 	{

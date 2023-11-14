@@ -71,7 +71,9 @@ JSSRC=					\
 	panel/ACMEAccount.js		\
 	panel/ACMEPlugin.js		\
 	panel/ACMEDomains.js		\
+	panel/EmailRecipientPanel.js	\
 	panel/SendmailEditPanel.js	\
+	panel/SmtpEditPanel.js	\
 	panel/StatusView.js		\
 	panel/TfaView.js		\
 	panel/NotesView.js		\

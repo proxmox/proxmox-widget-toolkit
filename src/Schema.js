@@ -43,6 +43,11 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    ipanel: 'pmxSendmailEditPanel',
 	    iconCls: 'fa-envelope-o',
 	},
+	smtp: {
+	    name: gettext('SMTP'),
+	    ipanel: 'pmxSmtpEditPanel',
+	    iconCls: 'fa-envelope-o',
+	},
 	gotify: {
 	    name: 'Gotify',
 	    ipanel: 'pmxGotifyEditPanel',
