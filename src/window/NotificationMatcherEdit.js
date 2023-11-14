@@ -963,14 +963,23 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	},
 	{
 	    fieldLabel: gettext('Field'),
-	    xtype: 'textfield',
+	    xtype: 'proxmoxKVComboBox',
 	    isFormField: false,
 	    submitValue: false,
+	    allowBlank: false,
+	    editable: true,
+	    displayField: 'key',
 	    bind: {
 		hidden: '{!typeIsMatchField}',
 		disabled: '{!typeIsMatchField}',
 		value: '{matchFieldField}',
 	    },
+	    // TODO: Once we have a 'notification registry', we should
+	    // retrive those via an API call.
+	    comboItems: [
+		['type', ''],
+		['hostname', ''],
+	    ],
 	},
 	{
 	    fieldLabel: gettext('Value'),
