@@ -1,3 +1,27 @@
+proxmox-widget-toolkit (4.1.0) bookworm; urgency=medium
+
+  * text field: add trimValue option to auto-trim leading and trailing
+    whitespace from the to be submitted value
+
+  * schema: endpoint types: don't translate endpoint type names
+
+  * adapt the date time field to be more declarative
+
+  * fix #4442: extend the log view for firewall to allow filtering by a
+    date-time range
+
+  * disk list: render osdid-list if present
+
+  * file-level restore: enable the download-as-tar button by default, all use
+    sites support that feature now.
+
+  * apt updates: drop handling the ChangeLogUrl, it's not returned anymore
+
+  * combo grid: initialize value with [] by default to avoid glitches where
+    ExtJS sometimes does not finishes with initializing everything
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 14 Nov 2023 09:11:23 +0100
+
 proxmox-widget-toolkit (4.0.9) bookworm; urgency=medium
 
   * fix using gettext with parameter in various newly added notification and
