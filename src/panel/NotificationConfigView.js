@@ -41,10 +41,6 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 	openEditWindow: function(endpointType, endpoint) {
 	    let me = this;
 
-	    if (endpoint === 'mail-to-root') {
-		return;
-	    }
-
 	    Ext.create('Proxmox.window.EndpointEditBase', {
 		baseUrl: me.getView().baseUrl,
 		type: endpointType,
@@ -183,13 +179,11 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 		    xtype: 'proxmoxButton',
 		    text: gettext('Modify'),
 		    handler: 'openEditForSelectedItem',
-		    enableFn: rec => rec.data.name !== 'mail-to-root',
 		    disabled: true,
 		},
 		{
 		    xtype: 'proxmoxStdRemoveButton',
 		    callback: 'reload',
-		    enableFn: rec => rec.data.name !== 'mail-to-root',
 		    getUrl: function(rec) {
 			return `${me.baseUrl}/endpoints/${rec.data.type}/${rec.getId()}`;
 		    },
