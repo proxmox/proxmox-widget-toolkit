@@ -61,7 +61,6 @@ JSSRC=					\
 	panel/LogView.js		\
 	panel/NodeInfoRepoStatus.js	\
 	panel/NotificationConfigView.js	\
-	panel/NotificationGroupEditPanel.js	\
 	panel/JournalView.js		\
 	panel/PermissionView.js		\
 	panel/PruneKeepPanel.js		\

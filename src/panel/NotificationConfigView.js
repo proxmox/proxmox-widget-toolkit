@@ -191,10 +191,6 @@ Ext.define('Proxmox.panel.NotificationEndpointView', {
 		    callback: 'reload',
 		    enableFn: rec => rec.data.name !== 'mail-to-root',
 		    getUrl: function(rec) {
-			if (rec.data.type === 'group') {
-			    return `${me.baseUrl}/groups/${rec.getId()}`;
-			}
-
 			return `${me.baseUrl}/endpoints/${rec.data.type}/${rec.getId()}`;
 		    },
 		},
