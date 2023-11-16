@@ -7,7 +7,7 @@ Ext.onReady(function() {
 	    'name', 'type', 'typetext', 'description', 'verbose_description',
 	    'enum', 'minimum', 'maximum', 'minLength', 'maxLength',
 	    'pattern', 'title', 'requires', 'format', 'default',
-	    'disallow', 'extends', 'links',
+	    'disallow', 'extends', 'links', 'instance-types',
 	    {
 		name: 'optional',
 		type: 'boolean',
@@ -215,15 +215,37 @@ Ext.onReady(function() {
 			groupField: 'optional',
 			sorters: [
 			    {
+				property: 'instance-types',
+				direction: 'ASC',
+			    },
+			    {
 				property: 'name',
 				direction: 'ASC',
 			    },
 			],
 		    });
 
+		    let has_type_properties = false;
+
 		    Ext.Object.each(info.parameters.properties, function(name, pdef) {
-			pdef.name = name;
-			pstore.add(pdef);
+			if (pdef.oneOf) {
+			    pdef.oneOf.forEach((alternative) => {
+				alternative.name = name;
+				pstore.add(alternative);
+				has_type_properties = true;
+			    });
+			} else if (pdef['instance-types']) {
+			    pdef['instance-types'].forEach((type) => {
+				let typePdef = Ext.apply({}, pdef);
+				typePdef.name = name;
+				typePdef['instance-types'] = [type];
+				pstore.add(typePdef);
+				has_type_properties = true;
+			    });
+			} else {
+			    pdef.name = name;
+			    pstore.add(pdef);
+			}
 		    });
 
 		    pstore.sort();
@@ -253,6 +275,12 @@ Ext.onReady(function() {
 				header: 'Type',
 				dataIndex: 'type',
 				renderer: render_type,
+				flex: 1,
+			    },
+			    {
+				header: 'For Types',
+				dataIndex: 'instance-types',
+				hidden: !has_type_properties,
 				flex: 1,
 			    },
 			    {
