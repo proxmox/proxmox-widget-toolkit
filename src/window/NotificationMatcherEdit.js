@@ -516,35 +516,22 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		    let me = this;
 		    let record = me.get('selectedRecord');
 		    let currentData = record.get('data');
+		    let invert = false;
+		    if (value.startsWith('not')) {
+			value = value.substring(3);
+			invert = true;
+		    }
 		    record.set({
 			data: {
 			    ...currentData,
 			    value,
+			    invert,
 			},
 		    });
 		},
 		get: function(record) {
-		    return record?.get('data')?.value;
-		},
-	    },
-	    invertMatch: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		set: function(value) {
-		    let me = this;
-		    let record = me.get('selectedRecord');
-		    let currentData = record.get('data');
-		    record.set({
-			data: {
-			    ...currentData,
-			    invert: value,
-			},
-		    });
-		},
-		get: function(record) {
-		    return record?.get('data')?.invert;
+		    let prefix = record?.get('data').invert ? 'not' : '';
+		    return prefix + record?.get('data')?.value;
 		},
 	    },
 	},
@@ -791,8 +778,12 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 			matchCalendarStmts.push(data.value);
 			break;
 		    case 'mode':
-			modeStmt = data.value;
-			invertMatchStmt = data.invert;
+			if (data.value.startsWith('not')) {
+			    modeStmt = data.value.substring(3); // after 'not''
+			    invertMatchStmt = true;
+			} else {
+			    modeStmt = data.value;
+			}
 			break;
 		}
 
@@ -1004,28 +995,19 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    allowBlank: false,
 	    isFormField: false,
 
+	    matchFieldWidth: false,
+
 	    comboItems: [
 		['all', gettext('All rules match')],
 		['any', gettext('Any rule matches')],
+		['notall', gettext('At least one rule does not match')],
+		['notany', gettext('No rule matches')],
 	    ],
 	    bind: {
 		hidden: '{!showMatchingMode}',
 		disabled: '{!showMatchingMode}',
 		value: '{rootMode}',
 	    },
-	},
-	{
-	    xtype: 'proxmoxcheckbox',
-	    fieldLabel: gettext('Invert match'),
-	    isFormField: false,
-	    uncheckedValue: 0,
-	    defaultValue: 0,
-	    bind: {
-		hidden: '{!showMatchingMode}',
-		disabled: '{!showMatchingMode}',
-		value: '{invertMatch}',
-	    },
-
 	},
 	{
 	    xtype: 'proxmoxKVComboBox',
