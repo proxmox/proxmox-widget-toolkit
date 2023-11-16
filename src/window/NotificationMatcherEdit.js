@@ -288,6 +288,35 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
     xtype: 'pmxNotificationMatchRulesEditPanel',
     mixins: ['Proxmox.Mixin.CBind'],
 
+    controller: {
+	xclass: 'Ext.app.ViewController',
+
+	// we want to also set the empty value, but 'bind' does not do that so
+	// we have to set it then (and only then) to get the correct value in
+	// the tree
+	control: {
+	    'field': {
+		change: function(cmp) {
+		    let me = this;
+		    let vm = me.getViewModel();
+		    if (cmp.field) {
+			let record = vm.get('selectedRecord');
+			if (!record) {
+			    return;
+			}
+			let data = Ext.apply({}, record.get('data'));
+			let value = cmp.getValue();
+			// only update if the value is empty (or empty array)
+			if (!value || !value.length) {
+			    data[cmp.field] = value;
+			    record.set({ data });
+			}
+		    }
+		},
+	    },
+	},
+    },
+
     viewModel: {
 	data: {
 	    selectedRecord: null,
@@ -569,20 +598,32 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 
 	switch (type) {
 	    case 'match-severity': {
-		let v = data.value.join(', ');
+		let v = data.value;
+		if (Ext.isArray(data.value)) {
+		    v = data.value.join(', ');
+		}
 		text = Ext.String.format(gettext("Match severity: {0}"), v);
 		iconCls = 'fa fa-exclamation';
+		if (!v) {
+		    iconCls += ' critical';
+		}
 	    } break;
 	    case 'match-field': {
 		let field = data.field;
 		let value = data.value;
 		text = Ext.String.format(gettext("Match field: {0}={1}"), field, value);
 		iconCls = 'fa fa-cube';
+		if (!field || !value) {
+		    iconCls += ' critical';
+		}
 	    } break;
 	    case 'match-calendar': {
 		let v = data.value;
 		text = Ext.String.format(gettext("Match calendar: {0}"), v);
 		iconCls = 'fa fa-calendar-o';
+		if (!v || !v.length) {
+		    iconCls += ' critical';
+		}
 	    } break;
 	    case 'mode':
 		if (data.value === 'all') {
@@ -628,6 +669,15 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 	    getValue: function() {
 		return this.value;
 	    },
+	    getErrors: function() {
+		for (const matcher of this.value ?? []) {
+		    let matches = matcher.match(/^([^:]+):([^=]+)=(.+)$/);
+		    if (!matches) {
+			return [""]; // fake error for validation
+		    }
+		}
+		return [];
+	    },
 	    getSubmitValue: function() {
 		let value = this.value;
 		if (!value) {
@@ -646,6 +696,14 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 	    },
 	    getValue: function() {
 		return this.value;
+	    },
+	    getErrors: function() {
+		for (const severities of this.value ?? []) {
+		    if (!severities) {
+			return [""]; // fake error for validation
+		    }
+		}
+		return [];
 	    },
 	    getSubmitValue: function() {
 		let value = this.value;
@@ -684,6 +742,14 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 	    getValue: function() {
 		return this.value;
 	    },
+	    getErrors: function() {
+		for (const timespan of this.value ?? []) {
+		    if (!timespan) {
+			return [""]; // fake error for validation
+		    }
+		}
+		return [];
+	    },
 	    getSubmitValue: function() {
 		let value = this.value;
 		return value;
@@ -712,10 +778,14 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 
 		switch (type) {
 		    case 'match-field':
-			matchFieldStmts.push(`${data.type}:${data.field}=${data.value}`);
+			matchFieldStmts.push(`${data.type}:${data.field ?? ''}=${data.value ?? ''}`);
 			break;
 		    case 'match-severity':
-			matchSeverityStmts.push(data.value.join(','));
+			if (Ext.isArray(data.value)) {
+			    matchSeverityStmts.push(data.value.join(','));
+			} else {
+			    matchSeverityStmts.push(data.value);
+			}
 			break;
 		    case 'match-calendar':
 			matchCalendarStmts.push(data.value);
@@ -780,6 +850,9 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 		node.remove(true);
 	    }
 
+	    if (!value) {
+		return;
+	    }
 	    let records = value.map(parseMatchField);
 
 	    let rootNode = treeStore.getRootNode();
@@ -979,6 +1052,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    isFormField: false,
 	    allowBlank: false,
 	    submitValue: false,
+	    field: 'type',
 
 	    bind: {
 		hidden: '{!typeIsMatchField}',
@@ -999,6 +1073,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    allowBlank: false,
 	    editable: true,
 	    displayField: 'key',
+	    field: 'field',
 	    bind: {
 		hidden: '{!typeIsMatchField}',
 		disabled: '{!typeIsMatchField}',
@@ -1017,6 +1092,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    isFormField: false,
 	    submitValue: false,
 	    allowBlank: false,
+	    field: 'value',
 	    bind: {
 		hidden: '{!typeIsMatchField}',
 		disabled: '{!typeIsMatchField}',
@@ -1029,6 +1105,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    isFormField: false,
 	    allowBlank: true,
 	    multiSelect: true,
+	    field: 'value',
 
 	    bind: {
 		value: '{matchSeverityValue}',
@@ -1050,6 +1127,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    allowBlank: false,
 	    editable: true,
 	    displayField: 'key',
+	    field: 'value',
 
 	    bind: {
 		value: '{matchCalendarValue}',
