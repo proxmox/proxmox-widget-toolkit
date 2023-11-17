@@ -24,7 +24,7 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
     getEditable: function() {
 	let me = this;
 	let vm = me.getViewModel();
-	vm.get('editable');
+	return vm.get('editable');
     },
 
     setValue: function(value) {
@@ -37,6 +37,7 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
     getValue: function() {
 	let me = this;
 	let vm = me.getViewModel();
+	// FIXME: add return, but check all use-sites for regressions then
 	vm.get('value');
     },
 
