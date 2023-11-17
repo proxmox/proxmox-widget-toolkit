@@ -1,3 +1,20 @@
+proxmox-widget-toolkit (4.1.1) bookworm; urgency=medium
+
+  * api-viewer: implement basic oneOf support
+
+  * form: displaye-edit: add one of the two missing returns
+
+  * notification ui: rework for new matcher based approach, drop old filter
+    and grouping widgets
+
+  * notification: matcher: add UI for matcher editing
+
+  * panel: notification: add gui for SMTP endpoints
+
+  * notification ui: add enable checkbox for targets/matchers
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 17 Nov 2023 16:56:06 +0100
+
 proxmox-widget-toolkit (4.1.0) bookworm; urgency=medium
 
   * text field: add trimValue option to auto-trim leading and trailing
