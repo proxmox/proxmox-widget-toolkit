@@ -778,12 +778,8 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 			matchCalendarStmts.push(data.value);
 			break;
 		    case 'mode':
-			if (data.value.startsWith('not')) {
-			    modeStmt = data.value.substring(3); // after 'not''
-			    invertMatchStmt = true;
-			} else {
-			    modeStmt = data.value;
-			}
+			modeStmt = data.value;
+			invertMatchStmt = data.invert;
 			break;
 		}
 
