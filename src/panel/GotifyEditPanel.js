@@ -2,6 +2,7 @@ Ext.define('Proxmox.panel.GotifyEditPanel', {
     extend: 'Proxmox.panel.InputPanel',
     xtype: 'pmxGotifyEditPanel',
     mixins: ['Proxmox.Mixin.CBind'],
+    onlineHelp: 'notification_targets_gotify',
 
     type: 'gotify',
 

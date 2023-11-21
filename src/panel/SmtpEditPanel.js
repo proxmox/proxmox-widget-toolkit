@@ -2,6 +2,7 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
     extend: 'Proxmox.panel.InputPanel',
     xtype: 'pmxSmtpEditPanel',
     mixins: ['Proxmox.Mixin.CBind'],
+    onlineHelp: 'notification_targets_smtp',
 
     type: 'smtp',
 

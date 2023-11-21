@@ -73,6 +73,7 @@ Ext.define('Proxmox.window.NotificationMatcherEdit', {
     extend: 'Proxmox.window.Edit',
 
     isAdd: true,
+    onlineHelp: 'notification_matchers',
 
     fieldDefaults: {
 	labelWidth: 120,

@@ -4,6 +4,7 @@ Ext.define('Proxmox.panel.SendmailEditPanel', {
     mixins: ['Proxmox.Mixin.CBind'],
 
     type: 'sendmail',
+    onlineHelp: 'notification_targets_sendmail',
 
     mailValidator: function() {
 	let mailto_user = this.down(`[name=mailto-user]`);

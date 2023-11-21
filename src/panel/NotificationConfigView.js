@@ -2,6 +2,7 @@ Ext.define('Proxmox.panel.NotificationConfigView', {
     extend: 'Ext.panel.Panel',
     alias: 'widget.pmxNotificationConfigView',
     mixins: ['Proxmox.Mixin.CBind'],
+    onlineHelp: 'chapter_notifications',
     layout: {
 	type: 'border',
     },
