@@ -342,7 +342,7 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		    switch (value) {
 			case 'match-severity':
 			    data = {
-				value: ['info', 'notice', 'warning', 'error'],
+				value: ['info', 'notice', 'warning', 'error', 'unknown'],
 			    };
 			    break;
 			case 'match-field':
@@ -1097,6 +1097,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 		['notice', gettext('Notice')],
 		['warning', gettext('Warning')],
 		['error', gettext('Error')],
+		['unknown', gettext('Unknown')],
 	    ],
 	},
 	{
