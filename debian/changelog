@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (4.1.2) bookworm; urgency=medium
+
+  * notification matcher: fix inverted match modes
+
+  * notification ui: add appropriate onlineHelp anchors
+
+  * notification ui: add 'unknown' to match-severity dropdown
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 21 Nov 2023 21:35:56 +0100
+
 proxmox-widget-toolkit (4.1.1) bookworm; urgency=medium
 
   * api-viewer: implement basic oneOf support
