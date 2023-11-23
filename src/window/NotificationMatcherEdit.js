@@ -600,7 +600,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 		let field = data.field;
 		let value = data.value;
 		text = Ext.String.format(gettext("Match field: {0}={1}"), field, value);
-		iconCls = 'fa fa-cube';
+		iconCls = 'fa fa-square-o';
 		if (!field || !value) {
 		    iconCls += ' critical';
 		}
