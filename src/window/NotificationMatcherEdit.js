@@ -593,7 +593,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 		text = Ext.String.format(gettext("Match severity: {0}"), v);
 		iconCls = 'fa fa-exclamation';
 		if (!v) {
-		    iconCls += ' critical';
+		    iconCls += ' internal-error';
 		}
 	    } break;
 	    case 'match-field': {
@@ -602,7 +602,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 		text = Ext.String.format(gettext("Match field: {0}={1}"), field, value);
 		iconCls = 'fa fa-square-o';
 		if (!field || !value) {
-		    iconCls += ' critical';
+		    iconCls += ' internal-error';
 		}
 	    } break;
 	    case 'match-calendar': {
@@ -610,7 +610,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 		text = Ext.String.format(gettext("Match calendar: {0}"), v);
 		iconCls = 'fa fa-calendar-o';
 		if (!v || !v.length) {
-		    iconCls += ' critical';
+		    iconCls += ' internal-error';
 		}
 	    } break;
 	    case 'mode':
