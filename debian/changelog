@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (4.1.3) bookworm; urgency=medium
+
+  * notification ui: change icon for for match-field tree nodes to avoid clash
+    with use for LXC containers
+
+  * notification ui: display yellow warning triangle instead of red icon if
+    the repesctive entry is not valid
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 23 Nov 2023 10:12:50 +0100
+
 proxmox-widget-toolkit (4.1.2) bookworm; urgency=medium
 
   * notification matcher: fix inverted match modes
