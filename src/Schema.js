@@ -44,7 +44,7 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    iconCls: 'fa-envelope-o',
 	},
 	smtp: {
-	    name: gettext('SMTP'),
+	    name: 'SMTP',
 	    ipanel: 'pmxSmtpEditPanel',
 	    iconCls: 'fa-envelope-o',
 	},
