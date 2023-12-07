@@ -26,7 +26,7 @@ Ext.define('Proxmox.node.DNSView', {
 	    run_editor: run_editor,
 	    rows: {
 		search: {
-		    header: 'Search domain',
+		    header: gettext('Search domain'),
 		    required: true,
 		    renderer: Ext.htmlEncode,
 		},

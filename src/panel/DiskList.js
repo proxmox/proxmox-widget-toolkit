@@ -325,14 +325,14 @@ Ext.define('Proxmox.DiskList', {
 	    dataIndex: 'status',
 	},
 	{
-	    header: 'Mounted',
+	    header: gettext('Mounted'),
 	    width: 60,
 	    align: 'right',
 	    renderer: Proxmox.Utils.format_boolean,
 	    dataIndex: 'mounted',
 	},
 	{
-	    header: 'Wearout',
+	    header: gettext('Wearout'),
 	    width: 90,
 	    sortable: true,
 	    align: 'right',
@@ -341,7 +341,7 @@ Ext.define('Proxmox.DiskList', {
 		if (Ext.isNumeric(value)) {
 		    return (100 - value).toString() + '%';
 		}
-		return 'N/A';
+		return gettext('N/A');
 	    },
 	},
     ],

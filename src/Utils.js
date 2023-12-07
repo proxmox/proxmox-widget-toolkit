@@ -155,7 +155,11 @@ utilities: {
     },
 
     getNoSubKeyHtml: function(url) {
-	return Ext.String.format('You do not have a valid subscription for this server. Please visit <a target="_blank" href="{0}">www.proxmox.com</a> to get a list of available options.', url || 'https://www.proxmox.com');
+	let html_url = Ext.String.format('<a target="_blank" href="{0}">www.proxmox.com</a>', url || 'https://www.proxmox.com');
+	return Ext.String.format(
+	    gettext('You do not have a valid subscription for this server. Please visit {0} to get a list of available options.'),
+	    html_url,
+	);
     },
 
     format_boolean_with_default: function(value) {

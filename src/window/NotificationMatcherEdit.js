@@ -1025,7 +1025,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    ],
 	},
 	{
-	    fieldLabel: 'Match Type',
+	    fieldLabel: gettext('Match Type'),
 	    xtype: 'proxmoxKVComboBox',
 	    reference: 'type',
 	    isFormField: false,
