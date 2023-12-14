@@ -110,6 +110,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 
     config: {
 	baseurl: undefined,
+	customConfirmationMessage: undefined,
     },
 
     getUrl: function(rec) {
@@ -133,7 +134,14 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 	let me = this;
 
 	let name = me.getRecordName(rec);
-	return Ext.String.format(gettext('Are you sure you want to remove entry {0}'), `'${name}'`);
+
+	let text;
+	if (me.customConfirmationMessage) {
+	    text = me.customConfirmationMessage;
+	} else {
+	    text = gettext('Are you sure you want to remove entry {0}');
+	}
+	return Ext.String.format(text, `'${name}'`);
     },
 
     handler: function(btn, event, rec) {
