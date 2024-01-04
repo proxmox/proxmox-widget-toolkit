@@ -19,6 +19,9 @@ Ext.define('Proxmox.panel.EmailRecipientPanel', {
 	{
 	    layout: 'anchor',
 	    border: false,
+	    cbind: {
+		isCreate: '{isCreate}',
+	    },
 	    items: [
 		{
 		    xtype: 'pmxUserSelector',
