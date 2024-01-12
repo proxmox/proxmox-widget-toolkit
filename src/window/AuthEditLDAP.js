@@ -64,6 +64,12 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	return values;
     },
 
+    cbindData: function(config) {
+	return {
+	    isLdap: this.type === 'ldap',
+	    isAd: this.type === 'ad',
+	};
+    },
 
     column1: [
 	{
@@ -80,15 +86,21 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	    xtype: 'proxmoxtextfield',
 	    fieldLabel: gettext('Base Domain Name'),
 	    name: 'base-dn',
-	    allowBlank: false,
 	    emptyText: 'cn=Users,dc=company,dc=net',
+	    cbind: {
+		hidden: '{!isLdap}',
+		allowBlank: '{!isLdap}',
+	    },
 	},
 	{
 	    xtype: 'proxmoxtextfield',
 	    fieldLabel: gettext('User Attribute Name'),
 	    name: 'user-attr',
-	    allowBlank: false,
 	    emptyText: 'uid / sAMAccountName',
+	    cbind: {
+		hidden: '{!isLdap}',
+		allowBlank: '{!isLdap}',
+	    },
 	},
 	{
 	    xtype: 'proxmoxcheckbox',
@@ -103,7 +115,14 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	    fieldLabel: gettext('Bind Domain Name'),
 	    name: 'bind-dn',
 	    allowBlank: false,
-	    emptyText: 'cn=user,dc=company,dc=net',
+	    cbind: {
+		emptyText: get => get('isAd') ? 'user@company.net' : 'cn=user,dc=company,dc=net',
+		autoEl: get => get('isAd') ? {
+		    tag: 'div',
+		    'data-qtip':
+			gettext('LDAP DN syntax can be used as well, e.g. cn=user,dc=company,dc=net'),
+		} : {},
+	    },
 	    bind: {
 		disabled: "{anonymous_search}",
 	    },

@@ -29,6 +29,16 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    pwchange: false,
 	    sync: true,
 	},
+	ad: {
+	    name: gettext('Active Directory Server'),
+	    ipanel: 'pmxAuthADPanel',
+	    syncipanel: 'pmxAuthADSyncPanel',
+	    add: true,
+	    edit: true,
+	    tfa: true,
+	    pwchange: false,
+	    sync: true,
+	},
     },
     // to add or change existing for product specific ones
     overrideAuthDomains: function(extra) {
