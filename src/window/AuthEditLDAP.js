@@ -314,16 +314,30 @@ Ext.define('Proxmox.panel.LDAPSyncInputPanel', {
 	    xtype: 'proxmoxtextfield',
 	    name: 'firstname',
 	    fieldLabel: gettext('First Name attribute'),
+	    autoEl: {
+		tag: 'div',
+		'data-qtip': Ext.String.format(gettext('Often called {0}'), '`givenName`'),
+	    },
 	},
 	{
 	    xtype: 'proxmoxtextfield',
 	    name: 'lastname',
 	    fieldLabel: gettext('Last Name attribute'),
+	    autoEl: {
+		tag: 'div',
+		'data-qtip': Ext.String.format(gettext('Often called {0}'), '`sn`'),
+	    },
 	},
 	{
 	    xtype: 'proxmoxtextfield',
 	    name: 'email',
 	    fieldLabel: gettext('E-Mail attribute'),
+	    autoEl: {
+		tag: 'div',
+		'data-qtip': get => get('isAd')
+		    ? Ext.String.format(gettext('Often called {0} or {1}'), '`userPrincipalName`', '`mail`')
+		    : Ext.String.format(gettext('Often called {0}'), '`mail`'),
+	    },
 	},
 	{
 	    xtype: 'displayfield',
