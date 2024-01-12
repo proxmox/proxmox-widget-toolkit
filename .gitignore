@@ -2,3 +2,4 @@ src/.lint-incremental
 *.deb
 *.changes
 *.buildinfo
+/proxmox-widget-toolkit-[0-9]*/
