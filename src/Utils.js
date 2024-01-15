@@ -77,7 +77,7 @@ utilities: {
 	it: `Italiano - ${gettext("Italian")}`,
 	ja: `日本語 - ${gettext("Japanese")}`,
 	ka: `ქართული - ${gettext("Georgian")}`,
-	kr: `한국어 - ${gettext("Korean")}`,
+	ko: `한국어 - ${gettext("Korean")}`,
 	nb: `Bokmål - ${gettext("Norwegian (Bokmal)")}`,
 	nl: `Nederlands - ${gettext("Dutch")}`,
 	nn: `Nynorsk - ${gettext("Norwegian (Nynorsk)")}`,
@@ -95,6 +95,9 @@ utilities: {
     render_language: function(value) {
 	if (!value || value === '__default__') {
 	    return Proxmox.Utils.defaultText + ' (English)';
+	}
+	if (value === 'kr') {
+	    value = 'ko'; // fix-up wrongly used Korean code. FIXME: remove with trixie releases
 	}
 	let text = Proxmox.Utils.language_map[value];
 	if (text) {
