@@ -1,6 +1,6 @@
 proxmox-widget-toolkit (4.1.3) bookworm; urgency=medium
 
-  * notification ui: change icon for for match-field tree nodes to avoid clash
+  * notification ui: change icon for match-field tree nodes to avoid clash
     with use for LXC containers
 
   * notification ui: display yellow warning triangle instead of red icon if
