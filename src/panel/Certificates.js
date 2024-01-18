@@ -237,10 +237,16 @@ Ext.define('Proxmox.panel.Certificates', {
 	    {
 		xtype: 'proxmoxButton',
 		text: gettext('Delete Custom Certificate'),
-		confirmMsg: rec => Ext.String.format(
-		    gettext('Are you sure you want to remove the certificate used for {0}'),
-		    me.certById[rec.id].name,
-		),
+		confirmMsg: rec => {
+		    let cert = me.certById[rec.id];
+		    if (cert.name) {
+			return Ext.String.format(
+			    gettext('Are you sure you want to remove the certificate used for {0}'),
+			    cert.name,
+			);
+		    }
+		    return gettext('Are you sure you want to remove the certificate');
+		},
 		callback: () => me.reload(),
 		selModel: me.selModel,
 		disabled: true,
