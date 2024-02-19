@@ -374,6 +374,7 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
 			allowBlank: false,
 			regex: /^[0-9]{2,16}$/,
 			regexText: gettext('TOTP codes usually consist of six decimal digits'),
+			inputAttrTpl: 'autocomplete=one-time-code',
 		    },
 		],
 	    },
