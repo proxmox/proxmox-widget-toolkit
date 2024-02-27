@@ -24,9 +24,7 @@ Ext.define('Proxmox.DateTimeField', {
 			return;
 		    }
 		    let datetime = new Date(this.get('datetime'));
-		    datetime.setDate(date.getDate());
-		    datetime.setMonth(date.getMonth());
-		    datetime.setFullYear(date.getFullYear());
+		    datetime.setFullYear(date.getFullYear(), date.getMonth(), date.getDate());
 		    this.set('datetime', datetime);
 		},
 	    },
