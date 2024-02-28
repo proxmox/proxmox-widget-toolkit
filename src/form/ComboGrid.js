@@ -32,6 +32,8 @@ Ext.define('Proxmox.form.ComboGrid', {
 	notFoundIsValid: false,
 	deleteEmpty: false,
 	errorHeight: 100,
+	// NOTE: the trigger will always be shown if allowBlank is true, setting showClearTrigger
+	// to false cannot change that
 	showClearTrigger: false,
     },
 
@@ -55,10 +57,7 @@ Ext.define('Proxmox.form.ComboGrid', {
     setValue: function(value) {
 	let me = this;
 	let empty = Ext.isArray(value) ? !value.length : !value;
-	me.triggers.clear.setVisible(
-	    (!empty && me.allowBlank) ||
-	    (!empty && me.showClearTrigger),
-	);
+	me.triggers.clear.setVisible(!empty && (me.allowBlank || me.showClearTrigger));
 	return me.callParent([value]);
     },
 
