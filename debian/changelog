@@ -1,3 +1,21 @@
+proxmox-widget-toolkit (4.1.4) bookworm; urgency=medium
+
+  * fix #5074: notify: sendmail smtp: fix mailto/mailto-user parameter
+    deletion
+
+  * i18n: use correct ISO 639-1 code for Korean with backward compat
+
+  * form: date time: fix changing date to end of month from a longer to a
+    shorter month
+
+  * form: combo grid: allow one to force showing a clear trigger through a new
+    showClearTrigger config value
+
+  * utils: add mechanism to add and override translatable notification event
+    descriptions in the product specific UIs
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 28 Feb 2024 11:46:31 +0100
+
 proxmox-widget-toolkit (4.1.3) bookworm; urgency=medium
 
   * notification ui: change icon for match-field tree nodes to avoid clash
