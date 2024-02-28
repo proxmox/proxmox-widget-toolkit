@@ -32,6 +32,7 @@ Ext.define('Proxmox.form.ComboGrid', {
 	notFoundIsValid: false,
 	deleteEmpty: false,
 	errorHeight: 100,
+	showClearTrigger: false,
     },
 
     // needed to trigger onKeyUp etc.
@@ -54,7 +55,10 @@ Ext.define('Proxmox.form.ComboGrid', {
     setValue: function(value) {
 	let me = this;
 	let empty = Ext.isArray(value) ? !value.length : !value;
-	me.triggers.clear.setVisible(!empty && me.allowBlank);
+	me.triggers.clear.setVisible(
+	    (!empty && me.allowBlank) ||
+	    (!empty && me.showClearTrigger),
+	);
 	return me.callParent([value]);
     },
 
