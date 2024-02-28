@@ -647,6 +647,37 @@ utilities: {
 	    Proxmox.Utils.unknownText;
     },
 
+    // Only add product-agnostic fields here!
+    notificationFieldName: {
+	'type': gettext('Notification type'),
+	'hostname': gettext('Hostname'),
+    },
+
+    formatNotificationFieldName: (value) =>
+	Proxmox.Utils.notificationFieldName[value] || value,
+
+    // to add or change existing for product specific ones
+    overrideNotificationFieldName: function(extra) {
+	for (const [key, value] of Object.entries(extra)) {
+	    Proxmox.Utils.notificationFieldName[key] = value;
+	}
+    },
+
+    // Only add product-agnostic fields here!
+    notificationFieldValue: {
+	'system-mail': gettext('Forwarded mails to the local root user'),
+    },
+
+    formatNotificationFieldValue: (value) =>
+	Proxmox.Utils.notificationFieldValue[value] || value,
+
+    // to add or change existing for product specific ones
+    overrideNotificationFieldValue: function(extra) {
+	for (const [key, value] of Object.entries(extra)) {
+	    Proxmox.Utils.notificationFieldValue[key] = value;
+	}
+    },
+
     // NOTE: only add general, product agnostic, ones here! Else use override helper in product repos
     task_desc_table: {
 	aptupdate: ['', gettext('Update package database')],
