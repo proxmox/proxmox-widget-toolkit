@@ -2,7 +2,8 @@ Ext.define('Proxmox.node.DNSEdit', {
     extend: 'Proxmox.window.Edit',
     alias: ['widget.proxmoxNodeDNSEdit'],
 
-    // pbs needs this set to true
+    // Some longer existing APIs use a brittle "replace whole config" style, you can set this option
+    // if the DNSEdit component is used in an API that has more modern, granular update semantics.
     deleteEmpty: false,
 
     initComponent: function() {

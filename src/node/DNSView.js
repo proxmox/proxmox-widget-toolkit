@@ -2,7 +2,8 @@ Ext.define('Proxmox.node.DNSView', {
     extend: 'Proxmox.grid.ObjectGrid',
     alias: ['widget.proxmoxNodeDNSView'],
 
-    // pbs needs this set to true
+    // Some longer existing APIs use a brittle "replace whole config" style, you can set this option
+    // if the DNSView component is used in an API that has more modern, granular update semantics.
     deleteEmpty: false,
 
     initComponent: function() {
