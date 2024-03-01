@@ -2,6 +2,9 @@ Ext.define('Proxmox.node.DNSView', {
     extend: 'Proxmox.grid.ObjectGrid',
     alias: ['widget.proxmoxNodeDNSView'],
 
+    // pbs needs this set to true
+    deleteEmpty: false,
+
     initComponent: function() {
 	let me = this;
 
@@ -12,6 +15,7 @@ Ext.define('Proxmox.node.DNSView', {
 	let run_editor = () => Ext.create('Proxmox.node.DNSEdit', {
 	    autoShow: true,
 	    nodename: me.nodename,
+	    deleteEmpty: me.deleteEmpty,
 	});
 
 	Ext.apply(me, {

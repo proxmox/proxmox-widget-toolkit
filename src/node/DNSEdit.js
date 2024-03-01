@@ -2,6 +2,9 @@ Ext.define('Proxmox.node.DNSEdit', {
     extend: 'Proxmox.window.Edit',
     alias: ['widget.proxmoxNodeDNSEdit'],
 
+    // pbs needs this set to true
+    deleteEmpty: false,
+
     initComponent: function() {
 	let me = this;
 
@@ -21,6 +24,7 @@ Ext.define('Proxmox.node.DNSEdit', {
                 fieldLabel: gettext('DNS server') + " 1",
 		vtype: 'IP64Address',
 		skipEmptyText: true,
+		deleteEmpty: me.deleteEmpty,
                 name: 'dns1',
 	    },
 	    {
@@ -28,6 +32,7 @@ Ext.define('Proxmox.node.DNSEdit', {
 		fieldLabel: gettext('DNS server') + " 2",
 		vtype: 'IP64Address',
 		skipEmptyText: true,
+		deleteEmpty: me.deleteEmpty,
                 name: 'dns2',
 	    },
 	    {
@@ -35,6 +40,7 @@ Ext.define('Proxmox.node.DNSEdit', {
                 fieldLabel: gettext('DNS server') + " 3",
 		vtype: 'IP64Address',
 		skipEmptyText: true,
+		deleteEmpty: me.deleteEmpty,
                 name: 'dns3',
 	    },
 	];
