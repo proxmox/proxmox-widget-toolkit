@@ -31,6 +31,9 @@ Ext.define('Proxmox.window.Edit', {
     // custom submitText
     submitText: undefined,
 
+    // custom options for the submit api call
+    submitOptions: {},
+
     backgroundDelay: 0,
 
     // string or function, called as (url, values) - useful if the ID of the
@@ -151,7 +154,7 @@ Ext.define('Proxmox.window.Edit', {
 	    values = undefined;
 	}
 
-	Proxmox.Utils.API2Request({
+	let requestOptions = Ext.apply({
 	    url: url,
 	    waitMsgTarget: me,
 	    method: me.method || (me.backgroundDelay ? 'POST' : 'PUT'),
@@ -191,7 +194,8 @@ Ext.define('Proxmox.window.Edit', {
 		    me.close();
 		}
 	    },
-	});
+	}, me.submitOptions ?? {});
+	Proxmox.Utils.API2Request(requestOptions);
     },
 
     load: function(options) {
