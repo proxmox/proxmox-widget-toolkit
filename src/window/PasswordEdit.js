@@ -11,7 +11,23 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	labelWidth: 120,
     },
 
+    // allow products to opt-in as their API gains support for this.
+    confirmCurrentPassword: false,
+
     items: [
+	{
+	    xtype: 'textfield',
+	    inputType: 'password',
+	    fieldLabel: gettext('Current password'),
+	    reference: 'confirmation-password',
+	    name: 'confirmation-password',
+	    allowBlank: false,
+	    vtype: 'password',
+	    cbind: {
+		hidden: '{!confirmCurrentPassword}',
+		disabled: '{!confirmCurrentPassword}',
+	    },
+	},
 	{
 	    xtype: 'textfield',
 	    inputType: 'password',
