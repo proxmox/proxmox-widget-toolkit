@@ -458,6 +458,12 @@ utilities: {
 	    newopts.url = '/api2/extjs' + newopts.url;
 	}
 	delete newopts.callback;
+	let unmask = (target) => {
+	    if (target.waitMsgTargetCount === undefined || --target.waitMsgTargetCount <= 0) {
+		target.setLoading(false);
+		delete target.waitMsgTargetCount;
+	    }
+	};
 
 	let createWrapper = function(successFn, callbackFn, failureFn) {
 	    Ext.apply(newopts, {
@@ -466,7 +472,7 @@ utilities: {
 			if (Proxmox.Utils.toolkit === 'touch') {
 			    options.waitMsgTarget.setMasked(false);
 			} else {
-			    options.waitMsgTarget.setLoading(false);
+			    unmask(options.waitMsgTarget);
 			}
 		    }
 		    let result = Ext.decode(response.responseText);
@@ -488,7 +494,7 @@ utilities: {
 			if (Proxmox.Utils.toolkit === 'touch') {
 			    options.waitMsgTarget.setMasked(false);
 			} else {
-			    options.waitMsgTarget.setLoading(false);
+			    unmask(options.waitMsgTarget);
 			}
 		    }
 		    response.result = {};
@@ -518,9 +524,16 @@ utilities: {
 	if (target) {
 	    if (Proxmox.Utils.toolkit === 'touch') {
 		target.setMasked({ xtype: 'loadmask', message: newopts.waitMsg });
-	    } else {
-		// Note: ExtJS bug - this does not work when component is not rendered
+	    } else if (target.rendered) {
+		target.waitMsgTargetCount = (target.waitMsgTargetCount ?? 0) + 1;
 		target.setLoading(newopts.waitMsg);
+	    } else {
+		target.waitMsgTargetCount = (target.waitMsgTargetCount ?? 0) + 1;
+		target.on('afterlayout', function() {
+		    if ((target.waitMsgTargetCount ?? 0) > 0) {
+			target.setLoading(newopts.waitMsg);
+		    }
+		}, target, { single: true });
 	    }
 	}
 	Ext.Ajax.request(newopts);
