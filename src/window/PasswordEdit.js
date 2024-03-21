@@ -7,8 +7,9 @@ Ext.define('Proxmox.window.PasswordEdit', {
 
     url: '/api2/extjs/access/password',
 
+    width: 380,
     fieldDefaults: {
-	labelWidth: 120,
+	labelWidth: 150,
     },
 
     // allow products to opt-in as their API gains support for this.
@@ -18,7 +19,7 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	{
 	    xtype: 'textfield',
 	    inputType: 'password',
-	    fieldLabel: gettext('Current password'),
+	    fieldLabel: gettext('Your Current Password'),
 	    reference: 'confirmation-password',
 	    name: 'confirmation-password',
 	    allowBlank: false,
@@ -31,7 +32,7 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	{
 	    xtype: 'textfield',
 	    inputType: 'password',
-	    fieldLabel: gettext('Password'),
+	    fieldLabel: gettext('New Password'),
 	    minLength: 5,
 	    allowBlank: false,
 	    name: 'password',
@@ -43,7 +44,7 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	{
 	    xtype: 'textfield',
 	    inputType: 'password',
-	    fieldLabel: gettext('Confirm password'),
+	    fieldLabel: gettext('Confirm New Password'),
 	    name: 'verifypassword',
 	    allowBlank: false,
 	    vtype: 'password',
