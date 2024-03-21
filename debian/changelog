@@ -1,3 +1,22 @@
+proxmox-widget-toolkit (4.1.5) bookworm; urgency=medium
+
+  * dns: provide option to change behavior from sending the new, full actual
+    state to what actually changed. This fixes deleting entries in APIs like
+    the one from PBS.
+
+  * edit window: add optional custom submit options
+
+  * certificates: removal prompt: don't display name if there is no name
+
+  * utils: api request: defer masking after layout
+
+  * window: password edit: add opt-in config to show a confirmation-password
+    field for the current user
+
+  * window: password edit: clarify labels
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 21 Mar 2024 17:40:54 +0100
+
 proxmox-widget-toolkit (4.1.4) bookworm; urgency=medium
 
   * fix #5074: notify: sendmail smtp: fix mailto/mailto-user parameter
