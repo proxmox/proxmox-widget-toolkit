@@ -756,6 +756,11 @@ Ext.onReady(function() {
 	},
     });
 });
+
+// add allowfullscreen to render template to allow the noVNC/xterm.js embedded UIs to go fullscreen
+//
+// The rest is the same as in the separate ux package (extjs/build/packages/ux/classic/ux-debug.js),
+// which we do not load as it's rather big and most of the widgets there are not useful for our UIs
 Ext.define('Ext.ux.IFrame', {
     extend: 'Ext.Component',
 
@@ -766,8 +771,10 @@ Ext.define('Ext.ux.IFrame', {
     src: 'about:blank',
 
     renderTpl: [
+	// eslint-disable-next-line max-len
 	'<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>',
     ],
+
     childEls: ['iframeEl'],
 
     initComponent: function() {
@@ -778,6 +785,7 @@ Ext.define('Ext.ux.IFrame', {
 
     initEvents: function() {
 	let me = this;
+
 	me.callParent();
 	me.iframeEl.on('load', me.onLoad, me);
     },
@@ -791,6 +799,7 @@ Ext.define('Ext.ux.IFrame', {
 
     getBody: function() {
 	let doc = this.getDoc();
+
 	return doc.body || doc.documentElement;
     },
 
@@ -805,102 +814,28 @@ Ext.define('Ext.ux.IFrame', {
     getWin: function() {
 	let me = this,
 	    name = me.frameName,
-	    win = Ext.isIE
-		? me.iframeEl.dom.contentWindow
-		: window.frames[name];
+	    win = Ext.isIE ? me.iframeEl.dom.contentWindow : window.frames[name];
+
 	return win;
     },
 
     getFrame: function() {
 	let me = this;
+
 	return me.iframeEl.dom;
-    },
-
-    beforeDestroy: function() {
-	this.cleanupListeners(true);
-	this.callParent();
-    },
-
-    cleanupListeners: function(destroying) {
-	let doc, prop;
-
-	if (this.rendered) {
-	    try {
-		doc = this.getDoc();
-		if (doc) {
-		    Ext.get(doc).un(this._docListeners);
-		    if (destroying && doc.hasOwnProperty) {
-			for (prop in doc) {
-			    if (Object.prototype.hasOwnProperty.call(doc, prop)) {
-				delete doc[prop];
-			    }
-			}
-		    }
-		}
-	    } catch (e) {
-		// do nothing
-	    }
-	}
     },
 
     onLoad: function() {
 	let me = this,
-	    doc = me.getDoc(),
-	    fn = me.onRelayedEvent;
+	    doc = me.getDoc();
 
 	if (doc) {
-	    try {
-		// These events need to be relayed from the inner document (where they stop
-		// bubbling) up to the outer document. This has to be done at the DOM level so
-		// the event reaches listeners on elements like the document body. The effected
-		// mechanisms that depend on this bubbling behavior are listed to the right
-		// of the event.
-		Ext.get(doc).on(
-		    me._docListeners = {
-			mousedown: fn, // menu dismisal (MenuManager) and Window onMouseDown (toFront)
-			mousemove: fn, // window resize drag detection
-			mouseup: fn, // window resize termination
-			click: fn, // not sure, but just to be safe
-			dblclick: fn, // not sure again
-			scope: me,
-		    },
-		);
-	    } catch (e) {
-		// cannot do this xss
-	    }
-
-	    // We need to be sure we remove all our events from the iframe on unload or we're going to LEAK!
-	    Ext.get(this.getWin()).on('beforeunload', me.cleanupListeners, me);
-
 	    this.el.unmask();
 	    this.fireEvent('load', this);
 	} else if (me.src) {
 	    this.el.unmask();
 	    this.fireEvent('error', this);
 	}
-    },
-
-    onRelayedEvent: function(event) {
-	// relay event from the iframe's document to the document that owns the iframe...
-
-	let iframeEl = this.iframeEl,
-
-	    // Get the left-based iframe position
-	    iframeXY = iframeEl.getTrueXY(),
-	    originalEventXY = event.getXY(),
-
-	    // Get the left-based XY position.
-	    // This is because the consumer of the injected event will
-	    // perform its own RTL normalization.
-	    eventXY = event.getTrueXY();
-
-	// the event from the inner document has XY relative to that document's origin,
-	// so adjust it to use the origin of the iframe in the outer document:
-	event.xy = [iframeXY[0] + eventXY[0], iframeXY[1] + eventXY[1]];
-
-	event.injectEvent(iframeEl); // blame the iframe for the event...
-
-	event.xy = originalEventXY; // restore the original XY (just for safety)
     },
 
     load: function(src) {
