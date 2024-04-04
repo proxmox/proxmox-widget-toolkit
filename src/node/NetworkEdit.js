@@ -97,7 +97,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		name: 'ovs_bridge',
 	    });
 	    column2.push({
-		xtype: 'pveVlanField',
+		xtype: 'proxmoxvlanfield',
 		deleteEmpty: !me.isCreate,
 		name: 'ovs_tag',
 		value: '',
@@ -140,7 +140,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	    });
 
 	    column2.push({
-		xtype: 'pveVlanField',
+		xtype: 'proxmoxvlanfield',
 		name: 'vlan-id',
 		value: me.vlanidvalue,
 		disabled: me.disablevlanid,
@@ -211,7 +211,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		name: 'ovs_bridge',
 	    });
 	    column2.push({
-		xtype: 'pveVlanField',
+		xtype: 'proxmoxvlanfield',
 		deleteEmpty: !me.isCreate,
 		name: 'ovs_tag',
 		value: '',

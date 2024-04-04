@@ -31,6 +31,7 @@ JSSRC=					\
 	form/ExpireDate.js		\
 	form/IntegerField.js		\
 	form/TextField.js		\
+	form/VlanField.js		\
 	form/DateTimeField.js		\
 	form/Checkbox.js		\
 	form/KVComboBox.js		\
