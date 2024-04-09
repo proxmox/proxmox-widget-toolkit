@@ -69,6 +69,15 @@ Ext.define('Proxmox.window.Edit', {
     // onlineHelp of our first item, if set.
     onlineHelp: undefined,
 
+    constructor: function(conf) {
+	let me = this;
+	// make copies in order to prevent subclasses from accidentally writing
+	// to objects that are shared with other edit window subclasses
+	me.extraRequestParams = Object.assign({}, me.extraRequestParams);
+	me.submitOptions = Object.assign({}, me.submitOptions);
+	me.callParent(arguments);
+    },
+
     isValid: function() {
 	let me = this;
 
