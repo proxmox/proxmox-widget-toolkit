@@ -8,13 +8,7 @@ Ext.define('Proxmox.panel.NotificationConfigViewModel', {
 	    let origin = get('selection')?.get('origin');
 	    return origin === 'modified-builtin' || origin === 'builtin';
 	},
-	removeButtonText: function(get) {
-	    if (get('builtinSelected')) {
-		return gettext('Reset to default');
-	    } else {
-		return gettext('Remove');
-	    }
-	},
+	removeButtonText: get => get('builtinSelected') ? gettext('Reset') : gettext('Remove'),
 	removeButtonConfirmMessage: function(get) {
 	    if (get('builtinSelected')) {
 		return gettext('Do you want to reset {0} to its default settings?');
