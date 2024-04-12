@@ -76,7 +76,7 @@ Ext.apply(Ext.form.field.VTypes, {
     MacPrefixText: gettext('Example') + ': 02:8f - ' + gettext('only unicast addresses are allowed'),
 
     BridgeName: function(v) {
-	return (/^vmbr\d{1,4}$/).test(v);
+	return (/^[a-zA-Z][a-zA-Z0-9_]{0,9}$/).test(v);
     },
     VlanName: function(v) {
        if (Proxmox.Utils.VlanInterface_match.test(v)) {
@@ -86,7 +86,7 @@ Ext.apply(Ext.form.field.VTypes, {
        }
        return true;
     },
-    BridgeNameText: gettext('Format') + ': vmbr<b>N</b>, where 0 <= <b>N</b> <= 9999',
+    BridgeNameText: gettext('Format') + ': alphanumeric string starting with a character',
 
     BondName: function(v) {
 	return (/^bond\d{1,4}$/).test(v);
