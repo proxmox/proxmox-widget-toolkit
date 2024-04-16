@@ -3,6 +3,7 @@ Ext.define('Proxmox.EOLNotice', {
     extend: 'Ext.Component',
     alias: 'widget.proxmoxEOLNotice',
 
+    userCls: 'eol-notice',
     padding: '0 5',
 
     config: {
@@ -24,7 +25,7 @@ Ext.define('Proxmox.EOLNotice', {
 	let message = Ext.String.format(
 	    gettext('Support for {0} {1} ends on {2}'), me.product, me.version, me.eolDate);
 
-	me.html = `<i class="fa pwt-eol-icon fa-exclamation-triangle"></i>
+	me.html = `<i class="fa fa-exclamation-triangle"></i>
 	    <a href="${href}" target="_blank">${message} <i class="fa fa-external-link"></i></a>
 	`;
 
