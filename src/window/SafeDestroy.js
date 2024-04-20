@@ -1,7 +1,5 @@
-/* Popup a message window
- * where the user has to manually enter the resource ID
- * to enable the destroy button
- */
+// Pop-up a message window where the user has to manually enter the resource ID to enable the
+// destroy confirmation button to ensure that they got the correct resource selected for.
 Ext.define('Proxmox.window.SafeDestroy', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxSafeDestroy',
