@@ -348,9 +348,9 @@ Ext.define('Proxmox.window.Edit', {
 	}
 
 	if (me.isCreate || !me.showReset) {
-		me.buttons = [submitBtn];
+	    me.buttons = [submitBtn];
 	} else {
-		me.buttons = [submitBtn, resetBtn];
+	    me.buttons = [submitBtn, resetBtn];
 	}
 
 	if (inputPanel && inputPanel.hasAdvanced) {
