@@ -318,19 +318,21 @@ Ext.define('Proxmox.window.Edit', {
 	    },
 	});
 
-	let resetBtn = Ext.create('Ext.Button', {
-	    text: 'Reset',
-	    disabled: true,
-	    handler: function() {
-		form.reset();
+	let resetTool = Ext.create('Ext.panel.Tool', {
+	    glyph: 'xf0e2@FontAwesome', // fa-undo
+	    tooltip: gettext('Reset form data'),
+	    callback: () => form.reset(),
+	    style: {
+		paddingRight: '2px', // just slightly more room to breathe
 	    },
+	    disabled: true,
 	});
 
 	let set_button_status = function() {
 	    let valid = form.isValid();
 	    let dirty = form.isDirty();
 	    submitBtn.setDisabled(!valid || !(dirty || me.isCreate));
-	    resetBtn.setDisabled(!dirty);
+	    resetTool.setDisabled(!dirty);
 	};
 
 	form.on('dirtychange', set_button_status);
@@ -350,7 +352,8 @@ Ext.define('Proxmox.window.Edit', {
 	if (me.isCreate || !me.showReset) {
 	    me.buttons = [submitBtn];
 	} else {
-	    me.buttons = [submitBtn, resetBtn];
+	    me.buttons = [submitBtn];
+	    me.tools = [resetTool];
 	}
 
 	if (inputPanel && inputPanel.hasAdvanced) {
