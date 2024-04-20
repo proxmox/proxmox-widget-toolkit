@@ -7,6 +7,8 @@ Ext.define('Proxmox.panel.NotesView', {
     bodyPadding: 10,
     scrollable: true,
     animCollapse: false,
+    collapseFirst: false,
+
     maxLength: 64 * 1024,
     enableTBar: false,
     onlineHelp: 'markdown_basics',
