@@ -351,7 +351,7 @@ Ext.define('Proxmox.window.Edit', {
 
 	me.buttons = [submitBtn];
 
-	if (!me.isCreate && me.showReset)) {
+	if (!me.isCreate && me.showReset) {
 	    me.tools = [resetTool];
 	}
 
