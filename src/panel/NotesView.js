@@ -112,7 +112,23 @@ Ext.define('Proxmox.panel.NotesView', {
     listeners: {
 	render: function(c) {
 	    let me = this;
-	    me.getEl().on('dblclick', me.run_editor, me);
+	    let sp = Ext.state.Manager.getProvider();
+	    // to cover live changes to the browser setting
+	    me.mon(sp, 'statechange', function(provider, key, value) {
+		if (value === null || key !== 'edit-notes-on-double-click') {
+		    return;
+		}
+		if (value) {
+		    me.getEl().on('dblclick', me.run_editor, me);
+		} else {
+		    // there's only the me.run_editor listener, and removing just that did not work
+		    me.getEl().clearListeners();
+		}
+	    });
+	    // to cover initial setting value
+	    if (sp.get('edit-notes-on-double-click', false)) {
+		me.getEl().on('dblclick', me.run_editor, me);
+	    }
 	},
 	afterlayout: function() {
 	    let me = this;
