@@ -349,10 +349,9 @@ Ext.define('Proxmox.window.Edit', {
 	    me.title = Proxmox.Utils.dialog_title(me.subject, me.isCreate, me.isAdd);
 	}
 
-	if (me.isCreate || !me.showReset) {
-	    me.buttons = [submitBtn];
-	} else {
-	    me.buttons = [submitBtn];
+	me.buttons = [submitBtn];
+
+	if (!me.isCreate && me.showReset)) {
 	    me.tools = [resetTool];
 	}
 
