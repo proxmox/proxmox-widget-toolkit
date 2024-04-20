@@ -19,6 +19,7 @@ Ext.define('Proxmox.panel.NotesView', {
 	items: [
 	    {
 		text: gettext('Edit'),
+		iconCls: 'fa fa-pencil-square-o',
 		handler: function() {
 		    let view = this.up('panel');
 		    view.run_editor();
@@ -124,10 +125,11 @@ Ext.define('Proxmox.panel.NotesView', {
 
     tools: [
 	{
-	    type: 'gear',
-	    handler: function() {
-		let view = this.up('panel');
-		view.run_editor();
+	    glyph: 'xf044@FontAwesome', // fa-pencil-square-o
+	    tooltip: gettext('Edit notes'),
+	    callback: view => view.run_editor(),
+	    style: {
+		paddingRight: '5px',
 	    },
 	},
     ],
