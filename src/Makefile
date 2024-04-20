@@ -150,4 +150,5 @@ install: proxmoxlib.js proxmoxlib.min.js
 
 .PHONY: clean
 clean:
+	$(MAKE) -C proxmox-dark $@
 	rm -f proxmoxlib.js* proxmoxlib.min.js* .lint-incremental
