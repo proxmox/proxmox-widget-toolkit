@@ -66,6 +66,9 @@
 .x-mask-msg-text {
     text-align: center;
 }
+.x-window-header-default-top .x-mask {
+    background-color: #f5f5f5B4; /* ~ 0.7 opacity */
+}
 
 .proxmox-disabled-row, .proxmox-disabled-row td {
     /*color: #a0a0a0;*/

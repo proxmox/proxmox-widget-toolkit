@@ -12,6 +12,12 @@
   // make the color transparent so the border doesn't appear visibly,
   // like in crisp, but keep to keep the layout intact
   border-color: transparent;
+
+  // relevant for (disabled) elements that are rendered directly on the header bar like tools
+  // As otherwise, a too light mask is used, which then makes the element stand out in an odd way
+  .x-mask {
+    background-color: rgba($background-darker, 0.7);
+  }
 }
 
 .x-window-header-title-default {
