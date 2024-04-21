@@ -1,3 +1,43 @@
+proxmox-widget-toolkit (4.2.0) bookworm; urgency=medium
+
+  * window: add widget for Active Directory specific LDAP-like authentication
+
+  * window: ldap: add tooltips for firstname, lastname and email attributes
+
+  * dark-mode: set intentionally black icons to `$icon-color`
+
+  * window: edit: avoid sharing custom config objects between subclasses
+
+  * i18n: make various user-facing strings translatable
+
+  * remove button: allow one to set custom confirmation message
+
+  * notify: change 'Remove' button to 'Reset' for built-in targets
+
+  * css: correctly mask disabled elements inside headers
+
+  * fix #5277: move reset button into window header toolbar. The form reset
+    and the form submit button where located besides each other with the exact
+    same styling. This made it easy to click the wrong one by accident, while
+    most of the time not a huge issue, it's quite annoying and just
+    unnecessary to do it this way. Moving the reset functionality into the
+    header, besides the close tool, avoid this potential mis-click and makes
+    the form simpler in general. Mis-clicks between the close and the reset
+    tool in the header are not an issue because they both have the same level
+    of destructiveness w.r.t. pending data. Using the font-awesome undo icon
+    makes it quite clear and a tooltip, which is also exposed as ARIA label,
+    helps to further improve accessibility.
+
+  * notes view:
+    - place collapse tool on the right
+    - use pencil-square-o icon for opening the editor
+    - make opening the editor on double-click opt-in to avoid interfering with
+      word-boundary selection of text by default.
+
+  * network edit: allow bridges to have any valid interface name
+
+ -- Proxmox Support Team <support@proxmox.com>  Sun, 21 Apr 2024 12:31:26 +0200
+
 proxmox-widget-toolkit (4.1.5) bookworm; urgency=medium
 
   * dns: provide option to change behavior from sending the new, full actual
