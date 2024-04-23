@@ -45,6 +45,7 @@ Ext.define('Proxmox.window.EndpointEditBase', {
 		isCreate: me.isCreate,
 		baseUrl: me.baseUrl,
 		type: me.type,
+		defaultMailAuthor: endpointConfig.defaultMailAuthor,
 	    }],
 	});
 

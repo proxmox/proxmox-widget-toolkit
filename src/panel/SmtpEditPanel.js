@@ -161,8 +161,8 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
 	    fieldLabel: gettext('Author'),
 	    name: 'author',
 	    allowBlank: true,
-	    emptyText: gettext('Proxmox VE'),
 	    cbind: {
+		emptyText: '{defaultMailAuthor}',
 		deleteEmpty: '{!isCreate}',
 	    },
 	},

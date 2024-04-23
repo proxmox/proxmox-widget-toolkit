@@ -52,17 +52,26 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    name: 'Sendmail',
 	    ipanel: 'pmxSendmailEditPanel',
 	    iconCls: 'fa-envelope-o',
+	    defaultMailAuthor: 'Proxmox VE',
 	},
 	smtp: {
 	    name: 'SMTP',
 	    ipanel: 'pmxSmtpEditPanel',
 	    iconCls: 'fa-envelope-o',
+	    defaultMailAuthor: 'Proxmox VE',
 	},
 	gotify: {
 	    name: 'Gotify',
 	    ipanel: 'pmxGotifyEditPanel',
 	    iconCls: 'fa-bell-o',
 	},
+    },
+
+    // to add or change existing for product specific ones
+    overrideEndpointTypes: function(extra) {
+	for (const [key, value] of Object.entries(extra)) {
+	    Proxmox.Schema.notificationEndpointTypes[key] = value;
+	}
     },
 
     pxarFileTypes: {
