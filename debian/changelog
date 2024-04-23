@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (4.2.1) bookworm; urgency=medium
+
+  * fix #5251: tfa: set one-time-code auto-complete hint on TOTP input field
+
+  * sendmail: smtp: allow one to override the default mail author
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 23 Apr 2024 19:25:06 +0200
+
 proxmox-widget-toolkit (4.2.0) bookworm; urgency=medium
 
   * window: add widget for Active Directory specific LDAP-like authentication
