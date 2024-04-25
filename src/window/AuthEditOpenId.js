@@ -8,7 +8,7 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
     onGetValues: function(values) {
 	let me = this;
 
-	if (me.isCreate) {
+	if (me.isCreate && !me.useTypeInUrl) {
 	    values.type = me.type;
 	}
 

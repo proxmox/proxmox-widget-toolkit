@@ -51,6 +51,7 @@ Ext.define('Proxmox.window.AuthEditBase', {
 			realm: me.realm,
 			xtype: authConfig.ipanel,
 			isCreate: me.isCreate,
+			useTypeInUrl: me.useTypeInUrl,
 			type: me.authType,
 		    },
 		    {
@@ -67,6 +68,7 @@ Ext.define('Proxmox.window.AuthEditBase', {
 		realm: me.realm,
 		xtype: authConfig.ipanel,
 		isCreate: me.isCreate,
+		useTypeInUrl: me.useTypeInUrl,
 		type: me.authType,
 	    }];
 	}

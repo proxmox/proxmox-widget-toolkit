@@ -32,7 +32,7 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
     onlineHelp: 'user-realms-ldap',
 
     onGetValues: function(values) {
-	if (this.isCreate) {
+	if (this.isCreate && !this.useTypeInUrl) {
 	    values.type = this.type;
 	}
 
