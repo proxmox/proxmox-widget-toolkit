@@ -36,7 +36,7 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	    values.type = this.type;
 	}
 
-	if (values.anonymous_search) {
+	if (values.anonymous_search && !this.isCreate) {
 	    if (!values.delete) {
 		values.delete = [];
 	    }
@@ -166,7 +166,9 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	    maxValue: 65535,
 	    emptyText: gettext('Default'),
 	    submitEmptyText: false,
-	    deleteEmpty: true,
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+	    },
 	},
 	{
 	    xtype: 'proxmoxKVComboBox',
@@ -369,7 +371,9 @@ Ext.define('Proxmox.panel.LDAPSyncInputPanel', {
 	    xtype: 'proxmoxtextfield',
 	    name: 'user-classes',
 	    fieldLabel: gettext('User classes'),
-	    deleteEmpty: true,
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+	    },
 	    emptyText: 'inetorgperson, posixaccount, person, user',
 	    autoEl: {
 		tag: 'div',
@@ -380,7 +384,9 @@ Ext.define('Proxmox.panel.LDAPSyncInputPanel', {
 	    xtype: 'proxmoxtextfield',
 	    name: 'filter',
 	    fieldLabel: gettext('User Filter'),
-	    deleteEmpty: true,
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+	    },
 	},
     ],
 
