@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (4.2.3) bookworm; urgency=medium
+
+  * realm edit: don't send type as extra parameter when 'useTypeInUrl' is set
+
+  * realm edit: don't send 'delete' parameter when creating new entry
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 25 Apr 2024 11:45:12 +0200
+
 proxmox-widget-toolkit (4.2.2) bookworm; urgency=medium
 
   * form: move network VLAN field widget over from PVE
