@@ -389,15 +389,6 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		    return record?.get('type') === 'match-severity';
 		},
 	    },
-	    typeIsMatchCalendar: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		get: function(record) {
-		    return record?.get('type') === 'match-calendar';
-		},
-	    },
 	    matchSeverityValue: {
 		bind: {
 		    bindTo: '{selectedRecord}',
@@ -405,26 +396,6 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		},
 		set: function(value) {
 		    let record = this.get('selectedRecord');
-		    let currentData = record.get('data');
-		    record.set({
-			data: {
-			    ...currentData,
-			    value: value,
-			},
-		    });
-		},
-		get: function(record) {
-		    return record?.get('data')?.value;
-		},
-	    },
-	    matchCalendarValue: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		set: function(value) {
-		    let me = this;
-		    let record = me.get('selectedRecord');
 		    let currentData = record.get('data');
 		    record.set({
 			data: {
@@ -996,6 +967,58 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    ],
 	},
 	{
+	    xtype: 'pmxNotificationMatchCalendarSettings',
+	},
+    ],
+});
+
+Ext.define('Proxmox.panel.MatchCalendarSettings', {
+    extend: 'Ext.panel.Panel',
+    xtype: 'pmxNotificationMatchCalendarSettings',
+    border: false,
+    layout: 'anchor',
+    // Hide initially to avoid glitches when opening the window
+    hidden: true,
+    bind: {
+	hidden: '{!typeIsMatchCalendar}',
+    },
+    viewModel: {
+	// parent is set in `initComponents`
+	formulas: {
+	    typeIsMatchCalendar: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		get: function(record) {
+		    return record?.get('type') === 'match-calendar';
+		},
+	    },
+
+	    matchCalendarValue: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		set: function(value) {
+		    let me = this;
+		    let record = me.get('selectedRecord');
+		    let currentData = record.get('data');
+		    record.set({
+			data: {
+			    ...currentData,
+			    value: value,
+			},
+		    });
+		},
+		get: function(record) {
+		    return record?.get('data')?.value;
+		},
+	    },
+	},
+    },
+    items: [
+	{
 	    xtype: 'proxmoxKVComboBox',
 	    fieldLabel: gettext('Timespan to match'),
 	    isFormField: false,
@@ -1003,11 +1026,8 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    editable: true,
 	    displayField: 'key',
 	    field: 'value',
-	    // Hide initially to avoid glitches when opening the window
-	    hidden: true,
 	    bind: {
 		value: '{matchCalendarValue}',
-		hidden: '{!typeIsMatchCalendar}',
 		disabled: '{!typeIsMatchCalender}',
 	    },
 
@@ -1017,6 +1037,14 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    ],
 	},
     ],
+
+    initComponent: function() {
+	let me = this;
+	Ext.apply(me.viewModel, {
+	    parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
+	});
+	me.callParent();
+    },
 });
 
 Ext.define('Proxmox.panel.MatchFieldSettings', {
