@@ -380,15 +380,6 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		}
 		return !record.isRoot();
 	    },
-	    typeIsMatchField: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		get: function(record) {
-		    return record?.get('type') === 'match-field';
-		},
-	    },
 	    typeIsMatchSeverity: {
 		bind: {
 		    bindTo: '{selectedRecord}',
@@ -407,89 +398,13 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		    return record?.get('type') === 'match-calendar';
 		},
 	    },
-	    matchFieldType: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		set: function(value) {
-		    let me = this;
-		    let record = me.get('selectedRecord');
-		    let currentData = record.get('data');
-
-		    let newValue = [];
-
-		    // Build equivalent regular expression if switching
-		    // to 'regex' mode
-		    if (value === 'regex') {
-			let regexVal = "^(";
-			regexVal += currentData.value.join('|') + ")$";
-			newValue.push(regexVal);
-		    }
-
-		    record.set({
-			data: {
-			    ...currentData,
-			    type: value,
-			    value: newValue,
-			},
-		    });
-		},
-		get: function(record) {
-		    return record?.get('data')?.type;
-		},
-	    },
-	    matchFieldField: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		set: function(value) {
-		    let me = this;
-		    let record = me.get('selectedRecord');
-		    let currentData = record.get('data');
-
-		    record.set({
-			data: {
-			    ...currentData,
-			    field: value,
-			    // Reset value if field changes
-			    value: [],
-			},
-		    });
-		},
-		get: function(record) {
-		    return record?.get('data')?.field;
-		},
-	    },
-	    matchFieldValue: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		set: function(value) {
-		    let me = this;
-		    let record = me.get('selectedRecord');
-		    let currentData = record.get('data');
-		    record.set({
-			data: {
-			    ...currentData,
-			    value: value,
-			},
-		    });
-		},
-		get: function(record) {
-		    return record?.get('data')?.value;
-		},
-	    },
 	    matchSeverityValue: {
 		bind: {
 		    bindTo: '{selectedRecord}',
 		    deep: true,
 		},
 		set: function(value) {
-		    let me = this;
-		    let record = me.get('selectedRecord');
+		    let record = this.get('selectedRecord');
 		    let currentData = record.get('data');
 		    record.set({
 			data: {
@@ -1137,7 +1052,98 @@ Ext.define('Proxmox.panel.MatchFieldSettings', {
 	    },
 	},
     },
+    viewModel: {
+	// parent is set in `initComponents`
+	formulas: {
+	    typeIsMatchField: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		get: function(record) {
+		    return record?.get('type') === 'match-field';
+		},
+	    },
+	    isRegex: function(get) {
+		return get('matchFieldType') === 'regex';
+	    },
+	    matchFieldType: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		set: function(value) {
+		    let record = this.get('selectedRecord');
+		    let currentData = record.get('data');
 
+		    let newValue = [];
+
+		    // Build equivalent regular expression if switching
+		    // to 'regex' mode
+		    if (value === 'regex') {
+			let regexVal = "^";
+			if (currentData.value && currentData.value.length) {
+			    regexVal += `(${currentData.value.join('|')})`;
+			}
+			regexVal += "$";
+			newValue.push(regexVal);
+		    }
+
+		    record.set({
+			data: {
+			    ...currentData,
+			    type: value,
+			    value: newValue,
+			},
+		    });
+		},
+		get: function(record) {
+		    return record?.get('data')?.type;
+		},
+	    },
+	    matchFieldField: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		set: function(value) {
+		    let record = this.get('selectedRecord');
+		    let currentData = record.get('data');
+
+		    record.set({
+			data: {
+			    ...currentData,
+			    field: value,
+			    // Reset value if field changes
+			    value: [],
+			},
+		    });
+		},
+		get: function(record) {
+		    return record?.get('data')?.field;
+		},
+	    },
+	    matchFieldValue: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		set: function(value) {
+		    let record = this.get('selectedRecord');
+		    let currentData = record.get('data');
+		    record.set({
+			data: {
+			    ...currentData,
+			    value: value,
+			},
+		    });
+		},
+		get: function(record) {
+		    return record?.get('data')?.value;
+		},
+	    },
+	},
+    },
 
     initComponent: function() {
 	let me = this;
@@ -1195,15 +1201,10 @@ Ext.define('Proxmox.panel.MatchFieldSettings', {
 	    },
 	});
 
+	Ext.apply(me.viewModel, {
+	    parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
+	});
 	Ext.apply(me, {
-	    viewModel: Ext.create('Ext.app.ViewModel', {
-		parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
-		formulas: {
-		    isRegex: function(get) {
-			return get('matchFieldType') === 'regex';
-		    },
-		},
-	    }),
 	    items: [
 		{
 		    fieldLabel: gettext('Match Type'),
