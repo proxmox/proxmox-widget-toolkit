@@ -380,34 +380,7 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		}
 		return !record.isRoot();
 	    },
-	    typeIsMatchSeverity: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		get: function(record) {
-		    return record?.get('type') === 'match-severity';
-		},
-	    },
-	    matchSeverityValue: {
-		bind: {
-		    bindTo: '{selectedRecord}',
-		    deep: true,
-		},
-		set: function(value) {
-		    let record = this.get('selectedRecord');
-		    let currentData = record.get('data');
-		    record.set({
-			data: {
-			    ...currentData,
-			    value: value,
-			},
-		    });
-		},
-		get: function(record) {
-		    return record?.get('data')?.value;
-		},
-	    },
+
 	    rootMode: {
 		bind: {
 		    bindTo: '{selectedRecord}',
@@ -944,27 +917,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    },
 	},
 	{
-	    xtype: 'proxmoxKVComboBox',
-	    fieldLabel: gettext('Severities to match'),
-	    isFormField: false,
-	    allowBlank: true,
-	    multiSelect: true,
-	    field: 'value',
-	    // Hide initially to avoid glitches when opening the window
-	    hidden: true,
-	    bind: {
-		value: '{matchSeverityValue}',
-		hidden: '{!typeIsMatchSeverity}',
-		disabled: '{!typeIsMatchSeverity}',
-	    },
-
-	    comboItems: [
-		['info', gettext('Info')],
-		['notice', gettext('Notice')],
-		['warning', gettext('Warning')],
-		['error', gettext('Error')],
-		['unknown', gettext('Unknown')],
-	    ],
+	    xtype: 'pmxNotificationMatchSeveritySettings',
 	},
 	{
 	    xtype: 'pmxNotificationMatchCalendarSettings',
@@ -1034,6 +987,84 @@ Ext.define('Proxmox.panel.MatchCalendarSettings', {
 	    comboItems: [
 		['mon 8-12', ''],
 		['tue..fri,sun 0:00-23:59', ''],
+	    ],
+	},
+    ],
+
+    initComponent: function() {
+	let me = this;
+	Ext.apply(me.viewModel, {
+	    parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
+	});
+	me.callParent();
+    },
+});
+
+Ext.define('Proxmox.panel.MatchSeveritySettings', {
+    extend: 'Ext.panel.Panel',
+    xtype: 'pmxNotificationMatchSeveritySettings',
+    border: false,
+    layout: 'anchor',
+    // Hide initially to avoid glitches when opening the window
+    hidden: true,
+    bind: {
+	hidden: '{!typeIsMatchSeverity}',
+    },
+    viewModel: {
+	// parent is set in `initComponents`
+	formulas: {
+	    typeIsMatchSeverity: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		get: function(record) {
+		    return record?.get('type') === 'match-severity';
+		},
+	    },
+	    matchSeverityValue: {
+		bind: {
+		    bindTo: '{selectedRecord}',
+		    deep: true,
+		},
+		set: function(value) {
+		    let record = this.get('selectedRecord');
+		    let currentData = record.get('data');
+		    record.set({
+			data: {
+			    ...currentData,
+			    value: value,
+			},
+		    });
+		},
+		get: function(record) {
+		    return record?.get('data')?.value;
+		},
+	    },
+	},
+    },
+    items: [
+	{
+	    xtype: 'proxmoxKVComboBox',
+	    fieldLabel: gettext('Severities to match'),
+	    isFormField: false,
+	    allowBlank: true,
+	    multiSelect: true,
+	    field: 'value',
+	    // Hide initially to avoid glitches when opening the window
+	    hidden: true,
+	    bind: {
+		value: '{matchSeverityValue}',
+		hidden: '{!typeIsMatchSeverity}',
+		disabled: '{!typeIsMatchSeverity}',
+	    },
+
+	    comboItems: [
+		['info', gettext('Info')],
+		['notice', gettext('Notice')],
+		['warning', gettext('Warning')],
+		['error', gettext('Error')],
+		['unknown', gettext('Unknown')],
 	    ],
 	},
     ],
