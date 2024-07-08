@@ -79,7 +79,7 @@ Ext.define('Proxmox.window.NotificationMatcherEdit', {
 	labelWidth: 120,
     },
 
-    width: 700,
+    width: 800,
 
     initComponent: function() {
 	let me = this;
@@ -416,10 +416,22 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 		    let me = this;
 		    let record = me.get('selectedRecord');
 		    let currentData = record.get('data');
+
+		    let newValue = [];
+
+		    // Build equivalent regular expression if switching
+		    // to 'regex' mode
+		    if (value === 'regex') {
+			let regexVal = "^(";
+			regexVal += currentData.value.join('|') + ")$";
+			newValue.push(regexVal);
+		    }
+
 		    record.set({
 			data: {
 			    ...currentData,
 			    type: value,
+			    value: newValue,
 			},
 		    });
 		},
@@ -441,6 +453,8 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
 			data: {
 			    ...currentData,
 			    field: value,
+			    // Reset value if field changes
+			    value: [],
 			},
 		    });
 		},
@@ -549,6 +563,9 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
     column2: [
 	{
 	    xtype: 'pmxNotificationMatchRuleSettings',
+	    cbind: {
+		baseUrl: '{baseUrl}',
+	    },
 	},
 
     ],
@@ -601,7 +618,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 		let value = data.value;
 		text = Ext.String.format(gettext("Match field: {0}={1}"), field, value);
 		iconCls = 'fa fa-square-o';
-		if (!field || !value) {
+		if (!field || !value || (Ext.isArray(value) && !value.length)) {
 		    iconCls += ' internal-error';
 		}
 	    } break;
@@ -821,6 +838,11 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 		if (type === undefined) {
 		    type = "exact";
 		}
+
+		if (type === 'exact') {
+		    matchedValue = matchedValue.split(',');
+		}
+
 		return {
 		    type: 'match-field',
 		    data: {
@@ -982,7 +1004,9 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
     extend: 'Ext.panel.Panel',
     xtype: 'pmxNotificationMatchRuleSettings',
+    mixins: ['Proxmox.Mixin.CBind'],
     border: false,
+    layout: 'anchor',
 
     items: [
 	{
@@ -1000,6 +1024,8 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 		['notall', gettext('At least one rule does not match')],
 		['notany', gettext('No rule matches')],
 	    ],
+	    // Hide initially to avoid glitches when opening the window
+	    hidden: true,
 	    bind: {
 		hidden: '{!showMatchingMode}',
 		disabled: '{!showMatchingMode}',
@@ -1011,7 +1037,8 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    fieldLabel: gettext('Node type'),
 	    isFormField: false,
 	    allowBlank: false,
-
+	    // Hide initially to avoid glitches when opening the window
+	    hidden: true,
 	    bind: {
 		value: '{nodeType}',
 		hidden: '{!showMatcherType}',
@@ -1025,57 +1052,9 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    ],
 	},
 	{
-	    fieldLabel: gettext('Match Type'),
-	    xtype: 'proxmoxKVComboBox',
-	    reference: 'type',
-	    isFormField: false,
-	    allowBlank: false,
-	    submitValue: false,
-	    field: 'type',
-
-	    bind: {
-		hidden: '{!typeIsMatchField}',
-		disabled: '{!typeIsMatchField}',
-		value: '{matchFieldType}',
-	    },
-
-	    comboItems: [
-		['exact', gettext('Exact')],
-		['regex', gettext('Regex')],
-	    ],
-	},
-	{
-	    fieldLabel: gettext('Field'),
-	    xtype: 'proxmoxKVComboBox',
-	    isFormField: false,
-	    submitValue: false,
-	    allowBlank: false,
-	    editable: true,
-	    displayField: 'key',
-	    field: 'field',
-	    bind: {
-		hidden: '{!typeIsMatchField}',
-		disabled: '{!typeIsMatchField}',
-		value: '{matchFieldField}',
-	    },
-	    // TODO: Once we have a 'notification registry', we should
-	    // retrive those via an API call.
-	    comboItems: [
-		['type', ''],
-		['hostname', ''],
-	    ],
-	},
-	{
-	    fieldLabel: gettext('Value'),
-	    xtype: 'textfield',
-	    isFormField: false,
-	    submitValue: false,
-	    allowBlank: false,
-	    field: 'value',
-	    bind: {
-		hidden: '{!typeIsMatchField}',
-		disabled: '{!typeIsMatchField}',
-		value: '{matchFieldValue}',
+	    xtype: 'pmxNotificationMatchFieldSettings',
+	    cbind: {
+		baseUrl: '{baseUrl}',
 	    },
 	},
 	{
@@ -1085,7 +1064,8 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    allowBlank: true,
 	    multiSelect: true,
 	    field: 'value',
-
+	    // Hide initially to avoid glitches when opening the window
+	    hidden: true,
 	    bind: {
 		value: '{matchSeverityValue}',
 		hidden: '{!typeIsMatchSeverity}',
@@ -1108,7 +1088,8 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    editable: true,
 	    displayField: 'key',
 	    field: 'value',
-
+	    // Hide initially to avoid glitches when opening the window
+	    hidden: true,
 	    bind: {
 		value: '{matchCalendarValue}',
 		hidden: '{!typeIsMatchCalendar}',
@@ -1121,4 +1102,208 @@ Ext.define('Proxmox.panel.NotificationMatchRuleSettings', {
 	    ],
 	},
     ],
+});
+
+Ext.define('Proxmox.panel.MatchFieldSettings', {
+    extend: 'Ext.panel.Panel',
+    xtype: 'pmxNotificationMatchFieldSettings',
+    border: false,
+    layout: 'anchor',
+    // Hide initially to avoid glitches when opening the window
+    hidden: true,
+    bind: {
+	hidden: '{!typeIsMatchField}',
+    },
+    controller: {
+	xclass: 'Ext.app.ViewController',
+
+	control: {
+	    'field[reference=fieldSelector]': {
+		change: function(field) {
+		    let view = this.getView();
+		    let valueField = view.down('field[reference=valueSelector]');
+		    let store = valueField.getStore();
+		    let val = field.getValue();
+
+		    if (val) {
+			store.setFilters([
+			    {
+				property: 'field',
+				value: val,
+			    },
+			]);
+		    }
+		},
+	    },
+	},
+    },
+
+
+    initComponent: function() {
+	let me = this;
+
+	let store = Ext.create('Ext.data.Store', {
+	    model: 'proxmox-notification-fields',
+	    autoLoad: true,
+	    proxy: {
+		type: 'proxmox',
+		url: `/api2/json/${me.baseUrl}/matcher-fields`,
+	    },
+	    listeners: {
+		'load': function() {
+		    this.each(function(record) {
+			record.set({
+			    description:
+				Proxmox.Utils.formatNotificationFieldName(
+				    record.get('name'),
+				),
+			});
+		    });
+
+		    // Commit changes so that the description field is not marked
+		    // as dirty
+		    this.commitChanges();
+		},
+	    },
+	});
+
+	let valueStore = Ext.create('Ext.data.Store', {
+	    model: 'proxmox-notification-field-values',
+	    autoLoad: true,
+	    proxy: {
+		type: 'proxmox',
+
+		url: `/api2/json/${me.baseUrl}/matcher-field-values`,
+	    },
+	    listeners: {
+		'load': function() {
+		    this.each(function(record) {
+			if (record.get('field') === 'type') {
+			    record.set({
+				comment:
+				    Proxmox.Utils.formatNotificationFieldValue(
+					record.get('value'),
+				    ),
+			    });
+			}
+		    }, this, true);
+
+		    // Commit changes so that the description field is not marked
+		    // as dirty
+		    this.commitChanges();
+		},
+	    },
+	});
+
+	Ext.apply(me, {
+	    viewModel: Ext.create('Ext.app.ViewModel', {
+		parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
+		formulas: {
+		    isRegex: function(get) {
+			return get('matchFieldType') === 'regex';
+		    },
+		},
+	    }),
+	    items: [
+		{
+		    fieldLabel: gettext('Match Type'),
+		    xtype: 'proxmoxKVComboBox',
+		    reference: 'type',
+		    isFormField: false,
+		    allowBlank: false,
+		    submitValue: false,
+		    field: 'type',
+
+		    bind: {
+			value: '{matchFieldType}',
+		    },
+
+		    comboItems: [
+			['exact', gettext('Exact')],
+			['regex', gettext('Regex')],
+		    ],
+		},
+		{
+		    fieldLabel: gettext('Field'),
+		    reference: 'fieldSelector',
+		    xtype: 'proxmoxComboGrid',
+		    isFormField: false,
+		    submitValue: false,
+		    allowBlank: false,
+		    editable: false,
+		    store: store,
+		    queryMode: 'local',
+		    valueField: 'name',
+		    displayField: 'description',
+		    field: 'field',
+		    bind: {
+			value: '{matchFieldField}',
+		    },
+		    listConfig: {
+			columns: [
+			    {
+				header: gettext('Description'),
+				dataIndex: 'description',
+				flex: 2,
+			    },
+			    {
+				header: gettext('Field Name'),
+				dataIndex: 'name',
+				flex: 1,
+			    },
+			],
+		    },
+		},
+		{
+		    fieldLabel: gettext('Value'),
+		    reference: 'valueSelector',
+		    xtype: 'proxmoxComboGrid',
+		    autoSelect: false,
+		    editable: false,
+		    isFormField: false,
+		    submitValue: false,
+		    allowBlank: false,
+		    showClearTrigger: true,
+		    field: 'value',
+		    store: valueStore,
+		    valueField: 'value',
+		    displayField: 'value',
+		    notFoundIsValid: false,
+		    multiSelect: true,
+		    bind: {
+			value: '{matchFieldValue}',
+			hidden: '{isRegex}',
+		    },
+		    listConfig: {
+			columns: [
+			    {
+				header: gettext('Value'),
+				dataIndex: 'value',
+				flex: 1,
+			    },
+			    {
+				header: gettext('Comment'),
+				dataIndex: 'comment',
+				flex: 2,
+			    },
+			],
+		    },
+		},
+		{
+		    fieldLabel: gettext('Regex'),
+		    xtype: 'proxmoxtextfield',
+		    editable: true,
+		    isFormField: false,
+		    submitValue: false,
+		    allowBlank: false,
+		    field: 'value',
+		    bind: {
+			value: '{matchFieldValue}',
+			hidden: '{!isRegex}',
+		    },
+		},
+	    ],
+	});
+	me.callParent();
+    },
 });

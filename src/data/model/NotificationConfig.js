@@ -15,3 +15,15 @@ Ext.define('proxmox-notification-matchers', {
     },
     idProperty: 'name',
 });
+
+Ext.define('proxmox-notification-fields', {
+    extend: 'Ext.data.Model',
+    fields: ['name', 'description'],
+    idProperty: 'name',
+});
+
+Ext.define('proxmox-notification-field-values', {
+    extend: 'Ext.data.Model',
+    fields: ['value', 'comment', 'field'],
+    idProperty: 'value',
+});
