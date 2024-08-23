@@ -26,6 +26,14 @@ Ext.define('Proxmox.panel.AuthView', {
 	    dataIndex: 'type',
 	},
 	{
+	    header: gettext('Default'),
+	    width: 80,
+	    sortable: true,
+	    dataIndex: 'default',
+	    renderer: isDefault => isDefault ? Proxmox.Utils.renderEnabledIcon(true) : '',
+	    align: 'center',
+	},
+	{
 	    header: gettext('Comment'),
 	    sortable: false,
 	    dataIndex: 'comment',
