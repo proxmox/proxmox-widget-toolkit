@@ -29,9 +29,9 @@ Ext.define('Proxmox.window.AuthEditBase', {
 
 	let authConfig = Proxmox.Schema.authDomains[me.authType];
 	if (!authConfig) {
-	    throw 'unknown auth type';
+	    throw `unknown auth type ${me.authType}`;
 	} else if (!authConfig.add && me.isCreate) {
-	    throw 'trying to add non addable realm';
+	    throw `trying to add non addable realm of type ${me.authType}`;
 	}
 
 	me.subject = authConfig.name;
@@ -86,9 +86,9 @@ Ext.define('Proxmox.window.AuthEditBase', {
 		    var data = response.result.data || {};
 		    // just to be sure (should not happen)
 		    // only check this when the type is not in the api path
-		    if (!me.useTypeInUrl && data.type !== me.authType) {
+		    if (!me.useTypeInUrl && data.realm !== me.authType) {
 			me.close();
-			throw "got wrong auth type";
+			throw `got wrong auth type '${me.authType}' for realm '${data.realm}'`;
 		    }
 		    me.setValues(data);
 		},
