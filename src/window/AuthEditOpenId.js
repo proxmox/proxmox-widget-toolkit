@@ -36,6 +36,19 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
 	    allowBlank: false,
 	},
 	{
+	    xtype: 'proxmoxcheckbox',
+	    fieldLabel: gettext('Default realm'),
+	    name: 'default',
+	    value: 0,
+	    cbind: {
+		deleteEmpty: '{!isCreate}',
+	    },
+	    autoEl: {
+		tag: 'div',
+		'data-qtip': gettext('Set realm as default for login'),
+	    },
+	},
+	{
 	    xtype: 'proxmoxtextfield',
 	    fieldLabel: gettext('Client ID'),
 	    name: 'client-id',
