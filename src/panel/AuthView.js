@@ -44,11 +44,12 @@ Ext.define('Proxmox.panel.AuthView', {
 
     openEditWindow: function(authType, realm) {
 	let me = this;
-	const { useTypeInUrl } = Proxmox.Schema.authDomains[authType];
+	const { useTypeInUrl, onlineHelp } = Proxmox.Schema.authDomains[authType];
 
 	Ext.create('Proxmox.window.AuthEditBase', {
 	    baseUrl: me.baseUrl,
 	    useTypeInUrl,
+	    onlineHelp,
 	    authType,
 	    realm,
 	    listeners: {
