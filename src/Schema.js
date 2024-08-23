@@ -4,8 +4,10 @@ Ext.define('Proxmox.Schema', { // a singleton
     authDomains: {
 	pam: {
 	    name: 'Linux PAM',
+	    ipanel: 'pmxAuthSimplePanel',
+	    onlineHelp: 'user-realms-pam',
 	    add: false,
-	    edit: false,
+	    edit: true,
 	    pwchange: true,
 	    sync: false,
 	    useTypeInUrl: false,
