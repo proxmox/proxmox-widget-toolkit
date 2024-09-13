@@ -88,6 +88,7 @@ JSSRC=					\
 	window/DiskSmart.js		\
 	window/ZFSDetail.js		\
 	window/Certificates.js		\
+	window/ConsentModal.js		\
 	window/ACMEAccount.js		\
 	window/ACMEPluginEdit.js	\
 	window/ACMEDomains.js		\
