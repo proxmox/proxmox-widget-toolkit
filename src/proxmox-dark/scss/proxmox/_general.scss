@@ -4,7 +4,8 @@ img[id^="proxmoxlogo-"][id$="-img"] {
 }
 
 // removes the gray line in the header of the mail gateway
-div[id^="versioninfo-"] + div[id^="panel-"] > div[id^="panel-"][id$="-bodyWrap"] > div {
+div[id^="versioninfo-"] + div[id^="panel-"] > div[id^="panel-"][id$="-bodyWrap"] > div,
+div.eol-notice + div[id^="panel-"] > div[id^="panel-"][id$="-bodyWrap"] > div {
   background-color: transparent;
   border-color: transparent;
 }
