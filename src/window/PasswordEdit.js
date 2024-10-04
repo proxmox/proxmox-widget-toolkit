@@ -12,6 +12,10 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	labelWidth: 150,
     },
 
+    // specifies the minimum length of *new* passwords so this can be
+    // adapted by each product as limits are changed there.
+    minLength: 5,
+
     // allow products to opt-in as their API gains support for this.
     confirmCurrentPassword: false,
 
@@ -33,12 +37,14 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	    xtype: 'textfield',
 	    inputType: 'password',
 	    fieldLabel: gettext('New Password'),
-	    minLength: 5,
 	    allowBlank: false,
 	    name: 'password',
 	    listeners: {
 		change: (field) => field.next().validate(),
 		blur: (field) => field.next().validate(),
+	    },
+	    cbind: {
+		minLength: '{minLength}',
 	    },
 	},
 	{
