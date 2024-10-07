@@ -317,7 +317,7 @@ utilities: {
 	// that way the cookie gets deleted after the browser window is closed
 	if (data.ticket) {
 	    Proxmox.CSRFPreventionToken = data.CSRFPreventionToken;
-	    Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, data.ticket, null, '/', null, true, "strict");
+	    Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, data.ticket, null, '/', null, true, "lax");
 	}
 
 	if (data.token) {
@@ -343,7 +343,7 @@ utilities: {
 	    return;
 	}
 	// ExtJS clear is basically the same, but browser may complain if any cookie isn't "secure"
-	Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, "", new Date(0), null, null, true, "strict");
+	Ext.util.Cookies.set(Proxmox.Setup.auth_cookie_name, "", new Date(0), null, null, true, "lax");
 	window.localStorage.removeItem("ProxmoxUser");
     },
 
