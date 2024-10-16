@@ -1,3 +1,19 @@
+proxmox-widget-toolkit (4.2.4) bookworm; urgency=medium
+
+  * notification: matcher: match-field: show known fields/values
+
+  * notification: matcher: move match-severity and match-calendar fields to
+    panel
+
+  * css: dark theme: fix panel borders for the Proxmox Mail Gateway's EOL
+    notice widget
+
+  * fix opening a link from another site to a web UI of our products by
+    setting the auth-cookie's 'SameSite' attribute to lax, which is the safe
+    default in modern browsers.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 16 Oct 2024 18:54:37 +0200
+
 proxmox-widget-toolkit (4.2.3) bookworm; urgency=medium
 
   * realm edit: don't send type as extra parameter when 'useTypeInUrl' is set
