@@ -15,7 +15,9 @@
 }
 
 .proxmox-tags-full .x-grid-cell-inner-treecolumn .proxmox-tag-light,
-.proxmox-tags-full .x-grid-cell-inner-treecolumn .proxmox-tag-dark {
+.proxmox-tags-full .x-grid-cell-inner-treecolumn .proxmox-tag-dark,
+.x-grid-cell-inner-treecolumn .proxmox-tags-full .proxmox-tag-light,
+.x-grid-cell-inner-treecolumn .proxmox-tags-full .proxmox-tag-dark {
     display: inherit;
 }
 
@@ -25,8 +27,10 @@
 }
 
 
-.proxmox-tags-circle .proxmox-tag-light,
-.proxmox-tags-circle .proxmox-tag-dark {
+.proxmox-tags-circle :not(span.proxmox-tags-full) > .proxmox-tag-light,
+.proxmox-tags-circle :not(span.proxmox-tags-full) > .proxmox-tag-dark,
+.proxmox-tags-circle > .proxmox-tag-light,
+.proxmox-tags-circle > .proxmox-tag-dark {
     margin: 0px 1px;
     position: relative;
     top: 2px;
@@ -38,13 +42,17 @@
     overflow: hidden;
 }
 
-.proxmox-tags-none .proxmox-tag-light,
-.proxmox-tags-none .proxmox-tag-dark {
+.proxmox-tags-none :not(span.proxmox-tags-full) > .proxmox-tag-light,
+.proxmox-tags-none :not(span.proxmox-tags-full) > .proxmox-tag-dark,
+.proxmox-tags-none > .proxmox-tag-light,
+.proxmox-tags-none > .proxmox-tag-dark {
     display: none;
 }
 
-.proxmox-tags-dense .proxmox-tag-light,
-.proxmox-tags-dense .proxmox-tag-dark {
+.proxmox-tags-dense :not(span.proxmox-tags-full) > .proxmox-tag-light,
+.proxmox-tags-dense :not(span.proxmox-tags-full) > .proxmox-tag-dark,
+.proxmox-tags-dense > .proxmox-tag-light,
+.proxmox-tags-dense > .proxmox-tag-dark {
     width: 6px;
     margin-right: 1px;
     display: inline-block;
