@@ -1356,6 +1356,24 @@ utilities: {
 	);
     },
 
+    // Convert utf-8 string to base64.
+    // This also escapes unicode characters such as emojis.
+    utf8ToBase64: function(string) {
+	let bytes = new TextEncoder().encode(string);
+	const escapedString = Array.from(bytes, (byte) =>
+	    String.fromCodePoint(byte),
+	).join("");
+	return btoa(escapedString);
+    },
+
+    // Converts a base64 string into a utf8 string.
+    // Decodes escaped unicode characters correctly.
+    base64ToUtf8: function(b64_string) {
+	let string = atob(b64_string);
+	let bytes = Uint8Array.from(string, (m) => m.codePointAt(0));
+	return new TextDecoder().decode(bytes);
+    },
+
     stringToRGB: function(string) {
 	let hash = 0;
 	if (!string) {
