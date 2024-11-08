@@ -65,6 +65,11 @@ Ext.define('Proxmox.Schema', { // a singleton
 	    ipanel: 'pmxGotifyEditPanel',
 	    iconCls: 'fa-bell-o',
 	},
+	webhook: {
+	    name: 'Webhook',
+	    ipanel: 'pmxWebhookEditPanel',
+	    iconCls: 'fa-bell-o',
+	},
     },
 
     // to add or change existing for product specific ones

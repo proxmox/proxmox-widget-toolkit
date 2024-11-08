@@ -78,6 +78,7 @@ JSSRC=					\
 	panel/StatusView.js		\
 	panel/TfaView.js		\
 	panel/NotesView.js		\
+	panel/WebhookEditPanel.js	\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/SafeDestroy.js		\
