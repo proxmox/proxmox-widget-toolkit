@@ -29,6 +29,8 @@ Ext.define('Proxmox.node.ServiceView', {
 	    },
 	});
 
+	let filterInstalledOnly = record => record.get('unit-state') !== 'not-found';
+
 	let store = Ext.create('Proxmox.data.DiffStore', {
 	    rstore: rstore,
 	    sortAfterUpdate: true,
@@ -38,6 +40,24 @@ Ext.define('Proxmox.node.ServiceView', {
 		    direction: 'ASC',
 		},
 	    ],
+	    filters: [
+		filterInstalledOnly,
+	    ],
+	});
+
+	let unHideCB = Ext.create('Ext.form.field.Checkbox', {
+	    boxLabel: gettext('Show only installed services'),
+	    value: true,
+	    boxLabelAlign: 'before',
+	    listeners: {
+		change: function(_cb, value) {
+		    if (value) {
+			store.addFilter([filterInstalledOnly]);
+		    } else {
+			store.clearFilter();
+		    }
+		},
+	    },
 	});
 
 	let view_service_log = function() {
@@ -166,6 +186,8 @@ Ext.define('Proxmox.node.ServiceView', {
 		restart_btn,
 		'-',
 		syslog_btn,
+		'->',
+		unHideCB,
 	    ],
 	    columns: [
 		{
