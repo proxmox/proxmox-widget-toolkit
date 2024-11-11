@@ -1,3 +1,22 @@
+proxmox-widget-toolkit (4.3.0) bookworm; urgency=medium
+
+  * css: add some conditions to the tag classes for the tag view
+
+  * utils: add base64 conversion helper
+
+  * notification: add UI for adding/updating webhook targets
+
+  * fix #5836: ui: translate systemd states in system service view
+
+  * fix #5611: node service view: hide non-installed system services by
+    default
+
+  * password edit: allow one to override the minimum length parameter
+
+  * fix #5831: ui: right-align s.m.a.r.t numerical table data
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 11 Nov 2024 21:57:31 +0100
+
 proxmox-widget-toolkit (4.2.4) bookworm; urgency=medium
 
   * notification: matcher: match-field: show known fields/values
