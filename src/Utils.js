@@ -305,6 +305,18 @@ utilities: {
 	return Ext.htmlEncode(username);
     },
 
+    systemdStates: {
+	'enabled': gettext('enabled'),
+	'disabled': gettext('disabled'),
+	'running': gettext('running'),
+	'dead': gettext('dead'),
+	'not-found': gettext('not installed'),
+	'static': gettext('static'),
+	'reload': gettext('reload'),
+	'start': gettext('starting'),
+	'stop': gettext('stopping'),
+    },
+
     getStoredAuth: function() {
 	let storedAuth = JSON.parse(window.localStorage.getItem('ProxmoxUser'));
 	return storedAuth || {};
