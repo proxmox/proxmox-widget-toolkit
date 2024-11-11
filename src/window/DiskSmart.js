@@ -29,6 +29,7 @@ Ext.define('Proxmox.window.DiskSmart', {
 		    text: 'ID',
 		    dataIndex: 'id',
 		    width: 50,
+		    align: 'right',
 		},
 		{
 		    text: gettext('Attribute'),
@@ -45,16 +46,19 @@ Ext.define('Proxmox.window.DiskSmart', {
 		    text: gettext('Normalized'),
 		    dataIndex: 'real-normalized',
 		    width: 60,
+		    align: 'right',
 		},
 		{
 		    text: gettext('Threshold'),
 		    dataIndex: 'threshold',
 		    width: 60,
+		    align: 'right',
 		},
 		{
 		    text: gettext('Worst'),
 		    dataIndex: 'worst',
 		    width: 60,
+		    align: 'right',
 		},
 		{
 		    text: gettext('Flags'),
