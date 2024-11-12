@@ -282,7 +282,7 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 	    me.lookup('grid').getStore().add({
 		headerName: '',
 		headerValue: '',
-		emptyText: '',
+		emptyText: gettext('Value'),
 		newValue: true,
 	    });
 	},
@@ -357,6 +357,7 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 			    maskRe: me.maskRe,
 			    allowBlank: false,
 			    queryMode: 'local',
+			    emptyText: gettext('Key'),
 			    listeners: {
 				change: 'itemChange',
 			    },
