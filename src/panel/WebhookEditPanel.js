@@ -70,6 +70,7 @@ Ext.define('Proxmox.panel.WebhookEditPanel', {
 	    xtype: 'pmxWebhookKeyValueList',
 	    name: 'header',
 	    fieldLabel: gettext('Headers'),
+	    subject: gettext('Header'),
 	    maskValues: false,
 	    cbind: {
 		isCreate: '{isCreate}',
@@ -91,6 +92,7 @@ Ext.define('Proxmox.panel.WebhookEditPanel', {
 	    xtype: 'pmxWebhookKeyValueList',
 	    name: 'secret',
 	    fieldLabel: gettext('Secrets'),
+	    subject: gettext('Secret'),
 	    maskValues: true,
 	    cbind: {
 		isCreate: '{isCreate}',
@@ -167,6 +169,9 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 
     // override for column header
     fieldTitle: gettext('Item'),
+
+    // the text for a single element, used for the add button
+    subject: undefined,
 
     // will be applied to the textfields
     maskRe: undefined,
@@ -391,7 +396,7 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 	    },
 	    {
 		xtype: 'button',
-		text: gettext('Add'),
+		text: me.subject ? Ext.String.format(gettext('Add {0}'), me.subject) : gettext('Add'),
 		iconCls: 'fa fa-plus-circle',
 		handler: 'addLine',
 	    },
