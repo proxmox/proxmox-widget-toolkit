@@ -362,6 +362,9 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 				change: 'itemChange',
 			    },
 			},
+			onWidgetAttach: function(_col, widget) {
+			    widget.isValid();
+			},
 			flex: 1,
 		    },
 		    {
@@ -382,6 +385,9 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 			    bind: {
 				emptyText: '{record.emptyText}',
 			    },
+			},
+			onWidgetAttach: function(_col, widget) {
+			    widget.isValid();
 			},
 			flex: 1,
 		    },
