@@ -36,15 +36,12 @@ Ext.define('Proxmox.panel.WebhookEditPanel', {
 
     columnB: [
 	{
+	    xtype: 'fieldcontainer',
+	    fieldLabel: gettext('Method/URL'),
 	    layout: 'hbox',
 	    border: false,
 	    margin: '0 0 5 0',
 	    items: [
-		{
-		    xtype: 'displayfield',
-		    value: gettext('Method/URL:'),
-		    width: 125,
-		},
 		{
 		    xtype: 'proxmoxKVComboBox',
 		    name: 'method',
@@ -77,6 +74,7 @@ Ext.define('Proxmox.panel.WebhookEditPanel', {
 	    cbind: {
 		isCreate: '{isCreate}',
 	    },
+	    margin: '0 0 10 0',
 	},
 	{
 	    xtype: 'textarea',
@@ -87,7 +85,7 @@ Ext.define('Proxmox.panel.WebhookEditPanel', {
 	    fieldStyle: {
 		'font-family': 'monospace',
 	    },
-	    margin: '15 0 0 0',
+	    margin: '0 0 5 0',
 	},
 	{
 	    xtype: 'pmxWebhookKeyValueList',
@@ -97,6 +95,7 @@ Ext.define('Proxmox.panel.WebhookEditPanel', {
 	    cbind: {
 		isCreate: '{isCreate}',
 	    },
+	    margin: '0 0 10 0',
 	},
 	{
 	    xtype: 'proxmoxtextfield',
@@ -159,7 +158,7 @@ Ext.define('Proxmox.panel.WebhookEditPanel', {
 });
 
 Ext.define('Proxmox.form.WebhookKeyValueList', {
-    extend: 'Ext.container.Container',
+    extend: 'Ext.form.FieldContainer',
     alias: 'widget.pmxWebhookKeyValueList',
 
     mixins: [
@@ -319,33 +318,13 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 	},
     },
 
-    margin: '10 0 5 0',
-
     items: [
-	{
-	    layout: 'hbox',
-	    border: false,
-	    items: [
-		{
-		    xtype: 'displayfield',
-		    width: 125,
-		},
-		{
-		    xtype: 'button',
-		    text: gettext('Add'),
-		    iconCls: 'fa fa-plus-circle',
-		    handler: 'addLine',
-		    margin: '0 5 5 0',
-		},
-	    ],
-	},
 	{
 	    xtype: 'grid',
 	    reference: 'grid',
 	    minHeight: 100,
 	    maxHeight: 100,
 	    scrollable: 'vertical',
-	    margin: '0 0 0 125',
 
 	    viewConfig: {
 		deferEmptyText: false,
@@ -358,6 +337,13 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 		    },
 		},
 	    },
+	    margin: '5 0 5 0',
+	},
+	{
+	    xtype: 'button',
+	    text: gettext('Add'),
+	    iconCls: 'fa fa-plus-circle',
+	    handler: 'addLine',
 	},
     ],
 
@@ -365,12 +351,10 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 	let me = this;
 
 	for (const [key, value] of Object.entries(me.gridConfig ?? {})) {
-	    me.items[1][key] = value;
+	    me.items[0][key] = value;
 	}
 
-	me.items[0].items[0].value = me.fieldLabel + ':';
-
-	me.items[1].columns = [
+	me.items[0].columns = [
 	    {
 		header: me.fieldTtitle,
 		dataIndex: 'headerName',
