@@ -318,89 +318,92 @@ Ext.define('Proxmox.form.WebhookKeyValueList', {
 	},
     },
 
-    items: [
-	{
-	    xtype: 'grid',
-	    reference: 'grid',
-	    minHeight: 100,
-	    maxHeight: 100,
-	    scrollable: 'vertical',
-
-	    viewConfig: {
-		deferEmptyText: false,
-	    },
-
-	    store: {
-		listeners: {
-		    update: function() {
-			this.commitChanges();
-		    },
-		},
-	    },
-	    margin: '5 0 5 0',
-	},
-	{
-	    xtype: 'button',
-	    text: gettext('Add'),
-	    iconCls: 'fa fa-plus-circle',
-	    handler: 'addLine',
-	},
-    ],
-
     initComponent: function() {
 	let me = this;
 
-	for (const [key, value] of Object.entries(me.gridConfig ?? {})) {
-	    me.items[0][key] = value;
-	}
-
-	me.items[0].columns = [
+	let items = [
 	    {
-		header: me.fieldTtitle,
-		dataIndex: 'headerName',
-		xtype: 'widgetcolumn',
-		widget: {
-		    xtype: 'textfield',
-		    isFormField: false,
-		    maskRe: me.maskRe,
-		    allowBlank: false,
-		    queryMode: 'local',
+		xtype: 'grid',
+		reference: 'grid',
+		minHeight: 100,
+		maxHeight: 100,
+		scrollable: 'vertical',
+
+		viewConfig: {
+		    deferEmptyText: false,
+		},
+
+		store: {
 		    listeners: {
-			change: 'itemChange',
+			update: function() {
+			    this.commitChanges();
+			},
 		    },
 		},
-		flex: 1,
+		margin: '5 0 5 0',
+		columns: [
+		    {
+			header: me.fieldTtitle,
+			dataIndex: 'headerName',
+			xtype: 'widgetcolumn',
+			widget: {
+			    xtype: 'textfield',
+			    isFormField: false,
+			    maskRe: me.maskRe,
+			    allowBlank: false,
+			    queryMode: 'local',
+			    listeners: {
+				change: 'itemChange',
+			    },
+			},
+			flex: 1,
+		    },
+		    {
+			header: me.fieldTtitle,
+			dataIndex: 'headerValue',
+			xtype: 'widgetcolumn',
+			widget: {
+			    xtype: 'proxmoxtextfield',
+			    inputType: me.maskValues ? 'password' : 'text',
+			    isFormField: false,
+			    maskRe: me.maskRe,
+			    queryMode: 'local',
+			    listeners: {
+				change: 'itemChange',
+			    },
+			    allowBlank: !me.isCreate && me.maskValues,
+
+			    bind: {
+				emptyText: '{record.emptyText}',
+			    },
+			},
+			flex: 1,
+		    },
+		    {
+			xtype: 'widgetcolumn',
+			width: 40,
+			widget: {
+			    xtype: 'button',
+			    iconCls: 'fa fa-trash-o',
+			},
+		    },
+		],
 	    },
 	    {
-		header: me.fieldTtitle,
-		dataIndex: 'headerValue',
-		xtype: 'widgetcolumn',
-		widget: {
-		    xtype: 'proxmoxtextfield',
-		    inputType: me.maskValues ? 'password' : 'text',
-		    isFormField: false,
-		    maskRe: me.maskRe,
-		    queryMode: 'local',
-		    listeners: {
-			change: 'itemChange',
-		    },
-		    allowBlank: !me.isCreate && me.maskValues,
-
-		    bind: {
-			emptyText: '{record.emptyText}',
-		    },
-		},
-		flex: 1,
-	    },
-	    {
-		xtype: 'widgetcolumn',
-		width: 40,
-		widget: {
-		    xtype: 'button',
-		    iconCls: 'fa fa-trash-o',
-		},
+		xtype: 'button',
+		text: gettext('Add'),
+		iconCls: 'fa fa-plus-circle',
+		handler: 'addLine',
 	    },
 	];
+
+	for (const [key, value] of Object.entries(me.gridConfig ?? {})) {
+	    items[0][key] = value;
+	}
+
+	Ext.apply(me, {
+	    items,
+	});
 
 	me.callParent();
 	me.initField();
