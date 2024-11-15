@@ -33,6 +33,13 @@
   color: $icon-color;
 }
 
+// pve needs to set `color` on this pseudo element, but the api viewer and pbs
+// add a filter to the parent. so invert it here again, to fix this for pve.
+.x-tree-icon-parent:not(.x-tree-icon-custom)::before,
+.x-tree-icon-parent-expanded:not(.x-tree-icon-custom)::before {
+  filter: invert(90%);
+}
+
 // but some are implement as background SVGs or PNGs. invert them via
 // filters:
 .fa-ceph::before,
