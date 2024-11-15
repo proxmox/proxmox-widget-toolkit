@@ -2,6 +2,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
     extend: 'Proxmox.window.Edit',
     alias: ['widget.proxmoxNodeNetworkEdit'],
 
+    // Enable to show the VLAN ID field
+    bridge_set_vids: false,
+
     initComponent: function() {
 	let me = this;
 
@@ -57,11 +60,70 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	}
 
 	if (me.iftype === 'bridge') {
+	    let vids = Ext.create('Ext.form.field.Text', {
+		fieldLabel: gettext('Bridge VLAN IDs'),
+		name: 'bridge_vids',
+		emptyText: '2-4094',
+		disabled: true,
+		autoEl: {
+		    tag: 'div',
+		    'data-qtip': gettext("Space-separated list of VLANs offloaded to the hardware. Useful for NICs with restricted VLAN offloading support. Single VLAN IDs and ranges. For example: '2 4 100-200'"),
+		},
+		validator: function(value) {
+		    if (!value) { // empty
+			return true;
+		    }
+
+		    let vid_list = value.split(' ');
+
+		    let invalidVid = function(tag) {
+			if (!isNaN(tag) && (tag < 2 || tag > 4094)) {
+			    return `not a valid VLAN ID '${tag}'`;
+			}
+
+			return false;
+		    };
+
+		    for (const vid of vid_list) {
+			if (!vid) {
+			    continue;
+			}
+			let res = vid.match(/^(\d+)(?:-(\d+))?$/);
+			if (!res) {
+			    return `not a valid VLAN configuration '${vid}'`;
+			}
+			let start = Number(res[1]);
+			let end = Number(res[2]);
+
+			res = invalidVid(start);
+			if (res) {
+			    return res;
+			}
+
+			res = invalidVid(end);
+			if (res) {
+			    return res;
+			}
+
+			if (start >= end) {
+			    return `VID range must go from lower to higher tag: '${vid}'`;
+			}
+		    }
+		    return true;
+		},
+	    });
 	    column2.push({
 		xtype: 'proxmoxcheckbox',
 		fieldLabel: gettext('VLAN aware'),
 		name: 'bridge_vlan_aware',
 		deleteEmpty: !me.isCreate,
+		listeners: {
+		    change: function(f, newVal) {
+			if (me.bridge_set_vids) {
+			    vids.setDisabled(!newVal);
+			}
+		    },
+		},
 	    });
 	    column2.push({
 		xtype: 'textfield',
@@ -72,6 +134,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    'data-qtip': gettext('Space-separated list of interfaces, for example: enp0s0 enp1s0'),
 		},
 	    });
+	    if (me.bridge_set_vids) {
+		advancedColumn2.push(vids);
+	    }
 	} else if (me.iftype === 'OVSBridge') {
 	    column2.push({
 		xtype: 'textfield',

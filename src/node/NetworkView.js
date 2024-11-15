@@ -33,6 +33,9 @@ Ext.define('Proxmox.node.NetworkView', {
 
     showApplyBtn: false,
 
+    // decides if VLAN IDs field for bridges is shown, depends on the product if needed
+    bridge_set_vids: false,
+
     initComponent: function() {
 	let me = this;
 
@@ -100,6 +103,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		nodename: me.nodename,
 		iface: rec.data.iface,
 		iftype: rec.data.type,
+		bridge_set_vids: me.bridge_set_vids,
 		listeners: {
 		    destroy: () => reload(),
 		},
@@ -170,6 +174,7 @@ Ext.define('Proxmox.node.NetworkView', {
 		    nodename: me.nodename,
 		    iftype: iType,
 		    iface_default: findNextFreeInterfaceId(iDefault ?? iType),
+		    bridge_set_vids: me.bridge_set_vids,
 		    onlineHelp: 'sysadmin_network_configuration',
 		    listeners: {
 			destroy: () => reload(),
