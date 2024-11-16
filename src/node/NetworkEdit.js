@@ -74,39 +74,22 @@ Ext.define('Proxmox.node.NetworkEdit', {
 			return true;
 		    }
 
-		    let vid_list = value.split(' ');
-
-		    let invalidVid = function(tag) {
-			if (!isNaN(tag) && (tag < 2 || tag > 4094)) {
-			    return `not a valid VLAN ID '${tag}'`;
-			}
-
-			return false;
-		    };
-
-		    for (const vid of vid_list) {
+		    for (const vid of value.split(/\s+[,;]?/)) {
 			if (!vid) {
 			    continue;
 			}
 			let res = vid.match(/^(\d+)(?:-(\d+))?$/);
 			if (!res) {
-			    return `not a valid VLAN configuration '${vid}'`;
+			    return Ext.String.format(gettext("not a valid bridge VLAN ID entry: {0}"), vid);
 			}
-			let start = Number(res[1]);
-			let end = Number(res[2]);
+			let start = Number(res[1]), end = Number(res[2] ?? res[1]); // end=start for single IDs
 
-			res = invalidVid(start);
-			if (res) {
-			    return res;
-			}
-
-			res = invalidVid(end);
-			if (res) {
-			    return res;
-			}
-
-			if (start >= end) {
-			    return `VID range must go from lower to higher tag: '${vid}'`;
+			if (Number.isNaN(start) || Number.isNaN(end)) {
+			    return Ext.String.format(gettext('VID range includes not-a-number: {0}'), vid);
+			} else if (start > end) {
+			    return Ext.String.format(gettext('VID range must go from lower to higher tag: {0}'), vid);
+			} else if (start < 2 || end > 4094) { // check just one each, we already ensured start < end
+			    return Ext.String.format(gettext('VID range outside of allowed 2 and 4094 limit: {0}'), vid);
 			}
 		    }
 		    return true;
