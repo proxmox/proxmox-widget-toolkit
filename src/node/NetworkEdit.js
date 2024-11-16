@@ -3,7 +3,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
     alias: ['widget.proxmoxNodeNetworkEdit'],
 
     // Enable to show the VLAN ID field
-    bridge_set_vids: false,
+    enableBridgeVlanIds: false,
 
     initComponent: function() {
 	let me = this;
@@ -60,7 +60,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
 	}
 
 	if (me.iftype === 'bridge') {
-	    let vids = Ext.create('Ext.form.field.Text', {
+	    let vlanIdsField = !me.enableBridgeVlanIds ? undefined : Ext.create('Ext.form.field.Text', {
 		fieldLabel: gettext('VLAN IDs'),
 		name: 'bridge_vids',
 		emptyText: '2-4094',
@@ -102,8 +102,8 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		deleteEmpty: !me.isCreate,
 		listeners: {
 		    change: function(f, newVal) {
-			if (me.bridge_set_vids) {
-			    vids.setDisabled(!newVal);
+			if (vlanIdsField) {
+			    vlanIdsField.setDisabled(!newVal);
 			}
 		    },
 		},
@@ -117,8 +117,8 @@ Ext.define('Proxmox.node.NetworkEdit', {
 		    'data-qtip': gettext('Space-separated list of interfaces, for example: enp0s0 enp1s0'),
 		},
 	    });
-	    if (me.bridge_set_vids) {
-		advancedColumn2.push(vids);
+	    if (vlanIdsField) {
+		advancedColumn2.push(vlanIdsField);
 	    }
 	} else if (me.iftype === 'OVSBridge') {
 	    column2.push({
