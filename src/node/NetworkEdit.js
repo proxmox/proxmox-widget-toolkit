@@ -61,13 +61,13 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
 	if (me.iftype === 'bridge') {
 	    let vids = Ext.create('Ext.form.field.Text', {
-		fieldLabel: gettext('Bridge VLAN IDs'),
+		fieldLabel: gettext('VLAN IDs'),
 		name: 'bridge_vids',
 		emptyText: '2-4094',
 		disabled: true,
 		autoEl: {
 		    tag: 'div',
-		    'data-qtip': gettext("Space-separated list of VLANs offloaded to the hardware. Useful for NICs with restricted VLAN offloading support. Single VLAN IDs and ranges. For example: '2 4 100-200'"),
+		    'data-qtip': gettext("List of VLAN IDs and ranges, useful for NICs with restricted VLAN offloading support. For example: '2 4 100-200'"),
 		},
 		validator: function(value) {
 		    if (!value) { // empty
