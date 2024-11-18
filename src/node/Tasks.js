@@ -222,7 +222,7 @@ Ext.define('Proxmox.node.Tasks', {
 	    items: [
 		{
 		    xtype: 'proxmoxButton',
-		    text: gettext('View'),
+		    text: gettext('View Task'),
 		    iconCls: 'fa fa-window-restore',
 		    disabled: true,
 		    handler: 'showTaskLog',
