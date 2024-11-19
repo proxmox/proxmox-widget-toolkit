@@ -201,7 +201,16 @@ Ext.define('Proxmox.node.ServiceView', {
 		    width: 100,
 		    sortable: true,
 		    dataIndex: 'state',
-		    renderer: (value, meta, rec) => rec.get('state'),
+		    renderer: (value, meta, rec) => {
+			const unitState = rec.get('unit-state');
+			if (unitState === 'masked') {
+			    return gettext('disabled');
+			} else if (unitState === 'not-found') {
+			    return gettext('not installed');
+			} else {
+			    return value;
+			}
+		    },
 		},
 		{
 		    header: gettext('Active'),
@@ -216,7 +225,6 @@ Ext.define('Proxmox.node.ServiceView', {
 		    sortable: true,
 		    hidden: !Ext.Array.contains(['PVEAuthCookie', 'PBSAuthCookie'], Proxmox?.Setup?.auth_cookie_name),
 		    dataIndex: 'unit-state',
-		    renderer: (value, meta, rec) => rec.get('unit-state'),
 		},
 		{
 		    header: gettext('Description'),
