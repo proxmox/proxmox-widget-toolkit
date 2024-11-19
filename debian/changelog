@@ -1,3 +1,25 @@
+proxmox-widget-toolkit (4.3.1) bookworm; urgency=medium
+
+  * peraration to fix #5379: panel: authentication realm view: add opt-in
+    column displaying whether the realm is default and allow enabling it for a
+    realm
+
+  * various UX improvements for the webhook edit window:
+    - improve layout and component hierarchy
+    - use type in add button text
+    - show empty-text to key-value fields
+    - display validity for added key/value fields immediately
+
+  * add Bulgarian as available language
+
+  * dark theme: make icons in the permissions tree in Proxmox VE UI dark
+
+  * fix #3892: network: add bridge VIDs field for Linux bridge and enable them
+    if VLAN-aware is enabled.
+  * -
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 19 Nov 2024 12:40:04 +0100
+
 proxmox-widget-toolkit (4.3.0) bookworm; urgency=medium
 
   * css: add some conditions to the tag classes for the tag view
