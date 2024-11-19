@@ -3,6 +3,8 @@ Ext.define('Proxmox.panel.SimpleRealmInputPanel', {
     xtype: 'pmxAuthSimplePanel',
     mixins: ['Proxmox.Mixin.CBind'],
 
+    showDefaultRealm: false,
+
     column1: [
 	{
 	    xtype: 'pmxDisplayEditField',
@@ -21,6 +23,10 @@ Ext.define('Proxmox.panel.SimpleRealmInputPanel', {
 	    autoEl: {
 		tag: 'div',
 		'data-qtip': gettext('Set realm as default for login'),
+	    },
+	    cbind: {
+		hidden: '{!showDefaultRealm}',
+		disabled: '{!showDefaultRealm}',
 	    },
 	},
     ],

@@ -1,5 +1,8 @@
 Ext.define('Proxmox.window.AuthEditBase', {
     extend: 'Proxmox.window.Edit',
+    mixins: ['Proxmox.Mixin.CBind'],
+
+    showDefaultRealm: false,
 
     isAdd: true,
 
@@ -53,6 +56,7 @@ Ext.define('Proxmox.window.AuthEditBase', {
 			isCreate: me.isCreate,
 			useTypeInUrl: me.useTypeInUrl,
 			type: me.authType,
+			showDefaultRealm: me.showDefaultRealm,
 		    },
 		    {
 			title: gettext('Sync Options'),
@@ -70,6 +74,7 @@ Ext.define('Proxmox.window.AuthEditBase', {
 		isCreate: me.isCreate,
 		useTypeInUrl: me.useTypeInUrl,
 		type: me.authType,
+		showDefaultRealm: me.showDefaultRealm,
 	    }];
 	}
 

@@ -1,7 +1,5 @@
-
 Ext.define('Proxmox.panel.LDAPInputPanelViewModel', {
     extend: 'Ext.app.ViewModel',
-
     alias: 'viewmodel.pmxAuthLDAPPanel',
 
     data: {
@@ -22,6 +20,8 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
     extend: 'Proxmox.panel.InputPanel',
     xtype: 'pmxAuthLDAPPanel',
     mixins: ['Proxmox.Mixin.CBind'],
+
+    showDefaultRealm: false,
 
     viewModel: {
 	type: 'pmxAuthLDAPPanel',
@@ -89,6 +89,8 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	    value: 0,
 	    cbind: {
 		deleteEmpty: '{!isCreate}',
+		hidden: '{!showDefaultRealm}',
+		disabled: '{!showDefaultRealm}',
 	    },
 	    autoEl: {
 		tag: 'div',

@@ -3,6 +3,8 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
     xtype: 'pmxAuthOpenIDPanel',
     mixins: ['Proxmox.Mixin.CBind'],
 
+    showDefaultRealm: false,
+
     type: 'openid',
 
     onGetValues: function(values) {
@@ -42,6 +44,8 @@ Ext.define('Proxmox.panel.OpenIDInputPanel', {
 	    value: 0,
 	    cbind: {
 		deleteEmpty: '{!isCreate}',
+		hidden: '{!showDefaultRealm}',
+		disabled: '{!showDefaultRealm}',
 	    },
 	    autoEl: {
 		tag: 'div',

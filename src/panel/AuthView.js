@@ -1,7 +1,9 @@
 Ext.define('Proxmox.panel.AuthView', {
     extend: 'Ext.grid.GridPanel',
-
     alias: 'widget.pmxAuthView',
+    mixins: ['Proxmox.Mixin.CBind'],
+
+    showDefaultRealm: false,
 
     stateful: true,
     stateId: 'grid-authrealms',
@@ -32,6 +34,9 @@ Ext.define('Proxmox.panel.AuthView', {
 	    dataIndex: 'default',
 	    renderer: isDefault => isDefault ? Proxmox.Utils.renderEnabledIcon(true) : '',
 	    align: 'center',
+	    cbind: {
+		hidden: '{!showDefaultRealm}',
+	    },
 	},
 	{
 	    header: gettext('Comment'),
@@ -60,6 +65,7 @@ Ext.define('Proxmox.panel.AuthView', {
 	    onlineHelp,
 	    authType,
 	    realm,
+	    showDefaultRealm: me.showDefaultRealm,
 	    listeners: {
 		destroy: () => me.reload(),
 	    },
