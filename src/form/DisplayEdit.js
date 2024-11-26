@@ -41,6 +41,15 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 	vm.get('value');
     },
 
+    setEmptyText: function(emptyText) {
+	let me = this;
+	me.editField.setEmptyText(emptyText);
+    },
+    getEmptyText: function() {
+	let me = this;
+	return me.editField.getEmptyText();
+    },
+
     layout: 'fit',
     defaults: {
 	hideLabel: true,
@@ -98,6 +107,11 @@ Ext.define('Proxmox.form.field.DisplayEdit', {
 	});
 
 	me.callParent();
+
+	// save a reference to make it easier when one needs to operate on the underlying fields,
+	// like when creating a passthrough getter/setter to allow easy data-binding.
+	me.editField = me.down(editConfig.xtype);
+	me.displayField = me.down(displayConfig.xtype);
 
 	me.getViewModel().set('editable', me.editable);
     },
