@@ -10,6 +10,7 @@ Ext.define('Proxmox.form.field.Base64TextArea', {
         width: 600,
         height: 400,
         scrollable: 'y',
+        emptyText: gettext('You can use Markdown for rich text formatting.'),
     },
 
     setValue: function(value) {
