@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (4.3.3) bookworm; urgency=medium
+
+  * display-edit field: add emptyText getter and setter to support binding to
+    the property of the underlying edit-field directly.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 27 Nov 2024 12:25:44 +0100
+
 proxmox-widget-toolkit (4.3.2) bookworm; urgency=medium
 
   * node: service state: restore original behavior
