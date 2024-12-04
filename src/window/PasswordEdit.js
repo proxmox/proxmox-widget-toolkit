@@ -19,6 +19,8 @@ Ext.define('Proxmox.window.PasswordEdit', {
     // allow products to opt-in as their API gains support for this.
     confirmCurrentPassword: false,
 
+    hintHtml: undefined,
+
     items: [
 	{
 	    xtype: 'textfield',
@@ -56,6 +58,17 @@ Ext.define('Proxmox.window.PasswordEdit', {
 	    vtype: 'password',
 	    initialPassField: 'password',
 	    submitValue: false,
+	},
+	{
+	    xtype: 'component',
+	    userCls: 'pmx-hint',
+	    name: 'password-hint',
+	    hidden: true,
+	    //padding: '5 1',
+	    cbind: {
+		html: '{hintHtml}',
+		hidden: '{!hintHtml}',
+	    },
 	},
 	{
 	    xtype: 'hiddenfield',
