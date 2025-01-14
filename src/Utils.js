@@ -928,7 +928,7 @@ utilities: {
 	let parsed = Proxmox.Utils.parse_task_status(status);
 	switch (parsed) {
 	    case 'unknown': return Proxmox.Utils.unknownText;
-	    case 'error': return Proxmox.Utils.errorText + ': ' + status;
+	    case 'error': return Proxmox.Utils.errorText + ': ' + Ext.htmlEncode(status);
 	    case 'warning': return status.replace('WARNINGS', Proxmox.Utils.warningsText);
 	    case 'ok': // fall-through
 	    default: return status;
