@@ -108,11 +108,11 @@ Ext.define('Proxmox.window.TaskViewer', {
 		defaultValue: 'unknown',
 		renderer: function(value) {
 		    if (value !== 'stopped') {
-			return value;
+			return Ext.htmlEncode(value);
 		    }
 		    let es = statgrid.getObjectValue('exitstatus');
 		    if (es) {
-			return value + ': ' + es;
+			return Ext.htmlEncode(`${value}: ${es}`);
 		    }
 		    return 'unknown';
 		},
