@@ -141,7 +141,7 @@ Ext.define('Proxmox.button.StdRemoveButton', {
 	} else {
 	    text = gettext('Are you sure you want to remove entry {0}');
 	}
-	return Ext.String.format(text, `'${name}'`);
+	return Ext.String.format(text, Ext.htmlEncode(`'${name}'`));
     },
 
     handler: function(btn, event, rec) {
