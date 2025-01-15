@@ -95,14 +95,14 @@ Ext.define('Proxmox.window.ACMEPluginEdit', {
 		    let field = Ext.create({
 			xtype,
 			name: `custom_${name}`,
-			fieldLabel: label,
+			fieldLabel: Ext.htmlEncode(label),
 			width: '100%',
 			labelWidth: 150,
 			labelSeparator: '=',
 			emptyText: definition.default || '',
 			autoEl: definition.description ? {
 			    tag: 'div',
-			    'data-qtip': definition.description,
+			    'data-qtip': Ext.htmlEncode(Ext.htmlEncode(definition.description)),
 			} : undefined,
 		    });
 
