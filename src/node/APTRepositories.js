@@ -270,7 +270,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 		    let txt = [gettext('Warning')];
 		    record.data.warnings.forEach((warning) => {
 			if (warning.property === 'Suites') {
-			    txt.push(warning.message);
+			    txt.push(Ext.htmlEncode(warning.message));
 			}
 		    });
 		    metaData.tdAttr = `data-qtip="${Ext.htmlEncode(txt.join('<br>'))}"`;
@@ -305,7 +305,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
 			    ? gettext('The no-subscription repository is NOT production-ready')
 			    : gettext('The test repository may contain unstable updates')
 			    ;
-			    metaData.tdAttr = `data-qtip="${Ext.htmlEncode(qtip)}"`;
+			    metaData.tdAttr = `data-qtip="${Ext.htmlEncode(Ext.htmlEncode(qtip))}"`;
 		    }
 		}
 		return components.join(' ') + err;
