@@ -1,4 +1,4 @@
-proxmox-widget-toolkit (4.3.4) UNRELEASED; urgency=medium
+proxmox-widget-toolkit (4.3.4) bookworm; urgency=medium
 
   * textarea field: add emptyText message to show markdown is supported
 
