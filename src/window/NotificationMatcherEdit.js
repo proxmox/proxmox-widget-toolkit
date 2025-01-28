@@ -491,12 +491,17 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTree', {
 	    } break;
 	    case 'mode':
 		if (data.value === 'all') {
-		    text = gettext("All");
+		    if (data.invert) {
+			text = gettext('At least one rule does not match');
+		    } else {
+			text = gettext('All rules match');
+		    }
 		} else if (data.value === 'any') {
-		    text = gettext("Any");
-		}
-		if (data.invert) {
-		    text = `!${text}`;
+		    if (data.invert) {
+			text = gettext('No rule matches');
+		    } else {
+			text = gettext('Any rule matches');
+		    }
 		}
 		iconCls = 'fa fa-filter';
 
