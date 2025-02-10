@@ -50,6 +50,7 @@ JSSRC=					\
 	form/ACME.js			\
 	form/UserSelector.js		\
 	form/ThemeSelector.js		\
+	form/FingerprintField.js	\
 	button/Button.js		\
 	button/AltText.js		\
 	button/HelpButton.js		\
