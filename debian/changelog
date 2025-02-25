@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (4.3.5) bookworm; urgency=medium
+
+  * add form-field component for entering certificate fingerprints
+
+  * fix #6088: notification: matcher: use more descriptive strings
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 25 Feb 2025 17:08:11 +0100
+
 proxmox-widget-toolkit (4.3.4) bookworm; urgency=medium
 
   * textarea field: add emptyText message to show markdown is supported
