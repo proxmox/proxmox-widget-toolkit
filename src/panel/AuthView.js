@@ -13,6 +13,7 @@ Ext.define('Proxmox.panel.AuthView', {
     },
 
     baseUrl: '/access/domains',
+    storeBaseUrl: '/access/domains',
 
     columns: [
 	{
@@ -46,14 +47,6 @@ Ext.define('Proxmox.panel.AuthView', {
 	    flex: 1,
 	},
     ],
-
-    store: {
-	model: 'pmx-domains',
-	sorters: {
-	    property: 'realm',
-	    direction: 'ASC',
-	},
-    },
 
     openEditWindow: function(authType, realm) {
 	let me = this;
@@ -110,6 +103,18 @@ Ext.define('Proxmox.panel.AuthView', {
 
     initComponent: function() {
 	var me = this;
+
+	me.store = {
+	    model: 'pmx-domains',
+	    sorters: {
+		property: 'realm',
+		direction: 'ASC',
+	    },
+	    proxy: {
+		type: 'proxmox',
+		url: `/api2/json${me.storeBaseUrl}`,
+	    },
+	};
 
 	let menuitems = [];
 	for (const [authType, config] of Object.entries(Proxmox.Schema.authDomains).sort()) {
