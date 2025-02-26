@@ -91,9 +91,9 @@ Ext.define('Proxmox.window.AuthEditBase', {
 		    var data = response.result.data || {};
 		    // just to be sure (should not happen)
 		    // only check this when the type is not in the api path
-		    if (!me.useTypeInUrl && data.realm !== me.authType) {
+		    if (!me.useTypeInUrl && data.type !== me.authType) {
 			me.close();
-			throw `got wrong auth type '${me.authType}' for realm '${data.realm}'`;
+			throw `got wrong auth type '${me.authType}' for realm '${data.type}'`;
 		    }
 		    me.setValues(data);
 		},
