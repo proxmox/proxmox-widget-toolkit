@@ -7,6 +7,7 @@ Ext.define('Proxmox.form.RealmComboBox', {
 
 	init: function(view) {
 	    let store = view.getStore();
+	    store.proxy.url = `/api2/json${view.baseUrl}`;
 	    if (view.storeFilter) {
 		store.setFilters(view.storeFilter);
 	    }
@@ -45,6 +46,7 @@ Ext.define('Proxmox.form.RealmComboBox', {
     triggerAction: 'all',
     valueField: 'realm',
     displayField: 'descr',
+    baseUrl: '/access/domains',
     getState: function() {
 	return { value: this.getValue() };
     },
