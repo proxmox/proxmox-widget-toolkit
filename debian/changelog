@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (4.3.7) bookworm; urgency=medium
+
+  * authentication realm edit: use correct property to derive the realm type.
+
+  * authentication view: allow downstream users to override the API path to
+    query available authentication realms from.
+
+  * from: realm combobox: allow downstream users to override the API path to
+    query available authentication realms from.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 26 Feb 2025 19:12:24 +0100
+
 proxmox-widget-toolkit (4.3.6) bookworm; urgency=medium
 
   * object grid: fix onlineHelp setting from editorConfig for row editors
