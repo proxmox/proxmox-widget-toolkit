@@ -49,13 +49,21 @@ Ext.define('Proxmox.window.ACMEDomainEdit', {
                             return `acmedomain${i}`;
                         }
                     }
-                    throw 'too many domains configured';
+                    throw Ext.String.format(
+                        gettext('Cannot create more than {0} ACME domains.'),
+                        Proxmox.Utils.acmedomain_count,
+                    );
                 };
 
                 // If we have a 'usage' property (pmg), we only use the `acmedomainX` config keys.
                 if (win.separateDomainEntries || win.domainUsages) {
                     if (!configkey || configkey === 'acme') {
-                        configkey = find_free_slot();
+                        try {
+                            configkey = find_free_slot();
+                        } catch (e) {
+                            Ext.Msg.alert(Proxmox.Utils.errorText, e);
+                            throw e;
+                        }
                     }
                     delete values.type;
                     params[configkey] = Proxmox.Utils.printPropertyString(values, 'domain');
@@ -68,7 +76,12 @@ Ext.define('Proxmox.window.ACMEDomainEdit', {
                 // Then insert the domain depending on its type:
                 if (values.type === 'dns') {
                     if (!olddomain.configkey || olddomain.configkey === 'acme') {
-                        configkey = find_free_slot();
+                        try {
+                            configkey = find_free_slot();
+                        } catch (e) {
+                            Ext.Msg.alert(Proxmox.Utils.errorText, e);
+                            throw e;
+                        }
                         if (olddomain.domain) {
                             // we have to remove the domain from the acme domainlist
                             Proxmox.Utils.remove_domain_from_acme(acmeObj, olddomain.domain);
