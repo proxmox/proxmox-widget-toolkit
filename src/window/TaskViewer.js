@@ -49,13 +49,13 @@ Ext.define('Proxmox.window.TaskProgress', {
 		    Ext.Function.defer(me.close, 1000, me);
 		} else {
 		    me.close();
-		    Ext.Msg.alert('Task failed', exitstatus);
+		    Ext.Msg.alert('Task failed', Ext.htmlEncode(exitstatus));
 		}
 		me.taskDone(exitstatus === 'OK');
 	    }
 	});
 
-	let descr = Proxmox.Utils.format_task_description(task.type, task.id);
+	let descr = Ext.htmlEncode(Proxmox.Utils.format_task_description(task.type, task.id));
 
 	Ext.apply(me, {
 	    title: gettext('Task') + ': ' + descr,
@@ -119,10 +119,12 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    },
 	    exitstatus: {
 		visible: false,
+		renderer: Ext.String.htmlEncode,
 	    },
 	    type: {
 		header: gettext('Task type'),
 		required: true,
+		renderer: Ext.String.htmlEncode,
 	    },
 	    user: {
 		header: gettext('User name'),
@@ -144,13 +146,16 @@ Ext.define('Proxmox.window.TaskViewer', {
 	    node: {
 		header: gettext('Node'),
 		required: true,
+		renderer: Ext.String.htmlEncode,
 	    },
 	    pid: {
 		header: gettext('Process ID'),
 		required: true,
+		renderer: Ext.String.htmlEncode,
 	    },
 	    task_id: {
 		header: gettext('Task ID'),
+		renderer: Ext.String.htmlEncode,
 	    },
 	    starttime: {
 		header: gettext('Start Time'),
@@ -259,7 +264,7 @@ Ext.define('Proxmox.window.TaskViewer', {
 	statstore.startUpdate();
 
 	Ext.apply(me, {
-	    title: "Task viewer: " + task.desc + me.extraTitle,
+	    title: Ext.htmlEncode("Task viewer: " + task.desc + me.extraTitle),
 	    width: 800,
 	    height: 500,
 	    layout: 'fit',
