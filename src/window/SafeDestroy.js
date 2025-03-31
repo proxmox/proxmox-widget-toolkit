@@ -189,13 +189,13 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	let taskName = me.getTaskName();
 	if (Ext.isDefined(taskName)) {
 	    me.lookupReference('messageCmp').setHtml(
-		Proxmox.Utils.format_task_description(taskName, itemId),
+		Ext.htmlEncode(Proxmox.Utils.format_task_description(taskName, itemId)),
 	    );
 	} else {
 	    throw "no task name specified";
 	}
 
-	me.lookupReference('confirmField')
-	    .setFieldLabel(`${gettext('Please enter the ID to confirm')} (${itemId})`);
+	let label = `${gettext('Please enter the ID to confirm')} (${itemId})`;
+	me.lookupReference('confirmField').setFieldLabel(Ext.htmlEncode(label));
     },
 });
