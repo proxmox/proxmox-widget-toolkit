@@ -422,7 +422,7 @@ utilities: {
 	    let error = request._operation.getError();
 	    let msg = Proxmox.Utils.getResponseErrorMessage(error);
 	    if (!errorCallback || !errorCallback(error, msg)) {
-		Proxmox.Utils.setErrorMask(component, msg);
+		Proxmox.Utils.setErrorMask(component, Ext.htmlEncode(msg));
 	    }
 	});
     },
