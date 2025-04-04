@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (4.3.8) bookworm; urgency=medium
+
+  * node tasks: align view task button label to other uses.
+
+  * node tasks: add action column with button to view task.
+
+  * make use htmlEncode in various rendere to avoid glitches.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 04 Apr 2025 17:05:43 +0200
+
 proxmox-widget-toolkit (4.3.7) bookworm; urgency=medium
 
   * authentication realm edit: use correct property to derive the realm type.
