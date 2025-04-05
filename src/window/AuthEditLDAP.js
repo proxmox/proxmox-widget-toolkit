@@ -84,7 +84,7 @@ Ext.define('Proxmox.panel.LDAPInputPanel', {
 	},
 	{
 	    xtype: 'proxmoxcheckbox',
-	    fieldLabel: gettext('Default realm'),
+	    fieldLabel: gettext('Default Realm'),
 	    name: 'default',
 	    value: 0,
 	    cbind: {

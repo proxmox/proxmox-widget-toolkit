@@ -16,7 +16,7 @@ Ext.define('Proxmox.panel.SimpleRealmInputPanel', {
 	},
 	{
 	    xtype: 'proxmoxcheckbox',
-	    fieldLabel: gettext('Default realm'),
+	    fieldLabel: gettext('Default Realm'),
 	    name: 'default',
 	    value: 0,
 	    deleteEmpty: true,
