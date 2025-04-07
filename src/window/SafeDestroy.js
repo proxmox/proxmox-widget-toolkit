@@ -26,6 +26,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
     config: {
 	item: {
 	    id: undefined,
+	    formattedIdentifier: undefined,
 	},
 	url: undefined,
 	note: undefined,
@@ -189,7 +190,12 @@ Ext.define('Proxmox.window.SafeDestroy', {
 	let taskName = me.getTaskName();
 	if (Ext.isDefined(taskName)) {
 	    me.lookupReference('messageCmp').setHtml(
-		Ext.htmlEncode(Proxmox.Utils.format_task_description(taskName, itemId)),
+		Ext.htmlEncode(
+		    Proxmox.Utils.format_task_description(
+			taskName,
+			me.getItem().formattedIdentifier ?? itemId,
+		    ),
+		),
 	    );
 	} else {
 	    throw "no task name specified";
