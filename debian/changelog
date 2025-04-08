@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (4.3.10) bookworm; urgency=medium
+
+  * api request helper: always html-encode string used for error message to
+    avoid potential glitches.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 08 Apr 2025 17:36:56 +0200
+
 proxmox-widget-toolkit (4.3.9) bookworm; urgency=medium
 
   * authentication realms: consistently use title case.
