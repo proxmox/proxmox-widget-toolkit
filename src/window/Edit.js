@@ -140,7 +140,7 @@ Ext.define('Proxmox.window.Edit', {
 
         let values = me.getValues();
         Ext.Object.each(values, function (name, val) {
-            if (Object.prototype.hasOwnProperty.call(values, name)) {
+            if (Object.hasOwn(values, name)) {
                 if (Ext.isArray(val) && !val.length) {
                     values[name] = '';
                 }
