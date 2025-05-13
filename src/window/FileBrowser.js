@@ -11,6 +11,7 @@ Ext.define('proxmox-file-tree', {
             calculate: (data) => {
                 if (data.size === undefined) {
                     return '';
+                    // biome-ignore lint/correctness/noConstantCondition: temporarily disabled
                 } else if (false && data.type === 'd') {
                     // eslint-disable-line no-constant-condition
                     // FIXME: enable again once we fixed trouble with confusing size vs item #
