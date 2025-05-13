@@ -26,7 +26,9 @@ Ext.define('Proxmox.panel.ACMEAccounts', {
             let me = this;
             let view = me.getView();
             let selection = view.getSelection();
-            if (selection.length < 1) return;
+            if (selection.length < 1) {
+                return;
+            }
             Ext.create('Proxmox.window.ACMEAccountView', {
                 url: `${view.acmeUrl}/account/${selection[0].data.name}`,
             }).show();
@@ -40,7 +42,9 @@ Ext.define('Proxmox.panel.ACMEAccounts', {
 
         showTaskAndReload: function (options, success, response) {
             let me = this;
-            if (!success) return;
+            if (!success) {
+                return;
+            }
 
             let upid = response.result.data;
             Ext.create('Proxmox.window.TaskProgress', {

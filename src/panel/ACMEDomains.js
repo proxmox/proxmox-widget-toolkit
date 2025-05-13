@@ -101,7 +101,9 @@ Ext.define('Proxmox.panel.ACMEDomains', {
             let view = me.getView();
 
             let selection = view.getSelection();
-            if (selection.length < 1) return;
+            if (selection.length < 1) {
+                return;
+            }
 
             Ext.create('Proxmox.window.ACMEDomainEdit', {
                 url: view.url,
@@ -120,7 +122,9 @@ Ext.define('Proxmox.panel.ACMEDomains', {
             let me = this;
             let view = me.getView();
             let selection = view.getSelection();
-            if (selection.length < 1) return;
+            if (selection.length < 1) {
+                return;
+            }
 
             let rec = selection[0].data;
             let params = {};
@@ -209,7 +213,9 @@ Ext.define('Proxmox.panel.ACMEDomains', {
         },
 
         orderFinished: function (success, cert) {
-            if (!success || !cert.reloadUi) return;
+            if (!success || !cert.reloadUi) {
+                return;
+            }
 
             Ext.getBody().mask(
                 gettext(
@@ -340,7 +346,9 @@ Ext.define('Proxmox.panel.ACMEDomains', {
         if (rec.data.acme) {
             let obj = Proxmox.Utils.parseACME(rec.data.acme);
             (obj.domains || []).forEach((domain) => {
-                if (domain === '') return;
+                if (domain === '') {
+                    return;
+                }
                 let record = {
                     domain,
                     type: 'standalone',
@@ -365,7 +373,9 @@ Ext.define('Proxmox.panel.ACMEDomains', {
 
         for (let i = 0; i < Proxmox.Utils.acmedomain_count; i++) {
             let acmedomain = rec.data[`acmedomain${i}`];
-            if (!acmedomain) continue;
+            if (!acmedomain) {
+                continue;
+            }
 
             let record = Proxmox.Utils.parsePropertyString(acmedomain, 'domain');
             record.type = record.plugin ? 'dns' : 'standalone';

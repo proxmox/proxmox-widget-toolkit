@@ -12,7 +12,9 @@ Ext.define('pmx-domains', {
         {
             name: 'descr',
             convert: function (value, { data = {} }) {
-                if (value) return Ext.String.htmlEncode(value);
+                if (value) {
+                    return Ext.String.htmlEncode(value);
+                }
 
                 let text = data.comment || data.realm;
 

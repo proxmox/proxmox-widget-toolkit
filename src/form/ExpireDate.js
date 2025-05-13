@@ -13,7 +13,9 @@ Ext.define('Proxmox.form.field.ExpireDate', {
         let me = this;
 
         let value = me.callParent();
-        if (!value) value = 0;
+        if (!value) {
+            value = 0;
+        }
 
         return value;
     },

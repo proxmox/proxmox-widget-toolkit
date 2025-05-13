@@ -8,7 +8,9 @@ Ext.define('pmx-disk-list', {
         {
             name: 'status',
             convert: function (value, rec) {
-                if (value) return value;
+                if (value) {
+                    return value;
+                }
                 if (rec.data.health) {
                     return rec.data.health;
                 }
@@ -23,16 +25,24 @@ Ext.define('pmx-disk-list', {
         {
             name: 'name',
             convert: function (value, rec) {
-                if (value) return value;
-                if (rec.data.devpath) return rec.data.devpath;
+                if (value) {
+                    return value;
+                }
+                if (rec.data.devpath) {
+                    return rec.data.devpath;
+                }
                 return undefined;
             },
         },
         {
             name: 'disk-type',
             convert: function (value, rec) {
-                if (value) return value;
-                if (rec.data.type) return rec.data.type;
+                if (value) {
+                    return value;
+                }
+                if (rec.data.type) {
+                    return rec.data.type;
+                }
                 return undefined;
             },
         },
@@ -86,7 +96,9 @@ Ext.define('Proxmox.DiskList', {
             let me = this;
             let view = me.getView();
             let selection = view.getSelection();
-            if (!selection || selection.length < 1) return;
+            if (!selection || selection.length < 1) {
+                return;
+            }
 
             let rec = selection[0];
             Ext.create('Proxmox.window.DiskSmart', {
@@ -99,7 +111,9 @@ Ext.define('Proxmox.DiskList', {
             let me = this;
             let view = me.getView();
             let selection = view.getSelection();
-            if (!selection || selection.length < 1) return;
+            if (!selection || selection.length < 1) {
+                return;
+            }
 
             let rec = selection[0];
             Proxmox.Utils.API2Request({
@@ -124,7 +138,9 @@ Ext.define('Proxmox.DiskList', {
             let me = this;
             let view = me.getView();
             let selection = view.getSelection();
-            if (!selection || selection.length < 1) return;
+            if (!selection || selection.length < 1) {
+                return;
+            }
 
             let rec = selection[0];
             Proxmox.Utils.API2Request({
@@ -215,7 +231,9 @@ Ext.define('Proxmox.DiskList', {
     },
 
     renderDiskType: function (v) {
-        if (v === undefined) return Proxmox.Utils.unknownText;
+        if (v === undefined) {
+            return Proxmox.Utils.unknownText;
+        }
         switch (v) {
             case 'ssd':
                 return 'SSD';

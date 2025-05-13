@@ -13,7 +13,9 @@ Ext.define('Proxmox.Markdown', {
         let _isHTTPLike = (value) => value.match(/^\s*https?:/i); // URL's protocol ends with :
         let _sanitize;
         _sanitize = (node) => {
-            if (node.nodeType === 3) return;
+            if (node.nodeType === 3) {
+                return;
+            }
             if (
                 node.nodeType !== 1 ||
                 /^(script|style|form|select|option|optgroup|map|area|canvas|textarea|applet|font|iframe|audio|video|object|embed|svg)$/i.test(
@@ -58,7 +60,9 @@ Ext.define('Proxmox.Markdown', {
                     node.attributes.removeNamedItem(name);
                 }
             }
-            for (let i = node.childNodes.length; i--; ) _sanitize(node.childNodes[i]);
+            for (let i = node.childNodes.length; i--; ) {
+                _sanitize(node.childNodes[i]);
+            }
         };
 
         const doc = new DOMParser().parseFromString(

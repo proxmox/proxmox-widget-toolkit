@@ -78,7 +78,9 @@ Ext.define('Proxmox.widget.RRDChart', {
             let units = ['', 'k', 'M', 'G', 'T', 'P'];
             let si = 0;
             let format = '0.##';
-            if (value < 0.1) format += '#';
+            if (value < 0.1) {
+                format += '#';
+            }
             const baseValue = this.powerOfTwo ? 1024 : 1000;
             while (value >= baseValue && si < units.length - 1) {
                 value = value / baseValue;
@@ -92,7 +94,9 @@ Ext.define('Proxmox.widget.RRDChart', {
             value = Ext.util.Format.number(value, format);
 
             let unit = units[si];
-            if (unit && this.powerOfTwo) unit += 'i';
+            if (unit && this.powerOfTwo) {
+                unit += 'i';
+            }
 
             return `${value.toString()} ${unit}`;
         },

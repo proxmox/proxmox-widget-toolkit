@@ -66,7 +66,9 @@ Ext.define('Proxmox.panel.TfaView', {
         },
 
         onLoad: function (store, data, success) {
-            if (!success) return;
+            if (!success) {
+                return;
+            }
 
             let now = new Date().getTime() / 1000;
             let records = [];

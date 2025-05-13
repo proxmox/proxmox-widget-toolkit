@@ -25,7 +25,9 @@ Ext.define('Proxmox.panel.ACMEPluginView', {
             let me = this;
             let view = me.getView();
             let selection = view.getSelection();
-            if (selection.length < 1) return;
+            if (selection.length < 1) {
+                return;
+            }
             let plugin = selection[0].data.plugin;
             Ext.create('Proxmox.window.ACMEPluginEdit', {
                 acmeUrl: view.acmeUrl,

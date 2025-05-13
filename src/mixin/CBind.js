@@ -132,7 +132,9 @@ Ext.define('Proxmox.Mixin.CBind', {
         let applyCBind = function (obj) {
             let cbind = obj.cbind,
                 cdata;
-            if (!cbind) return;
+            if (!cbind) {
+                return;
+            }
 
             for (const prop in cbind) {
                 // eslint-disable-line guard-for-in
@@ -145,7 +147,9 @@ Ext.define('Proxmox.Mixin.CBind', {
                     found = true;
                 } else if ((match = /^\{(!)?([a-z_][a-z0-9_]*)\}$/i.exec(cdata))) {
                     let cvalue = getConfigValue(match[2]);
-                    if (match[1]) cvalue = !cvalue;
+                    if (match[1]) {
+                        cvalue = !cvalue;
+                    }
                     obj[prop] = cvalue;
                     found = true;
                 } else if (
@@ -160,7 +164,9 @@ Ext.define('Proxmox.Mixin.CBind', {
                             throw "unable to get cbind data for '" + match[2] + "'";
                         }
                     });
-                    if (match[1]) cvalue = !cvalue;
+                    if (match[1]) {
+                        cvalue = !cvalue;
+                    }
                     obj[prop] = cvalue;
                     found = true;
                 } else {
@@ -194,7 +200,9 @@ Ext.define('Proxmox.Mixin.CBind', {
                 }
             }
 
-            if (!found) return org; // no need to copy
+            if (!found) {
+                return org; // no need to copy
+            }
 
             copy = [];
             for (i = 0; i < arrayLength; i++) {
@@ -249,7 +257,9 @@ Ext.define('Proxmox.Mixin.CBind', {
             for (prop in me) {
                 // eslint-disable-line guard-for-in
                 el = me[prop];
-                if (el === undefined || el === null) continue;
+                if (el === undefined || el === null) {
+                    continue;
+                }
                 if (typeof el === 'object' && el.constructor === Object) {
                     if ((el.xtype || el.cbind) && prop !== 'config') {
                         me[prop] = cloneTemplateObject(el);

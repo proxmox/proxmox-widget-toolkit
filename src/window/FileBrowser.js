@@ -94,7 +94,9 @@ Ext.define('Proxmox.window.FileBrowser', {
             let view = me.getView();
             let tree = me.lookup('tree');
             let selection = tree.getSelection();
-            if (!selection || selection.length < 1) return;
+            if (!selection || selection.length < 1) {
+                return;
+            }
 
             let data = selection[0].data;
 
@@ -119,7 +121,9 @@ Ext.define('Proxmox.window.FileBrowser', {
             let view = me.getView();
             let tree = me.lookup('tree');
             let selection = tree.getSelection();
-            if (!selection || selection.length < 1) return;
+            if (!selection || selection.length < 1) {
+                return;
+            }
 
             let data = selection[0].data;
             let st = Ext.String.format(gettext('Selected "{0}"'), atob(data.filepath));
