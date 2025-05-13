@@ -1722,7 +1722,7 @@ Ext.define('Proxmox.Utils', {
         me.httpUrlRegex = new RegExp(HTTP_URL_REGEX);
 
         // Same as SAFE_ID_REGEX in proxmox-schema
-        me.safeIdRegex = /^(?:[A-Za-z0-9_][A-Za-z0-9._\\-]*)$/;
+        me.safeIdRegex = /^(?:[A-Za-z0-9_][A-Za-z0-9._\-\\]*)$/;
     },
 });
 
