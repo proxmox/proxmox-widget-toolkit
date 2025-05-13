@@ -3,7 +3,7 @@ Ext.define('Proxmox.form.NetworkSelectorController', {
     alias: 'controller.proxmoxNetworkSelectorController',
 
     init: function (view) {
-        let me = this;
+        let _me = this;
 
         if (!view.nodename) {
             throw 'missing custom view config: nodename';

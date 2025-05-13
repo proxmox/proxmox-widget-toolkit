@@ -176,7 +176,7 @@ Ext.define('Proxmox.DiskList', {
         },
 
         onLoad: function (store, records, success, operation) {
-            let me = this;
+            let _me = this;
             let view = this.getView();
 
             if (!success) {

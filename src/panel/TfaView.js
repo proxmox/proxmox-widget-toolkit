@@ -49,7 +49,7 @@ Ext.define('Proxmox.panel.TfaView', {
         xclass: 'Ext.app.ViewController',
 
         init: function (view) {
-            let me = this;
+            let _me = this;
             view.tfaStore = Ext.create('Proxmox.data.UpdateStore', {
                 autoStart: true,
                 interval: 5 * 1000,

@@ -53,7 +53,7 @@ Ext.define('Proxmox.Markdown', {
                         } else {
                             node.attributes.removeNamedItem(name);
                         }
-                    } catch (e) {
+                    } catch (_e) {
                         node.attributes.removeNamedItem(name);
                     }
                 } else if (name === 'target' && canonicalTagName !== 'a') {

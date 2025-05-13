@@ -839,7 +839,7 @@ Ext.define('Ext.ux.IFrame', {
     getDoc: function () {
         try {
             return this.getWin().document;
-        } catch (ex) {
+        } catch (_ex) {
             return null;
         }
     },
