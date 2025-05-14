@@ -66,6 +66,7 @@ utilities: {
 	ar: `العربية - ${gettext("Arabic")}`,
 	bg: `Български - ${gettext("Bulgarian")}`,
 	ca: `Català - ${gettext("Catalan")}`,
+	cs: `Czech - ${gettext("Czech")}`,
 	da: `Dansk - ${gettext("Danish")}`,
 	de: `Deutsch - ${gettext("German")}`,
 	en: `English - ${gettext("English")}`,
