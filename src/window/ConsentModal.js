@@ -32,4 +32,34 @@ Ext.define('Proxmox.window.ConsentModal', {
             text: gettext('OK'),
         },
     ],
+
+    onResize: function () {
+        let me = this;
+        let viewportSize = Ext.getBody().getViewSize();
+
+        let originalSize = me.originalSize ?? me.getSize();
+        // limit to viewport size - 10px for safety
+        let newSize = {
+            width: Math.min(originalSize.width, viewportSize.width - 10),
+            height: Math.min(originalSize.height, viewportSize.height - 10),
+        };
+
+        me.setSize(newSize);
+        me.alignTo(Ext.getBody(), 'c-c');
+    },
+
+    afterComponentLayout: function (width, height) {
+        let me = this;
+        me.originalSize ??= { width, height };
+    },
+
+    listeners: {
+        resize: 'onResize',
+    },
+
+    initComponent: function () {
+        let me = this;
+        me.callParent();
+        me.mon(Ext.getBody(), 'resize', me.onResize, me);
+    },
 });
