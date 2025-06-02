@@ -10,7 +10,7 @@ Ext.define('Proxmox.form.KVComboBox', {
     alias: 'widget.proxmoxKVComboBox',
 
     config: {
-	deleteEmpty: true,
+        deleteEmpty: true,
     },
 
     comboItems: undefined,
@@ -19,7 +19,7 @@ Ext.define('Proxmox.form.KVComboBox', {
     queryMode: 'local',
 
     // override framework function to implement deleteEmpty behaviour
-    getSubmitData: function() {
+    getSubmitData: function () {
         let me = this,
             data = null,
             val;
@@ -36,46 +36,47 @@ Ext.define('Proxmox.form.KVComboBox', {
         return data;
     },
 
-    validator: function(val) {
-	let me = this;
+    validator: function (val) {
+        let me = this;
 
-	if (me.editable || val === null || val === '') {
-	    return true;
-	}
+        if (me.editable || val === null || val === '') {
+            return true;
+        }
 
-	if (me.store.getCount() > 0) {
-	    let values = me.multiSelect ? val.split(me.delimiter) : [val];
-	    let items = me.store.getData().collect('value', 'data');
-	    if (Ext.Array.every(values, function(value) {
-		return Ext.Array.contains(items, value);
-	    })) {
-		return true;
-	    }
-	}
+        if (me.store.getCount() > 0) {
+            let values = me.multiSelect ? val.split(me.delimiter) : [val];
+            let items = me.store.getData().collect('value', 'data');
+            if (
+                Ext.Array.every(values, function (value) {
+                    return Ext.Array.contains(items, value);
+                })
+            ) {
+                return true;
+            }
+        }
 
-	// returns a boolean or string
-	return "value '" + val + "' not allowed!";
+        // returns a boolean or string
+        return "value '" + val + "' not allowed!";
     },
 
-    initComponent: function() {
-	let me = this;
+    initComponent: function () {
+        let me = this;
 
-	me.store = Ext.create('Ext.data.ArrayStore', {
-	    model: 'KeyValue',
-	    data: me.comboItems,
-	});
+        me.store = Ext.create('Ext.data.ArrayStore', {
+            model: 'KeyValue',
+            data: me.comboItems,
+        });
 
-	if (me.initialConfig.editable === undefined) {
-	    me.editable = false;
-	}
+        if (me.initialConfig.editable === undefined) {
+            me.editable = false;
+        }
 
-	me.callParent();
+        me.callParent();
     },
 
-    setComboItems: function(items) {
-	let me = this;
+    setComboItems: function (items) {
+        let me = this;
 
-	me.getStore().setData(items);
+        me.getStore().setData(items);
     },
-
 });

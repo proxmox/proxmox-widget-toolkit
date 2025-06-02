@@ -13,26 +13,26 @@ Ext.define('Proxmox.window.NotesEdit', {
     autoLoad: true,
     defaultButton: undefined,
 
-    setMaxLength: function(maxLength) {
-	let me = this;
+    setMaxLength: function (maxLength) {
+        let me = this;
 
-	let area = me.down('textarea[name="description"]');
-	area.maxLength = maxLength;
-	area.validate();
+        let area = me.down('textarea[name="description"]');
+        area.maxLength = maxLength;
+        area.validate();
 
-	return me;
+        return me;
     },
 
     items: {
-	xtype: 'textarea',
-	name: 'description',
-	height: '100%',
-	value: '',
-	hideLabel: true,
-	emptyText: gettext('You can use Markdown for rich text formatting.'),
-	fieldStyle: {
-	    'white-space': 'pre-wrap',
-	    'font-family': 'monospace',
-	},
+        xtype: 'textarea',
+        name: 'description',
+        height: '100%',
+        value: '',
+        hideLabel: true,
+        emptyText: gettext('You can use Markdown for rich text formatting.'),
+        fieldStyle: {
+            'white-space': 'pre-wrap',
+            'font-family': 'monospace',
+        },
     },
 });

@@ -4,55 +4,57 @@ Ext.define('Proxmox.window.EndpointEditBase', {
     isAdd: true,
 
     fieldDefaults: {
-	labelWidth: 120,
+        labelWidth: 120,
     },
 
     width: 700,
 
-    initComponent: function() {
-	let me = this;
+    initComponent: function () {
+        let me = this;
 
-	me.isCreate = !me.name;
+        me.isCreate = !me.name;
 
-	if (!me.baseUrl) {
-	    throw "baseUrl not set";
-	}
+        if (!me.baseUrl) {
+            throw 'baseUrl not set';
+        }
 
-	if (me.type === 'group') {
-	    me.url = `/api2/extjs${me.baseUrl}/groups`;
-	} else {
-	    me.url = `/api2/extjs${me.baseUrl}/endpoints/${me.type}`;
-	}
+        if (me.type === 'group') {
+            me.url = `/api2/extjs${me.baseUrl}/groups`;
+        } else {
+            me.url = `/api2/extjs${me.baseUrl}/endpoints/${me.type}`;
+        }
 
-	if (me.isCreate) {
-	    me.method = 'POST';
-	} else {
-	    me.url += `/${me.name}`;
-	    me.method = 'PUT';
-	}
+        if (me.isCreate) {
+            me.method = 'POST';
+        } else {
+            me.url += `/${me.name}`;
+            me.method = 'PUT';
+        }
 
-	let endpointConfig = Proxmox.Schema.notificationEndpointTypes[me.type];
-	if (!endpointConfig) {
-	    throw 'unknown endpoint type';
-	}
+        let endpointConfig = Proxmox.Schema.notificationEndpointTypes[me.type];
+        if (!endpointConfig) {
+            throw 'unknown endpoint type';
+        }
 
-	me.subject = endpointConfig.name;
+        me.subject = endpointConfig.name;
 
-	Ext.apply(me, {
-	    items: [{
-		name: me.name,
-		xtype: endpointConfig.ipanel,
-		isCreate: me.isCreate,
-		baseUrl: me.baseUrl,
-		type: me.type,
-		defaultMailAuthor: endpointConfig.defaultMailAuthor,
-	    }],
-	});
+        Ext.apply(me, {
+            items: [
+                {
+                    name: me.name,
+                    xtype: endpointConfig.ipanel,
+                    isCreate: me.isCreate,
+                    baseUrl: me.baseUrl,
+                    type: me.type,
+                    defaultMailAuthor: endpointConfig.defaultMailAuthor,
+                },
+            ],
+        });
 
-	me.callParent();
+        me.callParent();
 
-	if (!me.isCreate) {
-	    me.load();
-	}
+        if (!me.isCreate) {
+            me.load();
+        }
     },
 });

@@ -14,131 +14,128 @@ Ext.define('Proxmox.window.ACMEAccountCreate', {
     defaultExists: false,
 
     items: [
-	{
-	    xtype: 'proxmoxtextfield',
-	    fieldLabel: gettext('Account Name'),
-	    name: 'name',
-	    cbind: {
-		emptyText: (get) => get('defaultExists') ? '' : 'default',
-		allowBlank: (get) => !get('defaultExists'),
-	    },
-	},
-	{
-	    xtype: 'textfield',
-	    name: 'contact',
-	    vtype: 'email',
-	    allowBlank: false,
-	    fieldLabel: gettext('E-Mail'),
-	},
-	{
-	    xtype: 'proxmoxComboGrid',
-	    name: 'directory',
-	    reference: 'directory',
-	    allowBlank: false,
-	    valueField: 'url',
-	    displayField: 'name',
-	    fieldLabel: gettext('ACME Directory'),
-	    store: {
-		autoLoad: true,
-		fields: ['name', 'url'],
-		idProperty: ['name'],
-		proxy: { type: 'proxmox' },
-		sorters: {
-		    property: 'name',
-		    direction: 'ASC',
-		},
-	    },
-	    listConfig: {
-		columns: [
-		    {
-			header: gettext('Name'),
-			dataIndex: 'name',
-			flex: 1,
-		    },
-		    {
-			header: gettext('URL'),
-			dataIndex: 'url',
-			flex: 1,
-		    },
-		],
-	    },
-	    listeners: {
-		change: function(combogrid, value) {
-		    let me = this;
+        {
+            xtype: 'proxmoxtextfield',
+            fieldLabel: gettext('Account Name'),
+            name: 'name',
+            cbind: {
+                emptyText: (get) => (get('defaultExists') ? '' : 'default'),
+                allowBlank: (get) => !get('defaultExists'),
+            },
+        },
+        {
+            xtype: 'textfield',
+            name: 'contact',
+            vtype: 'email',
+            allowBlank: false,
+            fieldLabel: gettext('E-Mail'),
+        },
+        {
+            xtype: 'proxmoxComboGrid',
+            name: 'directory',
+            reference: 'directory',
+            allowBlank: false,
+            valueField: 'url',
+            displayField: 'name',
+            fieldLabel: gettext('ACME Directory'),
+            store: {
+                autoLoad: true,
+                fields: ['name', 'url'],
+                idProperty: ['name'],
+                proxy: { type: 'proxmox' },
+                sorters: {
+                    property: 'name',
+                    direction: 'ASC',
+                },
+            },
+            listConfig: {
+                columns: [
+                    {
+                        header: gettext('Name'),
+                        dataIndex: 'name',
+                        flex: 1,
+                    },
+                    {
+                        header: gettext('URL'),
+                        dataIndex: 'url',
+                        flex: 1,
+                    },
+                ],
+            },
+            listeners: {
+                change: function (combogrid, value) {
+                    let me = this;
 
-		    if (!value) {
-			return;
-		    }
+                    if (!value) {
+                        return;
+                    }
 
-		    let acmeUrl = me.up('window').acmeUrl;
+                    let acmeUrl = me.up('window').acmeUrl;
 
-		    let disp = me.up('window').down('#tos_url_display');
-		    let field = me.up('window').down('#tos_url');
-		    let checkbox = me.up('window').down('#tos_checkbox');
+                    let disp = me.up('window').down('#tos_url_display');
+                    let field = me.up('window').down('#tos_url');
+                    let checkbox = me.up('window').down('#tos_checkbox');
 
-		    disp.setValue(gettext('Loading'));
-		    field.setValue(undefined);
-		    checkbox.setValue(undefined);
-		    checkbox.setHidden(true);
+                    disp.setValue(gettext('Loading'));
+                    field.setValue(undefined);
+                    checkbox.setValue(undefined);
+                    checkbox.setHidden(true);
 
-		    Proxmox.Utils.API2Request({
-			url: `${acmeUrl}/tos`,
-			method: 'GET',
-			params: {
-			    directory: value,
-			},
-			success: function(response, opt) {
-			    field.setValue(response.result.data);
-			    disp.setValue(response.result.data);
-			    checkbox.setHidden(false);
-			},
-			failure: function(response, opt) {
-			    Ext.Msg.alert(gettext('Error'), response.htmlStatus);
-			},
-		    });
-		},
-	    },
-	},
-	{
-	    xtype: 'displayfield',
-	    itemId: 'tos_url_display',
-	    renderer: Proxmox.Utils.render_optional_url,
-	    name: 'tos_url_display',
-	},
-	{
-	    xtype: 'hidden',
-	    itemId: 'tos_url',
-	    name: 'tos_url',
-	},
-	{
-	    xtype: 'proxmoxcheckbox',
-	    itemId: 'tos_checkbox',
-	    boxLabel: gettext('Accept TOS'),
-	    submitValue: false,
-	    validateValue: function(value) {
-		if (value && this.checked) {
-		    return true;
-		}
-		return false;
-	    },
-	},
+                    Proxmox.Utils.API2Request({
+                        url: `${acmeUrl}/tos`,
+                        method: 'GET',
+                        params: {
+                            directory: value,
+                        },
+                        success: function (response, opt) {
+                            field.setValue(response.result.data);
+                            disp.setValue(response.result.data);
+                            checkbox.setHidden(false);
+                        },
+                        failure: function (response, opt) {
+                            Ext.Msg.alert(gettext('Error'), response.htmlStatus);
+                        },
+                    });
+                },
+            },
+        },
+        {
+            xtype: 'displayfield',
+            itemId: 'tos_url_display',
+            renderer: Proxmox.Utils.render_optional_url,
+            name: 'tos_url_display',
+        },
+        {
+            xtype: 'hidden',
+            itemId: 'tos_url',
+            name: 'tos_url',
+        },
+        {
+            xtype: 'proxmoxcheckbox',
+            itemId: 'tos_checkbox',
+            boxLabel: gettext('Accept TOS'),
+            submitValue: false,
+            validateValue: function (value) {
+                if (value && this.checked) {
+                    return true;
+                }
+                return false;
+            },
+        },
     ],
 
-    initComponent: function() {
-	let me = this;
+    initComponent: function () {
+        let me = this;
 
-	if (!me.acmeUrl) {
-	    throw "no acmeUrl given";
-	}
+        if (!me.acmeUrl) {
+            throw 'no acmeUrl given';
+        }
 
-	me.url = `${me.acmeUrl}/account`;
+        me.url = `${me.acmeUrl}/account`;
 
-	me.callParent();
+        me.callParent();
 
-	me.lookup('directory')
-	    .store
-	    .proxy
-	    .setUrl(`/api2/json/${me.acmeUrl}/directories`);
+        me.lookup('directory').store.proxy.setUrl(`/api2/json/${me.acmeUrl}/directories`);
     },
 });
 
@@ -148,57 +145,57 @@ Ext.define('Proxmox.window.ACMEAccountView', {
 
     width: 600,
     fieldDefaults: {
-	labelWidth: 140,
+        labelWidth: 140,
     },
 
     title: gettext('Account'),
 
     items: [
-	{
-	    xtype: 'displayfield',
-	    fieldLabel: gettext('E-Mail'),
-	    name: 'email',
-	},
-	{
-	    xtype: 'displayfield',
-	    fieldLabel: gettext('Created'),
-	    name: 'createdAt',
-	},
-	{
-	    xtype: 'displayfield',
-	    fieldLabel: gettext('Status'),
-	    name: 'status',
-	},
-	{
-	    xtype: 'displayfield',
-	    fieldLabel: gettext('Directory'),
-	    renderer: Proxmox.Utils.render_optional_url,
-	    name: 'directory',
-	},
-	{
-	    xtype: 'displayfield',
-	    fieldLabel: gettext('Terms of Services'),
-	    renderer: Proxmox.Utils.render_optional_url,
-	    name: 'tos',
-	},
+        {
+            xtype: 'displayfield',
+            fieldLabel: gettext('E-Mail'),
+            name: 'email',
+        },
+        {
+            xtype: 'displayfield',
+            fieldLabel: gettext('Created'),
+            name: 'createdAt',
+        },
+        {
+            xtype: 'displayfield',
+            fieldLabel: gettext('Status'),
+            name: 'status',
+        },
+        {
+            xtype: 'displayfield',
+            fieldLabel: gettext('Directory'),
+            renderer: Proxmox.Utils.render_optional_url,
+            name: 'directory',
+        },
+        {
+            xtype: 'displayfield',
+            fieldLabel: gettext('Terms of Services'),
+            renderer: Proxmox.Utils.render_optional_url,
+            name: 'tos',
+        },
     ],
 
-    initComponent: function() {
-	var me = this;
+    initComponent: function () {
+        var me = this;
 
-	me.callParent();
+        me.callParent();
 
-	// hide OK/Reset button, because we just want to show data
-	me.down('toolbar[dock=bottom]').setVisible(false);
+        // hide OK/Reset button, because we just want to show data
+        me.down('toolbar[dock=bottom]').setVisible(false);
 
-	me.load({
-	    success: function(response) {
-		var data = response.result.data;
-		data.email = data.account.contact[0];
-		data.createdAt = data.account.createdAt;
-		data.status = data.account.status;
-		me.setValues(data);
-	    },
-	});
+        me.load({
+            success: function (response) {
+                var data = response.result.data;
+                data.email = data.account.contact[0];
+                data.createdAt = data.account.createdAt;
+                data.status = data.account.status;
+                me.setValues(data);
+            },
+        });
     },
 });

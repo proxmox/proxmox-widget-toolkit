@@ -13,17 +13,17 @@ Ext.define('Proxmox.form.field.Base64TextArea', {
         emptyText: gettext('You can use Markdown for rich text formatting.'),
     },
 
-    setValue: function(value) {
+    setValue: function (value) {
         // We want to edit the decoded version of the text
         this.callParent([Proxmox.Utils.base64ToUtf8(value)]);
     },
 
-    processRawValue: function(value) {
+    processRawValue: function (value) {
         // The field could contain multi-line values
         return Proxmox.Utils.utf8ToBase64(value);
     },
 
-    getSubmitData: function() {
+    getSubmitData: function () {
         let me = this,
             data = null,
             val;
@@ -40,7 +40,7 @@ Ext.define('Proxmox.form.field.Base64TextArea', {
         return data;
     },
 
-    getSubmitValue: function() {
+    getSubmitValue: function () {
         let me = this;
 
         let value = this.processRawValue(this.getRawValue());
@@ -51,10 +51,10 @@ Ext.define('Proxmox.form.field.Base64TextArea', {
             return value;
         }
 
-        return me.getSkipEmptyText() ? null: value;
+        return me.getSkipEmptyText() ? null : value;
     },
 
-    setAllowBlank: function(allowBlank) {
+    setAllowBlank: function (allowBlank) {
         this.allowBlank = allowBlank;
         this.validate();
     },

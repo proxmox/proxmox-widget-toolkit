@@ -9,30 +9,30 @@ Ext.define('Proxmox.node.TimeEdit', {
     autoLoad: true,
 
     fieldDefaults: {
-	labelWidth: 70,
+        labelWidth: 70,
     },
 
     items: {
-	xtype: 'combo',
-	fieldLabel: gettext('Time zone'),
-	name: 'timezone',
-	queryMode: 'local',
-	store: Ext.create('Proxmox.data.TimezoneStore'),
-	displayField: 'zone',
-	editable: true,
-	anyMatch: true,
-	forceSelection: true,
-	allowBlank: false,
+        xtype: 'combo',
+        fieldLabel: gettext('Time zone'),
+        name: 'timezone',
+        queryMode: 'local',
+        store: Ext.create('Proxmox.data.TimezoneStore'),
+        displayField: 'zone',
+        editable: true,
+        anyMatch: true,
+        forceSelection: true,
+        allowBlank: false,
     },
 
-    initComponent: function() {
-	let me = this;
+    initComponent: function () {
+        let me = this;
 
-	if (!me.nodename) {
-	    throw "no node name specified";
-	}
-	me.url = "/api2/extjs/nodes/" + me.nodename + "/time";
+        if (!me.nodename) {
+            throw 'no node name specified';
+        }
+        me.url = '/api2/extjs/nodes/' + me.nodename + '/time';
 
-	me.callParent();
+        me.callParent();
     },
 });

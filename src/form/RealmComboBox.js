@@ -3,34 +3,34 @@ Ext.define('Proxmox.form.RealmComboBox', {
     alias: 'widget.pmxRealmComboBox',
 
     controller: {
-	xclass: 'Ext.app.ViewController',
+        xclass: 'Ext.app.ViewController',
 
-	init: function(view) {
-	    let store = view.getStore();
-	    store.proxy.url = `/api2/json${view.baseUrl}`;
-	    if (view.storeFilter) {
-		store.setFilters(view.storeFilter);
-	    }
-	    store.on('load', this.onLoad, view);
-	    store.load();
-	},
+        init: function (view) {
+            let store = view.getStore();
+            store.proxy.url = `/api2/json${view.baseUrl}`;
+            if (view.storeFilter) {
+                store.setFilters(view.storeFilter);
+            }
+            store.on('load', this.onLoad, view);
+            store.load();
+        },
 
-	onLoad: function(store, records, success) {
-	    if (!success) {
-		return;
-	    }
-	    let me = this;
-	    let val = me.getValue();
-	    if (!val || !me.store.findRecord('realm', val, 0, false, true, true)) {
-		let def = 'pam';
-		Ext.each(records, function(rec) {
-		    if (rec.data && rec.data.default) {
-			def = rec.data.realm;
-		    }
-		});
-		me.setValue(def);
-	    }
-	},
+        onLoad: function (store, records, success) {
+            if (!success) {
+                return;
+            }
+            let me = this;
+            let val = me.getValue();
+            if (!val || !me.store.findRecord('realm', val, 0, false, true, true)) {
+                let def = 'pam';
+                Ext.each(records, function (rec) {
+                    if (rec.data && rec.data.default) {
+                        def = rec.data.realm;
+                    }
+                });
+                me.setValue(def);
+            }
+        },
     },
 
     // define custom filters for the underlying store
@@ -47,13 +47,13 @@ Ext.define('Proxmox.form.RealmComboBox', {
     valueField: 'realm',
     displayField: 'descr',
     baseUrl: '/access/domains',
-    getState: function() {
-	return { value: this.getValue() };
+    getState: function () {
+        return { value: this.getValue() };
     },
-    applyState: function(state) {
-	if (state && state.value) {
-	    this.setValue(state.value);
-	}
+    applyState: function (state) {
+        if (state && state.value) {
+            this.setValue(state.value);
+        }
     },
     stateEvents: ['select'],
     stateful: true, // last chosen auth realm is saved between page reloads
@@ -61,7 +61,7 @@ Ext.define('Proxmox.form.RealmComboBox', {
     stateID: 'pveloginrealm',
 
     store: {
-	model: 'pmx-domains',
-	autoLoad: false,
+        model: 'pmx-domains',
+        autoLoad: false,
     },
 });

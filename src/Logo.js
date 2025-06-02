@@ -7,15 +7,15 @@ Ext.define('PMX.image.Logo', {
     src: '/images/proxmox_logo.png',
     alt: 'Proxmox',
     autoEl: {
-	tag: 'a',
-	href: 'https://www.proxmox.com',
-	target: '_blank',
+        tag: 'a',
+        href: 'https://www.proxmox.com',
+        target: '_blank',
     },
 
-    initComponent: function() {
-	let me = this;
-	let prefix = me.prefix !== undefined ? me.prefix : '/pve2';
-	me.src = prefix + me.src;
-	me.callParent();
+    initComponent: function () {
+        let me = this;
+        let prefix = me.prefix !== undefined ? me.prefix : '/pve2';
+        me.src = prefix + me.src;
+        me.callParent();
     },
 });

@@ -4,7 +4,7 @@
  * object with a columns property roughly based on the GridPicker from
  * https://www.sencha.com/forum/showthread.php?299909
  *
-*/
+ */
 
 Ext.define('Proxmox.form.ComboGrid', {
     extend: 'Ext.form.field.ComboBox',
@@ -15,26 +15,30 @@ Ext.define('Proxmox.form.ComboGrid', {
 
     // hack: allow to select empty value
     // seems extjs does not allow that when 'editable == false'
-    onKeyUp: function(e, t) {
+    onKeyUp: function (e, t) {
         let me = this;
         let key = e.getKey();
 
-        if (!me.editable && me.allowBlank && !me.multiSelect &&
-	    (key === e.BACKSPACE || key === e.DELETE)) {
-	    me.setValue('');
-	}
+        if (
+            !me.editable &&
+            me.allowBlank &&
+            !me.multiSelect &&
+            (key === e.BACKSPACE || key === e.DELETE)
+        ) {
+            me.setValue('');
+        }
 
         me.callParent(arguments);
     },
 
     config: {
-	skipEmptyText: false,
-	notFoundIsValid: false,
-	deleteEmpty: false,
-	errorHeight: 100,
-	// NOTE: the trigger will always be shown if allowBlank is true, setting showClearTrigger
-	// to false cannot change that
-	showClearTrigger: false,
+        skipEmptyText: false,
+        notFoundIsValid: false,
+        deleteEmpty: false,
+        errorHeight: 100,
+        // NOTE: the trigger will always be shown if allowBlank is true, setting showClearTrigger
+        // to false cannot change that
+        showClearTrigger: false,
     },
 
     // needed to trigger onKeyUp etc.
@@ -43,22 +47,22 @@ Ext.define('Proxmox.form.ComboGrid', {
     editable: false,
 
     triggers: {
-	clear: {
-	    cls: 'pmx-clear-trigger',
-	    weight: -1,
-	    hidden: true,
-	    handler: function() {
-		let me = this;
-		me.setValue('');
-	    },
-	},
+        clear: {
+            cls: 'pmx-clear-trigger',
+            weight: -1,
+            hidden: true,
+            handler: function () {
+                let me = this;
+                me.setValue('');
+            },
+        },
     },
 
-    setValue: function(value) {
-	let me = this;
-	let empty = Ext.isArray(value) ? !value.length : !value;
-	me.triggers.clear.setVisible(!empty && (me.allowBlank || me.showClearTrigger));
-	return me.callParent([value]);
+    setValue: function (value) {
+        let me = this;
+        let empty = Ext.isArray(value) ? !value.length : !value;
+        me.triggers.clear.setVisible(!empty && (me.allowBlank || me.showClearTrigger));
+        return me.callParent([value]);
     },
 
     // override ExtJS method
@@ -71,166 +75,167 @@ Ext.define('Proxmox.form.ComboGrid', {
     // so if we have multiselect enabled, return the rawValue (which
     // should be an array) and else we do callParent so
     // it should not impact any other use of the class
-    getRawValue: function() {
-	let me = this;
-	if (me.multiSelect) {
-	    return me.rawValue;
-	} else {
-	    return me.callParent();
-	}
+    getRawValue: function () {
+        let me = this;
+        if (me.multiSelect) {
+            return me.rawValue;
+        } else {
+            return me.callParent();
+        }
     },
 
-    getSubmitData: function() {
-	let me = this;
+    getSubmitData: function () {
+        let me = this;
 
-	let data = null;
-	if (!me.disabled && me.submitValue) {
-	    let val = me.getSubmitValue();
-	    if (val !== null) {
-		data = {};
-		data[me.getName()] = val;
-	    } else if (me.getDeleteEmpty()) {
-		data = {};
-		data.delete = me.getName();
-	    }
-	}
-	return data;
-   },
-
-    getSubmitValue: function() {
-	let me = this;
-
-	let value = me.callParent();
-	if (value !== '') {
-	    return value;
-	}
-
-	return me.getSkipEmptyText() ? null: value;
+        let data = null;
+        if (!me.disabled && me.submitValue) {
+            let val = me.getSubmitValue();
+            if (val !== null) {
+                data = {};
+                data[me.getName()] = val;
+            } else if (me.getDeleteEmpty()) {
+                data = {};
+                data.delete = me.getName();
+            }
+        }
+        return data;
     },
 
-    setAllowBlank: function(allowBlank) {
-	this.allowBlank = allowBlank;
-	this.validate();
+    getSubmitValue: function () {
+        let me = this;
+
+        let value = me.callParent();
+        if (value !== '') {
+            return value;
+        }
+
+        return me.getSkipEmptyText() ? null : value;
     },
 
-// override ExtJS protected method
-    onBindStore: function(store, initial) {
-	let me = this,
-	    picker = me.picker,
-	    extraKeySpec,
-	    valueCollectionConfig;
+    setAllowBlank: function (allowBlank) {
+        this.allowBlank = allowBlank;
+        this.validate();
+    },
 
-	// We're being bound, not unbound...
-	if (store) {
-	    // If store was created from a 2 dimensional array with generated field names 'field1' and 'field2'
-	    if (store.autoCreated) {
-		me.queryMode = 'local';
-		me.valueField = me.displayField = 'field1';
-		if (!store.expanded) {
-		    me.displayField = 'field2';
-		}
+    // override ExtJS protected method
+    onBindStore: function (store, initial) {
+        let me = this,
+            picker = me.picker,
+            extraKeySpec,
+            valueCollectionConfig;
 
-		// displayTpl config will need regenerating with the autogenerated displayField name 'field1'
-		me.setDisplayTpl(null);
-	    }
-	    if (!Ext.isDefined(me.valueField)) {
-		me.valueField = me.displayField;
-	    }
+        // We're being bound, not unbound...
+        if (store) {
+            // If store was created from a 2 dimensional array with generated field names 'field1' and 'field2'
+            if (store.autoCreated) {
+                me.queryMode = 'local';
+                me.valueField = me.displayField = 'field1';
+                if (!store.expanded) {
+                    me.displayField = 'field2';
+                }
 
-	    // Add a byValue index to the store so that we can efficiently look up records by the value field
-	    // when setValue passes string value(s).
-	    // The two indices (Ext.util.CollectionKeys) are configured unique: false, so that if duplicate keys
-	    // are found, they are all returned by the get call.
-	    // This is so that findByText and findByValue are able to return the *FIRST* matching value. By default,
-	    // if unique is true, CollectionKey keeps the *last* matching value.
-	    extraKeySpec = {
-		byValue: {
-		    rootProperty: 'data',
-		    unique: false,
-		},
-	    };
-	    extraKeySpec.byValue.property = me.valueField;
-	    store.setExtraKeys(extraKeySpec);
+                // displayTpl config will need regenerating with the autogenerated displayField name 'field1'
+                me.setDisplayTpl(null);
+            }
+            if (!Ext.isDefined(me.valueField)) {
+                me.valueField = me.displayField;
+            }
 
-	    if (me.displayField === me.valueField) {
-		store.byText = store.byValue;
-	    } else {
-		extraKeySpec.byText = {
-		    rootProperty: 'data',
-		    unique: false,
-		};
-		extraKeySpec.byText.property = me.displayField;
-		store.setExtraKeys(extraKeySpec);
-	    }
+            // Add a byValue index to the store so that we can efficiently look up records by the value field
+            // when setValue passes string value(s).
+            // The two indices (Ext.util.CollectionKeys) are configured unique: false, so that if duplicate keys
+            // are found, they are all returned by the get call.
+            // This is so that findByText and findByValue are able to return the *FIRST* matching value. By default,
+            // if unique is true, CollectionKey keeps the *last* matching value.
+            extraKeySpec = {
+                byValue: {
+                    rootProperty: 'data',
+                    unique: false,
+                },
+            };
+            extraKeySpec.byValue.property = me.valueField;
+            store.setExtraKeys(extraKeySpec);
 
-	    // We hold a collection of the values which have been selected, keyed by this field's valueField.
-	    // This collection also functions as the selected items collection for the BoundList's selection model
-	    valueCollectionConfig = {
-		rootProperty: 'data',
-		extraKeys: {
-		    byInternalId: {
-			property: 'internalId',
-		    },
-		    byValue: {
-			property: me.valueField,
-			rootProperty: 'data',
-		    },
-		},
-		// Whenever this collection is changed by anyone, whether by this field adding to it,
-		// or the BoundList operating, we must refresh our value.
-		listeners: {
-		    beginupdate: me.onValueCollectionBeginUpdate,
-		    endupdate: me.onValueCollectionEndUpdate,
-		    scope: me,
-		},
-	    };
+            if (me.displayField === me.valueField) {
+                store.byText = store.byValue;
+            } else {
+                extraKeySpec.byText = {
+                    rootProperty: 'data',
+                    unique: false,
+                };
+                extraKeySpec.byText.property = me.displayField;
+                store.setExtraKeys(extraKeySpec);
+            }
 
-	    // This becomes our collection of selected records for the Field.
-	    me.valueCollection = new Ext.util.Collection(valueCollectionConfig);
+            // We hold a collection of the values which have been selected, keyed by this field's valueField.
+            // This collection also functions as the selected items collection for the BoundList's selection model
+            valueCollectionConfig = {
+                rootProperty: 'data',
+                extraKeys: {
+                    byInternalId: {
+                        property: 'internalId',
+                    },
+                    byValue: {
+                        property: me.valueField,
+                        rootProperty: 'data',
+                    },
+                },
+                // Whenever this collection is changed by anyone, whether by this field adding to it,
+                // or the BoundList operating, we must refresh our value.
+                listeners: {
+                    beginupdate: me.onValueCollectionBeginUpdate,
+                    endupdate: me.onValueCollectionEndUpdate,
+                    scope: me,
+                },
+            };
 
-	    // We use the selected Collection as our value collection and the basis
-	    // for rendering the tag list.
+            // This becomes our collection of selected records for the Field.
+            me.valueCollection = new Ext.util.Collection(valueCollectionConfig);
 
-	    //proxmox override: since the picker is represented by a grid panel,
-	    // we changed here the selection to RowModel
-	    me.pickerSelectionModel = new Ext.selection.RowModel({
-		mode: me.multiSelect ? 'SIMPLE' : 'SINGLE',
-		// There are situations when a row is selected on mousedown but then the mouse is
-		// dragged to another row and released.  In these situations, the event target for
-		// the click event won't be the row where the mouse was released but the boundview.
-		// The view will then determine that it should fire a container click, and the
-		// DataViewModel will then deselect all prior selections. Setting
-		// `deselectOnContainerClick` here will prevent the model from deselecting.
-		deselectOnContainerClick: false,
-		enableInitialSelection: false,
-		pruneRemoved: false,
-		selected: me.valueCollection,
-		store: store,
-		listeners: {
-		    scope: me,
-		    lastselectedchanged: me.updateBindSelection,
-		},
-	    });
+            // We use the selected Collection as our value collection and the basis
+            // for rendering the tag list.
 
-	    if (!initial) {
-		me.resetToDefault();
-	    }
+            //proxmox override: since the picker is represented by a grid panel,
+            // we changed here the selection to RowModel
+            me.pickerSelectionModel = new Ext.selection.RowModel({
+                mode: me.multiSelect ? 'SIMPLE' : 'SINGLE',
+                // There are situations when a row is selected on mousedown but then the mouse is
+                // dragged to another row and released.  In these situations, the event target for
+                // the click event won't be the row where the mouse was released but the boundview.
+                // The view will then determine that it should fire a container click, and the
+                // DataViewModel will then deselect all prior selections. Setting
+                // `deselectOnContainerClick` here will prevent the model from deselecting.
+                deselectOnContainerClick: false,
+                enableInitialSelection: false,
+                pruneRemoved: false,
+                selected: me.valueCollection,
+                store: store,
+                listeners: {
+                    scope: me,
+                    lastselectedchanged: me.updateBindSelection,
+                },
+            });
 
-	    if (picker) {
-		picker.setSelectionModel(me.pickerSelectionModel);
-		if (picker.getStore() !== store) {
-		    picker.bindStore(store);
-		}
-	    }
-	}
+            if (!initial) {
+                me.resetToDefault();
+            }
+
+            if (picker) {
+                picker.setSelectionModel(me.pickerSelectionModel);
+                if (picker.getStore() !== store) {
+                    picker.bindStore(store);
+                }
+            }
+        }
     },
 
     // copied from ComboBox
-    createPicker: function() {
+    createPicker: function () {
         let me = this;
         let picker;
 
-        let pickerCfg = Ext.apply({
+        let pickerCfg = Ext.apply(
+            {
                 // proxmox overrides: display a grid for selection
                 xtype: 'gridpanel',
                 id: me.pickerId,
@@ -244,7 +249,10 @@ Ext.define('Proxmox.form.ComboGrid', {
                 tpl: me.tpl,
                 selModel: me.pickerSelectionModel,
                 focusOnToFront: false,
-            }, me.listConfig, me.defaultListConfig);
+            },
+            me.listConfig,
+            me.defaultListConfig,
+        );
 
         picker = me.picker || Ext.widget(pickerCfg);
 
@@ -257,11 +265,11 @@ Ext.define('Proxmox.form.ComboGrid', {
         }
 
         // proxmox overrides: pass missing method in gridPanel to its view
-        picker.refresh = function() {
+        picker.refresh = function () {
             picker.getSelectionModel().select(me.valueCollection.getRange());
             picker.getView().refresh();
         };
-        picker.getNodeByRecord = function() {
+        picker.getNodeByRecord = function () {
             picker.getView().getNodeByRecord(arguments);
         };
 
@@ -277,7 +285,7 @@ Ext.define('Proxmox.form.ComboGrid', {
             beforeselect: me.onBeforeSelect,
             beforedeselect: me.onBeforeDeselect,
             focuschange: me.onFocusChange,
-            selectionChange: function(sm, selectedRecords) {
+            selectionChange: function (sm, selectedRecords) {
                 if (selectedRecords.length) {
                     this.setValue(selectedRecords);
                     this.fireEvent('select', me, selectedRecords);
@@ -286,194 +294,196 @@ Ext.define('Proxmox.form.ComboGrid', {
             scope: me,
         });
 
-	// hack for extjs6
-	// when the clicked item is the same as the previously selected,
-	// it does not select the item
-	// instead we hide the picker
-	if (!me.multiSelect) {
-	    picker.on('itemclick', function(sm, record) {
-		if (picker.getSelection()[0] === record) {
-		    me.collapse();
-		}
-	    });
-	}
+        // hack for extjs6
+        // when the clicked item is the same as the previously selected,
+        // it does not select the item
+        // instead we hide the picker
+        if (!me.multiSelect) {
+            picker.on('itemclick', function (sm, record) {
+                if (picker.getSelection()[0] === record) {
+                    me.collapse();
+                }
+            });
+        }
 
-	// when our store is not yet loaded, we increase
-	// the height of the gridpanel, so that we can see
-	// the loading mask
-	//
-	// we save the minheight to reset it after the load
-	picker.on('show', function() {
-	    me.store.fireEvent('refresh');
-	    if (me.enableLoadMask) {
-		me.savedMinHeight = me.savedMinHeight ?? picker.getMinHeight();
-		picker.setMinHeight(me.errorHeight);
-	    }
-	    if (me.loadError) {
-		Proxmox.Utils.setErrorMask(picker.getView(), me.loadError);
-		delete me.loadError;
-		picker.updateLayout();
-	    }
-	});
+        // when our store is not yet loaded, we increase
+        // the height of the gridpanel, so that we can see
+        // the loading mask
+        //
+        // we save the minheight to reset it after the load
+        picker.on('show', function () {
+            me.store.fireEvent('refresh');
+            if (me.enableLoadMask) {
+                me.savedMinHeight = me.savedMinHeight ?? picker.getMinHeight();
+                picker.setMinHeight(me.errorHeight);
+            }
+            if (me.loadError) {
+                Proxmox.Utils.setErrorMask(picker.getView(), me.loadError);
+                delete me.loadError;
+                picker.updateLayout();
+            }
+        });
 
         picker.getNavigationModel().navigateOnSpace = false;
 
         return picker;
     },
 
-    clearLocalFilter: function() {
+    clearLocalFilter: function () {
         let me = this;
 
-	if (me.queryFilter) {
-	    me.changingFilters = true; // FIXME: unused?
-	    me.store.removeFilter(me.queryFilter, true);
-	    me.queryFilter = null;
-	    me.changingFilters = false;
-	}
+        if (me.queryFilter) {
+            me.changingFilters = true; // FIXME: unused?
+            me.store.removeFilter(me.queryFilter, true);
+            me.queryFilter = null;
+            me.changingFilters = false;
+        }
     },
 
-    isValueInStore: function(value) {
-	let me = this;
-	let store = me.store;
-	let found = false;
+    isValueInStore: function (value) {
+        let me = this;
+        let store = me.store;
+        let found = false;
 
-	if (!store) {
-	    return found;
-	}
+        if (!store) {
+            return found;
+        }
 
-	// Make sure the current filter is removed before checking the store
-	// to prevent false negative results when iterating over a filtered store.
-	// All store.find*() method's operate on the filtered store.
-	if (me.queryFilter && me.queryMode === 'local' && me.clearFilterOnBlur) {
-	    me.clearLocalFilter();
-	}
+        // Make sure the current filter is removed before checking the store
+        // to prevent false negative results when iterating over a filtered store.
+        // All store.find*() method's operate on the filtered store.
+        if (me.queryFilter && me.queryMode === 'local' && me.clearFilterOnBlur) {
+            me.clearLocalFilter();
+        }
 
-	if (Ext.isArray(value)) {
-	    Ext.Array.each(value, function(v) {
-		if (store.findRecord(me.valueField, v, 0, false, true, true)) {
-		    found = true;
-		    return false; // break
-		}
-		return true;
-	    });
-	} else {
-	    found = !!store.findRecord(me.valueField, value, 0, false, true, true);
-	}
+        if (Ext.isArray(value)) {
+            Ext.Array.each(value, function (v) {
+                if (store.findRecord(me.valueField, v, 0, false, true, true)) {
+                    found = true;
+                    return false; // break
+                }
+                return true;
+            });
+        } else {
+            found = !!store.findRecord(me.valueField, value, 0, false, true, true);
+        }
 
-	return found;
+        return found;
     },
 
-    validator: function(value) {
-	let me = this;
+    validator: function (value) {
+        let me = this;
 
-	if (!value) {
-	    return true; // handled later by allowEmpty in the getErrors call chain
-	}
+        if (!value) {
+            return true; // handled later by allowEmpty in the getErrors call chain
+        }
 
-	// we normally get here the displayField as value, but if a valueField
-	// is configured we need to get the "actual" value, to ensure it is in
-	// the store. Below check is copied from ExtJS 6.0.2 ComboBox source
-	//
-	// we also have to get the 'real' value if the we have a mulitSelect
-	// Field but got a non array value
-	if ((me.valueField && me.valueField !== me.displayField) ||
-	    (me.multiSelect && !Ext.isArray(value))) {
-	    value = me.getValue();
-	}
+        // we normally get here the displayField as value, but if a valueField
+        // is configured we need to get the "actual" value, to ensure it is in
+        // the store. Below check is copied from ExtJS 6.0.2 ComboBox source
+        //
+        // we also have to get the 'real' value if the we have a mulitSelect
+        // Field but got a non array value
+        if (
+            (me.valueField && me.valueField !== me.displayField) ||
+            (me.multiSelect && !Ext.isArray(value))
+        ) {
+            value = me.getValue();
+        }
 
-	if (!(me.notFoundIsValid || me.isValueInStore(value))) {
-	    return gettext('Invalid Value');
-	}
+        if (!(me.notFoundIsValid || me.isValueInStore(value))) {
+            return gettext('Invalid Value');
+        }
 
-	return true;
+        return true;
     },
 
     // validate after enabling a field, otherwise blank fields with !allowBlank
     // are sometimes not marked as invalid
-    setDisabled: function(value) {
-	this.callParent([value]);
-	this.validate();
+    setDisabled: function (value) {
+        this.callParent([value]);
+        this.validate();
     },
 
-    initComponent: function() {
-	let me = this;
+    initComponent: function () {
+        let me = this;
 
-	Ext.apply(me, {
-	    queryMode: 'local',
-	    matchFieldWidth: false,
-	});
+        Ext.apply(me, {
+            queryMode: 'local',
+            matchFieldWidth: false,
+        });
 
-	Ext.applyIf(me, { value: [] }); // hack: avoid ExtJS validate() bug
+        Ext.applyIf(me, { value: [] }); // hack: avoid ExtJS validate() bug
 
-	Ext.applyIf(me.listConfig, { width: 400 });
+        Ext.applyIf(me.listConfig, { width: 400 });
 
-	me.callParent();
+        me.callParent();
 
-	// Create the picker at an early stage, so it is available to store the previous selection
-	if (!me.picker) {
-	    me.getPicker();
-	}
+        // Create the picker at an early stage, so it is available to store the previous selection
+        if (!me.picker) {
+            me.getPicker();
+        }
 
-	me.mon(me.store, 'beforeload', function() {
-	    if (!me.isDisabled()) {
-		me.enableLoadMask = true;
-	    }
-	});
+        me.mon(me.store, 'beforeload', function () {
+            if (!me.isDisabled()) {
+                me.enableLoadMask = true;
+            }
+        });
 
-	// hack: autoSelect does not work
-	me.mon(me.store, 'load', function(store, r, success, o) {
-	    if (success) {
-		me.clearInvalid();
-		delete me.loadError;
+        // hack: autoSelect does not work
+        me.mon(me.store, 'load', function (store, r, success, o) {
+            if (success) {
+                me.clearInvalid();
+                delete me.loadError;
 
-		if (me.enableLoadMask) {
-		    delete me.enableLoadMask;
+                if (me.enableLoadMask) {
+                    delete me.enableLoadMask;
 
-		    // if the picker exists, we reset its minHeight to the previous saved one or 0
-		    if (me.picker) {
-			me.picker.setMinHeight(me.savedMinHeight || 0);
-			Proxmox.Utils.setErrorMask(me.picker.getView());
-			delete me.savedMinHeight;
-			// we have to update the layout, otherwise the height gets not recalculated
-			me.picker.updateLayout();
-		    }
-		}
+                    // if the picker exists, we reset its minHeight to the previous saved one or 0
+                    if (me.picker) {
+                        me.picker.setMinHeight(me.savedMinHeight || 0);
+                        Proxmox.Utils.setErrorMask(me.picker.getView());
+                        delete me.savedMinHeight;
+                        // we have to update the layout, otherwise the height gets not recalculated
+                        me.picker.updateLayout();
+                    }
+                }
 
-		let def = me.getValue() || me.preferredValue;
-		if (def) {
-		    me.setValue(def, true); // sync with grid
-		}
-		let found = false;
-		if (def) {
-		    found = me.isValueInStore(def);
-		}
+                let def = me.getValue() || me.preferredValue;
+                if (def) {
+                    me.setValue(def, true); // sync with grid
+                }
+                let found = false;
+                if (def) {
+                    found = me.isValueInStore(def);
+                }
 
-		if (!found) {
-		    if (!(Ext.isArray(def) ? def.length : def)) {
-			let rec = me.store.first();
-			if (me.autoSelect && rec && rec.data) {
-			    def = rec.data[me.valueField];
-			    me.setValue(def, true);
-			} else if (!me.allowBlank) {
-			    me.setValue(def);
-			    if (!me.isDisabled()) {
-				me.markInvalid(me.blankText);
-			    }
-			}
-		    } else if (!me.notFoundIsValid && !me.isDisabled()) {
-			me.markInvalid(gettext('Invalid Value'));
-		    }
-		}
-	    } else {
-		let msg = Proxmox.Utils.getResponseErrorMessage(o.getError());
-		if (me.picker) {
-		    me.savedMinHeight = me.savedMinHeight ?? me.picker.getMinHeight();
-		    me.picker.setMinHeight(me.errorHeight);
-		    Proxmox.Utils.setErrorMask(me.picker.getView(), msg);
-		    me.picker.updateLayout();
-		}
-		me.loadError = msg;
-	    }
-	});
+                if (!found) {
+                    if (!(Ext.isArray(def) ? def.length : def)) {
+                        let rec = me.store.first();
+                        if (me.autoSelect && rec && rec.data) {
+                            def = rec.data[me.valueField];
+                            me.setValue(def, true);
+                        } else if (!me.allowBlank) {
+                            me.setValue(def);
+                            if (!me.isDisabled()) {
+                                me.markInvalid(me.blankText);
+                            }
+                        }
+                    } else if (!me.notFoundIsValid && !me.isDisabled()) {
+                        me.markInvalid(gettext('Invalid Value'));
+                    }
+                }
+            } else {
+                let msg = Proxmox.Utils.getResponseErrorMessage(o.getError());
+                if (me.picker) {
+                    me.savedMinHeight = me.savedMinHeight ?? me.picker.getMinHeight();
+                    me.picker.setMinHeight(me.errorHeight);
+                    Proxmox.Utils.setErrorMask(me.picker.getView(), msg);
+                    me.picker.updateLayout();
+                }
+                me.loadError = msg;
+            }
+        });
     },
 });

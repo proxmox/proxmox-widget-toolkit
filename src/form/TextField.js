@@ -3,14 +3,14 @@ Ext.define('Proxmox.form.field.Textfield', {
     alias: ['widget.proxmoxtextfield'],
 
     config: {
-	skipEmptyText: true,
+        skipEmptyText: true,
 
-	deleteEmpty: false,
+        deleteEmpty: false,
 
-	trimValue: false,
+        trimValue: false,
     },
 
-    getSubmitData: function() {
+    getSubmitData: function () {
         let me = this,
             data = null,
             val;
@@ -20,29 +20,29 @@ Ext.define('Proxmox.form.field.Textfield', {
                 data = {};
                 data[me.getName()] = val;
             } else if (me.getDeleteEmpty()) {
-		data = {};
+                data = {};
                 data.delete = me.getName();
-	    }
+            }
         }
         return data;
     },
 
-    getSubmitValue: function() {
-	let me = this;
+    getSubmitValue: function () {
+        let me = this;
 
         let value = this.processRawValue(this.getRawValue());
-	if (me.getTrimValue() && typeof value === 'string') {
-	    value = value.trim();
-	}
-	if (value !== '') {
-	    return value;
-	}
+        if (me.getTrimValue() && typeof value === 'string') {
+            value = value.trim();
+        }
+        if (value !== '') {
+            return value;
+        }
 
-	return me.getSkipEmptyText() ? null: value;
+        return me.getSkipEmptyText() ? null : value;
     },
 
-    setAllowBlank: function(allowBlank) {
-	this.allowBlank = allowBlank;
-	this.validate();
+    setAllowBlank: function (allowBlank) {
+        this.allowBlank = allowBlank;
+        this.validate();
     },
 });

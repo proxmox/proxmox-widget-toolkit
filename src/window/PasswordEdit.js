@@ -9,7 +9,7 @@ Ext.define('Proxmox.window.PasswordEdit', {
 
     width: 380,
     fieldDefaults: {
-	labelWidth: 150,
+        labelWidth: 150,
     },
 
     // specifies the minimum length of *new* passwords so this can be
@@ -22,60 +22,60 @@ Ext.define('Proxmox.window.PasswordEdit', {
     hintHtml: undefined,
 
     items: [
-	{
-	    xtype: 'textfield',
-	    inputType: 'password',
-	    fieldLabel: gettext('Your Current Password'),
-	    reference: 'confirmation-password',
-	    name: 'confirmation-password',
-	    allowBlank: false,
-	    vtype: 'password',
-	    cbind: {
-		hidden: '{!confirmCurrentPassword}',
-		disabled: '{!confirmCurrentPassword}',
-	    },
-	},
-	{
-	    xtype: 'textfield',
-	    inputType: 'password',
-	    fieldLabel: gettext('New Password'),
-	    allowBlank: false,
-	    name: 'password',
-	    listeners: {
-		change: (field) => field.next().validate(),
-		blur: (field) => field.next().validate(),
-	    },
-	    cbind: {
-		minLength: '{minLength}',
-	    },
-	},
-	{
-	    xtype: 'textfield',
-	    inputType: 'password',
-	    fieldLabel: gettext('Confirm New Password'),
-	    name: 'verifypassword',
-	    allowBlank: false,
-	    vtype: 'password',
-	    initialPassField: 'password',
-	    submitValue: false,
-	},
-	{
-	    xtype: 'component',
-	    userCls: 'pmx-hint',
-	    name: 'password-hint',
-	    hidden: true,
-	    //padding: '5 1',
-	    cbind: {
-		html: '{hintHtml}',
-		hidden: '{!hintHtml}',
-	    },
-	},
-	{
-	    xtype: 'hiddenfield',
-	    name: 'userid',
-	    cbind: {
-		value: '{userid}',
-	    },
-	},
+        {
+            xtype: 'textfield',
+            inputType: 'password',
+            fieldLabel: gettext('Your Current Password'),
+            reference: 'confirmation-password',
+            name: 'confirmation-password',
+            allowBlank: false,
+            vtype: 'password',
+            cbind: {
+                hidden: '{!confirmCurrentPassword}',
+                disabled: '{!confirmCurrentPassword}',
+            },
+        },
+        {
+            xtype: 'textfield',
+            inputType: 'password',
+            fieldLabel: gettext('New Password'),
+            allowBlank: false,
+            name: 'password',
+            listeners: {
+                change: (field) => field.next().validate(),
+                blur: (field) => field.next().validate(),
+            },
+            cbind: {
+                minLength: '{minLength}',
+            },
+        },
+        {
+            xtype: 'textfield',
+            inputType: 'password',
+            fieldLabel: gettext('Confirm New Password'),
+            name: 'verifypassword',
+            allowBlank: false,
+            vtype: 'password',
+            initialPassField: 'password',
+            submitValue: false,
+        },
+        {
+            xtype: 'component',
+            userCls: 'pmx-hint',
+            name: 'password-hint',
+            hidden: true,
+            //padding: '5 1',
+            cbind: {
+                html: '{hintHtml}',
+                hidden: '{!hintHtml}',
+            },
+        },
+        {
+            xtype: 'hiddenfield',
+            name: 'userid',
+            cbind: {
+                value: '{userid}',
+            },
+        },
     ],
 });

@@ -18,70 +18,70 @@ Ext.define('Proxmox.form.DiskSelector', {
     displayField: 'devpath',
     emptyText: gettext('No Disks unused'),
     listConfig: {
-	width: 600,
-	columns: [
-	    {
-		header: gettext('Device'),
-		flex: 3,
-		sortable: true,
-		dataIndex: 'devpath',
-	    },
-	    {
-		header: gettext('Size'),
-		flex: 2,
-		sortable: false,
-		renderer: Proxmox.Utils.format_size,
-		dataIndex: 'size',
-	    },
-	    {
-		header: gettext('Serial'),
-		flex: 5,
-		sortable: true,
-		dataIndex: 'serial',
-	    },
-	],
+        width: 600,
+        columns: [
+            {
+                header: gettext('Device'),
+                flex: 3,
+                sortable: true,
+                dataIndex: 'devpath',
+            },
+            {
+                header: gettext('Size'),
+                flex: 2,
+                sortable: false,
+                renderer: Proxmox.Utils.format_size,
+                dataIndex: 'size',
+            },
+            {
+                header: gettext('Serial'),
+                flex: 5,
+                sortable: true,
+                dataIndex: 'serial',
+            },
+        ],
     },
 
-    initComponent: function() {
-	var me = this;
+    initComponent: function () {
+        var me = this;
 
-	var nodename = me.nodename;
-	if (!nodename) {
-	    throw "no node name specified";
-	}
+        var nodename = me.nodename;
+        if (!nodename) {
+            throw 'no node name specified';
+        }
 
-	let extraParams = {};
+        let extraParams = {};
 
-	if (me.diskType) {
-	    extraParams[me.typeProperty] = me.diskType;
-	}
+        if (me.diskType) {
+            extraParams[me.typeProperty] = me.diskType;
+        }
 
-	if (me.includePartitions) {
-	    extraParams['include-partitions'] = 1;
-	}
+        if (me.includePartitions) {
+            extraParams['include-partitions'] = 1;
+        }
 
-	var store = Ext.create('Ext.data.Store', {
-	    filterOnLoad: true,
-	    model: 'pmx-disk-list',
-	    proxy: {
+        var store = Ext.create('Ext.data.Store', {
+            filterOnLoad: true,
+            model: 'pmx-disk-list',
+            proxy: {
                 type: 'proxmox',
                 url: `/api2/json/nodes/${nodename}/disks/list`,
-		extraParams,
-	    },
-	    sorters: [
-		{
-		    property: 'devpath',
-		    direction: 'ASC',
-		},
-	    ],
-	});
+                extraParams,
+            },
+            sorters: [
+                {
+                    property: 'devpath',
+                    direction: 'ASC',
+                },
+            ],
+        });
 
-	Ext.apply(me, {
-	    store: store,
-	});
+        Ext.apply(me, {
+            store: store,
+        });
 
         me.callParent();
 
-	store.load();
+        store.load();
     },
 });

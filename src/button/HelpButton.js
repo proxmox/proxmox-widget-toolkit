@@ -16,71 +16,71 @@ Ext.define('Proxmox.button.Help', {
     listenToGlobalEvent: true,
 
     controller: {
-	xclass: 'Ext.app.ViewController',
-	listen: {
-	    global: {
-		proxmoxShowHelp: 'onProxmoxShowHelp',
-		proxmoxHideHelp: 'onProxmoxHideHelp',
-	    },
-	},
-	onProxmoxShowHelp: function(helpLink) {
-	    let view = this.getView();
-	    if (view.listenToGlobalEvent === true) {
-		view.setOnlineHelp(helpLink);
-		view.show();
-	    }
-	},
-	onProxmoxHideHelp: function() {
-	    let view = this.getView();
-	    if (view.listenToGlobalEvent === true) {
-		view.hide();
-	    }
-	},
+        xclass: 'Ext.app.ViewController',
+        listen: {
+            global: {
+                proxmoxShowHelp: 'onProxmoxShowHelp',
+                proxmoxHideHelp: 'onProxmoxHideHelp',
+            },
+        },
+        onProxmoxShowHelp: function (helpLink) {
+            let view = this.getView();
+            if (view.listenToGlobalEvent === true) {
+                view.setOnlineHelp(helpLink);
+                view.show();
+            }
+        },
+        onProxmoxHideHelp: function () {
+            let view = this.getView();
+            if (view.listenToGlobalEvent === true) {
+                view.hide();
+            }
+        },
     },
 
     // this sets the link and the tooltip text
-    setOnlineHelp: function(blockid) {
-	let me = this;
+    setOnlineHelp: function (blockid) {
+        let me = this;
 
-	let info = Proxmox.Utils.get_help_info(blockid);
-	if (info) {
-	    me.onlineHelp = blockid;
-	    let title = info.title;
-	    if (info.subtitle) {
-		title += ' - ' + info.subtitle;
-	    }
-	    me.setTooltip(title);
-	}
+        let info = Proxmox.Utils.get_help_info(blockid);
+        if (info) {
+            me.onlineHelp = blockid;
+            let title = info.title;
+            if (info.subtitle) {
+                title += ' - ' + info.subtitle;
+            }
+            me.setTooltip(title);
+        }
     },
 
     // helper to set the onlineHelp via a config object
-    setHelpConfig: function(config) {
-	let me = this;
-	me.setOnlineHelp(config.onlineHelp);
+    setHelpConfig: function (config) {
+        let me = this;
+        me.setOnlineHelp(config.onlineHelp);
     },
 
-    handler: function() {
-	let me = this;
-	let docsURI;
+    handler: function () {
+        let me = this;
+        let docsURI;
 
-	if (me.onlineHelp) {
-	    docsURI = Proxmox.Utils.get_help_link(me.onlineHelp);
-	}
+        if (me.onlineHelp) {
+            docsURI = Proxmox.Utils.get_help_link(me.onlineHelp);
+        }
 
-	if (docsURI) {
-	    window.open(docsURI);
-	} else {
-	    Ext.Msg.alert(gettext('Help'), gettext('No Help available'));
-	}
+        if (docsURI) {
+            window.open(docsURI);
+        } else {
+            Ext.Msg.alert(gettext('Help'), gettext('No Help available'));
+        }
     },
 
-    initComponent: function() {
-	let me = this;
+    initComponent: function () {
+        let me = this;
 
-	me.callParent();
+        me.callParent();
 
-	if (me.onlineHelp) {
-	    me.setOnlineHelp(me.onlineHelp); // set tooltip
-	}
+        if (me.onlineHelp) {
+            me.setOnlineHelp(me.onlineHelp); // set tooltip
+        }
     },
 });

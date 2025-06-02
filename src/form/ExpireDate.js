@@ -9,26 +9,25 @@ Ext.define('Proxmox.form.field.ExpireDate', {
     format: 'Y-m-d',
     submitFormat: 'U',
 
-    getSubmitValue: function() {
-	let me = this;
+    getSubmitValue: function () {
+        let me = this;
 
-	let value = me.callParent();
-	if (!value) value = 0;
+        let value = me.callParent();
+        if (!value) value = 0;
 
-	return value;
+        return value;
     },
 
-    setValue: function(value) {
-	let me = this;
+    setValue: function (value) {
+        let me = this;
 
-	if (Ext.isDefined(value)) {
-	    if (!value) {
-		value = null;
-	    } else if (!Ext.isDate(value)) {
-		value = new Date(value * 1000);
-	    }
-	}
-	me.callParent([value]);
+        if (Ext.isDefined(value)) {
+            if (!value) {
+                value = null;
+            } else if (!Ext.isDate(value)) {
+                value = new Date(value * 1000);
+            }
+        }
+        me.callParent([value]);
     },
-
 });

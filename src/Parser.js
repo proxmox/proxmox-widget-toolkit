@@ -6,69 +6,76 @@ Ext.define('Proxmox.Markdown', {
     // transforms HTML to a DOM tree and recursively descends and HTML-encodes every branch with a
     // "bad" node.type and drops "bad" attributes from the remaining nodes.
     // "bad" means anything which can do XSS or break the layout of the outer page
-    sanitizeHTML: function(input) {
-	if (!input) {
-	    return input;
-	}
-	let _isHTTPLike = value => value.match(/^\s*https?:/i); // URL's protocol ends with :
-	let _sanitize;
-	_sanitize = (node) => {
-	    if (node.nodeType === 3) return;
-	    if (node.nodeType !== 1 ||
-		/^(script|style|form|select|option|optgroup|map|area|canvas|textarea|applet|font|iframe|audio|video|object|embed|svg)$/i.test(node.tagName)
-	    ) {
-		// could do node.remove() instead, but it's nicer UX if we keep the (encoded!) html
-		node.outerHTML = Ext.String.htmlEncode(node.outerHTML);
-		return;
-	    }
-	    for (let i=node.attributes.length; i--;) {
-		const name = node.attributes[i].name;
-		const value = node.attributes[i].value;
-		const canonicalTagName = node.tagName.toLowerCase();
-		// TODO: we may want to also disallow class and id attrs
-		if (
-		    !/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type|target)$/i.test(name)
-		) {
-		    node.attributes.removeNamedItem(name);
-		} else if ((name === 'href' || name === 'src') && !_isHTTPLike(value)) {
-		    let safeURL = false;
-		    try {
-			let url = new URL(value, window.location.origin);
-			safeURL = _isHTTPLike(url.protocol);
-			if (canonicalTagName === 'img' && url.protocol.toLowerCase() === 'data:') {
-			    safeURL = true;
-			} else if (canonicalTagName === 'a') {
-			    // allow most link protocols so admins can use short-cuts to, e.g., RDP
-			    safeURL = url.protocol.toLowerCase() !== 'javascript:'; // eslint-disable-line no-script-url
-			}
-			if (safeURL) {
-			    node.attributes[i].value = url.href;
-			} else {
-			    node.attributes.removeNamedItem(name);
-			}
-		    } catch (e) {
-			node.attributes.removeNamedItem(name);
-		    }
-		} else if (name === 'target' && canonicalTagName !== 'a') {
-		    node.attributes.removeNamedItem(name);
-		}
-	    }
-	    for (let i=node.childNodes.length; i--;) _sanitize(node.childNodes[i]);
-	};
+    sanitizeHTML: function (input) {
+        if (!input) {
+            return input;
+        }
+        let _isHTTPLike = (value) => value.match(/^\s*https?:/i); // URL's protocol ends with :
+        let _sanitize;
+        _sanitize = (node) => {
+            if (node.nodeType === 3) return;
+            if (
+                node.nodeType !== 1 ||
+                /^(script|style|form|select|option|optgroup|map|area|canvas|textarea|applet|font|iframe|audio|video|object|embed|svg)$/i.test(
+                    node.tagName,
+                )
+            ) {
+                // could do node.remove() instead, but it's nicer UX if we keep the (encoded!) html
+                node.outerHTML = Ext.String.htmlEncode(node.outerHTML);
+                return;
+            }
+            for (let i = node.attributes.length; i--; ) {
+                const name = node.attributes[i].name;
+                const value = node.attributes[i].value;
+                const canonicalTagName = node.tagName.toLowerCase();
+                // TODO: we may want to also disallow class and id attrs
+                if (
+                    !/^(class|id|name|href|src|alt|align|valign|disabled|checked|start|type|target)$/i.test(
+                        name,
+                    )
+                ) {
+                    node.attributes.removeNamedItem(name);
+                } else if ((name === 'href' || name === 'src') && !_isHTTPLike(value)) {
+                    let safeURL = false;
+                    try {
+                        let url = new URL(value, window.location.origin);
+                        safeURL = _isHTTPLike(url.protocol);
+                        if (canonicalTagName === 'img' && url.protocol.toLowerCase() === 'data:') {
+                            safeURL = true;
+                        } else if (canonicalTagName === 'a') {
+                            // allow most link protocols so admins can use short-cuts to, e.g., RDP
+                            safeURL = url.protocol.toLowerCase() !== 'javascript:'; // eslint-disable-line no-script-url
+                        }
+                        if (safeURL) {
+                            node.attributes[i].value = url.href;
+                        } else {
+                            node.attributes.removeNamedItem(name);
+                        }
+                    } catch (e) {
+                        node.attributes.removeNamedItem(name);
+                    }
+                } else if (name === 'target' && canonicalTagName !== 'a') {
+                    node.attributes.removeNamedItem(name);
+                }
+            }
+            for (let i = node.childNodes.length; i--; ) _sanitize(node.childNodes[i]);
+        };
 
-	const doc = new DOMParser().parseFromString(`<!DOCTYPE html><html><body>${input}`, 'text/html');
-	doc.normalize();
+        const doc = new DOMParser().parseFromString(
+            `<!DOCTYPE html><html><body>${input}`,
+            'text/html',
+        );
+        doc.normalize();
 
-	_sanitize(doc.body);
+        _sanitize(doc.body);
 
-	return doc.body.innerHTML;
+        return doc.body.innerHTML;
     },
 
-    parse: function(markdown) {
-	/*global marked*/
-	let unsafeHTML = marked.parse(markdown);
+    parse: function (markdown) {
+        /*global marked*/
+        let unsafeHTML = marked.parse(markdown);
 
-	return `<div class="pmx-md">${this.sanitizeHTML(unsafeHTML)}</div>`;
+        return `<div class="pmx-md">${this.sanitizeHTML(unsafeHTML)}</div>`;
     },
-
 });

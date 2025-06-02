@@ -6,6 +6,6 @@ Ext.define('Proxmox.form.LanguageSelector', {
 
     matchFieldWidth: false,
     listConfig: {
-	width: 300,
+        width: 300,
     },
 });

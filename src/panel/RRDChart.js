@@ -1,34 +1,34 @@
 // override the download server url globally, for privacy reasons
-Ext.draw.Container.prototype.defaultDownloadServerUrl = "-";
+Ext.draw.Container.prototype.defaultDownloadServerUrl = '-';
 
 Ext.define('Proxmox.chart.axis.segmenter.NumericBase2', {
     extend: 'Ext.chart.axis.segmenter.Numeric',
     alias: 'segmenter.numericBase2',
 
     // derived from the original numeric segmenter but using 2 instead of 10 as base
-    preferredStep: function(min, estStepSize) {
-	// Getting an order of magnitude of the estStepSize with a common logarithm.
-	let order = Math.floor(Math.log2(estStepSize));
-	let scale = Math.pow(2, order);
+    preferredStep: function (min, estStepSize) {
+        // Getting an order of magnitude of the estStepSize with a common logarithm.
+        let order = Math.floor(Math.log2(estStepSize));
+        let scale = Math.pow(2, order);
 
-	estStepSize /= scale;
+        estStepSize /= scale;
 
-	// FIXME: below is not useful when using base 2 instead of base 10, we could
-	// just directly set estStepSize to 2
-	if (estStepSize <= 1) {
-	    estStepSize = 1;
-	} else if (estStepSize < 2) {
-	    estStepSize = 2;
-	}
-	return {
-	    unit: {
-		// When passed estStepSize is less than 1, its order of magnitude
-		// is equal to -number_of_leading_zeros in the estStepSize.
-		fixes: -order, // Number of fractional digits.
-		scale: scale,
-	    },
-	    step: estStepSize,
-	};
+        // FIXME: below is not useful when using base 2 instead of base 10, we could
+        // just directly set estStepSize to 2
+        if (estStepSize <= 1) {
+            estStepSize = 1;
+        } else if (estStepSize < 2) {
+            estStepSize = 2;
+        }
+        return {
+            unit: {
+                // When passed estStepSize is less than 1, its order of magnitude
+                // is equal to -number_of_leading_zeros in the estStepSize.
+                fixes: -order, // Number of fractional digits.
+                scale: scale,
+            },
+            step: estStepSize,
+        };
     },
 
     /**
@@ -41,18 +41,18 @@ Ext.define('Proxmox.chart.axis.segmenter.NumericBase2', {
      * @return {Object} return.unit The unit.
      */
     // derived from the original numeric segmenter but using 2 instead of 10 as base
-    exactStep: function(min, estStepSize) {
-	let order = Math.floor(Math.log2(estStepSize));
-	let scale = Math.pow(2, order);
+    exactStep: function (min, estStepSize) {
+        let order = Math.floor(Math.log2(estStepSize));
+        let scale = Math.pow(2, order);
 
-	return {
-	    unit: {
-		// add one decimal point if estStepSize is not a multiple of scale
-		fixes: -order + (estStepSize % scale === 0 ? 0 : 1),
-		scale: 1,
-	    },
-	    step: estStepSize,
-	};
+        return {
+            unit: {
+                // add one decimal point if estStepSize is not a multiple of scale
+                fixes: -order + (estStepSize % scale === 0 ? 0 : 1),
+                scale: 1,
+            },
+            step: estStepSize,
+        };
     },
 });
 
@@ -68,249 +68,257 @@ Ext.define('Proxmox.widget.RRDChart', {
     downloadServerUrl: '-',
 
     controller: {
-	xclass: 'Ext.app.ViewController',
+        xclass: 'Ext.app.ViewController',
 
-	init: function(view) {
-	    this.powerOfTwo = view.powerOfTwo;
-	},
+        init: function (view) {
+            this.powerOfTwo = view.powerOfTwo;
+        },
 
-	convertToUnits: function(value) {
-	    let units = ['', 'k', 'M', 'G', 'T', 'P'];
-	    let si = 0;
-	    let format = '0.##';
-	    if (value < 0.1) format += '#';
-	    const baseValue = this.powerOfTwo ? 1024 : 1000;
-	    while (value >= baseValue && si < units.length -1) {
-		value = value / baseValue;
-		si++;
-	    }
+        convertToUnits: function (value) {
+            let units = ['', 'k', 'M', 'G', 'T', 'P'];
+            let si = 0;
+            let format = '0.##';
+            if (value < 0.1) format += '#';
+            const baseValue = this.powerOfTwo ? 1024 : 1000;
+            while (value >= baseValue && si < units.length - 1) {
+                value = value / baseValue;
+                si++;
+            }
 
-	    // javascript floating point weirdness
-	    value = Ext.Number.correctFloat(value);
+            // javascript floating point weirdness
+            value = Ext.Number.correctFloat(value);
 
-	    // limit decimal points
-	    value = Ext.util.Format.number(value, format);
+            // limit decimal points
+            value = Ext.util.Format.number(value, format);
 
-	    let unit = units[si];
-	    if (unit && this.powerOfTwo) unit += 'i';
+            let unit = units[si];
+            if (unit && this.powerOfTwo) unit += 'i';
 
-	    return `${value.toString()} ${unit}`;
-	},
+            return `${value.toString()} ${unit}`;
+        },
 
-	leftAxisRenderer: function(axis, label, layoutContext) {
-	    let me = this;
-	    return me.convertToUnits(label);
-	},
+        leftAxisRenderer: function (axis, label, layoutContext) {
+            let me = this;
+            return me.convertToUnits(label);
+        },
 
-	onSeriesTooltipRender: function(tooltip, record, item) {
-	    let view = this.getView();
+        onSeriesTooltipRender: function (tooltip, record, item) {
+            let view = this.getView();
 
-	    let suffix = '';
-	    if (view.unit === 'percent') {
-		suffix = '%';
-	    } else if (view.unit === 'bytes') {
-		suffix = 'B';
-	    } else if (view.unit === 'bytespersecond') {
-		suffix = 'B/s';
-	    }
+            let suffix = '';
+            if (view.unit === 'percent') {
+                suffix = '%';
+            } else if (view.unit === 'bytes') {
+                suffix = 'B';
+            } else if (view.unit === 'bytespersecond') {
+                suffix = 'B/s';
+            }
 
-	    let prefix = item.field;
-	    if (view.fieldTitles && view.fieldTitles[view.fields.indexOf(item.field)]) {
-		prefix = view.fieldTitles[view.fields.indexOf(item.field)];
-	    }
-	    let v = this.convertToUnits(record.get(item.field));
-	    let t = new Date(record.get('time'));
-	    tooltip.setHtml(`${prefix}: ${v}${suffix}<br>${t}`);
-	},
+            let prefix = item.field;
+            if (view.fieldTitles && view.fieldTitles[view.fields.indexOf(item.field)]) {
+                prefix = view.fieldTitles[view.fields.indexOf(item.field)];
+            }
+            let v = this.convertToUnits(record.get(item.field));
+            let t = new Date(record.get('time'));
+            tooltip.setHtml(`${prefix}: ${v}${suffix}<br>${t}`);
+        },
 
-	onAfterAnimation: function(chart, eopts) {
-	    if (!chart.header || !chart.header.tools) {
-		return;
-	    }
-	    // if the undo button is disabled, disable our tool
-	    let ourUndoZoomButton = chart.header.tools[0];
-	    let undoButton = chart.interactions[0].getUndoButton();
-	    ourUndoZoomButton.setDisabled(undoButton.isDisabled());
-	},
+        onAfterAnimation: function (chart, eopts) {
+            if (!chart.header || !chart.header.tools) {
+                return;
+            }
+            // if the undo button is disabled, disable our tool
+            let ourUndoZoomButton = chart.header.tools[0];
+            let undoButton = chart.interactions[0].getUndoButton();
+            ourUndoZoomButton.setDisabled(undoButton.isDisabled());
+        },
     },
 
     width: 770,
     height: 300,
     animation: false,
     interactions: [
-	{
-	    type: 'crosszoom',
-	},
+        {
+            type: 'crosszoom',
+        },
     ],
     legend: {
-	type: 'dom',
-	padding: 0,
+        type: 'dom',
+        padding: 0,
     },
     listeners: {
-	redraw: {
-	    fn: 'onAfterAnimation',
-	    options: {
-		buffer: 500,
-	    },
-	},
+        redraw: {
+            fn: 'onAfterAnimation',
+            options: {
+                buffer: 500,
+            },
+        },
     },
 
     touchAction: {
-	panX: true,
-	panY: true,
+        panX: true,
+        panY: true,
     },
 
-    constructor: function(config) {
-	let me = this;
+    constructor: function (config) {
+        let me = this;
 
-	let segmenter = config.powerOfTwo ? 'numericBase2' : 'numeric';
-	config.axes = [
-	    {
-		type: 'numeric',
-		position: 'left',
-		grid: true,
-		renderer: 'leftAxisRenderer',
-		minimum: 0,
-		segmenter,
-	    },
-	    {
-		type: 'time',
-		position: 'bottom',
-		grid: true,
-		fields: ['time'],
-	    },
-	];
-	me.callParent([config]);
+        let segmenter = config.powerOfTwo ? 'numericBase2' : 'numeric';
+        config.axes = [
+            {
+                type: 'numeric',
+                position: 'left',
+                grid: true,
+                renderer: 'leftAxisRenderer',
+                minimum: 0,
+                segmenter,
+            },
+            {
+                type: 'time',
+                position: 'bottom',
+                grid: true,
+                fields: ['time'],
+            },
+        ];
+        me.callParent([config]);
     },
 
-    checkThemeColors: function() {
-	let me = this;
-	let rootStyle = getComputedStyle(document.documentElement);
+    checkThemeColors: function () {
+        let me = this;
+        let rootStyle = getComputedStyle(document.documentElement);
 
-	// get colors
-	let background = rootStyle.getPropertyValue("--pwt-panel-background").trim() || "#ffffff";
-	let text = rootStyle.getPropertyValue("--pwt-text-color").trim() || "#000000";
-	let primary = rootStyle.getPropertyValue("--pwt-chart-primary").trim() || "#000000";
-	let gridStroke = rootStyle.getPropertyValue("--pwt-chart-grid-stroke").trim() || "#dddddd";
+        // get colors
+        let background = rootStyle.getPropertyValue('--pwt-panel-background').trim() || '#ffffff';
+        let text = rootStyle.getPropertyValue('--pwt-text-color').trim() || '#000000';
+        let primary = rootStyle.getPropertyValue('--pwt-chart-primary').trim() || '#000000';
+        let gridStroke = rootStyle.getPropertyValue('--pwt-chart-grid-stroke').trim() || '#dddddd';
 
-	// set the colors
-	me.setBackground(background);
-	me.axes.forEach((axis) => {
-		axis.setLabel({ color: text });
-		axis.setTitle({ color: text });
-		axis.setStyle({ strokeStyle: primary });
-		axis.setGrid({ stroke: gridStroke });
-	});
-	me.redraw();
+        // set the colors
+        me.setBackground(background);
+        me.axes.forEach((axis) => {
+            axis.setLabel({ color: text });
+            axis.setTitle({ color: text });
+            axis.setStyle({ strokeStyle: primary });
+            axis.setGrid({ stroke: gridStroke });
+        });
+        me.redraw();
     },
 
-    initComponent: function() {
-	let me = this;
+    initComponent: function () {
+        let me = this;
 
-	if (!me.store) {
-	    throw "cannot work without store";
-	}
+        if (!me.store) {
+            throw 'cannot work without store';
+        }
 
-	if (!me.fields) {
-	    throw "cannot work without fields";
-	}
+        if (!me.fields) {
+            throw 'cannot work without fields';
+        }
 
-	me.callParent();
+        me.callParent();
 
-	// add correct label for left axis
-	let axisTitle = "";
-	if (me.unit === 'percent') {
-	    axisTitle = "%";
-	} else if (me.unit === 'bytes') {
-	    axisTitle = "Bytes";
-	} else if (me.unit === 'bytespersecond') {
-	    axisTitle = "Bytes/s";
-	} else if (me.fieldTitles && me.fieldTitles.length === 1) {
-	    axisTitle = me.fieldTitles[0];
-	} else if (me.fields.length === 1) {
-	    axisTitle = me.fields[0];
-	}
+        // add correct label for left axis
+        let axisTitle = '';
+        if (me.unit === 'percent') {
+            axisTitle = '%';
+        } else if (me.unit === 'bytes') {
+            axisTitle = 'Bytes';
+        } else if (me.unit === 'bytespersecond') {
+            axisTitle = 'Bytes/s';
+        } else if (me.fieldTitles && me.fieldTitles.length === 1) {
+            axisTitle = me.fieldTitles[0];
+        } else if (me.fields.length === 1) {
+            axisTitle = me.fields[0];
+        }
 
-	me.axes[0].setTitle(axisTitle);
+        me.axes[0].setTitle(axisTitle);
 
-	me.updateHeader();
+        me.updateHeader();
 
-	if (me.header && me.legend) {
-	    me.header.padding = '4 9 4';
-	    me.header.add(me.legend);
-	    me.legend = undefined;
-	}
+        if (me.header && me.legend) {
+            me.header.padding = '4 9 4';
+            me.header.add(me.legend);
+            me.legend = undefined;
+        }
 
-	if (!me.noTool) {
-	    me.addTool({
-		type: 'minus',
-		disabled: true,
-		tooltip: gettext('Undo Zoom'),
-		handler: function() {
-		    let undoButton = me.interactions[0].getUndoButton();
-		    if (undoButton.handler) {
-			undoButton.handler();
-		    }
-		},
-	    });
-	}
+        if (!me.noTool) {
+            me.addTool({
+                type: 'minus',
+                disabled: true,
+                tooltip: gettext('Undo Zoom'),
+                handler: function () {
+                    let undoButton = me.interactions[0].getUndoButton();
+                    if (undoButton.handler) {
+                        undoButton.handler();
+                    }
+                },
+            });
+        }
 
-	// add a series for each field we get
-	me.fields.forEach(function(item, index) {
-	    let title = item;
-	    if (me.fieldTitles && me.fieldTitles[index]) {
-		title = me.fieldTitles[index];
-	    }
-	    me.addSeries(Ext.apply(
-		{
-		    type: 'line',
-		    xField: 'time',
-		    yField: item,
-		    title: title,
-		    fill: true,
-		    style: {
-			lineWidth: 1.5,
-			opacity: 0.60,
-		    },
-		    marker: {
-			opacity: 0,
-			scaling: 0.01,
-		    },
-		    highlightCfg: {
-			opacity: 1,
-			scaling: 1.5,
-		    },
-		    tooltip: {
-			trackMouse: true,
-			renderer: 'onSeriesTooltipRender',
-		    },
-		},
-		me.seriesConfig,
-	    ));
-	});
+        // add a series for each field we get
+        me.fields.forEach(function (item, index) {
+            let title = item;
+            if (me.fieldTitles && me.fieldTitles[index]) {
+                title = me.fieldTitles[index];
+            }
+            me.addSeries(
+                Ext.apply(
+                    {
+                        type: 'line',
+                        xField: 'time',
+                        yField: item,
+                        title: title,
+                        fill: true,
+                        style: {
+                            lineWidth: 1.5,
+                            opacity: 0.6,
+                        },
+                        marker: {
+                            opacity: 0,
+                            scaling: 0.01,
+                        },
+                        highlightCfg: {
+                            opacity: 1,
+                            scaling: 1.5,
+                        },
+                        tooltip: {
+                            trackMouse: true,
+                            renderer: 'onSeriesTooltipRender',
+                        },
+                    },
+                    me.seriesConfig,
+                ),
+            );
+        });
 
-	// enable animation after the store is loaded
-	me.store.onAfter('load', function() {
-	    me.setAnimation({
-		duration: 200,
-		easing: 'easeIn',
-	    });
-	}, this, { single: true });
+        // enable animation after the store is loaded
+        me.store.onAfter(
+            'load',
+            function () {
+                me.setAnimation({
+                    duration: 200,
+                    easing: 'easeIn',
+                });
+            },
+            this,
+            { single: true },
+        );
 
+        me.checkThemeColors();
 
-	me.checkThemeColors();
-
-	// switch colors on media query changes
-	me.mediaQueryList = window.matchMedia("(prefers-color-scheme: dark)");
-	me.themeListener = (e) => { me.checkThemeColors(); };
-	me.mediaQueryList.addEventListener("change", me.themeListener);
+        // switch colors on media query changes
+        me.mediaQueryList = window.matchMedia('(prefers-color-scheme: dark)');
+        me.themeListener = (e) => {
+            me.checkThemeColors();
+        };
+        me.mediaQueryList.addEventListener('change', me.themeListener);
     },
 
-    doDestroy: function() {
-	let me = this;
+    doDestroy: function () {
+        let me = this;
 
-	me.mediaQueryList.removeEventListener("change", me.themeListener);
+        me.mediaQueryList.removeEventListener('change', me.themeListener);
 
-	me.callParent();
+        me.callParent();
     },
 });

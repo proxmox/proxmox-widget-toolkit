@@ -2,8 +2,8 @@ Ext.define('pmx-roles', {
     extend: 'Ext.data.Model',
     fields: ['roleid', 'privs'],
     proxy: {
-	type: 'proxmox',
-	url: "/api2/json/access/roles",
+        type: 'proxmox',
+        url: '/api2/json/access/roles',
     },
     idProperty: 'roleid',
 });
@@ -18,29 +18,29 @@ Ext.define('Proxmox.form.RoleSelector', {
     displayField: 'roleid',
 
     listConfig: {
-	width: 560,
-	resizable: true,
-	columns: [
-	    {
-		header: gettext('Role'),
-		sortable: true,
-		dataIndex: 'roleid',
-		flex: 2,
-	    },
-	    {
-		header: gettext('Privileges'),
-		dataIndex: 'privs',
-		cellWrap: true,
-		// join manually here, as ExtJS joins without whitespace which breaks cellWrap
-		renderer: v => Ext.isArray(v) ? v.join(', ') : v.replaceAll(',', ', '),
-		flex: 5,
-	    },
-	],
+        width: 560,
+        resizable: true,
+        columns: [
+            {
+                header: gettext('Role'),
+                sortable: true,
+                dataIndex: 'roleid',
+                flex: 2,
+            },
+            {
+                header: gettext('Privileges'),
+                dataIndex: 'privs',
+                cellWrap: true,
+                // join manually here, as ExtJS joins without whitespace which breaks cellWrap
+                renderer: (v) => (Ext.isArray(v) ? v.join(', ') : v.replaceAll(',', ', ')),
+                flex: 5,
+            },
+        ],
     },
 
     store: {
-	autoLoad: true,
-	model: 'pmx-roles',
-	sorters: 'roleid',
+        autoLoad: true,
+        model: 'pmx-roles',
+        sorters: 'roleid',
     },
 });

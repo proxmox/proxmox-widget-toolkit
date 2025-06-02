@@ -28,113 +28,113 @@ Ext.define('Proxmox.data.DiffStore', {
     // config is passed instead of an existing rstore instance
     autoDestroyRstore: false,
 
-    doDestroy: function() {
-	let me = this;
-	if (me.autoDestroyRstore) {
-	    if (Ext.isFunction(me.rstore.destroy)) {
-		me.rstore.destroy();
-	    }
-	    delete me.rstore;
-	}
-	me.callParent();
+    doDestroy: function () {
+        let me = this;
+        if (me.autoDestroyRstore) {
+            if (Ext.isFunction(me.rstore.destroy)) {
+                me.rstore.destroy();
+            }
+            delete me.rstore;
+        }
+        me.callParent();
     },
 
-    constructor: function(config) {
-	let me = this;
+    constructor: function (config) {
+        let me = this;
 
-	config = config || {};
+        config = config || {};
 
-	if (!config.rstore) {
-	    throw "no rstore specified";
-	}
+        if (!config.rstore) {
+            throw 'no rstore specified';
+        }
 
-	if (!config.rstore.model) {
-	    throw "no rstore model specified";
-	}
+        if (!config.rstore.model) {
+            throw 'no rstore model specified';
+        }
 
-	let rstore;
-	if (config.rstore.isInstance) {
-	    rstore = config.rstore;
-	} else if (config.rstore.type) {
-	    Ext.applyIf(config.rstore, {
-		autoDestroyRstore: true,
-	    });
-	    rstore = Ext.create(`store.${config.rstore.type}`, config.rstore);
-	} else {
-	    throw 'rstore is not an instance, and cannot autocreate without "type"';
-	}
+        let rstore;
+        if (config.rstore.isInstance) {
+            rstore = config.rstore;
+        } else if (config.rstore.type) {
+            Ext.applyIf(config.rstore, {
+                autoDestroyRstore: true,
+            });
+            rstore = Ext.create(`store.${config.rstore.type}`, config.rstore);
+        } else {
+            throw 'rstore is not an instance, and cannot autocreate without "type"';
+        }
 
-	Ext.apply(config, {
-	    model: rstore.model,
-	    proxy: { type: 'memory' },
-	});
+        Ext.apply(config, {
+            model: rstore.model,
+            proxy: { type: 'memory' },
+        });
 
-	me.callParent([config]);
+        me.callParent([config]);
 
-	me.rstore = rstore;
+        me.rstore = rstore;
 
-	let first_load = true;
+        let first_load = true;
 
-	let cond_add_item = function(data, id) {
-	    let olditem = me.getById(id);
-	    if (olditem) {
-		olditem.beginEdit();
-		Ext.Array.each(me.model.prototype.fields, function(field) {
-		    if (olditem.data[field.name] !== data[field.name]) {
-			olditem.set(field.name, data[field.name]);
-		    }
-		});
-		olditem.endEdit(true);
-		olditem.commit();
-	    } else {
-		let newrec = Ext.create(me.model, data);
-		let pos = me.appendAtStart && !first_load ? 0 : me.data.length;
-		me.insert(pos, newrec);
-	    }
-	};
+        let cond_add_item = function (data, id) {
+            let olditem = me.getById(id);
+            if (olditem) {
+                olditem.beginEdit();
+                Ext.Array.each(me.model.prototype.fields, function (field) {
+                    if (olditem.data[field.name] !== data[field.name]) {
+                        olditem.set(field.name, data[field.name]);
+                    }
+                });
+                olditem.endEdit(true);
+                olditem.commit();
+            } else {
+                let newrec = Ext.create(me.model, data);
+                let pos = me.appendAtStart && !first_load ? 0 : me.data.length;
+                me.insert(pos, newrec);
+            }
+        };
 
-	let loadFn = function(s, records, success) {
-	    if (!success) {
-		return;
-	    }
+        let loadFn = function (s, records, success) {
+            if (!success) {
+                return;
+            }
 
-	    me.suspendEvents();
+            me.suspendEvents();
 
-	    // getSource returns null if data is not filtered
-	    // if it is filtered it returns all records
-	    let allItems = me.getData().getSource() || me.getData();
+            // getSource returns null if data is not filtered
+            // if it is filtered it returns all records
+            let allItems = me.getData().getSource() || me.getData();
 
-	    // remove vanished items
-	    allItems.each(function(olditem) {
-		let item = me.rstore.getById(olditem.getId());
-		if (!item) {
-		    me.remove(olditem);
-		}
-	    });
+            // remove vanished items
+            allItems.each(function (olditem) {
+                let item = me.rstore.getById(olditem.getId());
+                if (!item) {
+                    me.remove(olditem);
+                }
+            });
 
-	    me.rstore.each(function(item) {
-		cond_add_item(item.data, item.getId());
-	    });
+            me.rstore.each(function (item) {
+                cond_add_item(item.data, item.getId());
+            });
 
-	    me.filter();
+            me.filter();
 
-	    if (me.sortAfterUpdate) {
-		me.sort();
-	    }
+            if (me.sortAfterUpdate) {
+                me.sort();
+            }
 
-	    first_load = false;
+            first_load = false;
 
-	    me.resumeEvents();
-	    me.fireEvent('refresh', me);
-	    me.fireEvent('datachanged', me);
-	};
+            me.resumeEvents();
+            me.fireEvent('refresh', me);
+            me.fireEvent('datachanged', me);
+        };
 
-	if (me.rstore.isLoaded()) {
-	    // if store is already loaded,
-	    // insert items instantly
-	    loadFn(me.rstore, [], true);
-	}
+        if (me.rstore.isLoaded()) {
+            // if store is already loaded,
+            // insert items instantly
+            loadFn(me.rstore, [], true);
+        }
 
-	me.mon(me.rstore, 'load', loadFn);
+        me.mon(me.rstore, 'load', loadFn);
     },
 });

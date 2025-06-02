@@ -3,15 +3,15 @@ Ext.define('Proxmox.form.Checkbox', {
     alias: ['widget.proxmoxcheckbox'],
 
     config: {
-	defaultValue: undefined,
-	deleteDefaultValue: false,
-	deleteEmpty: false,
-	clearOnDisable: false,
+        defaultValue: undefined,
+        deleteDefaultValue: false,
+        deleteEmpty: false,
+        clearOnDisable: false,
     },
 
     inputValue: '1',
 
-    getSubmitData: function() {
+    getSubmitData: function () {
         let me = this,
             data = null,
             val;
@@ -19,41 +19,40 @@ Ext.define('Proxmox.form.Checkbox', {
             val = me.getSubmitValue();
             if (val !== null) {
                 data = {};
-		if (val === me.getDefaultValue() && me.getDeleteDefaultValue()) {
-		    data.delete = me.getName();
-		} else {
+                if (val === me.getDefaultValue() && me.getDeleteDefaultValue()) {
+                    data.delete = me.getName();
+                } else {
                     data[me.getName()] = val;
-		}
+                }
             } else if (me.getDeleteEmpty()) {
-               data = {};
-               data.delete = me.getName();
-	    }
+                data = {};
+                data.delete = me.getName();
+            }
         }
         return data;
     },
 
-    setDisabled: function(disabled) {
-	let me = this;
+    setDisabled: function (disabled) {
+        let me = this;
 
-	// only clear on actual transition
-	let toClearValue = me.clearOnDisable && !me.disabled && disabled;
+        // only clear on actual transition
+        let toClearValue = me.clearOnDisable && !me.disabled && disabled;
 
-	me.callParent(arguments);
+        me.callParent(arguments);
 
-	if (toClearValue) {
-	    me.setValue(false); // TODO: could support other "reset value" or use originalValue?
-	}
+        if (toClearValue) {
+            me.setValue(false); // TODO: could support other "reset value" or use originalValue?
+        }
     },
 
     // also accept integer 1 as true
-    setRawValue: function(value) {
-	let me = this;
+    setRawValue: function (value) {
+        let me = this;
 
-	if (value === 1) {
+        if (value === 1) {
             me.callParent([true]);
-	} else {
+        } else {
             me.callParent([value]);
-	}
+        }
     },
-
 });

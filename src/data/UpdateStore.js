@@ -12,65 +12,64 @@ Ext.define('Proxmox.data.UpdateStore', {
     alias: 'store.update',
 
     config: {
-	interval: 3000,
+        interval: 3000,
 
-	isStopped: true,
+        isStopped: true,
 
-	autoStart: false,
+        autoStart: false,
     },
 
-    destroy: function() {
-	let me = this;
-	me.stopUpdate();
-	me.callParent();
+    destroy: function () {
+        let me = this;
+        me.stopUpdate();
+        me.callParent();
     },
 
-    constructor: function(config) {
-	let me = this;
+    constructor: function (config) {
+        let me = this;
 
-	config = config || {};
-	if (config.interval === undefined) {
-	    delete config.interval;
-	}
+        config = config || {};
+        if (config.interval === undefined) {
+            delete config.interval;
+        }
 
+        let load_task = new Ext.util.DelayedTask();
 
-	let load_task = new Ext.util.DelayedTask();
+        let run_load_task = function () {
+            if (me.getIsStopped()) {
+                return;
+            }
 
-	let run_load_task = function() {
-	    if (me.getIsStopped()) {
-		return;
-	    }
+            if (Proxmox.Utils.authOK()) {
+                let start = new Date();
+                me.load(function () {
+                    let runtime = new Date() - start;
+                    let interval = me.getInterval() + runtime * 2;
+                    load_task.delay(interval, run_load_task);
+                });
+            } else {
+                load_task.delay(200, run_load_task);
+            }
+        };
 
-	    if (Proxmox.Utils.authOK()) {
-		let start = new Date();
-		me.load(function() {
-		    let runtime = new Date() - start;
-		    let interval = me.getInterval() + runtime*2;
-		    load_task.delay(interval, run_load_task);
-		});
-	    } else {
-		load_task.delay(200, run_load_task);
-	    }
-	};
+        Ext.apply(config, {
+            startUpdate: function () {
+                me.setIsStopped(false);
+                // run_load_task(); this makes problems with chrome
+                load_task.delay(1, run_load_task);
+            },
+            stopUpdate: function () {
+                me.setIsStopped(true);
+                load_task.cancel();
+            },
+        });
 
-	Ext.apply(config, {
-	    startUpdate: function() {
-		me.setIsStopped(false);
-		// run_load_task(); this makes problems with chrome
-		load_task.delay(1, run_load_task);
-	    },
-	    stopUpdate: function() {
-		me.setIsStopped(true);
-		load_task.cancel();
-	    },
-	});
+        me.callParent([config]);
 
-	me.callParent([config]);
+        me.load_task = load_task;
 
-	me.load_task = load_task;
-
-	if (me.getAutoStart()) {
-	    me.startUpdate();
-	}
+        if (me.getAutoStart()) {
+            me.startUpdate();
+        }
     },
 });

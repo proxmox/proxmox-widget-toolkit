@@ -15,22 +15,21 @@ Ext.define('Proxmox.window.ConsentModal', {
     title: gettext('Consent'),
 
     items: [
-	{
-	    xtype: 'displayfield',
-	    padding: 10,
-	    scrollable: true,
-	    cbind: {
-		value: '{consent}',
-	    },
-	},
+        {
+            xtype: 'displayfield',
+            padding: 10,
+            scrollable: true,
+            cbind: {
+                value: '{consent}',
+            },
+        },
     ],
     buttons: [
-	{
-	    handler: function() {
-		this.up('window').close();
-	    },
-	    text: gettext('OK'),
-	},
+        {
+            handler: function () {
+                this.up('window').close();
+            },
+            text: gettext('OK'),
+        },
     ],
 });
-

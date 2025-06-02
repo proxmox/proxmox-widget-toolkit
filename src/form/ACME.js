@@ -7,8 +7,8 @@ Ext.define('Proxmox.form.ACMEApiSelector', {
     valueField: 'id',
 
     store: {
-	model: 'proxmox-acme-challenges',
-	autoLoad: true,
+        model: 'proxmox-acme-challenges',
+        autoLoad: true,
     },
 
     triggerAction: 'all',
@@ -19,23 +19,23 @@ Ext.define('Proxmox.form.ACMEApiSelector', {
     anyMatch: true,
     selectOnFocus: true,
 
-    getSchema: function() {
-	let me = this;
-	let val = me.getValue();
-	if (val) {
-	    let record = me.getStore().findRecord('id', val, 0, false, true, true);
-	    if (record) {
-		return record.data.schema;
-	    }
-	}
-	return {};
+    getSchema: function () {
+        let me = this;
+        let val = me.getValue();
+        if (val) {
+            let record = me.getStore().findRecord('id', val, 0, false, true, true);
+            if (record) {
+                return record.data.schema;
+            }
+        }
+        return {};
     },
 
-    initComponent: function() {
+    initComponent: function () {
         let me = this;
 
         if (!me.url) {
-            throw "no url given";
+            throw 'no url given';
         }
 
         me.callParent();
@@ -51,8 +51,8 @@ Ext.define('Proxmox.form.ACMEAccountSelector', {
     valueField: 'name',
 
     store: {
-	model: 'proxmox-acme-accounts',
-	autoLoad: true,
+        model: 'proxmox-acme-accounts',
+        autoLoad: true,
     },
 
     triggerAction: 'all',
@@ -61,15 +61,15 @@ Ext.define('Proxmox.form.ACMEAccountSelector', {
     editable: false,
     forceSelection: true,
 
-    isEmpty: function() {
-	return this.getStore().getData().length === 0;
+    isEmpty: function () {
+        return this.getStore().getData().length === 0;
     },
 
-    initComponent: function() {
+    initComponent: function () {
         let me = this;
 
         if (!me.url) {
-            throw "no url given";
+            throw 'no url given';
         }
 
         me.callParent();
@@ -86,9 +86,9 @@ Ext.define('Proxmox.form.ACMEPluginSelector', {
     valueField: 'plugin',
 
     store: {
-	model: 'proxmox-acme-plugins',
-	autoLoad: true,
-	filters: item => item.data.type === 'dns',
+        model: 'proxmox-acme-plugins',
+        autoLoad: true,
+        filters: (item) => item.data.type === 'dns',
     },
 
     triggerAction: 'all',
@@ -96,11 +96,11 @@ Ext.define('Proxmox.form.ACMEPluginSelector', {
     allowBlank: false,
     editable: false,
 
-    initComponent: function() {
+    initComponent: function () {
         let me = this;
 
         if (!me.url) {
-            throw "no url given";
+            throw 'no url given';
         }
 
         me.callParent();
