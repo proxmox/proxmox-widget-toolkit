@@ -26,7 +26,6 @@
     line-height: 15px;
 }
 
-
 .proxmox-tags-circle :not(span.proxmox-tags-full) > .proxmox-tag-light,
 .proxmox-tags-circle :not(span.proxmox-tags-full) > .proxmox-tag-dark,
 .proxmox-tags-circle > .proxmox-tag-light,
@@ -75,10 +74,11 @@
     text-align: center;
 }
 .x-window-header-default-top .x-mask {
-    background-color: #f5f5f5B4; /* ~ 0.7 opacity */
+    background-color: #f5f5f5b4; /* ~ 0.7 opacity */
 }
 
-.proxmox-disabled-row, .proxmox-disabled-row td {
+.proxmox-disabled-row,
+.proxmox-disabled-row td {
     /*color: #a0a0a0;*/
     color: #666665;
 }
@@ -92,7 +92,7 @@
 }
 
 .proxmox-good-row {
-    background-color: #21BF4B;
+    background-color: #21bf4b;
 }
 
 /* some icons have to be color manually */
@@ -109,7 +109,7 @@
 }
 
 .good {
-    color: #21BF4B;
+    color: #21bf4b;
 }
 
 .warning {
@@ -117,7 +117,7 @@
 }
 
 .critical {
-    color: #FF6C59;
+    color: #ff6c59;
 }
 
 .info-blue {
@@ -136,12 +136,12 @@
 
 /* reduce chart legend space usage to something more sane */
 .x-legend-item {
-	padding: 0.4em 0.8em 0.4em 1.8em;
+    padding: 0.4em 0.8em 0.4em 1.8em;
 }
 
 .x-legend-item-marker {
-	left: 0.5em;
-	top: 0.6em;
+    left: 0.5em;
+    top: 0.6em;
 }
 
 /* for info widget */
@@ -153,12 +153,12 @@ div.right-aligned {
     float: right;
 }
 
-.x-progress.critical .x-progress-bar{
-    background-color: #FF8888;
+.x-progress.critical .x-progress-bar {
+    background-color: #ff8888;
 }
 
-.x-progress.warning .x-progress-bar{
-    background-color: #FFCC00;
+.x-progress.warning .x-progress-bar {
+    background-color: #ffcc00;
 }
 
 .x-treelist-item-icon {
@@ -188,43 +188,42 @@ div.right-aligned {
 
 .pmx-itype-icon-memory,
 .pmx-itype-icon-processor,
-.pmx-itype-icon /* NOTE: use this one instead of adding new specific ones! */
-{
+.pmx-itype-icon /* NOTE: use this one instead of adding new specific ones! */ {
     background-repeat: no-repeat;
-    background-position:3px center;
+    background-position: 3px center;
     padding-left: 20px;
     background-size: 16px 16px; /* Chrom* needs both as else it gets cut-off due do non 1:1 ratio */
 }
 
 .pmx-itype-icon-memory {
-    background-image:url(../images/icon-ram.svg);
+    background-image: url(../images/icon-ram.svg);
 }
 
 .pmx-itype-icon-processor {
-    background-image:url(../images/icon-cpu.svg);
+    background-image: url(../images/icon-cpu.svg);
 }
 
 .pmx-itype-icon-debian-swirl {
     padding-left: 22px;
     background-size: 16px 16px; /* Chrom* needs both as else it gets cut-off due do non 1:1 ratio */
-    background-image:url(../images/debian-swirl-openlogo.svg);
+    background-image: url(../images/debian-swirl-openlogo.svg);
 }
 .pmx-itype-icon-proxmox-x {
     padding-left: 22px;
     background-size: 16px 16px; /* Not really required here, as here WxH is 1:1 but cannot hurt */
-    background-image:url(../images/proxmox-symbol-x.svg);
+    background-image: url(../images/proxmox-symbol-x.svg);
 }
 
 .pmx-itype-icon-openid-logo {
     padding-left: 22px;
     background-size: 16px 16px;
-    background-image:url(../images/openid-icon-100x100.png);
+    background-image: url(../images/openid-icon-100x100.png);
 }
 
 /* change font for config panel back to fontawesome */
 .x-treelist-item-expanded > * > * > .x-treelist-item-expander::after,
 .x-treelist-item-expander::after {
-    font: 16px/1 FontAwesome;
+    font: 16px / 1 FontAwesome;
 }
 
 .x-treelist-pve-nav {
@@ -279,7 +278,7 @@ div.right-aligned {
 
 /* rules for the markdown content, prefix with the .pmx-md class */
 .pmx-md {
-    font-size: 1.0em;
+    font-size: 1em;
     line-height: 1.25em;
 }
 .pmx-md p {
@@ -290,12 +289,24 @@ div.right-aligned {
     margin-top: 0.9em;
     margin-bottom: 0.75em;
 }
-.pmx-md h1 { font-size: 175%; }
-.pmx-md h2 { font-size: 150%; }
-.pmx-md h3 { font-size: 125%; }
-.pmx-md h4 { font-size: 110%; }
-.pmx-md h5 { font-size: 100%; }
-.pmx-md h6 { font-size: 100%; }
+.pmx-md h1 {
+    font-size: 175%;
+}
+.pmx-md h2 {
+    font-size: 150%;
+}
+.pmx-md h3 {
+    font-size: 125%;
+}
+.pmx-md h4 {
+    font-size: 110%;
+}
+.pmx-md h5 {
+    font-size: 100%;
+}
+.pmx-md h6 {
+    font-size: 100%;
+}
 
 .pmx-md code {
     white-space: pre;
@@ -320,7 +331,8 @@ div.right-aligned {
     border-spacing: 0;
     border-collapse: collapse;
 }
-.pmx-md td, .pmx-md th {
+.pmx-md td,
+.pmx-md th {
     padding: 5px;
 }
 .pmx-md td[align="center"] {
@@ -350,11 +362,13 @@ div.right-aligned {
     margin: 0 1px;
     font-size: 14px;
 }
-.x-action-col-icon:before, .x-action-col-icon:after {
+.x-action-col-icon:before,
+.x-action-col-icon:after {
     font-size: 14px;
 }
-.x-action-col-icon:hover:before, .x-action-col-icon:hover:after {
-    text-shadow: 1px 1px 1px #AAA;
+.x-action-col-icon:hover:before,
+.x-action-col-icon:hover:after {
+    text-shadow: 1px 1px 1px #aaa;
     font-weight: 800;
 }
 .x-action-col-icon:before {
