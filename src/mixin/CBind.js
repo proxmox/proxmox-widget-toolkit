@@ -138,7 +138,6 @@ Ext.define('Proxmox.Mixin.CBind', {
 
             // biome-ignore lint/suspicious/useGuardForIn: loop over everything
             for (const prop in cbind) {
-                // eslint-disable-line guard-for-in
                 let match, found;
                 cdata = cbind[prop];
 
@@ -231,7 +230,6 @@ Ext.define('Proxmox.Mixin.CBind', {
                 copy;
             // biome-ignore lint/suspicious/useGuardForIn: loop over everything
             for (prop in org) {
-                // eslint-disable-line guard-for-in
                 el = org[prop];
                 if (el === undefined || el === null) {
                     res[prop] = el;
@@ -258,7 +256,6 @@ Ext.define('Proxmox.Mixin.CBind', {
 
             // biome-ignore lint/suspicious/useGuardForIn: loop over everything
             for (prop in me) {
-                // eslint-disable-line guard-for-in
                 el = me[prop];
                 if (el === undefined || el === null) {
                     continue;

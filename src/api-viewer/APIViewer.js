@@ -207,7 +207,7 @@ Ext.onReady(function () {
                 usage += `${method} /api2/json${endpoint}</td></tr>`;
 
                 if (typeof cliUsageRenderer === 'function') {
-                    usage += cliUsageRenderer(method, endpoint); // eslint-disable-line no-undef
+                    usage += cliUsageRenderer(method, endpoint);
                 }
 
                 let sections = [

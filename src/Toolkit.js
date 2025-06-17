@@ -773,7 +773,6 @@ Ext.define('Proxmox.Cookies', {
 Ext.onReady(function () {
     Ext.override(Ext.Msg, {
         alert: function (title, message, fn, scope) {
-            // eslint-disable-line consistent-return
             if (Ext.isString(title)) {
                 let config = {
                     title: title,
@@ -804,7 +803,6 @@ Ext.define('Ext.ux.IFrame', {
     src: 'about:blank',
 
     renderTpl: [
-        // eslint-disable-next-line max-len
         '<iframe src="{src}" id="{id}-iframeEl" data-ref="iframeEl" name="{frameName}" width="100%" height="100%" frameborder="0" allowfullscreen="true"></iframe>',
     ],
 

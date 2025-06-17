@@ -46,7 +46,7 @@ Ext.define('Proxmox.Markdown', {
                             safeURL = true;
                         } else if (canonicalTagName === 'a') {
                             // allow most link protocols so admins can use short-cuts to, e.g., RDP
-                            safeURL = url.protocol.toLowerCase() !== 'javascript:'; // eslint-disable-line no-script-url
+                            safeURL = url.protocol.toLowerCase() !== 'javascript:';
                         }
                         if (safeURL) {
                             node.attributes[i].value = url.href;

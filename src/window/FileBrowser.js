@@ -13,7 +13,6 @@ Ext.define('proxmox-file-tree', {
                     return '';
                     // biome-ignore lint/correctness/noConstantCondition: temporarily disabled
                 } else if (false && data.type === 'd') {
-                    // eslint-disable-line no-constant-condition
                     // FIXME: enable again once we fixed trouble with confusing size vs item #
                     let fs = data.size === 1 ? gettext('{0} Item') : gettext('{0} Items');
                     return Ext.String.format(fs, data.size);
