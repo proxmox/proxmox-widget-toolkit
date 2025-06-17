@@ -1,6 +1,6 @@
 include defines.mk
 
-ESLINT ?= $(if $(shell command -v pve-eslint), pve-eslint, eslint)
+BIOME ?= proxmox-biome
 
 SUBDIRS= css images proxmox-dark
 
@@ -127,14 +127,14 @@ all: $(SUBDIRS)
 	set -e && for i in $(SUBDIRS); do $(MAKE) -C $$i; done
 
 .lint-incremental: $(JSSRC)
-	$(ESLINT) $?
+	$(BIOME) lint $?
 	touch "$@"
 
 .PHONY: lint
 check: lint
-	$(ESLINT) --strict api-viewer/APIViewer.js
+	$(BIOME) lint --error-on-warnings api-viewer/APIViewer.js
 lint: $(JSSRC)
-	$(ESLINT) --strict $(JSSRC)
+	$(BIOME) lint --error-on-warnings $(JSSRC)
 	touch ".lint-incremental"
 
 BUILD_TIME=$(or $(SOURCE_DATE_EPOCH),$(shell date '+%s.%N'))
