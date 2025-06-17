@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (5.0.0) trixie; urgency=medium
+
+  * re-build for Debian 13 Trixie based Proxmox project releases.
+
+  * re-format source code with Biome based tooling and use it to replace
+    eslint as linter, adapting to various lints – no semantic change inteded.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 17 Jun 2025 16:54:00 +0200
+
 proxmox-widget-toolkit (4.3.11) bookworm; urgency=medium
 
   * language selector: add Czech as available option.
