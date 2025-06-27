@@ -76,7 +76,7 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
             fieldLabel: gettext('Encryption'),
             editable: false,
             comboItems: [
-                ['insecure', Proxmox.Utils.noneText + ' (' + gettext('insecure') + ')'],
+                ['insecure', gettext('None (insecure)')],
                 ['starttls', 'STARTTLS'],
                 ['tls', 'TLS'],
             ],
