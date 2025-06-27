@@ -196,9 +196,16 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
     },
 
     onSetValues: function (values) {
+        let me = this;
+
         values.authentication = !!values.username;
         values.enable = !values.disable;
         delete values.disable;
+
+        // Fix race condition in chromium-based browsers. Without this, the
+        // 'Authenticate' remains ticked (the default value) if loading an
+        // SMTP target without authentication.
+        me.getViewModel().set('authentication', values.authentication);
 
         return values;
     },
