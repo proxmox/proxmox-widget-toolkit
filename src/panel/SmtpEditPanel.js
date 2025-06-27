@@ -8,12 +8,10 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
 
     viewModel: {
         xtype: 'viewmodel',
-        cbind: {
-            isCreate: '{isCreate}',
-        },
         data: {
             mode: 'tls',
             authentication: true,
+            originalAuthentication: true,
         },
         formulas: {
             portEmptyText: function (get) {
@@ -33,8 +31,13 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
                 return `${Proxmox.Utils.defaultText} (${port})`;
             },
             passwordEmptyText: function (get) {
-                let isCreate = this.isCreate;
-                return get('authentication') && !isCreate ? gettext('Unchanged') : '';
+                let isCreate = this.getView().isCreate;
+
+                let auth = get('authentication');
+                let origAuth = get('originalAuthentication');
+                let shouldShowUnchanged = !isCreate && auth && origAuth;
+
+                return shouldShowUnchanged ? gettext('Unchanged') : '';
             },
         },
     },
@@ -123,7 +126,9 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
             inputType: 'password',
             fieldLabel: gettext('Password'),
             name: 'password',
-            allowBlank: true,
+            cbind: {
+                allowBlank: '{!isCreate}',
+            },
             bind: {
                 disabled: '{!authentication}',
                 emptyText: '{passwordEmptyText}',
@@ -206,6 +211,7 @@ Ext.define('Proxmox.panel.SmtpEditPanel', {
         // 'Authenticate' remains ticked (the default value) if loading an
         // SMTP target without authentication.
         me.getViewModel().set('authentication', values.authentication);
+        me.getViewModel().set('originalAuthentication', values.authentication);
 
         return values;
     },
