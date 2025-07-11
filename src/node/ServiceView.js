@@ -114,7 +114,7 @@ Ext.define('Proxmox.node.ServiceView', {
             handler: () => service_cmd(me.restartCommand || 'restart'),
         });
         let syslog_btn = new Ext.Button({
-            text: gettext('Syslog'),
+            text: gettext('Service System Log'),
             disabled: true,
             handler: view_service_log,
         });
