@@ -62,11 +62,14 @@ Ext.define('Proxmox.node.ServiceView', {
             let {
                 data: { service },
             } = me.getSelectionModel().getSelection()[0];
+
+            let viewSize = Ext.getBody().getViewSize();
+
             Ext.create('Ext.window.Window', {
                 title: gettext('Syslog') + ': ' + service,
                 modal: true,
-                width: 800,
-                height: 400,
+                width: viewSize.width > 1600 ? 1000 : 800,
+                height: viewSize.height > 900 ? 800 : 600,
                 layout: 'fit',
                 items: {
                     xtype: 'proxmoxLogView',
