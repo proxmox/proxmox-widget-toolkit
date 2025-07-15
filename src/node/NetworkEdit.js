@@ -5,6 +5,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
     // Enable to show the VLAN ID field
     enableBridgeVlanIds: false,
 
+    // Show alternative names below normal name
+    showAltNames: false,
+
     initComponent: function () {
         let me = this;
 
@@ -363,6 +366,14 @@ Ext.define('Proxmox.node.NetworkEdit', {
             },
         );
 
+        if (me.showAltNames && !me.isCreate) {
+            column1.push({
+                xtype: 'displayfield',
+                name: 'altnames',
+                fieldLabel: gettext("Alternative Names"),
+            });
+        }
+
         if (me.iftype === 'OVSBond') {
             column1.push(
                 {
@@ -448,6 +459,14 @@ Ext.define('Proxmox.node.NetworkEdit', {
                             me.close();
                         });
                         return;
+                    }
+
+                    if (data.altnames) {
+                        if (Ext.isArray(data.altnames)) {
+                            data.altnames = data.altnames.join('<br>');
+                        }
+                    } else {
+                        me.down('field[name=altnames]').setVisible(false);
                     }
                     me.setValues(data);
                     me.isValid(); // trigger validation

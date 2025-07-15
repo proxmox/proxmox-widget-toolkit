@@ -4,6 +4,7 @@ Ext.define('proxmox-networks', {
         'active',
         'address',
         'address6',
+        'altnames',
         'autostart',
         'bridge_ports',
         'cidr',
@@ -32,6 +33,9 @@ Ext.define('Proxmox.node.NetworkView', {
     types: ['bridge', 'bond', 'vlan', 'ovs'],
 
     showApplyBtn: false,
+
+    // if true, the altnames column will be shown by default
+    showAltNames: false,
 
     // for options passed down to the network edit window
     editOptions: {},
@@ -103,6 +107,7 @@ Ext.define('Proxmox.node.NetworkView', {
                 nodename: me.nodename,
                 iface: rec.data.iface,
                 iftype: rec.data.type,
+                showAltNames: me.showAltNames,
                 ...me.editOptions,
                 listeners: {
                     destroy: () => reload(),
@@ -277,6 +282,21 @@ Ext.define('Proxmox.node.NetworkView', {
                             header: gettext('Name'),
                             sortable: true,
                             dataIndex: 'iface',
+                        },
+                        {
+                            header: gettext("Alternative Names"),
+                            dataIndex: 'altnames',
+                            hidden: !me.showAltNames,
+                            width: 140, // enough space for 'enx<MAC>'
+                            renderer: (value) => {
+                                if (!value) {
+                                    return '';
+                                }
+                                if (Ext.isArray(value)) {
+                                    return value.map(Ext.htmlEncode).join('<br>');
+                                }
+                                return Ext.htmlEncode(value);
+                            },
                         },
                         {
                             header: gettext('Type'),
