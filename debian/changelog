@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (4.3.12) bookworm; urgency=medium
+
+  * node service view: rename 'Syslog' button to 'Service System Log'.
+
+  * notifications:
+    - fix #5588: smtp: fix Authenticate checkbox in Chromium.
+    - smtp: only show 'Unchanged' in password field when it makes sense.
+    - smtp: don't split translatable string.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 16 Jul 2025 00:33:18 +0200
+
 proxmox-widget-toolkit (4.3.11) bookworm; urgency=medium
 
   * language selector: add Czech as available option.
