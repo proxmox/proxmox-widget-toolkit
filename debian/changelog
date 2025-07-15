@@ -1,3 +1,18 @@
+proxmox-widget-toolkit (5.0.1) trixie; urgency=medium
+
+  * node service view:
+    - rename 'Syslog' button to 'Service System Log'.
+    - increase log window size depending on viewport size.
+    - grey-out optional systemd-timesyncd and proxmox-firewall if status is
+      unknown.
+
+  * notifications:
+    - fix #5588: smtp: fix Authenticate checkbox in Chromium.
+    - smtp: only show 'Unchanged' in password field when it makes sense.
+    - smtp: don't split translatable string.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 16 Jul 2025 00:30:12 +0200
+
 proxmox-widget-toolkit (5.0.0) trixie; urgency=medium
 
   * re-build for Debian 13 Trixie based Proxmox project releases.
