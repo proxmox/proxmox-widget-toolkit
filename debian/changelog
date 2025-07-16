@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (5.0.2) trixie; urgency=medium
+
+  * network selector: add support for passing a type query parameter.
+
+  * fix #6312: limit consent window to viewport size.
+
+  * network: optionally show alternative interface names.
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 17 Jul 2025 01:36:58 +0200
+
 proxmox-widget-toolkit (5.0.1) trixie; urgency=medium
 
   * node service view:
