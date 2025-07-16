@@ -179,9 +179,9 @@ Ext.define('Proxmox.node.ServiceView', {
                         return 'proxmox-disabled-row';
                     } else if (unitState === 'unknown') {
                         if (
-                            record.get('name') === 'syslog' // replaced by journal on most hosts
-                            || record.get('name') === 'systemd-timesyncd' // chrony is preferred
-                            || record.get('name') === 'proxmox-firewall' // opt-in NFT based variant
+                            record.get('name') === 'syslog' || // replaced by journal on most hosts
+                            record.get('name') === 'systemd-timesyncd' || // chrony is preferred
+                            record.get('name') === 'proxmox-firewall' // opt-in NFT based variant
                         ) {
                             return 'proxmox-disabled-row';
                         }
