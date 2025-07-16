@@ -10,7 +10,7 @@ Ext.define('Proxmox.form.NetworkSelectorController', {
         }
         view.getStore()
             .getProxy()
-            .setUrl('/api2/json/nodes/' + view.nodename + '/network');
+            .setUrl(`/api2/json/nodes/${view.nodename}/network${view.getQueryString()}`);
     },
 });
 
@@ -35,6 +35,11 @@ Ext.define('Proxmox.form.NetworkSelector', {
 
     controller: 'proxmoxNetworkSelectorController',
 
+    type: undefined,
+    getQueryString: function () {
+        return this.type ? `?type=${this.type}` : '';
+    },
+
     nodename: 'localhost',
     setNodename: function (nodename) {
         this.nodename = nodename;
@@ -43,7 +48,9 @@ Ext.define('Proxmox.form.NetworkSelector', {
         // because of manual local copy of data for ip4/6
         this.getPicker().refresh();
         if (networkSelectorStore && typeof networkSelectorStore.getProxy === 'function') {
-            networkSelectorStore.getProxy().setUrl('/api2/json/nodes/' + nodename + '/network');
+            networkSelectorStore
+                .getProxy()
+                .setUrl(`/api2/json/nodes/${nodename}/network${this.getQueryString()}`);
             networkSelectorStore.load();
         }
     },
