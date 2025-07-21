@@ -22,4 +22,4 @@ Architecture: all
 Depends: ${misc:Depends}
 Description: ExtJS based widgets and utilities for development
  Contains some common JavaScript code that some Proxmox projects might used to
- build common interfaces, like the API viewer in each documnetation repo.
+ build common interfaces, like the API viewer in each documentation repo.
