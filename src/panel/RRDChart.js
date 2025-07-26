@@ -118,13 +118,33 @@ Ext.define('Proxmox.widget.RRDChart', {
                 suffix = 'B/s';
             }
 
-            let prefix = item.field;
-            if (view.fieldTitles && view.fieldTitles[view.fields.indexOf(item.field)]) {
-                prefix = view.fieldTitles[view.fields.indexOf(item.field)];
+            let value = record.get(item.field);
+            if (value === null) {
+                tooltip.setHtml(gettext('No Data'));
+            } else {
+                let prefix = item.field;
+                if (view.fieldTitles && view.fieldTitles[view.fields.indexOf(item.field)]) {
+                    prefix = view.fieldTitles[view.fields.indexOf(item.field)];
+                } else {
+                    // If series is passed in directly, we don't have fieldTitles set. The title property can be a
+                    // single string for a line series, or an array for an area/stacked series.
+                    for (const field of view.fields) {
+                        if (Array.isArray(field.yField)) {
+                            if (field.title && field.title[field.yField.indexOf(item.field)]) {
+                                prefix = field.title[field.yField.indexOf(item.field)];
+                                break;
+                            }
+                        } else if (field.title) {
+                            prefix = field.title;
+                            break;
+                        }
+                    }
+                }
+
+                let v = this.convertToUnits(value);
+                let t = new Date(record.get('time'));
+                tooltip.setHtml(`${prefix}: ${v}${suffix}<br>${t}`);
             }
-            let v = this.convertToUnits(record.get(item.field));
-            let t = new Date(record.get('time'));
-            tooltip.setHtml(`${prefix}: ${v}${suffix}<br>${t}`);
         },
 
         onAfterAnimation: function (chart, eopts) {
@@ -261,17 +281,26 @@ Ext.define('Proxmox.widget.RRDChart', {
 
         // add a series for each field we get
         me.fields.forEach(function (item, index) {
-            let title = item;
-            if (me.fieldTitles && me.fieldTitles[index]) {
-                title = me.fieldTitles[index];
+            let yField;
+            let title;
+            let object;
+
+            if (typeof item === 'object') {
+                object = item;
+            } else {
+                yField = item;
+                title = item;
+                if (me.fieldTitles && me.fieldTitles[index]) {
+                    title = me.fieldTitles[index];
+                }
             }
             me.addSeries(
                 Ext.apply(
                     {
                         type: 'line',
                         xField: 'time',
-                        yField: item,
-                        title: title,
+                        yField,
+                        title,
                         fill: true,
                         style: {
                             lineWidth: 1.5,
@@ -290,7 +319,7 @@ Ext.define('Proxmox.widget.RRDChart', {
                             renderer: 'onSeriesTooltipRender',
                         },
                     },
-                    me.seriesConfig,
+                    object ?? me.seriesConfig,
                 ),
             );
         });
