@@ -152,7 +152,7 @@ Ext.define('Proxmox.widget.RRDChart', {
                 return;
             }
             // if the undo button is disabled, disable our tool
-            let ourUndoZoomButton = chart.header.tools[0];
+            let ourUndoZoomButton = chart.lookupReference('undoButton');
             let undoButton = chart.interactions[0].getUndoButton();
             ourUndoZoomButton.setDisabled(undoButton.isDisabled());
         },
@@ -269,6 +269,7 @@ Ext.define('Proxmox.widget.RRDChart', {
             me.addTool({
                 type: 'minus',
                 disabled: true,
+                reference: 'undoButton',
                 tooltip: gettext('Undo Zoom'),
                 handler: function () {
                     let undoButton = me.interactions[0].getUndoButton();
