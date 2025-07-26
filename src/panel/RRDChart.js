@@ -169,6 +169,7 @@ Ext.define('Proxmox.widget.RRDChart', {
     legend: {
         type: 'dom',
         padding: 0,
+        style: 'cursor: pointer;',
     },
     listeners: {
         redraw: {
