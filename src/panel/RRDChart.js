@@ -67,6 +67,8 @@ Ext.define('Proxmox.widget.RRDChart', {
     // set to empty string to suppress warning in debug mode
     downloadServerUrl: '-',
 
+    onLegendChange: Ext.emptyFn, // empty dummy function so we can add listener for legend events when needed
+
     controller: {
         xclass: 'Ext.app.ViewController',
 
@@ -261,6 +263,8 @@ Ext.define('Proxmox.widget.RRDChart', {
         me.updateHeader();
 
         if (me.header && me.legend) {
+            // event itemclick is not documented for legend, but found it by printing all events happening
+            me.legend.addListener('itemclick', me.onLegendChange);
             me.header.padding = '4 9 4';
             me.header.add(me.legend);
             me.legend = undefined;
