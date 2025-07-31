@@ -465,7 +465,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
                         if (Ext.isArray(data.altnames)) {
                             data.altnames = data.altnames.join('<br>');
                         }
-                    } else {
+                    } else if (me.showAltNames && !me.isCreate) {
                         me.down('field[name=altnames]').setVisible(false);
                     }
                     me.setValues(data);
