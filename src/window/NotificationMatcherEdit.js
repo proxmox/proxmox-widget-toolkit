@@ -1081,7 +1081,7 @@ Ext.define('Proxmox.panel.MatchSeveritySettings', {
             comboItems: [
                 ['info', gettext('Info')],
                 ['notice', gettext('Notice')],
-                ['warning', gettext('Warning')],
+                ['warning', ngettext('Warning', 'Warnings', 1)],
                 ['error', gettext('Error')],
                 ['unknown', gettext('Unknown')],
             ],

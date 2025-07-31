@@ -267,7 +267,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
             renderer: function (suites, metaData, record) {
                 let err = '';
                 if (record.data.warnings && record.data.warnings.length > 0) {
-                    let txt = [gettext('Warning')];
+                    let txt = [ngettext('Warning', 'Warnings', 1)];
                     record.data.warnings.forEach((warning) => {
                         if (warning.property === 'Suites') {
                             txt.push(Ext.htmlEncode(warning.message));
@@ -444,7 +444,7 @@ Ext.define('Proxmox.node.APTRepositories', {
             let addWarn = (message, important) => {
                 if (status !== 'critical') {
                     status = 'warning';
-                    text = important ? message : gettext('Warning');
+                    text = important ? message : ngettext('Warning', 'Warnings', 1);
                 }
                 store.add({ status: 'warning', message });
             };
