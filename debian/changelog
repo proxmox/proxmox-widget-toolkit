@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (5.0.3) trixie; urgency=medium
+
+  * RRD metric charts:
+    - allow one to override the series object for more complex graphs
+      controlled by the call site.
+    - allow the Undo tool to not be the 0 indexed item in the tool bar.
+    - set cursor pointer for legend for better UX.
+    - allow users to define a click listener for the legend.
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 31 Jul 2025 03:20:54 +0200
+
 proxmox-widget-toolkit (5.0.2) trixie; urgency=medium
 
   * network selector: add support for passing a type query parameter.
