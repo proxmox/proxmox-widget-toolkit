@@ -48,7 +48,7 @@ Ext.define('Proxmox.Utils', {
         noneText: gettext('none'),
         NoneText: gettext('None'),
         errorText: gettext('Error'),
-        warningsText: gettext('Warnings'),
+        warningsText: ngettext('Warning', 'Warnings', 1), // TODO: make use of count
         unknownText: gettext('Unknown'),
         defaultText: gettext('Default'),
         daysText: gettext('days'),

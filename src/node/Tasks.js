@@ -355,7 +355,7 @@ Ext.define('Proxmox.node.Tasks', {
                             store: [
                                 ['ok', gettext('OK')],
                                 ['unknown', Proxmox.Utils.unknownText],
-                                ['warning', gettext('Warnings')],
+                                ['warning', ngettext('Warning', 'Warnings', 1)], // TODO: use count
                                 ['error', gettext('Errors')],
                             ],
                             bind: {
