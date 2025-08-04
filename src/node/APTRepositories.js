@@ -631,7 +631,7 @@ Ext.define('Proxmox.node.APTRepositories', {
                 nodename: '{nodename}',
                 onlineHelp: '{onlineHelp}',
             },
-            majorUpgradeAllowed: false, // TODO get release information from an API call?
+            majorUpgradeAllowed: true, // TODO get release information from an API call?
             listeners: {
                 selectionchange: 'selectionChange',
             },
