@@ -136,7 +136,7 @@ Ext.define('Proxmox.widget.RRDChart', {
                                 prefix = field.title[field.yField.indexOf(item.field)];
                                 break;
                             }
-                        } else if (field.title) {
+                        } else if (field.yField === item.field && field.title) {
                             prefix = field.title;
                             break;
                         }
