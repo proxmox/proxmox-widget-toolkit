@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (4.3.13) bookworm; urgency=medium
+
+  * apt repositoires: allow major upgrade.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 04 Aug 2025 15:50:29 +0200
+
 proxmox-widget-toolkit (4.3.12) bookworm; urgency=medium
 
   * node service view: rename 'Syslog' button to 'Service System Log'.
