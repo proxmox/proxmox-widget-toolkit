@@ -301,6 +301,10 @@ Ext.define('Proxmox.window.TfaLoginWindow', {
                 password,
             };
 
+            if (view.http_only === true) {
+                params['http-only'] = true;
+            }
+
             let resolve = view.onResolve;
             let reject = view.onReject;
             view.close();
