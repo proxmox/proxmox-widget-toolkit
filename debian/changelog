@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (5.0.5) trixie; urgency=medium
+
+  * tfa challenge: allow opting into the new http only authentication flow
+    when completing the challenge.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 06 Aug 2025 12:03:41 +0200
+
 proxmox-widget-toolkit (5.0.4) trixie; urgency=medium
 
   * network edit: fix hiding of altnames field if disabled by config.
