@@ -49,17 +49,18 @@ Ext.define('Proxmox.panel.JournalView', {
             let me = this;
             let view = me.getView();
 
+            let scrollX = view.getScrollX() ?? 0;
             if (!livemode) {
                 setTimeout(function () {
                     view.scrollTo(0, 0);
                 }, 10);
             } else if (view.scrollToEnd && scrollPos <= 5) {
                 setTimeout(function () {
-                    view.scrollTo(0, Infinity);
+                    view.scrollTo(scrollX, Infinity);
                 }, 10);
             } else if (!view.scrollToEnd && scrollPosTop < 20 * view.lineHeight) {
                 setTimeout(function () {
-                    view.scrollTo(0, num * view.lineHeight + scrollPosTop);
+                    view.scrollTo(scrollX, num * view.lineHeight + scrollPosTop);
                 }, 10);
             }
         },

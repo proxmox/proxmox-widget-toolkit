@@ -87,7 +87,7 @@ Ext.define('Proxmox.panel.LogView', {
             if (scrollToBottom) {
                 let scroller = view.getScrollable();
                 scroller.suspendEvent('scroll');
-                view.scrollTo(0, Infinity);
+                view.scrollTo(view.getScrollX() ?? 0, Infinity);
                 me.updateStart(true);
                 scroller.resumeEvent('scroll');
             }
