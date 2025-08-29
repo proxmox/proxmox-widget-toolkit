@@ -1,0 +1,10 @@
+<svg width="110" height="22" version="1.1" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink">
+    <g stroke-linecap="round" stroke-width="2">
+        <path class="spinner" id="a" d="M7 7 L15 15 M7 15 L15 7"/>
+        <use xlink:href="#a" stroke="#737373"/>
+        <use x="22" xlink:href="#a" stroke="#0087ff"/>
+        <use x="44" xlink:href="#a" stroke="#0062b8"/>
+        <use x="66" xlink:href="#a" stroke="#737373"/>
+        <use x="88" xlink:href="#a" stroke="#0087ff"/>
+    </g>
+</svg>

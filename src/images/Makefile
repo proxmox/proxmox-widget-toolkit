@@ -1,6 +1,6 @@
 include ../defines.mk
 
-IMAGES=pmx-clear-trigger.png		\
+IMAGES=pmx-clear-trigger.svg		\
        openid-icon-100x100.png		\
        icon-cpu.svg			\
        icon-ram.svg			\
