@@ -1,7 +1,7 @@
 include ../defines.mk
 
 IMAGES=pmx-clear-trigger.svg		\
-       openid-icon-100x100.png		\
+       openid-icon.svg			\
        icon-cpu.svg			\
        icon-ram.svg			\
        debian-swirl-openlogo.svg	\

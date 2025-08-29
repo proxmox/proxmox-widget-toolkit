@@ -217,7 +217,7 @@ div.right-aligned {
 .pmx-itype-icon-openid-logo {
     padding-left: 22px;
     background-size: 16px 16px;
-    background-image: url(../images/openid-icon-100x100.png);
+    background-image: url(../images/openid-icon.svg);
 }
 
 /* fix up extjs spinners with our svg spinner */
