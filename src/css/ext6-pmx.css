@@ -220,6 +220,19 @@ div.right-aligned {
     background-image: url(../images/openid-icon-100x100.png);
 }
 
+/* fix up extjs spinners with our svg spinner */
+.x-treelist-item-loading .x-treelist-item-icon,
+.x-treelist-nav .x-treelist-item-loading .x-treelist-item-icon,
+.x-grid-tree-loading .x-tree-icon {
+    background-image: url(../images/spinner.svg);
+    background-size: 16px;
+}
+
+.x-mask-msg-text {
+    background-image: url(../images/spinner.svg);
+    background-size: 21px;
+}
+
 /* change font for config panel back to fontawesome */
 .x-treelist-item-expanded > * > * > .x-treelist-item-expander::after,
 .x-treelist-item-expander::after {

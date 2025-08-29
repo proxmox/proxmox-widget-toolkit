@@ -6,6 +6,7 @@ IMAGES=pmx-clear-trigger.png		\
        icon-ram.svg			\
        debian-swirl-openlogo.svg	\
        proxmox-symbol-x.svg		\
+       spinner.svg			\
 
 all:
 
