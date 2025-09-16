@@ -770,7 +770,7 @@ Ext.define('Proxmox.Utils', {
             if (!farray) {
                 text = type;
                 if (id) {
-                    type += ' ' + id;
+                    text += ' ' + id;
                 }
                 return text;
             } else if (Ext.isFunction(farray)) {
