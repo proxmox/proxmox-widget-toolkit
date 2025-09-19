@@ -42,3 +42,8 @@ div.eol-notice + div[id^="panel-"] > div[id^="panel-"][id$="-bodyWrap"] > div {
 .pmx-hint a:active {
   color: $highlighted-text;
 }
+
+// Unclickable elements (mostly for elements with conditional handlers)
+.pmx-unclickable {
+  pointer-events: none;
+}
