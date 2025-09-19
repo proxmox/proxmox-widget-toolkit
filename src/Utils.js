@@ -60,7 +60,6 @@ Ext.define('Proxmox.Utils', {
         usedText: gettext('Used'),
         directoryText: gettext('Directory'),
         stateText: gettext('State'),
-        groupText: gettext('Group'),
 
         language_map: {
             //language map is sorted alphabetically by iso 639-1
