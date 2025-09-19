@@ -173,6 +173,21 @@ Ext.define('Proxmox.widget.RRDChart', {
         padding: 0,
         style: 'cursor: pointer;',
     },
+    axes: [
+        {
+            type: 'numeric',
+            position: 'left',
+            grid: true,
+            renderer: 'leftAxisRenderer',
+            minimum: 0,
+        },
+        {
+            type: 'time',
+            position: 'bottom',
+            grid: true,
+            fields: ['time'],
+        },
+    ],
     listeners: {
         redraw: {
             fn: 'onAfterAnimation',
@@ -191,22 +206,17 @@ Ext.define('Proxmox.widget.RRDChart', {
         let me = this;
 
         let segmenter = config.powerOfTwo ? 'numericBase2' : 'numeric';
-        config.axes = [
-            {
-                type: 'numeric',
-                position: 'left',
-                grid: true,
-                renderer: 'leftAxisRenderer',
-                minimum: 0,
-                segmenter,
-            },
-            {
-                type: 'time',
-                position: 'bottom',
-                grid: true,
-                fields: ['time'],
-            },
-        ];
+
+        let axes = config.axes ?? me.config.axes ?? [];
+        for (const axis of axes) {
+            if (
+                axis.type === 'numeric' &&
+                (axis.position === 'left' || axis.position === 'right')
+            ) {
+                axis.segmenter = segmenter;
+            }
+        }
+
         me.callParent([config]);
     },
 
