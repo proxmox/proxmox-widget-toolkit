@@ -1,3 +1,18 @@
+proxmox-widget-toolkit (5.0.6) trixie; urgency=medium
+
+  * css: override css classes for the ExtJS (loading) spinner with our SVG
+    spinner for crisper loading icon.
+
+  * replace pmx-clear-trigger.png with an SVG for crisp rendering on HiDPI.
+
+  * replace openid icon with an SVG for crisp rendering on HiDPI.
+
+  * certificates panel: fix typo in column header label.
+
+  * RRD metric chart: fix customizing axes in a subclass.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 23 Sep 2025 15:42:22 +0200
+
 proxmox-widget-toolkit (5.0.5) trixie; urgency=medium
 
   * tfa challenge: allow opting into the new http only authentication flow
