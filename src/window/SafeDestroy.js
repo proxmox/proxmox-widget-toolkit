@@ -19,6 +19,10 @@ Ext.define('Proxmox.window.SafeDestroy', {
     // will be displayed.
     dangerous: true,
 
+    confirmButtonText: gettext('Remove'),
+    // second button will only be displayed if a text is given
+    declineButtonText: undefined,
+
     additionalItems: [],
 
     // gets called if we have a progress bar or taskview and it detected that
@@ -56,21 +60,21 @@ Ext.define('Proxmox.window.SafeDestroy', {
             'field[name=confirm]': {
                 change: function (f, value) {
                     const view = this.getView();
-                    const removeButton = this.lookupReference('removeButton');
+                    const confirmButton = this.lookupReference('confirmButton');
                     if (value === view.getItem().id.toString()) {
-                        removeButton.enable();
+                        confirmButton.enable();
                     } else {
-                        removeButton.disable();
+                        confirmButton.disable();
                     }
                 },
                 specialkey: function (field, event) {
-                    const removeButton = this.lookupReference('removeButton');
-                    if (!removeButton.isDisabled() && event.getKey() === event.ENTER) {
-                        removeButton.fireEvent('click', removeButton, event);
+                    const confirmButton = this.lookupReference('confirmButton');
+                    if (!confirmButton.isDisabled() && event.getKey() === event.ENTER) {
+                        confirmButton.fireEvent('click', confirmButton, event);
                     }
                 },
             },
-            'button[reference=removeButton]': {
+            'button[reference=confirmButton]': {
                 click: function () {
                     const view = this.getView();
                     Proxmox.Utils.API2Request({
@@ -108,6 +112,12 @@ Ext.define('Proxmox.window.SafeDestroy', {
                             }
                         },
                     });
+                },
+            },
+            'button[reference=declineButton]': {
+                click: function () {
+                    const view = this.getView();
+                    view.close();
                 },
             },
         },
@@ -210,13 +220,22 @@ Ext.define('Proxmox.window.SafeDestroy', {
         let buttons = [
             {
                 xtype: 'button',
-                reference: 'removeButton',
-                text: gettext('Remove'),
+                reference: 'confirmButton',
+                text: me.confirmButtonText,
                 disabled: me.dangerous,
                 width: 75,
                 margin: '0 5 0 0',
             },
         ];
+
+        if (me.declineButtonText) {
+            buttons.push({
+                xtype: 'button',
+                reference: 'declineButton',
+                text: me.declineButtonText,
+                width: 75,
+            });
+        }
 
         me.dockedItems = [
             {
