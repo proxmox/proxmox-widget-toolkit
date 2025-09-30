@@ -1,5 +1,6 @@
-// Pop-up a message window where the user has to manually enter the resource ID to enable the
-// destroy confirmation button to ensure that they got the correct resource selected for.
+// Pop-up a message window where the user has to confirm their intent to delete an item.
+// Optionally, an additional textfield can be added, requiring the user to enter the ID
+// of the given item again to confirm their intent.
 Ext.define('Proxmox.window.SafeDestroy', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxSafeDestroy',
@@ -12,6 +13,11 @@ Ext.define('Proxmox.window.SafeDestroy', {
     layout: { type: 'hbox' },
     defaultFocus: 'confirmField',
     showProgress: false,
+
+    // if set to true, a warning sign will be displayed and entering the ID will
+    // be required before removal is possible. If set to false, a question mark
+    // will be displayed.
+    dangerous: true,
 
     additionalItems: [],
 
@@ -110,17 +116,20 @@ Ext.define('Proxmox.window.SafeDestroy', {
     initComponent: function () {
         let me = this;
 
+        let cls = [Ext.baseCSSPrefix + 'message-box-icon', Ext.baseCSSPrefix + 'dlg-icon'];
+        if (me.dangerous) {
+            cls.push(Ext.baseCSSPrefix + 'message-box-warning');
+        } else {
+            cls.push(Ext.baseCSSPrefix + 'message-box-question');
+        }
+
         let body = {
             xtype: 'container',
             layout: 'hbox',
             items: [
                 {
                     xtype: 'component',
-                    cls: [
-                        Ext.baseCSSPrefix + 'message-box-icon',
-                        Ext.baseCSSPrefix + 'dlg-icon',
-                        Ext.baseCSSPrefix + 'message-box-warning',
-                    ],
+                    cls: cls,
                 },
             ],
         };
@@ -131,7 +140,6 @@ Ext.define('Proxmox.window.SafeDestroy', {
         }
 
         const taskName = me.getTaskName();
-        let label = `${gettext('Please enter the ID to confirm')} (${itemId})`;
 
         let content = {
             xtype: 'container',
@@ -147,20 +155,24 @@ Ext.define('Proxmox.window.SafeDestroy', {
                         ),
                     ),
                 },
-                {
-                    itemId: 'confirmField',
-                    reference: 'confirmField',
-                    xtype: 'textfield',
-                    name: 'confirm',
-                    padding: '5 0 0 0',
-                    width: 340,
-                    labelWidth: 240,
-                    fieldLabel: label,
-                    hideTrigger: true,
-                    allowBlank: false,
-                },
             ],
         };
+
+        if (me.dangerous) {
+            let label = `${gettext('Please enter the ID to confirm')} (${itemId})`;
+            content.items.push({
+                itemId: 'confirmField',
+                reference: 'confirmField',
+                xtype: 'textfield',
+                name: 'confirm',
+                padding: '5 0 0 0',
+                width: 340,
+                labelWidth: 240,
+                fieldLabel: label,
+                hideTrigger: true,
+                allowBlank: false,
+            });
+        }
 
         if (me.additionalItems && me.additionalItems.length > 0) {
             content.items.push({
@@ -200,7 +212,7 @@ Ext.define('Proxmox.window.SafeDestroy', {
                 xtype: 'button',
                 reference: 'removeButton',
                 text: gettext('Remove'),
-                disabled: true,
+                disabled: me.dangerous,
                 width: 75,
                 margin: '0 5 0 0',
             },
