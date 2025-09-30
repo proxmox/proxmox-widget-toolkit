@@ -83,6 +83,7 @@ JSSRC=					\
 	panel/WebhookEditPanel.js	\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
+	window/ConfirmRemoveDialog.js	\
 	window/SafeDestroy.js		\
 	window/PackageVersions.js	\
 	window/TaskViewer.js		\
