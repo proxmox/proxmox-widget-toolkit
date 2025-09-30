@@ -107,101 +107,118 @@ Ext.define('Proxmox.window.SafeDestroy', {
         },
     },
 
-    buttons: [
-        {
-            reference: 'removeButton',
-            text: gettext('Remove'),
-            disabled: true,
-        },
-    ],
-
     initComponent: function () {
         let me = this;
 
-        me.items = [
-            {
-                xtype: 'component',
-                cls: [
-                    Ext.baseCSSPrefix + 'message-box-icon',
-                    Ext.baseCSSPrefix + 'message-box-warning',
-                    Ext.baseCSSPrefix + 'dlg-icon',
-                ],
-            },
-            {
-                xtype: 'container',
-                flex: 1,
-                layout: {
-                    type: 'vbox',
-                    align: 'stretch',
+        let body = {
+            xtype: 'container',
+            layout: 'hbox',
+            items: [
+                {
+                    xtype: 'component',
+                    cls: [
+                        Ext.baseCSSPrefix + 'message-box-icon',
+                        Ext.baseCSSPrefix + 'dlg-icon',
+                        Ext.baseCSSPrefix + 'message-box-warning',
+                    ],
                 },
-                items: [
-                    {
-                        xtype: 'component',
-                        reference: 'messageCmp',
-                    },
-                    {
-                        itemId: 'confirmField',
-                        reference: 'confirmField',
-                        xtype: 'textfield',
-                        name: 'confirm',
-                        labelWidth: 300,
-                        hideTrigger: true,
-                        allowBlank: false,
-                    },
-                ]
-                    .concat(me.additionalItems)
-                    .concat([
-                        {
-                            xtype: 'container',
-                            reference: 'noteContainer',
-                            flex: 1,
-                            hidden: true,
-                            layout: {
-                                type: 'vbox',
-                            },
-                            items: [
-                                {
-                                    xtype: 'component',
-                                    reference: 'noteCmp',
-                                    userCls: 'pmx-hint',
-                                },
-                            ],
-                        },
-                    ]),
-            },
-        ];
-
-        me.callParent();
+            ],
+        };
 
         const itemId = me.getItem().id;
         if (!Ext.isDefined(itemId)) {
             throw 'no ID specified';
         }
 
-        if (Ext.isDefined(me.getNote())) {
-            me.lookupReference('noteCmp').setHtml(
-                `<span title="${me.getNote()}">${me.getNote()}</span>`,
-            );
-            const noteContainer = me.lookupReference('noteContainer');
-            noteContainer.setHidden(false);
-            noteContainer.setDisabled(false);
-        }
-
-        let taskName = me.getTaskName();
-        if (Ext.isDefined(taskName)) {
-            me.lookupReference('messageCmp').setHtml(
-                Ext.htmlEncode(
-                    Proxmox.Utils.format_task_description(
-                        taskName,
-                        me.getItem().formattedIdentifier ?? itemId,
-                    ),
-                ),
-            );
-        } else {
-            throw 'no task name specified';
-        }
-
+        const taskName = me.getTaskName();
         let label = `${gettext('Please enter the ID to confirm')} (${itemId})`;
-        me.lookupReference('confirmField').setFieldLabel(Ext.htmlEncode(label));
+
+        let content = {
+            xtype: 'container',
+            layout: 'vbox',
+            items: [
+                {
+                    xtype: 'component',
+                    reference: 'messageCmp',
+                    html: Ext.htmlEncode(
+                        Proxmox.Utils.format_task_description(
+                            taskName,
+                            me.getItem().formattedIdentifier ?? itemId,
+                        ),
+                    ),
+                },
+                {
+                    itemId: 'confirmField',
+                    reference: 'confirmField',
+                    xtype: 'textfield',
+                    name: 'confirm',
+                    padding: '5 0 0 0',
+                    width: 340,
+                    labelWidth: 240,
+                    fieldLabel: label,
+                    hideTrigger: true,
+                    allowBlank: false,
+                },
+            ],
+        };
+
+        if (me.additionalItems && me.additionalItems.length > 0) {
+            content.items.push({
+                xtype: 'container',
+                height: 5,
+            });
+            for (const item of me.additionalItems) {
+                content.items.push(item);
+            }
+        }
+
+        if (Ext.isDefined(me.getNote())) {
+            content.items.push({
+                xtype: 'container',
+                reference: 'noteContainer',
+                flex: 1,
+                layout: {
+                    type: 'vbox',
+                },
+                items: [
+                    {
+                        xtype: 'component',
+                        reference: 'noteCmp',
+                        userCls: 'pmx-hint',
+                        html: `<span title="${me.getNote()}">${me.getNote()}</span>`,
+                    },
+                ],
+            });
+        }
+
+        body.items.push(content);
+
+        me.items = [body];
+
+        let buttons = [
+            {
+                xtype: 'button',
+                reference: 'removeButton',
+                text: gettext('Remove'),
+                disabled: true,
+                width: 75,
+                margin: '0 5 0 0',
+            },
+        ];
+
+        me.dockedItems = [
+            {
+                xtype: 'container',
+                dock: 'bottom',
+                cls: ['x-toolbar', 'x-toolbar-footer'],
+                layout: {
+                    type: 'hbox',
+                    pack: 'center',
+                },
+                items: buttons,
+            },
+        ];
+
+        me.callParent();
     },
 });
