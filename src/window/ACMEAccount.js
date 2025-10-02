@@ -191,10 +191,11 @@ Ext.define('Proxmox.window.ACMEAccountView', {
         me.load({
             success: function (response) {
                 var data = response.result.data;
-                data.email = data.account.contact[0];
+                data.email = data.account.contact?.[0];
                 data.createdAt = data.account.createdAt;
                 data.status = data.account.status;
                 me.setValues(data);
+                me.down('field[name=email]').setHidden(!data.email);
             },
         });
     },
