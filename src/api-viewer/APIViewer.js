@@ -390,55 +390,64 @@ Ext.onReady(function () {
                     });
 
                     sections.push({
-                        xtype: 'gridpanel',
+                        xtype: 'panel',
                         title: 'Returns: ' + rtype,
-                        features: [groupingFeature],
-                        store: rpstore,
-                        viewConfig: {
-                            trackOver: false,
-                            stripeRows: true,
-                            enableTextSelection: true,
-                        },
-                        columns: [
+                        items: [
+                            info.returns.description ? {
+                                html: Ext.htmlEncode(info.returns.description),
+                                bodyPadding: '5px 10px 5px 10px',
+                            } : {},
                             {
-                                header: 'Name',
-                                dataIndex: 'name',
-                                flex: 1,
-                            },
-                            {
-                                header: 'Type',
-                                dataIndex: 'type',
-                                renderer: render_type,
-                                flex: 1,
-                            },
-                            {
-                                header: 'Default',
-                                dataIndex: 'default',
-                                flex: 1,
-                            },
-                            {
-                                header: 'Format',
-                                dataIndex: 'type',
-                                renderer: render_format,
-                                flex: 2,
-                            },
-                            {
-                                header: 'Description',
-                                dataIndex: 'description',
-                                renderer: render_description,
-                                flex: 6,
-                            },
-                        ],
-                        bbar: [
-                            {
-                                xtype: 'button',
-                                text: 'Show RAW',
-                                handler: function (btn) {
-                                    rawSection.setVisible(!rawSection.isVisible());
-                                    btn.setText(rawSection.isVisible() ? 'Hide RAW' : 'Show RAW');
+                                xtype: 'gridpanel',
+                                features: [groupingFeature],
+                                store: rpstore,
+                                viewConfig: {
+                                    trackOver: false,
+                                    stripeRows: true,
+                                    enableTextSelection: true,
                                 },
-                            },
-                        ],
+                                columns: [
+                                    {
+                                        header: 'Name',
+                                        dataIndex: 'name',
+                                        flex: 1,
+                                    },
+                                    {
+                                        header: 'Type',
+                                        dataIndex: 'type',
+                                        renderer: render_type,
+                                        flex: 1,
+                                    },
+                                    {
+                                        header: 'Default',
+                                        dataIndex: 'default',
+                                        flex: 1,
+                                    },
+                                    {
+                                        header: 'Format',
+                                        dataIndex: 'type',
+                                        renderer: render_format,
+                                        flex: 2,
+                                    },
+                                    {
+                                        header: 'Description',
+                                        dataIndex: 'description',
+                                        renderer: render_description,
+                                        flex: 6,
+                                    },
+                                ],
+                                bbar: [
+                                    {
+                                        xtype: 'button',
+                                        text: 'Show RAW',
+                                        handler: function (btn) {
+                                            rawSection.setVisible(!rawSection.isVisible());
+                                            btn.setText(rawSection.isVisible() ? 'Hide RAW' : 'Show RAW');
+                                        },
+                                    },
+                                ],
+                            }
+                        ]
                     });
 
                     sections.push(rawSection);
