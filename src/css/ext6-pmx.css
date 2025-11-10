@@ -292,7 +292,7 @@ div.right-aligned {
 /* rules for the markdown content, prefix with the .pmx-md class */
 .pmx-md {
     font-size: 1em;
-    line-height: 1.25em;
+    line-height: 1.4;
 }
 .pmx-md p {
     margin-top: 0.75em;
