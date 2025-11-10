@@ -75,10 +75,16 @@ Ext.define('Proxmox.form.RRDTypeSelector', {
             xtype: 'segmentedbutton',
             allowMultiple: false,
             allowToggle: true,
+            itemCls: 'x-btn-default-toolbar-small proxmox-inline-button',
             items: [
                 {
                     text: gettext('Maximum'),
                     reference: 'maximum',
+                    style: {
+                        'border-top-right-radius': '0px',
+                        'border-bottom-right-radius': '0px',
+                        'border-right-width': '0px',
+                    },
                     handler: function () {
                         this.up('proxmoxRRDTypeSelector').saveState();
                     },
@@ -87,6 +93,11 @@ Ext.define('Proxmox.form.RRDTypeSelector', {
                     text: gettext('Average'),
                     reference: 'average',
                     pressed: true,
+                    style: {
+                        'border-top-left-radius': '0px',
+                        'border-bottom-left-radius': '0px',
+                        'border-left-width': '0px',
+                    },
                     handler: function () {
                         this.up('proxmoxRRDTypeSelector').saveState();
                     },
