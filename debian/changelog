@@ -1,3 +1,32 @@
+proxmox-widget-toolkit (5.1.0) trixie; urgency=medium
+
+  * task description rendered: correctly append an id, if any, to the task
+    description text.
+
+  * fix #6679: system log view: keep X-axis (horizontal) scroll position when
+    updating the scrolling to avoid "jumping" back to the beginning of the
+    line on refresh.
+
+  * acme account: hide e-mail field if it does not exist for an ACME provider.
+
+  * css: add class for making elements unclickable.
+
+  * css: markdown: use unitless number for line-height, as recommended by MDN
+    to avoid unexpected results due to inheritance.
+
+  * css: markdown: explicitly set start padding for list entries to avoid
+    overly large indentation inherited from the browser-default styles.
+
+  * RRD metrics: split time-frame and aggregation-type into two separate
+    selectors. This removes some clutter in the dropdown and allows for a
+    slightly more convenient and intuitive UX, as e.g. one now can quickly
+    switch between average and maximum data points for the same time period.
+
+  * window: add generic ConfirmRemoveDialog that is a parent class of the
+    existing SafeDestroy one.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 10 Nov 2025 10:30:19 +0100
+
 proxmox-widget-toolkit (5.0.6) trixie; urgency=medium
 
   * css: override css classes for the ExtJS (loading) spinner with our SVG
