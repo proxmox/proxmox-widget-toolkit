@@ -24,8 +24,8 @@ Ext.define('PMX.image.LogoSVG', {
     extend: 'Ext.Img',
     xtype: 'proxmoxLogoSvg',
 
-    height: 30,
-    width: 172,
+    height: 35,
+    width: 200,
     src: '/images/proxmox_logo.svg',
     alt: 'Proxmox',
     autoEl: {
