@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (5.1.1) trixie; urgency=medium
+
+  * add Proxmox logo as SVG variant to scale also well on HiDPI displays.
+
+  * logo: increase size of SVG variant to 200x35.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 14 Nov 2025 21:29:17 +0100
+
 proxmox-widget-toolkit (5.1.0) trixie; urgency=medium
 
   * task description rendered: correctly append an id, if any, to the task
