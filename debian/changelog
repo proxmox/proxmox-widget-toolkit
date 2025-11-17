@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (5.1.2) trixie; urgency=medium
+
+  * pending object grid: don't fall back to empty string for false'y values
+    like `0`.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 17 Nov 2025 16:46:52 +0100
+
 proxmox-widget-toolkit (5.1.1) trixie; urgency=medium
 
   * add Proxmox logo as SVG variant to scale also well on HiDPI displays.
