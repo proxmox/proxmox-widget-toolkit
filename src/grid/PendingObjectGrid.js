@@ -74,7 +74,7 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
                 pending = undefined;
             }
         } else {
-            current = value || '';
+            current = value ?? '';
             pending = record.data.pending;
         }
 
