@@ -32,6 +32,8 @@ Ext.define('Proxmox.form.ComboGrid', {
     },
 
     config: {
+        // TODO: rename below option. It's unrelated to emptyText and thus confusing. Either
+        // skipEmptyString or reverse it and name it submitEmptyString
         skipEmptyText: false,
         notFoundIsValid: false,
         deleteEmpty: false,
