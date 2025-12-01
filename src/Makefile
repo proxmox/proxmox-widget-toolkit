@@ -127,6 +127,10 @@ JSSRC=					\
 all: $(SUBDIRS)
 	set -e && for i in $(SUBDIRS); do $(MAKE) -C $$i; done
 
+.PHONY: tidy
+tidy: $(JSSRC)
+	proxmox-biome format --fix $? $(SUBDIRS)
+
 .lint-incremental: $(JSSRC)
 	$(BIOME) lint $?
 	touch "$@"

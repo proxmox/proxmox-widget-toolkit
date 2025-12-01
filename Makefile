@@ -10,6 +10,12 @@ DSC=$(PACKAGE)_$(DEB_VERSION).dsc
 
 BUILDDIR ?= $(PACKAGE)-$(DEB_VERSION_UPSTREAM)
 
+all:
+
+.PHONY: tidy
+tidy:
+	$(MAKE) -C src tidy
+
 $(BUILDDIR): GITVERSION:=$(shell git rev-parse HEAD)
 $(BUILDDIR):
 	rm -rf $(BUILDDIR) $(BUILDDIR).tmp
