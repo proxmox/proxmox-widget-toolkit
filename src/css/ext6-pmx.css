@@ -322,7 +322,8 @@ div.right-aligned {
 }
 
 .pmx-md {
-    ul, ol {
+    ul,
+    ol {
         padding-inline-start: 2em;
     }
 }

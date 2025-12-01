@@ -370,7 +370,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
             column1.push({
                 xtype: 'displayfield',
                 name: 'altnames',
-                fieldLabel: gettext("Alternative Names"),
+                fieldLabel: gettext('Alternative Names'),
             });
         }
 

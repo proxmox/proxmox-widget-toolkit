@@ -407,10 +407,12 @@ Ext.onReady(function () {
                         xtype: 'panel',
                         title: 'Returns: ' + rtype,
                         items: [
-                            info.returns.description ? {
-                                html: Ext.htmlEncode(info.returns.description),
-                                bodyPadding: '5px 10px 5px 10px',
-                            } : {},
+                            info.returns.description
+                                ? {
+                                      html: Ext.htmlEncode(info.returns.description),
+                                      bodyPadding: '5px 10px 5px 10px',
+                                  }
+                                : {},
                             {
                                 xtype: 'gridpanel',
                                 features: [groupingFeature],
@@ -456,12 +458,14 @@ Ext.onReady(function () {
                                         text: 'Show RAW',
                                         handler: function (btn) {
                                             rawSection.setVisible(!rawSection.isVisible());
-                                            btn.setText(rawSection.isVisible() ? 'Hide RAW' : 'Show RAW');
+                                            btn.setText(
+                                                rawSection.isVisible() ? 'Hide RAW' : 'Show RAW',
+                                            );
                                         },
                                     },
                                 ],
-                            }
-                        ]
+                            },
+                        ],
                     });
 
                     sections.push(rawSection);

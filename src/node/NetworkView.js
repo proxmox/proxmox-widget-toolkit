@@ -284,7 +284,7 @@ Ext.define('Proxmox.node.NetworkView', {
                             dataIndex: 'iface',
                         },
                         {
-                            header: gettext("Alternative Names"),
+                            header: gettext('Alternative Names'),
                             dataIndex: 'altnames',
                             hidden: !me.showAltNames,
                             width: 140, // enough space for 'enx<MAC>'
