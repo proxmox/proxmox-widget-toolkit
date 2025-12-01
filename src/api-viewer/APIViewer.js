@@ -210,7 +210,21 @@ Ext.onReady(function () {
                     usage += cliUsageRenderer(method, endpoint);
                 }
 
-                let sections = [
+                let sections = [];
+
+                if (info.unstable) {
+                    sections.push({
+                        title: 'Unstable',
+                        html: `<div class="proxmox-warning-row" style="padding: 10px;">
+                                <i class="fa fa-exclamation-triangle" aria-hidden="true"></i>
+                                This API endpoint is marked as unstable. All information on this
+                                page is subject to change, including input parameters, return values
+                                and permissions.
+                            </div>`,
+                    });
+                }
+
+                sections.push(
                     {
                         title: 'Description',
                         html: Ext.htmlEncode(info.description),
@@ -221,7 +235,7 @@ Ext.onReady(function () {
                         html: usage,
                         bodyPadding: 10,
                     },
-                ];
+                );
 
                 if (info.parameters && info.parameters.properties) {
                     let pstore = Ext.create('Ext.data.Store', {
