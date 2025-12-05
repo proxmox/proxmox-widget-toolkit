@@ -75,7 +75,9 @@ Ext.define('Proxmox.form.RRDTypeSelector', {
             xtype: 'segmentedbutton',
             allowMultiple: false,
             allowToggle: true,
-            itemCls: 'x-btn-default-toolbar-small proxmox-inline-button',
+            defautl: {
+                cls: 'x-btn-default-toolbar-small proxmox-inline-button',
+            },
             items: [
                 {
                     text: gettext('Maximum'),
