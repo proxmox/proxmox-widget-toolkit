@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (5.1.5) trixie; urgency=medium
+
+  * RRD metric type selector: correctly adapt applying CSS class to fix ExtJS
+    debug mode.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 09 Dec 2025 09:13:49 +0100
+
 proxmox-widget-toolkit (5.1.4) trixie; urgency=medium
 
   * RRD metric type selector: adapt applying CSS class to fix ExtJS debug
