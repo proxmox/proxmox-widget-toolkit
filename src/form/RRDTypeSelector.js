@@ -75,7 +75,7 @@ Ext.define('Proxmox.form.RRDTypeSelector', {
             xtype: 'segmentedbutton',
             allowMultiple: false,
             allowToggle: true,
-            default: {
+            defaults: {
                 cls: 'x-btn-default-toolbar-small proxmox-inline-button',
             },
             items: [
