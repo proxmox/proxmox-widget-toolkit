@@ -35,6 +35,21 @@ Ext.define('Proxmox.node.Tasks', {
             }).show();
         },
 
+        downloadTaskLog: function () {
+            let me = this;
+            let selection = me.getView().getSelection();
+            if (selection.length < 1) {
+                return;
+            }
+
+            let rec = selection[0];
+            let task = Proxmox.Utils.parse_task_upid(rec.data.upid);
+
+            Proxmox.Utils.downloadAsFile(
+                `/api2/json/nodes/${task.node}/tasks/${encodeURIComponent(rec.data.upid)}/log?download=1`,
+            );
+        },
+
         updateLayout: function (store, records, success, operation) {
             let me = this;
             let view = me.getView().getView(); // the table view, not the whole grid
@@ -235,6 +250,13 @@ Ext.define('Proxmox.node.Tasks', {
                     iconCls: 'fa fa-window-restore',
                     disabled: true,
                     handler: 'showTaskLog',
+                },
+                {
+                    xtype: 'proxmoxButton',
+                    text: gettext('Download'),
+                    iconCls: 'fa fa-download',
+                    disabled: true,
+                    handler: 'downloadTaskLog',
                 },
                 {
                     xtype: 'button',
