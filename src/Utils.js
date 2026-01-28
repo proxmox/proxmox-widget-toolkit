@@ -1118,7 +1118,8 @@ Ext.define('Proxmox.Utils', {
 
         render_cpu_usage: function (val, max) {
             return Ext.String.format(
-                `${gettext('{0}% of {1}')} ${gettext('CPU(s)')}`,
+                // TRANSLATORS: For example "5% of 24 CPUs"
+                ngettext('{0}% of {1} CPU', '{0}% of {1} CPUs', max),
                 (val * 100).toFixed(2),
                 max,
             );
