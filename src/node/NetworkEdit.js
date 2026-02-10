@@ -236,10 +236,11 @@ Ext.define('Proxmox.node.NetworkEdit', {
                 disabled: true,
             });
 
-            let primaryfield = Ext.createWidget('textfield', {
+            let primaryfield = Ext.createWidget('proxmoxtextfield', {
                 fieldLabel: 'bond-primary',
                 name: 'bond-primary',
                 value: '',
+                deleteEmpty: !me.isCreate,
                 disabled: true,
             });
 
