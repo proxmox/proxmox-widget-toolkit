@@ -1,3 +1,12 @@
+proxmox-widget-toolkit (5.1.6) UNRELEASED; urgency=medium
+
+  * fix #7141: set correct timezone for Kyiv, since it was renamed a while ago
+
+  * fix #4911: ui: network edit: prevent invalid value to be sent to api when
+    the bond-primary field was empty
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 13 Feb 2026 11:24:19 +0100
+
 proxmox-widget-toolkit (5.1.5) trixie; urgency=medium
 
   * RRD metric type selector: correctly adapt applying CSS class to fix ExtJS
