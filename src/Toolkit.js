@@ -767,6 +767,14 @@ Ext.define('Proxmox.Cookies', {
     },
 });
 
+// Prevents html entities to be interpreted by the browser in grid columns by
+// default. Custom renderer have to take care of this by themselves.
+Ext.define('Proxmox.grid.column.Column', {
+    override: 'Ext.grid.column.Column',
+
+    renderer: Ext.htmlEncode,
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
