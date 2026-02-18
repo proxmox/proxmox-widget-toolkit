@@ -1,11 +1,16 @@
-proxmox-widget-toolkit (5.1.6) UNRELEASED; urgency=medium
+proxmox-widget-toolkit (5.1.6) trixie; urgency=medium
 
-  * fix #7141: set correct timezone for Kyiv, since it was renamed a while ago
+  * fix #7141: set correct timezone for Kyiv, since it was renamed a while
+    ago.
 
-  * fix #4911: ui: network edit: prevent invalid value to be sent to api when
-    the bond-primary field was empty
+  * fix #4911: ui: node network edit: fix handling an empty bond-primary field
+    when creating an active-backup bond. The bond-primary property is optional
+    in the API backend, so omit it completely if the field is empty rather
+    than sending an invalid empty-string value.
 
- -- Proxmox Support Team <support@proxmox.com>  Fri, 13 Feb 2026 11:24:19 +0100
+  * set a more robust default renderer for all column grids descendants.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 18 Feb 2026 18:49:49 +0100
 
 proxmox-widget-toolkit (5.1.5) trixie; urgency=medium
 
