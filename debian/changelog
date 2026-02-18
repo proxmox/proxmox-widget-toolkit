@@ -1,3 +1,31 @@
+proxmox-widget-toolkit (4.3.14) bookworm; urgency=medium
+
+  * fix #7141: set correct timezone for Kyiv, since it was renamed a while
+    ago.
+
+  * fix #4911: ui: node network edit: fix handling an empty bond-primary field
+    when creating an active-backup bond. The bond-primary property is optional
+    in the API backend, so omit it completely if the field is empty rather
+    than sending an invalid empty-string value.
+
+  * set a more robust default renderer for all column grids descendants.
+
+  * pending object grid: don't fall back to empty string for false'y values
+    like `0`.
+
+  * acme account: hide e-mail field if it does not exist for an ACME provider.
+
+  * fix #6679: system log view: keep X-axis (horizontal) scroll position when
+    updating the scrolling to avoid "jumping" back to the beginning of the
+    line on refresh.
+
+  * task description rendered: correctly append an id, if any, to the task
+    description text.
+
+  * fix #6312: limit consent window to viewport size.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 18 Feb 2026 19:05:00 +0100
+
 proxmox-widget-toolkit (4.3.13) bookworm; urgency=medium
 
   * apt repositoires: allow major upgrade.
