@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (4.3.15) bookworm; urgency=medium
+
+  * fix regression in checkcolumn rendering
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 24 Feb 2026 14:44:13 +0100
+
 proxmox-widget-toolkit (4.3.14) bookworm; urgency=medium
 
   * fix #7141: set correct timezone for Kyiv, since it was renamed a while
