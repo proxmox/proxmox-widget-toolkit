@@ -769,10 +769,19 @@ Ext.define('Proxmox.Cookies', {
 
 // Prevents html entities to be interpreted by the browser in grid columns by
 // default. Custom renderer have to take care of this by themselves.
+//
+// Reset the renderer for the 'checkcolumn' back to undefined, since it relies
+// on the renderer returning raw HTML.
 Ext.define('Proxmox.grid.column.Column', {
     override: 'Ext.grid.column.Column',
 
     renderer: Ext.htmlEncode,
+});
+
+Ext.define('Proxmox.grid.column.Check', {
+    override: 'Ext.grid.column.Column',
+
+    renderer: undefined,
 });
 
 // force alert boxes to be rendered with an Error Icon
