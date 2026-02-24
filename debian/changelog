@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (5.1.7) trixie; urgency=medium
+
+  * fix regression in checkcolumn rendering
+
+  * fix #7087: add task log download button
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 24 Feb 2026 14:14:44 +0100
+
 proxmox-widget-toolkit (5.1.6) trixie; urgency=medium
 
   * fix #7141: set correct timezone for Kyiv, since it was renamed a while
