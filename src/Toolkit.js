@@ -770,8 +770,9 @@ Ext.define('Proxmox.Cookies', {
 // Prevents html entities to be interpreted by the browser in grid columns by
 // default. Custom renderer have to take care of this by themselves.
 //
-// Reset the renderer for the 'checkcolumn' back to undefined, since it relies
-// on the renderer returning raw HTML.
+// Reset the renderer for the 'check', 'boolean', 'number' and 'date' columns
+// back to undefined, since they rely on the renderer being undefined or
+// returning raw HTML.
 Ext.define('Proxmox.grid.column.Column', {
     override: 'Ext.grid.column.Column',
 
@@ -779,7 +780,25 @@ Ext.define('Proxmox.grid.column.Column', {
 });
 
 Ext.define('Proxmox.grid.column.Check', {
-    override: 'Ext.grid.column.Column',
+    override: 'Ext.grid.column.Check',
+
+    renderer: undefined,
+});
+
+Ext.define('Proxmox.grid.column.Boolean', {
+    override: 'Ext.grid.column.Boolean',
+
+    renderer: undefined,
+});
+
+Ext.define('Proxmox.grid.column.Number', {
+    override: 'Ext.grid.column.Number',
+
+    renderer: undefined,
+});
+
+Ext.define('Proxmox.grid.column.Date', {
+    override: 'Ext.grid.column.Date',
 
     renderer: undefined,
 });
