@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (4.3.16) bookworm; urgency=medium
+
+  * fix another regression in column rendering
+
+ -- Proxmox Support Team <support@proxmox.com>  Thu, 26 Feb 2026 12:46:18 +0100
+
 proxmox-widget-toolkit (4.3.15) bookworm; urgency=medium
 
   * fix regression in checkcolumn rendering
