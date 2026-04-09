@@ -18,7 +18,7 @@ Ext.define('Proxmox.Markdown', {
             }
             if (
                 node.nodeType !== 1 ||
-                /^(script|style|form|select|option|optgroup|map|area|canvas|textarea|applet|font|iframe|audio|video|object|embed|svg)$/i.test(
+                /^(script|style|form|select|option|optgroup|map|area|canvas|textarea|applet|font|iframe|audio|video|object|embed|svg|base)$/i.test(
                     node.tagName,
                 )
             ) {
