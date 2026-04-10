@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (4.3.17) bookworm; urgency=medium
+
+  * markdown: add 'base' tag to encoded html tags to avoid potential UI
+    glitches.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 10 Apr 2026 13:17:10 +0200
+
 proxmox-widget-toolkit (4.3.16) bookworm; urgency=medium
 
   * fix another regression in column rendering
