@@ -1,3 +1,10 @@
+proxmox-widget-toolkit (5.1.9) trixie; urgency=medium
+
+  * markdown: add 'base' tag to encoded html tags to avoid potential UI
+    glitches.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 10 Apr 2026 13:15:53 +0200
+
 proxmox-widget-toolkit (5.1.8) trixie; urgency=medium
 
   * fix another regression in column rendering
