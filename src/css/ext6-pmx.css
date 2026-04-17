@@ -220,6 +220,11 @@ div.right-aligned {
     background-image: url(../images/openid-icon.svg);
 }
 
+.x-grid-row-loading {
+    background: no-repeat center center;
+    background-image: url(../images/spinner.svg);
+}
+
 /* fix up extjs spinners with our svg spinner */
 .x-treelist-item-loading .x-treelist-item-icon,
 .x-treelist-nav .x-treelist-item-loading .x-treelist-item-icon,
