@@ -133,6 +133,7 @@ Ext.define('Proxmox.window.ConfirmRemoveDialog', {
         }
 
         let body = {
+            flex: 1,
             xtype: 'container',
             layout: 'hbox',
             items: [
@@ -149,8 +150,12 @@ Ext.define('Proxmox.window.ConfirmRemoveDialog', {
         }
 
         let content = {
+            flex: 1,
             xtype: 'container',
-            layout: 'vbox',
+            layout: {
+                type: 'vbox',
+                align: 'stretch',
+            },
             items: [
                 {
                     xtype: 'component',
