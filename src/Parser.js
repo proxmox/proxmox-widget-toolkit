@@ -255,4 +255,41 @@ Ext.define('Proxmox.Markdown', {
 
         return `<div class="pmx-md">${this.sanitizeHTML(unsafeHTML, prefix)}</div>`;
     },
+
+    // sanitizer-API allowlist.  Mirrors `_allowedTags` / `_allowedAttrRE`; passed to the
+    // browser's built-in `Element.setHTML()` for the second-gate pass in `renderInto()` below.
+    // `id`/`name` are listed because `parse()` already namespaced them; the browser then
+    // verifies their values structurally.
+    _setHTMLConfig: null,
+    _getSetHTMLConfig: function () {
+        if (this._setHTMLConfig) {
+            return this._setHTMLConfig;
+        }
+        const elements = Array.from(this._allowedTags).map((name) => ({ name }));
+        const attrSrc = this._allowedAttrRE.source.replace(/^\^\(\?:|\)\$$/g, '');
+        const attrNames = attrSrc.split('|').filter((s) => /^[a-z]/i.test(s));
+        attrNames.push('id', 'name', 'rel');
+        const attributes = attrNames.map((name) => ({ name }));
+        this._setHTMLConfig = { elements, attributes };
+        return this._setHTMLConfig;
+    },
+
+    // Render `markdown` into `el` directly.  When the browser supports the Sanitizer API
+    // (Element.setHTML, Chrome 124+, Firefox 137+), the sanitized string is parsed via the
+    // browser's hardened sanitizer as a second gate.  In Safari (no support yet) and other
+    // older browsers we fall back to `innerHTML`, which still goes through our sanitizer above
+    // -- so this is purely defense in depth, not a primary defence.
+    renderInto: function (el, markdown) {
+        let html = this.parse(markdown);
+        if (el && typeof el.setHTML === 'function') {
+            try {
+                el.setHTML(html, this._getSetHTMLConfig());
+                return;
+            } catch (_e) {
+                // setHTML option shape varies between draft versions; never let a config
+                // mismatch break notes rendering -- fall through to innerHTML.
+            }
+        }
+        el.innerHTML = html;
+    },
 });
