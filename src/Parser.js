@@ -7,14 +7,23 @@ Ext.define('Proxmox.Markdown', {
     // them) per rendered note, so multiple notes on the same page cannot clobber each other.
     _instanceCounter: 0,
 
-    // tags we explicitly allow.  Anything not on this list (incl. SVG/MathML, custom elements,
-    // <plaintext>/<noscript>/<template>/<base>/<meta>/<link>/<frame*> and so on) gets
-    // HTML-encoded by the walker.  Covers what marked v4 produces for GFM plus common raw-HTML
-    // patterns admins use in notes.
+    // tags we explicitly allow.  Anything not on this list (incl. SVG, custom elements,
+    // <plaintext>/<noscript>/<template>/<base>/<meta>/<link>/<frame*>, MathML integration
+    // points like <annotation-xml>, and so on) gets HTML-encoded by the walker.  Covers what
+    // marked v4 produces for GFM plus common raw-HTML patterns admins use in notes, plus a
+    // curated subset of presentation MathML so admins can paste calculations into notes.
+    //
+    // MathML notes:
+    // - <annotation-xml> and <annotation> are deliberately NOT on this list: they are the
+    //   parser-mode-flipping integration points and the historical mXSS source.  Same for
+    //   <semantics> (its only purpose is to wrap annotations) and <mlabeledtr>.
+    // - <mglyph> and <maction> are NOT on this list: they can load external resources via
+    //   `src`/`xlink:href`/`actiontype=link` which would bypass our HTML-style URL allowlist.
     _allowedTags: new Set([
         // structural; `html` and `body` are kept since DOMParser always wraps the input in them
         // and we walk doc.body itself.
         'html', 'body',
+        // HTML
         'a', 'abbr', 'address', 'article', 'aside', 'b', 'bdi', 'bdo', 'blockquote', 'br',
         'caption', 'cite', 'code', 'col', 'colgroup', 'dd', 'del', 'details', 'dfn', 'div', 'dl',
         'dt', 'em', 'figcaption', 'figure', 'footer', 'h1', 'h2', 'h3', 'h4', 'h5', 'h6', 'header',
@@ -22,12 +31,33 @@ Ext.define('Proxmox.Markdown', {
         'q', 'rp', 'rt', 'ruby', 's', 'samp', 'section', 'small', 'span', 'strong', 'sub',
         'summary', 'sup', 'table', 'tbody', 'td', 'tfoot', 'th', 'thead', 'time', 'tr', 'u', 'ul',
         'var', 'wbr',
+        // MathML (presentation only; integration-point and URL-loading elements left out above)
+        'math', 'merror', 'mfenced', 'mfrac', 'mi', 'mmultiscripts', 'mn', 'mo', 'mover',
+        'mpadded', 'mphantom', 'mprescripts', 'mroot', 'mrow', 'ms', 'mspace', 'msqrt', 'mstyle',
+        'msub', 'msubsup', 'msup', 'mtable', 'mtd', 'mtext', 'mtr', 'munder', 'munderover',
+        'menclose',
     ]),
 
     // attributes we keep on allowed elements.  Anything else is dropped.  `id`/`name` are
     // handled specially (namespaced) and so are NOT in this list -- they fall through to the
-    // dedicated branch.
-    _allowedAttrRE: /^(class|href|src|alt|align|valign|disabled|checked|start|type|target|colspan|rowspan|title|width|height|dir)$/i,
+    // dedicated branch.  Includes MathML presentation attributes; none of these take URL values
+    // so the URL-validation branch (href/src) doesn't need to know about them.  `form` is
+    // deliberately omitted: as an HTML attribute it associates an <input> with a form by id and
+    // would defeat our id namespacing.
+    _allowedAttrRE: new RegExp(
+        '^(?:'
+        // common HTML
+        + 'class|href|src|alt|align|valign|disabled|checked|start|type|target|colspan|rowspan'
+        + '|title|width|height|dir'
+        // MathML presentation attributes
+        + '|mathvariant|mathsize|mathcolor|mathbackground|displaystyle|scriptlevel|display'
+        + '|accent|accentunder|lspace|rspace|linethickness|maxsize|minsize|movablelimits|stretchy'
+        + '|symmetric|notation|subscriptshift|superscriptshift|depth|fence|separator'
+        + '|columnalign|columnlines|columnspacing|rowalign|rowlines|rowspacing|frame|framespacing'
+        + '|open|close|separators'
+        + ')$',
+        'i',
+    ),
 
     // explicitly denied URL schemes for href/src.  An attribute with one of these gets dropped.
     // We keep the original "permissive" stance for <a> (commit 5cbbb9c, allow RDP/SSH/VNC/etc.
