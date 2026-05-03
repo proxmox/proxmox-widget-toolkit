@@ -1,3 +1,26 @@
+proxmox-widget-toolkit (5.2.0) trixie; urgency=medium
+
+  * confirm remove dialog: improve layout to fit larger fields and components
+    without cutting off content.
+
+  * markdown: harden the HTML sanitizer by switching to an explicit element and
+    attribute allowlist and namespacing `id`/`name` (and same-document fragment
+    links pointing to them) to prevent DOM clobbering of the surrounding admin
+    UI, plus several smaller hardenings to URL-scheme handling and walker
+    robustness.
+    Allow a curated subset of presentation MathML in notes so that
+    admins can embed the calculations they used to derive a configuration.
+
+  * markdown: add a `renderInto` helper that, on browsers exposing the
+    Sanitizer API (Chromium and Firefox), prefers `Element.setHTML` as a
+    second-gate parse step for defense in depth, transparently falling back to
+    `innerHTML` elsewhere.
+
+  * task viewer: derive end-time from the polled task status when the caller
+    did not pass one in, so finished tasks show the correct duration.
+
+ -- Proxmox Support Team <support@proxmox.com>  Sun, 03 May 2026 20:37:32 +0200
+
 proxmox-widget-toolkit (5.1.9) trixie; urgency=medium
 
   * markdown: add 'base' tag to encoded html tags to avoid potential UI
