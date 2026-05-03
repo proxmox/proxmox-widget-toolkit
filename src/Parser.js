@@ -209,7 +209,16 @@ Ext.define('Proxmox.Markdown', {
 
     parse: function (markdown) {
         /*global marked*/
-        let unsafeHTML = marked.parse(markdown);
+        // pin marked v4 options explicitly so a future package bump (incl. defaults flipping)
+        // does not change behaviour.  `headerIds: true` keeps marked's auto-generated heading
+        // anchors so `[link](#section)` still works -- the sanitizer namespaces both the id and
+        // the matching fragment href below to defuse DOM clobbering.
+        let unsafeHTML = marked.parse(markdown, {
+            gfm: true,
+            breaks: false,
+            headerIds: true,
+            mangle: true,
+        });
 
         this._instanceCounter += 1;
         let prefix = `pmx-md-${this._instanceCounter}-`;
