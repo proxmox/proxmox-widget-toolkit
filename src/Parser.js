@@ -158,10 +158,9 @@ Ext.define('Proxmox.Markdown', {
             if (node.nodeType === 3) { // Text
                 return;
             }
-            if (node.nodeType !== 1) { // not Element (Comment, CDATA, PI, ...)
-                if (typeof node.remove === 'function') {
-                    node.remove();
-                }
+            if (node.nodeType !== 1) {
+                // leave non-Element nodes (Comment, CDATA, PI, ...) alone; some users use comments
+                // inside notes to embed (non-secret!) metadata that's hidden from the rendered view
                 return;
             }
             const tagName = node.tagName.toLowerCase();
