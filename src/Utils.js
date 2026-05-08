@@ -1571,6 +1571,18 @@ Ext.define('Proxmox.Utils', {
             }
             hiddenElement.click();
         },
+
+        renderLocation: function (value) {
+            if (!value) {
+                return Proxmox.Utils.NoneText;
+            }
+            let location = Proxmox.Utils.parsePropertyString(value);
+            let degrees = `${location.latitude} &deg;, ${location.longitude} &deg;`;
+            if (location.name) {
+                return `${location.name} (${degrees})`;
+            }
+            return degrees;
+        },
     },
 
     singleton: true,

@@ -110,6 +110,7 @@ JSSRC=					\
 	window/AddYubico.js		\
 	window/TfaEdit.js		\
 	window/NotesEdit.js		\
+	window/LocationEdit.js		\
 	window/ThemeEdit.js		\
 	window/SyncWindow.js	\
 	node/APT.js			\
