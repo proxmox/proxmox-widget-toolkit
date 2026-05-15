@@ -1,19 +1,19 @@
 proxmox-widget-toolkit (5.2.1) trixie; urgency=medium
 
   * markdown: keep HTML comment nodes in the sanitized output, restoring
-    pre-5.2.0 behavior. Admins use comments in notes to embed metadata that
-    is hidden from the rendered view but stays inspectable in the source.
+    pre-5.2.0 behavior. Admins use comments in notes to embed metadata that is
+    hidden from the rendered view but stays inspectable in the source.
 
   * css: move the `x-grid-row-loading` class definition into the
     widget-toolkit so that consumers which previously each carried an
     identical copy can drop them.
 
   * add a window for editing locations (a property-string with a name and
-    coordinates) together with a renderer that links the coordinates to
-    the matching spot on OpenStreetMap, for use with the new per-node and
+    coordinates) together with a renderer that links the coordinates to the
+    matching spot on OpenStreetMap, for use with the new per-node and
     per-datacenter `location` properties.
 
- -- Proxmox Support Team <support@proxmox.com>  Fri, 15 May 2026 11:49:25 +0200
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 15 May 2026 11:50:37 +0200
 
 proxmox-widget-toolkit (5.2.0) trixie; urgency=medium
 
