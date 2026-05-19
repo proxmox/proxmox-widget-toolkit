@@ -1,3 +1,24 @@
+proxmox-widget-toolkit (5.2.2) trixie; urgency=medium
+
+  * location edit: reject `,` and `=` in the name field so the value cannot
+    inject extra latitude/longitude key-value pairs into the property string.
+    The backend still validates anyway, but rejecting these characters
+    client-side gives immediate feedback.
+
+  * location renderer: extend the OpenStreetMap link with `mlat`/`mlon`
+    parameters so the linked map drops a marker on the exact coordinates
+    rather than only being centered on them.
+
+  * utils: render CPU usage via `ngettext` so translators can produce a proper
+    singular form (for example "{0}% of 1 CPU") instead of relying on the
+    previous "CPU(s)" fallback.
+
+  * window: ACMEDomains: surface a translated error dialog when adding a
+    domain would exceed the per-instance limit. Previously the operation
+    failed silently for the user, with only a console log entry.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 19 May 2026 20:31:32 +0200
+
 proxmox-widget-toolkit (5.2.1) trixie; urgency=medium
 
   * markdown: keep HTML comment nodes in the sanitized output, restoring
