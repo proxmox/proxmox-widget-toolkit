@@ -1577,7 +1577,7 @@ Ext.define('Proxmox.Utils', {
                 return Proxmox.Utils.NoneText;
             }
             let location = Proxmox.Utils.parsePropertyString(value);
-            let link = `https://openstreetmap.org#map=20/${location.latitude}/${location.longitude}`;
+            let link = `https://openstreetmap.org?mlat=${location.latitude}&mlon=${location.longitude}#map=20/${location.latitude}/${location.longitude}`;
             let degrees = `${location.latitude} &deg;, ${location.longitude} &deg;, <a href='${link}' target="_blank" rel="noreferrer">open on OpenStreetMap</a>`;
             if (location.name) {
                 return `${location.name} (${degrees})`;
