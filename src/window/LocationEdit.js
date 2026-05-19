@@ -33,6 +33,8 @@ Ext.define('Proxmox.window.LocationEdit', {
                     fieldLabel: gettext('Name'),
                     allowBlank: true,
                     emptyText: gettext('Optional'),
+                    regex: /^[^,=]+$/,
+                    regexText: gettext('No "," and "=" allowed'),
                     name: 'name',
                 },
                 {
