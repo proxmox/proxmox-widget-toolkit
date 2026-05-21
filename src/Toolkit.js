@@ -127,7 +127,7 @@ Ext.apply(Ext.form.field.VTypes, {
     },
     ConfigIdText:
         gettext('Allowed characters') +
-        ": 'A-Z', 'a-z', '0-9', '_'<br />" +
+        ": 'A-Z', 'a-z', '0-9', '_', '-'<br />" +
         gettext('Minimum characters') +
         ': 2<br />' +
         gettext('Must start with') +
