@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (5.2.3) trixie; urgency=medium
+
+  * location edit: support pasting coordinate pairs and map service URLs into
+    the latitude or longitude field. Detects plain decimal pairs (comma,
+    semicolon, or whitespace separated), OpenStreetMap permalinks and marker
+    URLs, and the common Google Maps URL forms. A hint links to OpenStreetMap
+    and notes how to obtain coordinates from a map service.
+
+  * vtypes: list '-' in the allowed-characters help text for config IDs; the
+    validation regex already permits it.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 26 May 2026 16:26:59 +0200
+
 proxmox-widget-toolkit (5.2.2) trixie; urgency=medium
 
   * location edit: reject `,` and `=` in the name field so the value cannot
