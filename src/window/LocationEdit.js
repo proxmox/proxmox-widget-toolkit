@@ -19,16 +19,39 @@ Ext.define('Proxmox.window.LocationEdit', {
             return lat >= -90 && lat <= 90 && long >= -180 && long <= 180;
         },
 
+        // Accepts:
+        //   - plain decimal pairs separated by comma, semicolon, or whitespace
+        //   - OpenStreetMap URLs (#map=zoom/lat/lon permalinks, ?mlat=&mlon= markers)
+        //   - Google Maps URLs (/maps?q=lat,lon, /maps?ll=lat,lon, /@lat,lon,zoom)
+        // The Google Maps patterns require a /maps or /@ anchor so unrelated text that
+        // happens to contain a similar substring does not get parsed as coordinates.
+        parseCoordinates: function (data) {
+            if (!Ext.isString(data)) {
+                return null;
+            }
+            let patterns = [
+                /#map=\d+(?:\.\d+)?\/(-?\d+(?:\.\d+)?)\/(-?\d+(?:\.\d+)?)/,
+                /[?&]mlat=(-?\d+(?:\.\d+)?)&mlon=(-?\d+(?:\.\d+)?)/,
+                /\/maps\S*[?&](?:q|ll)=(-?\d+(?:\.\d+)?)(?:,|%2C)(-?\d+(?:\.\d+)?)/,
+                /\/@(-?\d+(?:\.\d+)?),(-?\d+(?:\.\d+)?),[\d.]+[a-z]\b/,
+                /^(-?\d+(?:\.\d+)?)\s*[,;\s]\s*(-?\d+(?:\.\d+)?)$/,
+            ];
+            for (let pattern of patterns) {
+                let match = data.trim().match(pattern);
+                if (match) {
+                    return [Number(match[1]), Number(match[2])];
+                }
+            }
+            return null;
+        },
+
         onPaste: function (_field, event) {
             let me = this;
-            let data = event.getClipboardData();
-            if (Ext.isString(data)) {
-                let [lat, long] = data.split(',').map(Number);
-                if (me.isValidCoordinate(lat, long)) {
-                    me.lookup('latitude').setValue(lat);
-                    me.lookup('longitude').setValue(long);
-                    event.preventDefault();
-                }
+            let coords = me.parseCoordinates(event.getClipboardData());
+            if (coords && me.isValidCoordinate(coords[0], coords[1])) {
+                me.lookup('latitude').setValue(coords[0]);
+                me.lookup('longitude').setValue(coords[1]);
+                event.preventDefault();
             }
         },
 
@@ -95,7 +118,8 @@ Ext.define('Proxmox.window.LocationEdit', {
                     value: Ext.String.format(
                         gettext(
                             'To find coordinates, right-click a location on {0} or Google Maps.' +
-                                ' You can paste them as "Latitude, Longitude" into either field above.',
+                                ' You can paste them as "Latitude, Longitude" or paste a URL from' +
+                                ' those services into either field above.',
                         ),
                         '<a href="https://openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>',
                     ),
