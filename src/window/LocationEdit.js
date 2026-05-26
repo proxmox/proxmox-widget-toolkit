@@ -106,10 +106,13 @@ Ext.define('Proxmox.window.LocationEdit', {
                 },
                 {
                     xtype: 'displayfield',
-                    value: gettext(
-                        'You can paste text in format "Latitude, Longitude" in either field.',
+                    value: Ext.String.format(
+                        gettext(
+                            'To find coordinates, right-click a location on {0} or Google Maps.' +
+                                ' You can paste them as "Latitude, Longitude" into either field above.',
+                        ),
+                        '<a href="https://openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>',
                     ),
-                    userCls: 'pmx-hint',
                 },
                 {
                     xtype: 'displayfield',
