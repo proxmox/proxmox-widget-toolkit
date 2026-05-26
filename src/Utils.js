@@ -1573,13 +1573,18 @@ Ext.define('Proxmox.Utils', {
             hiddenElement.click();
         },
 
+        renderOpenStreetMapLink: function (lat, long) {
+            let link = `https://openstreetmap.org?mlat=${lat}&mlon=${long}#map=20/${lat}/${long}`;
+            return `<a href='${link}' target="_blank" rel="noreferrer">open on OpenStreetMap</a>`;
+        },
+
         renderLocation: function (value) {
             if (!value) {
                 return Proxmox.Utils.NoneText;
             }
             let location = Proxmox.Utils.parsePropertyString(value);
-            let link = `https://openstreetmap.org?mlat=${location.latitude}&mlon=${location.longitude}#map=20/${location.latitude}/${location.longitude}`;
-            let degrees = `${location.latitude} &deg;, ${location.longitude} &deg;, <a href='${link}' target="_blank" rel="noreferrer">open on OpenStreetMap</a>`;
+            let link = Proxmox.Utils.renderOpenStreetMapLink(location.latitude, location.longitude);
+            let degrees = `${location.latitude} &deg;, ${location.longitude} &deg;, ${link}`;
             if (location.name) {
                 return `${location.name} (${degrees})`;
             }
