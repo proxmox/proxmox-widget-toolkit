@@ -6,7 +6,7 @@ Ext.define('Proxmox.window.LocationEdit', {
 
     autoLoad: true,
 
-    // make a bit wider for the hint/link fields
+    // make a bit wider for the hint
     width: 400,
 
     controller: {
@@ -32,23 +32,9 @@ Ext.define('Proxmox.window.LocationEdit', {
             }
         },
 
-        onChange: function () {
-            let me = this;
-            let lat = me.lookup('latitude').getValue();
-            let long = me.lookup('longitude').getValue();
-            let openStreetMapLink = me.lookup('openStreetMapLink');
-            if (me.isValidCoordinate(lat, long)) {
-                openStreetMapLink.setValue(Proxmox.Utils.renderOpenStreetMapLink(lat, long));
-                openStreetMapLink.setVisible(true);
-            } else {
-                openStreetMapLink.setVisible(false);
-            }
-        },
-
         control: {
             numberfield: {
                 paste: 'onPaste',
-                change: 'onChange',
             },
         },
     },
@@ -113,12 +99,6 @@ Ext.define('Proxmox.window.LocationEdit', {
                         ),
                         '<a href="https://openstreetmap.org" target="_blank" rel="noreferrer">OpenStreetMap</a>',
                     ),
-                },
-                {
-                    xtype: 'displayfield',
-                    reference: 'openStreetMapLink',
-                    hidden: true,
-                    text: '',
                 },
             ],
         },
