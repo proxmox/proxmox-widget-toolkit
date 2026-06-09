@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (5.2.4) trixie; urgency=medium
+
+  * fix #5076: authentication realm edit: add an optional "audiences" field
+    for OpenID Connect (OIDC) realms which allows users to configure
+    additional OIDC audiences that may be provided by the OIDC realm.
+
+  * css: vertically align the icon and label of tab buttons.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 09 Jun 2026 23:46:17 +0200
+
 proxmox-widget-toolkit (5.2.3) trixie; urgency=medium
 
   * location edit: support pasting coordinate pairs and map service URLs into
