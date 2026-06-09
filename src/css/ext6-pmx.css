@@ -285,7 +285,7 @@ div.right-aligned {
 }
 .x-tab-inner {
     display: unset;
-    vertical-align: text-top;
+    vertical-align: middle;
 }
 .x-tab-wrap {
     display: unset;
