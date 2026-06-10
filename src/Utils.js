@@ -415,6 +415,16 @@ Ext.define('Proxmox.Utils', {
                 let txt = err.response.responseText;
                 try {
                     let res = JSON.parse(txt);
+                    if (typeof res.message === 'string') {
+                        // HTTP reason can only be the first line, get remaining lines from the body
+                        let lines = res.message.split('\n').filter((line) => line.length > 0);
+                        if (lines[0] === err.statusText) {
+                            lines.shift(); // already shown through the reason phrase
+                        }
+                        for (const line of lines) {
+                            msg.push(Ext.String.htmlEncode(line));
+                        }
+                    }
                     if (res.errors && typeof res.errors === 'object') {
                         for (let [key, value] of Object.entries(res.errors)) {
                             msg.push(Ext.String.htmlEncode(`${key}: ${value}`));
