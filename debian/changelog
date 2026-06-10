@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (5.2.5) trixie; urgency=medium
+
+  * utils: response error: gather detail lines of multi-line messages.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 10 Jun 2026 19:35:19 +0200
+
 proxmox-widget-toolkit (5.2.4) trixie; urgency=medium
 
   * fix #5076: authentication realm edit: add an optional "audiences" field
