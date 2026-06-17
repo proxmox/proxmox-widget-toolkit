@@ -400,3 +400,34 @@ div.right-aligned {
     color: #555;
 }
 /* action column fix end */
+
+/* journal log level coloring start */
+/* light-theme values, >= WCAG AA on white; the dark theme overrides them (see proxmox-dark) */
+.pmx-journal-prio-0,
+.pmx-journal-prio-1,
+.pmx-journal-prio-2 {
+    color: #c0392b;
+    font-weight: bold;
+}
+.pmx-journal-prio-3 {
+    color: #c0392b;
+}
+.pmx-journal-prio-4 {
+    color: #aa5500;
+}
+.pmx-journal-prio-5 {
+    font-weight: bold;
+}
+.pmx-journal-prio-7 {
+    color: #767676;
+}
+/* full-width hairline above the marker so a boot boundary stands out without louder text */
+.pmx-journal-reboot {
+    display: block;
+    margin: 6px 0;
+    padding-top: 4px;
+    border-top: 1px solid currentColor;
+    color: #767676;
+    font-style: italic;
+}
+/* journal log level coloring end */

@@ -10,6 +10,9 @@ Ext.define('Proxmox.panel.JournalView', {
     numEntries: 500,
     lineHeight: 16,
 
+    // opt-in: request the structured -J reader output so lines can be colored by priority
+    structured: false,
+
     scrollToEnd: true,
 
     controller: {
@@ -65,6 +68,53 @@ Ext.define('Proxmox.panel.JournalView', {
             }
         },
 
+        // indent a multi-line message's continuation lines under where the message starts, like
+        // journalctl; the monospace pre content makes the spaces line up
+        renderLine: function (entry, host) {
+            let ts = Ext.Date.format(new Date(entry.t / 1000), 'M d H:i:s');
+            let pid = entry.pid !== undefined ? '[' + entry.pid + ']' : '';
+            let prefix = ts + ' ' + (host ? host + ' ' : '') + (entry.id ?? '') + pid + ': ';
+            let msg = entry.msg ?? '';
+            if (msg.includes('\n')) {
+                msg = msg.replace(/\n/g, '\n' + ' '.repeat(prefix.length));
+            }
+            let cls = 'pmx-journal-prio-' + (entry.p ?? 6);
+            return '<span class="' + cls + '">' + Ext.htmlEncode(prefix + msg) + '</span>';
+        },
+
+        renderReboot: function (entry) {
+            let ts = entry.t ? Ext.Date.format(new Date(entry.t / 1000), 'M d H:i:s') + ' ' : '';
+            return '<span class="pmx-journal-reboot">' + Ext.htmlEncode(ts) + '-- Reboot --</span>';
+        },
+
+        // also accept the legacy flat-string format so a newer web UI keeps working on -j output
+        processData: function (lines) {
+            let me = this;
+            let newstart, newend, host;
+            let parts = [];
+            if (lines.length && typeof lines[0] === 'object') {
+                for (const el of lines) {
+                    if (el.ty === 'cursor') {
+                        if (newend === undefined) {
+                            newend = el.c;
+                        }
+                        newstart = el.c;
+                    } else if (el.ty === 'host') {
+                        host = el.h;
+                    } else if (el.ty === 'reboot') {
+                        parts.push(me.renderReboot(el));
+                    } else {
+                        parts.push(me.renderLine(el, host));
+                    }
+                }
+            } else {
+                newend = lines.shift();
+                newstart = lines.pop();
+                parts = lines.map((line) => Ext.htmlEncode(line));
+            }
+            return { html: parts.join('<br>'), num: parts.length, newstart, newend };
+        },
+
         updateView: function (lines, livemode, top) {
             let me = this;
             let view = me.getView();
@@ -78,26 +128,17 @@ Ext.define('Proxmox.panel.JournalView', {
             let scrollPos = me.scrollPosBottom();
             let scrollPosTop = me.scrollPosTop();
 
-            let newend = lines.shift();
-            let newstart = lines.pop();
-
-            let num = lines.length;
-            let text = lines.map(Ext.htmlEncode).join('<br>');
+            let { html, num, newstart, newend } = me.processData(lines);
 
             let contentChanged = true;
 
             if (!livemode) {
-                if (num) {
-                    view.content = text;
-                } else {
-                    view.content = 'nothing logged or no timespan selected';
-                }
+                view.content = html || 'nothing logged or no timespan selected';
             } else {
-                // update content
                 if (top && num) {
-                    view.content = view.content ? text + '<br>' + view.content : text;
+                    view.content = view.content ? html + '<br>' + view.content : html;
                 } else if (!top && num) {
-                    view.content = view.content ? view.content + '<br>' + text : text;
+                    view.content = view.content ? view.content + '<br>' + html : html;
                 } else {
                     contentChanged = false;
                 }
@@ -144,6 +185,9 @@ Ext.define('Proxmox.panel.JournalView', {
                     since: since,
                     until: until,
                 };
+            }
+            if (view.structured) {
+                params.structured = 1;
             }
             Proxmox.Utils.API2Request({
                 url: view.url,
@@ -206,6 +250,7 @@ Ext.define('Proxmox.panel.JournalView', {
             viewModel.set('until', new Date());
             viewModel.set('since', since);
             me.lookup('content').setStyle('line-height', view.lineHeight + 'px');
+            viewModel.set('structured', view.structured === true);
 
             view.loadTask = new Ext.util.DelayedTask(me.doLoad, me, [true, false]);
 
@@ -259,6 +304,7 @@ Ext.define('Proxmox.panel.JournalView', {
             livemode: true,
             until: null,
             since: null,
+            structured: false,
         },
     },
 
@@ -355,7 +401,7 @@ Ext.define('Proxmox.panel.JournalView', {
             xtype: 'box',
             reference: 'content',
             style: {
-                font: 'normal 11px tahoma, arial, verdana, sans-serif',
+                font: 'normal 12px monospace',
                 'white-space': 'pre',
             },
         },

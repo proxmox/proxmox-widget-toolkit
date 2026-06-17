@@ -1,0 +1,17 @@
+// brighter journal level colors for the dark content background; the light-theme values in
+// ext6-pmx.css lack contrast on dark. each meets WCAG AA against the dark content background
+.pmx-journal-prio-0,
+.pmx-journal-prio-1,
+.pmx-journal-prio-2,
+.pmx-journal-prio-3 {
+  color: #ff7a7a;
+}
+
+.pmx-journal-prio-4 {
+  color: #ffb454;
+}
+
+.pmx-journal-prio-7,
+.pmx-journal-reboot {
+  color: #aaaaaa;
+}
