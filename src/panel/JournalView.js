@@ -102,12 +102,13 @@ Ext.define('Proxmox.panel.JournalView', {
                     contentChanged = false;
                 }
 
-                // update cursors
-                if (!top || !view.startcursor) {
+                // update cursors, but only when the response actually carried one; an empty poll,
+                // e.g. a priority filter that currently matches nothing, must not wipe our position
+                if (newstart !== undefined && (!top || !view.startcursor)) {
                     view.startcursor = newstart;
                 }
 
-                if (top || !view.endcursor) {
+                if (newend !== undefined && (top || !view.endcursor)) {
                     view.endcursor = newend;
                 }
             }
