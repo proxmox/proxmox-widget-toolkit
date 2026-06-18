@@ -21,8 +21,10 @@ Ext.define('Proxmox.panel.JournalView', {
         updateParams: function () {
             let me = this;
             let viewModel = me.getViewModel();
-            let since = viewModel.get('since');
-            let until = viewModel.get('until');
+            // clone, as the bound viewModel dates must not be mutated in place: doing so would
+            // advance 'until' by a day on every call (each filter change routes through here)
+            let since = new Date(viewModel.get('since'));
+            let until = new Date(viewModel.get('until'));
 
             since.setHours(0, 0, 0, 0);
             until.setHours(0, 0, 0, 0);
@@ -101,6 +103,8 @@ Ext.define('Proxmox.panel.JournalView', {
                         newstart = el.c;
                     } else if (el.ty === 'host') {
                         host = el.h;
+                    } else if (el.ty === 'identifiers') {
+                        me.setIdentifiers(el.ids);
                     } else if (el.ty === 'reboot') {
                         parts.push(me.renderReboot(el));
                     } else {
@@ -113,6 +117,16 @@ Ext.define('Proxmox.panel.JournalView', {
                 parts = lines.map((line) => Ext.htmlEncode(line));
             }
             return { html: parts.join('<br>'), num: parts.length, newstart, newend };
+        },
+
+        setIdentifiers: function (ids) {
+            let me = this;
+            let combo = me.lookup('serviceFilter');
+            if (!combo) {
+                return;
+            }
+            combo.getStore().loadData(ids.map((id) => ({ id })));
+            me.getView().identifiersLoaded = true;
         },
 
         updateView: function (lines, livemode, top) {
@@ -186,8 +200,19 @@ Ext.define('Proxmox.panel.JournalView', {
                     until: until,
                 };
             }
+            let priority = me.lookup('priorityFilter').getValue();
+            if (priority && priority !== '__all__') {
+                params.priority = priority;
+            }
+            let service = me.lookup('serviceFilter').getValue();
+            if (service) {
+                params.service = service;
+            }
             if (view.structured) {
                 params.structured = 1;
+                if (!view.identifiersLoaded) {
+                    params.identifiers = 1;
+                }
             }
             Proxmox.Utils.API2Request({
                 url: view.url,
@@ -284,6 +309,64 @@ Ext.define('Proxmox.panel.JournalView', {
             me.getViewModel().set('livemode', false);
             me.updateView([], false);
         },
+
+        // filters run server-side, so a change drops the buffered position and reloads
+        onFilterChange: function () {
+            let me = this;
+            let view = me.getView();
+            if (!view.loadTask) {
+                return; // not initialized yet, ignore the controls' initial value events
+            }
+            me.syncFiltersActive();
+            delete view.startcursor;
+            delete view.endcursor;
+            delete view.content;
+            // clear now; updateView won't, as it must not wipe the tail on an empty live poll
+            me.lookup('content').update('');
+            if (me.getViewModel().get('livemode')) {
+                view.scrollToEnd = true;
+                view.loadTask.delay(200, undefined, undefined, [true, false]);
+            } else {
+                me.updateParams();
+            }
+        },
+
+        // enable the Reset button only while some filter differs from the unfiltered default
+        syncFiltersActive: function () {
+            let me = this;
+            let priority = me.lookup('priorityFilter');
+            if (!priority) {
+                return;
+            }
+            let active =
+                priority.getValue() !== '__all__' ||
+                !!me.lookup('serviceFilter').getValue();
+            me.getViewModel().set('filtersActive', active);
+        },
+
+        // reset every filter to the unfiltered view
+        onResetFilters: function () {
+            let me = this;
+            me.lookup('priorityFilter').setValue('__all__');
+            me.lookup('serviceFilter').setValue('');
+            me.onFilterChange();
+        },
+
+        onToggleFilters: function (btn, pressed) {
+            this.getViewModel().set('showFilters', pressed);
+        },
+
+        // the freeform identifier field applies on Enter or clear, not on every keystroke
+        onTextFilterChange: function (field, value) {
+            field.triggers.clear.setVisible(!!value);
+            this.syncFiltersActive();
+        },
+
+        onTextFilterKey: function (field, e) {
+            if (e.getKey() === e.ENTER) {
+                this.onFilterChange();
+            }
+        },
     },
 
     onDestroy: function () {
@@ -305,6 +388,8 @@ Ext.define('Proxmox.panel.JournalView', {
             until: null,
             since: null,
             structured: false,
+            showFilters: false,
+            filtersActive: false,
         },
     },
 
@@ -330,71 +415,154 @@ Ext.define('Proxmox.panel.JournalView', {
         },
     },
 
-    tbar: {
-        items: [
-            '->',
-            {
-                xtype: 'segmentedbutton',
-                items: [
-                    {
-                        text: gettext('Live Mode'),
-                        bind: {
-                            pressed: '{livemode}',
+    dockedItems: [
+        {
+            xtype: 'toolbar',
+            dock: 'top',
+            items: [
+                '->',
+                {
+                    xtype: 'segmentedbutton',
+                    items: [
+                        {
+                            text: gettext('Live Mode'),
+                            bind: {
+                                pressed: '{livemode}',
+                            },
+                            handler: 'onLiveMode',
                         },
-                        handler: 'onLiveMode',
-                    },
-                    {
-                        text: gettext('Select Timespan'),
-                        bind: {
-                            pressed: '{!livemode}',
+                        {
+                            text: gettext('Select Timespan'),
+                            bind: {
+                                pressed: '{!livemode}',
+                            },
+                            handler: 'onTimespan',
                         },
-                        handler: 'onTimespan',
+                    ],
+                },
+                {
+                    xtype: 'box',
+                    bind: { disabled: '{livemode}' },
+                    autoEl: { cn: gettext('Since') + ':' },
+                },
+                {
+                    xtype: 'datefield',
+                    name: 'since_date',
+                    reference: 'since',
+                    format: 'Y-m-d',
+                    bind: {
+                        disabled: '{livemode}',
+                        value: '{since}',
+                        maxValue: '{until}',
                     },
-                ],
-            },
-            {
-                xtype: 'box',
-                bind: { disabled: '{livemode}' },
-                autoEl: { cn: gettext('Since') + ':' },
-            },
-            {
-                xtype: 'datefield',
-                name: 'since_date',
-                reference: 'since',
-                format: 'Y-m-d',
-                bind: {
-                    disabled: '{livemode}',
-                    value: '{since}',
-                    maxValue: '{until}',
                 },
-            },
-            {
-                xtype: 'box',
-                bind: { disabled: '{livemode}' },
-                autoEl: { cn: gettext('Until') + ':' },
-            },
-            {
-                xtype: 'datefield',
-                name: 'until_date',
-                reference: 'until',
-                format: 'Y-m-d',
-                bind: {
-                    disabled: '{livemode}',
-                    value: '{until}',
-                    minValue: '{since}',
+                {
+                    xtype: 'box',
+                    bind: { disabled: '{livemode}' },
+                    autoEl: { cn: gettext('Until') + ':' },
                 },
-            },
-            {
-                xtype: 'button',
-                text: 'Update',
-                reference: 'updateBtn',
-                handler: 'updateParams',
-                bind: {
-                    disabled: '{livemode}',
+                {
+                    xtype: 'datefield',
+                    name: 'until_date',
+                    reference: 'until',
+                    format: 'Y-m-d',
+                    bind: {
+                        disabled: '{livemode}',
+                        value: '{until}',
+                        minValue: '{since}',
+                    },
                 },
-            },
-        ],
-    },
+                {
+                    xtype: 'button',
+                    text: gettext('Update'),
+                    reference: 'updateBtn',
+                    handler: 'updateParams',
+                    bind: {
+                        disabled: '{livemode}',
+                    },
+                },
+                {
+                    // only meaningful against a structured backend, opted into via 'structured'
+                    xtype: 'button',
+                    text: gettext('Filter'),
+                    iconCls: 'fa fa-filter',
+                    enableToggle: true,
+                    bind: { hidden: '{!structured}' },
+                    listeners: {
+                        toggle: 'onToggleFilters',
+                    },
+                },
+            ],
+        },
+        {
+            xtype: 'toolbar',
+            dock: 'top',
+            reference: 'filterSection',
+            bind: { hidden: '{!showFilters}' },
+            items: [
+                {
+                    xtype: 'proxmoxKVComboBox',
+                    fieldLabel: gettext('Minimum Priority'),
+                    labelWidth: 120,
+                    width: 260,
+                    reference: 'priorityFilter',
+                    value: '__all__',
+                    comboItems: [
+                        ['__all__', gettext('All')],
+                        ['0', gettext('Emergency')],
+                        ['1', gettext('Alert')],
+                        ['2', gettext('Critical')],
+                        ['3', gettext('Error')],
+                        ['4', gettext('Warning')],
+                        ['5', gettext('Notice')],
+                        ['6', gettext('Informational')],
+                    ],
+                    listeners: {
+                        change: 'onFilterChange',
+                    },
+                },
+                {
+                    xtype: 'combo',
+                    fieldLabel: gettext('Identifier'),
+                    labelWidth: 65,
+                    width: 280,
+                    reference: 'serviceFilter',
+                    // a server-side glob on the syslog identifier; freeform, the store only suggests
+                    editable: true,
+                    forceSelection: false,
+                    anyMatch: true,
+                    queryMode: 'local',
+                    displayField: 'id',
+                    valueField: 'id',
+                    store: { fields: ['id'], sorters: ['id'] },
+                    emptyText: gettext('e.g. pve* or postfix/*'),
+                    triggers: {
+                        clear: {
+                            cls: 'pmx-clear-trigger',
+                            weight: -1,
+                            hidden: true,
+                            handler: function () {
+                                this.setValue('');
+                                this.lookupController().onFilterChange();
+                            },
+                        },
+                    },
+                    listeners: {
+                        change: 'onTextFilterChange',
+                        select: 'onFilterChange',
+                        specialkey: 'onTextFilterKey',
+                    },
+                },
+                '->',
+                {
+                    xtype: 'button',
+                    text: gettext('Reset'),
+                    handler: 'onResetFilters',
+                    bind: { disabled: '{!filtersActive}' },
+                },
+            ],
+        },
+    ],
 
     items: [
         {
