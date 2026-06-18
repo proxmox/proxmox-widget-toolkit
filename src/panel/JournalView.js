@@ -105,6 +105,8 @@ Ext.define('Proxmox.panel.JournalView', {
                         host = el.h;
                     } else if (el.ty === 'identifiers') {
                         me.setIdentifiers(el.ids);
+                    } else if (el.ty === 'units') {
+                        me.setUnits(el.names);
                     } else if (el.ty === 'reboot') {
                         parts.push(me.renderReboot(el));
                     } else {
@@ -127,6 +129,16 @@ Ext.define('Proxmox.panel.JournalView', {
             }
             combo.getStore().loadData(ids.map((id) => ({ id })));
             me.getView().identifiersLoaded = true;
+        },
+
+        setUnits: function (names) {
+            let me = this;
+            let combo = me.lookup('unitFilter');
+            if (!combo) {
+                return;
+            }
+            combo.getStore().loadData(names.map((name) => ({ name })));
+            me.getView().unitsLoaded = true;
         },
 
         updateView: function (lines, livemode, top) {
@@ -204,14 +216,25 @@ Ext.define('Proxmox.panel.JournalView', {
             if (priority && priority !== '__all__') {
                 params.priority = priority;
             }
-            let service = me.lookup('serviceFilter').getValue();
-            if (service) {
-                params.service = service;
+            if (me.lookup('kernelFilter').getValue()) {
+                params.kernel = 1;
+            } else {
+                let service = me.lookup('serviceFilter').getValue();
+                if (service) {
+                    params.service = service;
+                }
+                let unit = me.lookup('unitFilter').getValue();
+                if (unit) {
+                    params.unit = unit;
+                }
             }
             if (view.structured) {
                 params.structured = 1;
                 if (!view.identifiersLoaded) {
                     params.identifiers = 1;
+                }
+                if (!view.unitsLoaded) {
+                    params.units = 1;
                 }
             }
             Proxmox.Utils.API2Request({
@@ -340,7 +363,9 @@ Ext.define('Proxmox.panel.JournalView', {
             }
             let active =
                 priority.getValue() !== '__all__' ||
-                !!me.lookup('serviceFilter').getValue();
+                !!me.lookup('unitFilter').getValue() ||
+                !!me.lookup('serviceFilter').getValue() ||
+                me.lookup('kernelFilter').getValue();
             me.getViewModel().set('filtersActive', active);
         },
 
@@ -348,7 +373,9 @@ Ext.define('Proxmox.panel.JournalView', {
         onResetFilters: function () {
             let me = this;
             me.lookup('priorityFilter').setValue('__all__');
+            me.lookup('unitFilter').setValue('');
             me.lookup('serviceFilter').setValue('');
+            me.lookup('kernelFilter').setValue(false);
             me.onFilterChange();
         },
 
@@ -356,7 +383,7 @@ Ext.define('Proxmox.panel.JournalView', {
             this.getViewModel().set('showFilters', pressed);
         },
 
-        // the freeform identifier field applies on Enter or clear, not on every keystroke
+        // the freeform unit/identifier fields apply on Enter or clear, not on every keystroke
         onTextFilterChange: function (field, value) {
             field.triggers.clear.setVisible(!!value);
             this.syncFiltersActive();
@@ -389,6 +416,7 @@ Ext.define('Proxmox.panel.JournalView', {
             since: null,
             structured: false,
             showFilters: false,
+            kernelOnly: false,
             filtersActive: false,
         },
     },
@@ -523,11 +551,45 @@ Ext.define('Proxmox.panel.JournalView', {
                 },
                 {
                     xtype: 'combo',
+                    fieldLabel: gettext('Unit'),
+                    labelWidth: 40,
+                    width: 240,
+                    reference: 'unitFilter',
+                    // matched server-side like journalctl -u
+                    bind: { disabled: '{kernelOnly}' },
+                    editable: true,
+                    forceSelection: false,
+                    anyMatch: true,
+                    queryMode: 'local',
+                    displayField: 'name',
+                    valueField: 'name',
+                    store: { fields: ['name'], sorters: ['name'] },
+                    emptyText: gettext('All'),
+                    triggers: {
+                        clear: {
+                            cls: 'pmx-clear-trigger',
+                            weight: -1,
+                            hidden: true,
+                            handler: function () {
+                                this.setValue('');
+                                this.lookupController().onFilterChange();
+                            },
+                        },
+                    },
+                    listeners: {
+                        change: 'onTextFilterChange',
+                        select: 'onFilterChange',
+                        specialkey: 'onTextFilterKey',
+                    },
+                },
+                {
+                    xtype: 'combo',
                     fieldLabel: gettext('Identifier'),
                     labelWidth: 65,
                     width: 280,
                     reference: 'serviceFilter',
                     // a server-side glob on the syslog identifier; freeform, the store only suggests
+                    bind: { disabled: '{kernelOnly}' },
                     editable: true,
                     forceSelection: false,
                     anyMatch: true,
@@ -551,6 +613,15 @@ Ext.define('Proxmox.panel.JournalView', {
                         change: 'onTextFilterChange',
                         select: 'onFilterChange',
                         specialkey: 'onTextFilterKey',
+                    },
+                },
+                {
+                    xtype: 'checkbox',
+                    boxLabel: gettext('Kernel only'),
+                    reference: 'kernelFilter',
+                    bind: { value: '{kernelOnly}' },
+                    listeners: {
+                        change: 'onFilterChange',
                     },
                 },
                 '->',
