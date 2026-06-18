@@ -1,3 +1,18 @@
+proxmox-widget-toolkit (5.2.6) trixie; urgency=medium
+
+  * fix #5076: authentication realm edit: add an optional "audiences" field
+    for OpenID Connect realms
+
+  * journal view:
+    - add an opt-in structured mode that colors log entries by syslog
+      priority, marks reboots and indents multi-line messages
+    - add server-side filters for minimum priority, systemd unit, syslog
+      identifier glob and kernel-only messages, grouped in a collapsible
+      filter section with a reset
+    - open the per-service node log in the structured view
+
+ -- Proxmox Support Team <support@proxmox.com>  Sun, 28 Jun 2026 19:51:56 +0200
+
 proxmox-widget-toolkit (5.2.5) trixie; urgency=medium
 
   * utils: response error: gather detail lines of multi-line messages.
