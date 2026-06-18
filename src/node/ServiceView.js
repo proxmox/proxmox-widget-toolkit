@@ -13,6 +13,10 @@ Ext.define('Proxmox.node.ServiceView', {
 
     restartCommand: 'restart', // TODO: default to reload once everywhere supported
 
+    // show the per-service log in the structured journal view; needs the journal endpoint's
+    // 'unit' and 'structured' params, so products without them keep the plain log view
+    useJournalLog: false,
+
     initComponent: function () {
         let me = this;
 
@@ -65,17 +69,26 @@ Ext.define('Proxmox.node.ServiceView', {
 
             let viewSize = Ext.getBody().getViewSize();
 
+            let logItem = me.useJournalLog
+                ? {
+                      xtype: 'proxmoxJournalView',
+                      structured: true,
+                      unit: service,
+                      url: `/api2/extjs/nodes/${me.nodename}/journal`,
+                  }
+                : {
+                      xtype: 'proxmoxLogView',
+                      url: `/api2/extjs/nodes/${me.nodename}/syslog?service=${service}`,
+                      log_select_timespan: 1,
+                  };
+
             Ext.create('Ext.window.Window', {
-                title: gettext('Syslog') + ': ' + service,
+                title: gettext('System Log') + ': ' + service,
                 modal: true,
                 width: viewSize.width > 1600 ? 1000 : 800,
                 height: viewSize.height > 900 ? 800 : 600,
                 layout: 'fit',
-                items: {
-                    xtype: 'proxmoxLogView',
-                    url: `/api2/extjs/nodes/${me.nodename}/syslog?service=${service}`,
-                    log_select_timespan: 1,
-                },
+                items: logItem,
                 autoShow: true,
             });
         };

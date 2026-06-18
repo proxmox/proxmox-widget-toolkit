@@ -13,6 +13,9 @@ Ext.define('Proxmox.panel.JournalView', {
     // opt-in: request the structured -J reader output so lines can be colored by priority
     structured: false,
 
+    // a per-service log preset: scope to one systemd unit
+    unit: null,
+
     scrollToEnd: true,
 
     controller: {
@@ -170,7 +173,7 @@ Ext.define('Proxmox.panel.JournalView', {
                 }
 
                 // update cursors, but only when the response actually carried one; an empty poll,
-                // e.g. a priority filter that currently matches nothing, must not wipe our position
+                // e.g. a filter that currently matches nothing, must not wipe our position
                 if (newstart !== undefined && (!top || !view.startcursor)) {
                     view.startcursor = newstart;
                 }
@@ -299,6 +302,9 @@ Ext.define('Proxmox.panel.JournalView', {
             viewModel.set('since', since);
             me.lookup('content').setStyle('line-height', view.lineHeight + 'px');
             viewModel.set('structured', view.structured === true);
+            if (view.unit) {
+                me.lookup('unitFilter').setValue(view.unit);
+            }
 
             view.loadTask = new Ext.util.DelayedTask(me.doLoad, me, [true, false]);
 
@@ -369,7 +375,7 @@ Ext.define('Proxmox.panel.JournalView', {
             me.getViewModel().set('filtersActive', active);
         },
 
-        // reset every filter to the unfiltered view
+        // reset every filter to the unfiltered view, broadening a per-service log to the whole node
         onResetFilters: function () {
             let me = this;
             me.lookup('priorityFilter').setValue('__all__');
