@@ -22,23 +22,23 @@ Ext.define('Proxmox.node.NetworkEdit', {
         me.isCreate = !me.iface;
 
         let iface_vtype;
+        let iface_tooltip;
 
-        if (me.iftype === 'bridge') {
+        if (me.iftype === 'bridge' || me.iftype === 'OVSBridge') {
             iface_vtype = 'BridgeName';
-        } else if (me.iftype === 'bond') {
+            iface_tooltip = gettext('Commonly: vmbr[N] (e.g., vmbr0, vmbr1). Must start with a character, max 10 alphanumeric characters.');
+        } else if (me.iftype === 'bond' || me.iftype === 'OVSBond') {
             iface_vtype = 'BondName';
+            iface_tooltip = gettext('Format: bond[N] (e.g., bond0, bond1)');
         } else if (me.iftype === 'eth' && !me.isCreate) {
             iface_vtype = 'InterfaceName';
+            iface_tooltip = gettext('Format: eth[N] (e.g., eth0, enp0s3, )');
         } else if (me.iftype === 'vlan') {
             iface_vtype = 'VlanName';
-        } else if (me.iftype === 'OVSBridge') {
-            iface_vtype = 'BridgeName';
-        } else if (me.iftype === 'OVSBond') {
-            iface_vtype = 'BondName';
-        } else if (me.iftype === 'OVSIntPort') {
+            iface_tooltip = gettext('Format: [interface].[vlan-id] (e.g., eno1.50, bond1.30)');
+        } else if (me.iftype === 'OVSIntPort' || me.iftype === 'OVSPort') {
             iface_vtype = 'InterfaceName';
-        } else if (me.iftype === 'OVSPort') {
-            iface_vtype = 'InterfaceName';
+            iface_tooltip = gettext('Alphanumeric string starting with a character.');
         } else {
             console.log(me.iftype);
             throw 'unknown network device type specified';
@@ -332,7 +332,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
                 maxLength: iface_vtype === 'BridgeName' ? 10 : 15,
                 autoEl: {
                     tag: 'div',
-                    'data-qtip': gettext('For example, vmbr0.100, vmbr0, vlan0.100, vlan0'),
+                    'data-qtip': iface_tooltip,
                 },
                 listeners: {
                     change: function (f, value) {
