@@ -250,3 +250,15 @@
 .usage {
   background-color: $icon-color;
 }
+
+// fa-network-wired override for dark mode.
+// The base/light theme lowers the opacity to simulate a light grey
+// color. This restores the opacity to 1 so the icon remains white and
+// clearly visible in the dark mode
+.x-fa-pool-net:before {
+   opacity: 1;
+}
+
+.x-fa-pool-net-grid:before {
+   opacity: 1;
+}
