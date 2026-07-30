@@ -237,7 +237,10 @@ Ext.onReady(function () {
                     },
                 );
 
-                if (info.parameters && info.parameters.properties) {
+                let is_object_schema = (schema) => {
+                    return schema.properties || schema.allOf || schema.oneOf;
+                };
+                if (info.parameters && is_object_schema(info.parameters)) {
                     let pstore = Ext.create('Ext.data.Store', {
                         model: 'pmx-param-schema',
                         proxy: {
@@ -258,23 +261,52 @@ Ext.onReady(function () {
 
                     let has_type_properties = false;
 
-                    Ext.Object.each(info.parameters.properties, function (name, pdef) {
-                        if (pdef.oneOf) {
-                            pdef.oneOf.forEach((alternative) => {
-                                alternative.name = name;
-                                pstore.add(alternative);
-                                has_type_properties = true;
+                    let for_each_property = function (schema, callback, one_of_info) {
+                        one_of_info ||= [];
+
+                        if (schema.properties) {
+                            Ext.Object.each(schema.properties, function (name, pdef) {
+                                callback(name, pdef, one_of_info);
                             });
-                        } else if (pdef['instance-types']) {
-                            pdef['instance-types'].forEach((type) => {
-                                let typePdef = Ext.apply({}, pdef);
-                                typePdef.name = name;
-                                typePdef['instance-types'] = [type];
-                                pstore.add(typePdef);
-                                has_type_properties = true;
+                        } else if (schema.allOf) {
+                            Ext.Array.each(schema.allOf, function (entry) {
+                                for_each_property(entry, callback, one_of_info);
                             });
+                        } else if (schema.oneOf && schema['type-property-schema']) {
+                            let type_property = schema['type-property'];
+                            callback(type_property, schema['type-property-schema'], one_of_info);
+                            schema.oneOf.forEach((type) => {
+                                one_of_info.push(`${type_property}=${type['instance-type']}`);
+                                for_each_property(type, callback, one_of_info);
+                                one_of_info.pop();
+                            });
+                        }
+                    };
+
+                    for_each_property(info.parameters, function (name, pdef, one_of_info) {
+                        if (Ext.Object.isEmpty(one_of_info)) {
+                            if (pdef.oneOf) {
+                                pdef.oneOf.forEach((alternative) => {
+                                    alternative.name = name;
+                                    pstore.add(alternative);
+                                    has_type_properties = true;
+                                });
+                            } else if (pdef['instance-types']) {
+                                pdef['instance-types'].forEach((type) => {
+                                    let typePdef = Ext.apply({}, pdef);
+                                    typePdef.name = name;
+                                    typePdef['instance-types'] = [type];
+                                    pstore.add(typePdef);
+                                    has_type_properties = true;
+                                });
+                            } else {
+                                pdef.name = name;
+                                pstore.add(pdef);
+                            }
                         } else {
+                            has_type_properties = true;
                             pdef.name = name;
+                            pdef['instance-types'] = [one_of_info.join(', ')];
                             pstore.add(pdef);
                         }
                     });
