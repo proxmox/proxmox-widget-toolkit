@@ -26,7 +26,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
         if (me.iftype === 'bridge' || me.iftype === 'OVSBridge') {
             iface_vtype = 'BridgeName';
-            iface_tooltip = gettext('Commonly: vmbr[N] (e.g., vmbr0, vmbr1). Must start with a character, max 10 alphanumeric characters.');
+            iface_tooltip = gettext(
+                'Commonly: vmbr[N] (e.g., vmbr0, vmbr1). Must start with a character, max 10 alphanumeric characters.',
+            );
         } else if (me.iftype === 'bond' || me.iftype === 'OVSBond') {
             iface_vtype = 'BondName';
             iface_tooltip = gettext('Format: bond[N] (e.g., bond0, bond1)');
