@@ -160,6 +160,32 @@ Ext.define('Proxmox.widget.RRDChart', {
         },
     },
 
+    // enable animation after the store is loaded
+    delayAnimationStart() {
+        let me = this;
+        if (!me.store) {
+            return;
+        }
+        me.store.onAfter(
+            'load',
+            function () {
+                me.setAnimation({
+                    duration: 200,
+                    easing: 'easeIn',
+                });
+            },
+            this,
+            { single: true },
+        );
+    },
+
+    setStore: function (store) {
+        let me = this;
+        let res = Ext.chart.CartesianChart.prototype.setStore.call(me, store);
+        me.delayAnimationStart();
+        return res;
+    },
+
     width: 770,
     height: 300,
     animation: false,
@@ -340,18 +366,7 @@ Ext.define('Proxmox.widget.RRDChart', {
             );
         });
 
-        // enable animation after the store is loaded
-        me.store.onAfter(
-            'load',
-            function () {
-                me.setAnimation({
-                    duration: 200,
-                    easing: 'easeIn',
-                });
-            },
-            this,
-            { single: true },
-        );
+        me.delayAnimationStart();
 
         me.checkThemeColors();
 
