@@ -596,7 +596,10 @@ Ext.define('Proxmox.Utils', {
         //     ...
         // }).catch(Proxmox.Utils.alertResponseFailure);
         alertResponseFailure: (res) =>
-            Ext.Msg.alert(gettext('Error'), res.htmlStatus || res.result.message),
+            Ext.Msg.alert(
+                gettext('Error'),
+                res.htmlStatus || Proxmox.Utils.extractRequestError(res.result ?? {}, true),
+            ),
 
         checked_command: function (orig_cmd) {
             Proxmox.Utils.API2Request({

@@ -198,7 +198,7 @@ Ext.define('Proxmox.panel.TfaView', {
                 });
                 me.reload();
             } catch (response) {
-                Ext.Msg.alert(gettext('Error'), response.result.message);
+                Proxmox.Utils.alertResponseFailure(response);
             } finally {
                 me.getView().unmask();
             }
