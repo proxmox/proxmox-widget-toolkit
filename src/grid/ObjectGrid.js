@@ -33,6 +33,13 @@ property, for example:
     },
   ],
 
+Value Escaping:
+
+The value column is rendered as HTML. Values of rows without a `renderer` get HTML-encoded, so a
+row that wants to output markup must provide a `renderer`. Renderer output is inserted verbatim,
+thus a `renderer` is responsible for encoding any API-provided part it interpolates itself, for
+example through `Ext.htmlEncode`.
+
 Optional Configs:
 
 disabled:: setting this parameter to true will disable selection and focus on
@@ -295,7 +302,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
             return renderer.call(me, value, metaData, record, rowIndex, colIndex, store);
         }
 
-        return value;
+        // without a renderer the raw value ends up in the DOM as HTML, so encode it here.
+        // renderer output is not encoded, as renderers are expected to return HTML.
+        return Ext.htmlEncode(value);
     },
 
     listeners: {
