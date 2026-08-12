@@ -1,3 +1,15 @@
+/** Renders a list of key-value objects where a value can have a not yet applied, pending change
+
+Takes the same `rows` configuration as `Proxmox.grid.ObjectGrid`, but renders the currently active
+value together with the pending one below it, and strikes through values that are pending deletion.
+
+A `renderer` gets a boolean, indicating if the value to be rendered is the pending one (or the
+current one if 'false'), passed as an additional last argument, so that it can resolve related keys,
+like those listed in `multiKey`, for the correct state.
+
+The same value escaping rules as for `Proxmox.grid.ObjectGrid` apply, see the doc-comment there.
+
+*/
 Ext.define('Proxmox.grid.PendingObjectGrid', {
     extend: 'Proxmox.grid.ObjectGrid',
     alias: ['widget.proxmoxPendingObjectGrid'],
@@ -74,8 +86,10 @@ Ext.define('Proxmox.grid.PendingObjectGrid', {
                 pending = undefined;
             }
         } else {
-            current = value ?? '';
-            pending = record.data.pending;
+            // without a renderer the raw values end up in the DOM as HTML, so encode them here.
+            // renderer output is not encoded, as renderers are expected to return HTML.
+            current = Ext.htmlEncode(value ?? '');
+            pending = Ext.htmlEncode(record.data.pending);
         }
 
         if (record.data.delete) {
