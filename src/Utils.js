@@ -1105,10 +1105,13 @@ Ext.define('Proxmox.Utils', {
         },
 
         render_optional_url: function (value) {
-            if (value && value.match(/^https?:\/\//) !== null) {
-                return '<a target="_blank" href="' + value + '">' + value + '</a>';
+            if (value && value.match(/^https?:\/\//)) {
+                // normalize and encode to prevent html injection
+                let url = new URL(value).href;
+                let text = Ext.htmlEncode(value);
+                return `<a target="_blank" href="${url}">${text}</a>`;
             }
-            return value;
+            return Ext.htmlEncode(value);
         },
 
         render_san: function (value) {
