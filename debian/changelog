@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (5.2.8) trixie; urgency=medium
+
+  * tfa, webauthn, alertResponseFailure helper: htmlEncode error messages.
+
+  * object grids: htmlEncode values by default.
+
+  * utils: render optional url: encode and normalize the url.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 14 Aug 2026 14:18:57 +0200
+
 proxmox-widget-toolkit (5.2.7) trixie; urgency=medium
 
   * api-viewer: support allOf schemas and render oneOf variants properly.
