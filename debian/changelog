@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (4.3.18) bookworm; urgency=medium
+
+  * tfa, webauthn, alertResponseFailure helper: htmlEncode error messages.
+
+  * object grids: htmlEncode values by default.
+
+  * utils: render optional url: encode and normalize the url.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 14 Aug 2026 15:47:17 +0200
+
 proxmox-widget-toolkit (4.3.17) bookworm; urgency=medium
 
   * markdown: add 'base' tag to encoded html tags to avoid potential UI
