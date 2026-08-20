@@ -65,6 +65,7 @@ Ext.define('Proxmox.Utils', {
             //language map is sorted alphabetically by iso 639-1
             ar: `العربية - ${gettext('Arabic')}`,
             bg: `Български - ${gettext('Bulgarian')}`,
+            bn: `বাংলা - ${gettext('Bengali')}`,
             ca: `Català - ${gettext('Catalan')}`,
             cs: `Czech - ${gettext('Czech')}`,
             da: `Dansk - ${gettext('Danish')}`,
