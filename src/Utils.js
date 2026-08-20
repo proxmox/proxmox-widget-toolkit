@@ -75,6 +75,7 @@ Ext.define('Proxmox.Utils', {
             eu: `Euskera (Basque) - ${gettext('Euskera (Basque)')}`,
             fa: `فارسی - ${gettext('Persian (Farsi)')}`,
             fr: `Français - ${gettext('French')}`,
+            ga: `Gaeilge - ${gettext('Irish')}`,
             hr: `Hrvatski - ${gettext('Croatian')}`,
             he: `עברית - ${gettext('Hebrew')}`,
             it: `Italiano - ${gettext('Italian')}`,
