@@ -69,6 +69,7 @@ Ext.define('Proxmox.Utils', {
             cs: `Czech - ${gettext('Czech')}`,
             da: `Dansk - ${gettext('Danish')}`,
             de: `Deutsch - ${gettext('German')}`,
+            el_GR: `ελληνικά - ${gettext('Greek')}`,
             en: `English - ${gettext('English')}`,
             es: `Español - ${gettext('Spanish')}`,
             eu: `Euskera (Basque) - ${gettext('Euskera (Basque)')}`,
