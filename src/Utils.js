@@ -82,6 +82,7 @@ Ext.define('Proxmox.Utils', {
             ja: `日本語 - ${gettext('Japanese')}`,
             ka: `ქართული - ${gettext('Georgian')}`,
             ko: `한국어 - ${gettext('Korean')}`,
+            lo: `ພາສາລາວ - ${gettext('Lao')}`,
             nb: `Bokmål - ${gettext('Norwegian (Bokmal)')}`,
             nl: `Nederlands - ${gettext('Dutch')}`,
             nn: `Nynorsk - ${gettext('Norwegian (Nynorsk)')}`,
