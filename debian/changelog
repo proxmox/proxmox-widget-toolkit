@@ -1,3 +1,11 @@
+proxmox-widget-toolkit (5.2.9) trixie; urgency=medium
+
+  * api-viewer: support allOf and oneOf in return type information
+
+  * fix #7721: fix zoom interaction on charts with no initial store
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 11 Sep 2026 11:12:56 +0200
+
 proxmox-widget-toolkit (5.2.8) trixie; urgency=medium
 
   * tfa, webauthn, alertResponseFailure helper: htmlEncode error messages.
