@@ -240,6 +240,29 @@ Ext.onReady(function () {
                 let is_object_schema = (schema) => {
                     return schema.properties || schema.allOf || schema.oneOf;
                 };
+
+                let for_each_property = function (schema, callback, one_of_info) {
+                    one_of_info ||= [];
+
+                    if (schema.properties) {
+                        Ext.Object.each(schema.properties, function (name, pdef) {
+                            callback(name, pdef, one_of_info);
+                        });
+                    } else if (schema.allOf) {
+                        Ext.Array.each(schema.allOf, function (entry) {
+                            for_each_property(entry, callback, one_of_info);
+                        });
+                    } else if (schema.oneOf && schema['type-property-schema']) {
+                        let type_property = schema['type-property'];
+                        callback(type_property, schema['type-property-schema'], one_of_info);
+                        schema.oneOf.forEach((type) => {
+                            one_of_info.push(`${type_property}=${type['instance-type']}`);
+                            for_each_property(type, callback, one_of_info);
+                            one_of_info.pop();
+                        });
+                    }
+                };
+
                 if (info.parameters && is_object_schema(info.parameters)) {
                     let pstore = Ext.create('Ext.data.Store', {
                         model: 'pmx-param-schema',
@@ -260,28 +283,6 @@ Ext.onReady(function () {
                     });
 
                     let has_type_properties = false;
-
-                    let for_each_property = function (schema, callback, one_of_info) {
-                        one_of_info ||= [];
-
-                        if (schema.properties) {
-                            Ext.Object.each(schema.properties, function (name, pdef) {
-                                callback(name, pdef, one_of_info);
-                            });
-                        } else if (schema.allOf) {
-                            Ext.Array.each(schema.allOf, function (entry) {
-                                for_each_property(entry, callback, one_of_info);
-                            });
-                        } else if (schema.oneOf && schema['type-property-schema']) {
-                            let type_property = schema['type-property'];
-                            callback(type_property, schema['type-property-schema'], one_of_info);
-                            schema.oneOf.forEach((type) => {
-                                one_of_info.push(`${type_property}=${type['instance-type']}`);
-                                for_each_property(type, callback, one_of_info);
-                                one_of_info.pop();
-                            });
-                        }
-                    };
 
                     for_each_property(info.parameters, function (name, pdef, one_of_info) {
                         if (Ext.Object.isEmpty(one_of_info)) {
@@ -392,17 +393,25 @@ Ext.onReady(function () {
                         ],
                     });
 
-                    let properties;
-                    if (rtype === 'array' && retinf.items.properties) {
-                        properties = retinf.items.properties;
+                    let return_obj;
+                    if (rtype === 'array' && is_object_schema(retinf.items)) {
+                        return_obj = retinf.items;
                     }
 
-                    if (rtype === 'object' && retinf.properties) {
-                        properties = retinf.properties;
+                    if (rtype === 'object' && is_object_schema(retinf)) {
+                        return_obj = retinf;
                     }
 
-                    Ext.Object.each(properties, function (name, pdef) {
+                    let has_type_properties = false;
+
+                    for_each_property(return_obj, function (name, pdef, one_of_info) {
                         pdef.name = name;
+
+                        if (!Ext.Object.isEmpty(one_of_info)) {
+                            has_type_properties = true;
+                            pdef['instance-types'] = [one_of_info.join(', ')];
+                        }
+
                         rpstore.add(pdef);
                     });
 
@@ -464,6 +473,12 @@ Ext.onReady(function () {
                                         header: 'Type',
                                         dataIndex: 'type',
                                         renderer: render_type,
+                                        flex: 1,
+                                    },
+                                    {
+                                        header: 'For Types',
+                                        dataIndex: 'instance-types',
+                                        hidden: !has_type_properties,
                                         flex: 1,
                                     },
                                     {
