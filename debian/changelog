@@ -1,3 +1,9 @@
+proxmox-widget-toolkit (5.2.10) trixie; urgency=medium
+
+  * api-viewer: fix handling of 'null' return schema
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 18 Sep 2026 14:08:15 +0200
+
 proxmox-widget-toolkit (5.2.9) trixie; urgency=medium
 
   * api-viewer: support allOf and oneOf in return type information
