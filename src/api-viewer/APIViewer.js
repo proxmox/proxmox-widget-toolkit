@@ -242,6 +242,10 @@ Ext.onReady(function () {
                 };
 
                 let for_each_property = function (schema, callback, one_of_info) {
+                    // schema can be empty in case of 'null''
+                    if (!schema) {
+                        return;
+                    }
                     one_of_info ||= [];
 
                     if (schema.properties) {
