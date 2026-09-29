@@ -82,8 +82,6 @@ Ext.define('Proxmox.form.NetworkSelector', {
                             dest.data.cidr = record.data.cidr6;
                             dest.data.address = record.data.address6;
                             delete record.data.cidr6;
-                            dest.data.comments = record.data.comments6;
-                            delete record.data.comments6;
                             store.add(dest);
                         }
                     });
