@@ -84,6 +84,7 @@ Ext.define('Proxmox.Utils', {
             ka: `ქართული - ${gettext('Georgian')}`,
             ko: `한국어 - ${gettext('Korean')}`,
             lo: `ພາສາລາວ - ${gettext('Lao')}`,
+            mn: `Монгол - ${gettext('Mongolian')}`,
             nb: `Bokmål - ${gettext('Norwegian (Bokmal)')}`,
             nl: `Nederlands - ${gettext('Dutch')}`,
             nn: `Nynorsk - ${gettext('Norwegian (Nynorsk)')}`,
