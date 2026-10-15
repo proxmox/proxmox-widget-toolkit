@@ -415,7 +415,7 @@ Ext.define('Proxmox.Utils', {
             if (!err.statusText) {
                 return gettext('Connection error');
             }
-            let msg = [`${err.statusText} (${err.status})`];
+            let msg = [Ext.String.htmlEncode(`${err.statusText} (${err.status})`)];
             if (err.response && err.response.responseText) {
                 let txt = err.response.responseText;
                 try {
@@ -469,7 +469,7 @@ Ext.define('Proxmox.Utils', {
                 let error = request._operation.getError();
                 let msg = Proxmox.Utils.getResponseErrorMessage(error);
                 if (!errorCallback || !errorCallback(error, msg)) {
-                    Proxmox.Utils.setErrorMask(component, Ext.htmlEncode(msg));
+                    Proxmox.Utils.setErrorMask(component, msg);
                 }
             });
         },
