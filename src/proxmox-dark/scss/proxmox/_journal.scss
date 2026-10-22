@@ -1,17 +1,23 @@
-// brighter journal level colors for the dark content background; the light-theme values in
-// ext6-pmx.css lack contrast on dark. each meets WCAG AA against the dark content background
+// brighter journal level and terminal output colors for the dark content background; the
+// light-theme values in ext6-pmx.css lack contrast on dark. each meets WCAG AA against the dark
+// content background
+
+// first, so that a color of terminal output wins over dim
+.pmx-journal-prio-7,
+.pmx-journal-reboot,
+.pmx-termlog-dim {
+  color: #aaaaaa;
+}
+
 .pmx-journal-prio-0,
 .pmx-journal-prio-1,
 .pmx-journal-prio-2,
-.pmx-journal-prio-3 {
+.pmx-journal-prio-3,
+.pmx-termlog-red {
   color: #ff7a7a;
 }
 
-.pmx-journal-prio-4 {
+.pmx-journal-prio-4,
+.pmx-termlog-yellow {
   color: #ffb454;
-}
-
-.pmx-journal-prio-7,
-.pmx-journal-reboot {
-  color: #aaaaaa;
 }

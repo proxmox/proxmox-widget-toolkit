@@ -116,7 +116,10 @@ JSSRC=					\
 	window/LocationEdit.js		\
 	window/ThemeEdit.js		\
 	window/SyncWindow.js	\
+	node/APTUtils.js			\
 	node/APT.js			\
+	node/APTHistoryDetail.js		\
+	node/APTHistory.js		\
 	node/APTRepositories.js		\
 	node/NetworkEdit.js		\
 	node/NetworkView.js		\

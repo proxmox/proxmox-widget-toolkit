@@ -28,6 +28,7 @@ SCSSSRC=scss/ProxmoxDark.scss 			\
 	scss/proxmox/_quarantine.scss 		\
 	scss/proxmox/_storages.scss 		\
 	scss/proxmox/_tags.scss 		\
+	scss/proxmox/_termlog.scss 		\
 	scss/proxmox/_datepicker.scss
 
 .PHONY: all

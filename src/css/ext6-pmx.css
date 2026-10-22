@@ -450,23 +450,28 @@ div.right-aligned {
 
 /* journal log level coloring start */
 /* light-theme values, >= WCAG AA on white; the dark theme overrides them (see proxmox-dark) */
+/* first, so that a color of terminal output wins over dim */
+.pmx-journal-prio-7,
+.pmx-termlog-dim {
+    color: #767676;
+}
 .pmx-journal-prio-0,
 .pmx-journal-prio-1,
 .pmx-journal-prio-2 {
     color: #c0392b;
     font-weight: bold;
 }
-.pmx-journal-prio-3 {
+.pmx-journal-prio-3,
+.pmx-termlog-red {
     color: #c0392b;
 }
-.pmx-journal-prio-4 {
+.pmx-journal-prio-4,
+.pmx-termlog-yellow {
     color: #aa5500;
 }
-.pmx-journal-prio-5 {
+.pmx-journal-prio-5,
+.pmx-termlog-bold {
     font-weight: bold;
-}
-.pmx-journal-prio-7 {
-    color: #767676;
 }
 /* full-width hairline above the marker so a boot boundary stands out without louder text */
 .pmx-journal-reboot {
@@ -482,3 +487,107 @@ div.right-aligned {
 .pmx-horizontal-separator {
     border-top: 1px solid #cfcfcf;
 }
+
+/* terminal output start */
+/* bold, dim, red and yellow share the journal rules; light-theme values, >= WCAG AA on white */
+.pmx-termlog {
+    font: normal 12px monospace;
+    white-space: pre;
+    padding: 5px;
+}
+.pmx-termlog-green {
+    color: #1e7e34;
+}
+.pmx-termlog-blue {
+    color: #1f5fbf;
+}
+.pmx-termlog-magenta {
+    color: #8e44ad;
+}
+.pmx-termlog-cyan {
+    color: #117a8b;
+}
+/* terminal output end */
+
+/* APT history summary start */
+.pmx-apt-history-summary {
+    line-height: 20px;
+}
+.pmx-apt-history-summary > div {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+/* fixed widths keep the values in place when going through the transactions */
+.pmx-apt-history-status {
+    display: flex;
+}
+.pmx-apt-history-status > span {
+    flex: none;
+    font-variant-numeric: tabular-nums;
+}
+.pmx-apt-history-status > span:last-child {
+    flex: 1;
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pmx-apt-history-time {
+    min-width: 11.5em;
+    margin-right: 0.5em;
+}
+.pmx-apt-history-duration {
+    min-width: 5.5em;
+    margin-right: 0.5em;
+}
+.pmx-apt-history-summary .fa-clock-o,
+.pmx-apt-history-summary .fa-hourglass-half,
+.pmx-apt-history-command > .fa {
+    opacity: 0.7;
+}
+.pmx-apt-history-command {
+    display: flex;
+    align-items: flex-start;
+    margin: 3px 0;
+}
+.pmx-apt-history-command > .fa {
+    flex: none;
+    line-height: 20px;
+}
+.pmx-apt-history-command > .fa-terminal {
+    margin-right: 4px;
+}
+/* a single line until expanded, then wrapped and scrolling beyond five lines */
+.pmx-apt-history-command-text {
+    min-width: 0;
+    font-family: monospace;
+    line-height: 20px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    cursor: text;
+    user-select: text;
+}
+.pmx-expandable:not(.pmx-expanded) > .pmx-apt-history-command-text {
+    cursor: pointer;
+}
+.pmx-expanded > .pmx-apt-history-command-text {
+    white-space: pre-wrap;
+    overflow-wrap: anywhere;
+    max-height: 100px;
+    overflow-y: auto;
+}
+.pmx-apt-history-command:not(.pmx-expandable) > .pmx-apt-history-command-toggle {
+    display: none;
+}
+.pmx-apt-history-command-toggle {
+    cursor: pointer;
+}
+/* the theme removes the outline of focused elements, use its focus color instead */
+.pmx-apt-history-command-toggle:focus-visible {
+    outline: 1px solid #4297d4;
+}
+.pmx-expanded > .pmx-apt-history-command-toggle {
+    transform: rotate(180deg);
+}
+/* APT history summary end */
