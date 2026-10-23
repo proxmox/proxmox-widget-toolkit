@@ -66,6 +66,7 @@ JSSRC=					\
 	panel/NotificationConfigView.js	\
 	panel/NotificationMatchExpressionEditPanel.js	\
 	panel/JournalView.js		\
+	panel/AccessLogView.js		\
 	panel/PermissionView.js		\
 	panel/PruneKeepPanel.js		\
 	panel/RRDChart.js		\
