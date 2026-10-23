@@ -198,6 +198,9 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
             altText: gettext('Disable'),
             name: 'repoEnable',
             disabled: true,
+            enableFn: function () {
+                return this.up('proxmoxNodeAPTRepositories').canModify;
+            },
             bind: {
                 text: '{enableButtonText}',
             },
@@ -405,6 +408,10 @@ Ext.define('Proxmox.node.APTRepositories', {
     onlineHelp: undefined,
 
     product: 'Proxmox VE', // default
+
+    // set to false to disable adding, enabling and disabling repositories, e.g. without the
+    // privileges for it
+    canModify: true,
 
     classifyOrigin: function (origin) {
         origin ||= '';
@@ -689,7 +696,7 @@ Ext.define('Proxmox.node.APTRepositories', {
             addButton.digest = me.digest;
         }
 
-        addButton.setDisabled(false);
+        addButton.setDisabled(!me.canModify);
     },
 
     reload: function () {

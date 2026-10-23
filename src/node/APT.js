@@ -21,6 +21,12 @@ Ext.define('Proxmox.node.APT', {
 
     upgradeBtn: undefined,
 
+    // set to false to disable refreshing the package index, e.g. without the privileges for it
+    canRefresh: true,
+
+    // set to false to disable showing changelogs, which get fetched from the package repositories
+    canShowChangelog: true,
+
     columns: [
         {
             header: gettext('Package'),
@@ -115,6 +121,7 @@ Ext.define('Proxmox.node.APT', {
 
         let update_btn = new Ext.Button({
             text: gettext('Refresh'),
+            disabled: !me.canRefresh,
             handler: () =>
                 Proxmox.Utils.checked_command(function () {
                     apt_command('update');
@@ -168,7 +175,7 @@ Ext.define('Proxmox.node.APT', {
             text: gettext('Changelog'),
             selModel: sm,
             disabled: true,
-            enableFn: (rec) => !!rec?.data?.Package,
+            enableFn: (rec) => me.canShowChangelog && !!rec?.data?.Package,
             handler: (b, e, rec) => show_changelog(rec),
         });
 
@@ -201,7 +208,11 @@ Ext.define('Proxmox.node.APT', {
             features: [groupingFeature, rowBodyFeature],
             listeners: {
                 activate: () => store.load(),
-                itemdblclick: (v, rec) => show_changelog(rec),
+                itemdblclick: (v, rec) => {
+                    if (me.canShowChangelog) {
+                        show_changelog(rec);
+                    }
+                },
             },
         });
 
