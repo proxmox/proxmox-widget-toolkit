@@ -78,7 +78,7 @@ Ext.define('Proxmox.node.APT', {
 
         let groupingFeature = Ext.create('Ext.grid.feature.Grouping', {
             groupHeaderTpl:
-                '{[ "Origin: " + values.name ]} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
+                'Origin: {name:htmlEncode} ({rows.length} Item{[values.rows.length > 1 ? "s" : ""]})',
             enableGroupingMenu: false,
         });
 

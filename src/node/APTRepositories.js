@@ -249,7 +249,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
             header: gettext('Types'),
             dataIndex: 'Types',
             renderer: function (types, cell, record) {
-                return types.join(' ');
+                return Ext.htmlEncode(types.join(' '));
             },
             width: 100,
         },
@@ -257,7 +257,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
             header: gettext('URIs'),
             dataIndex: 'URIs',
             renderer: function (uris, cell, record) {
-                return uris.join(' ');
+                return Ext.htmlEncode(uris.join(' '));
             },
             width: 350,
         },
@@ -282,7 +282,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
                         err = '<i class="fa fa-fw warning fa-exclamation-circle"></i> ';
                     }
                 }
-                return suites.join(' ') + err;
+                return Ext.htmlEncode(suites.join(' ')) + err;
             },
             width: 130,
         },
@@ -307,7 +307,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
                         metaData.tdAttr = `data-qtip="${Ext.htmlEncode(Ext.htmlEncode(qtip))}"`;
                     }
                 }
-                return components.join(' ') + err;
+                return Ext.htmlEncode(components.join(' ')) + err;
             },
             width: 170,
         },
@@ -323,12 +323,12 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
                 let text = '';
 
                 options.forEach(function (option) {
-                    let key = option.Key;
+                    let key = Ext.htmlEncode(option.Key);
                     if (filetype === 'list') {
-                        let values = option.Values.join(',');
+                        let values = Ext.htmlEncode(option.Values.join(','));
                         text += `${key}=${values} `;
                     } else if (filetype === 'sources') {
-                        let values = option.Values.join(' ');
+                        let values = Ext.htmlEncode(option.Values.join(' '));
                         text += `${key}: ${values}<br>`;
                     } else {
                         throw 'unknown file type';
@@ -353,7 +353,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
                 } else if (originType === 'Debian') {
                     cls = 'pmx-itype-icon pmx-itype-icon-debian-swirl';
                 }
-                return `<i class='${cls}'></i> ${value}`;
+                return `<i class='${cls}'></i> ${Ext.htmlEncode(value)}`;
             },
         },
         {
@@ -368,7 +368,7 @@ Ext.define('Proxmox.node.APTRepositoriesGrid', {
         {
             ftype: 'grouping',
             groupHeaderTpl:
-                '{[ "File: " + values.name ]} ({rows.length} repositor{[values.rows.length > 1 ? "ies" : "y"]})',
+                'File: {name:htmlEncode} ({rows.length} repositor{[values.rows.length > 1 ? "ies" : "y"]})',
             enableGroupingMenu: false,
         },
     ],
