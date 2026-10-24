@@ -2,6 +2,9 @@ Ext.define('Proxmox.node.APTUtils', {
     singleton: true,
 
     selectTransactionText: gettext('Select a transaction to see its details.'),
+    emptyChangelogText: gettext(
+        'No changelog entries for these versions. The installed changelog only covers the installed version and older ones.',
+    ),
 
     clearTrigger: (value) => ({
         cls: 'pmx-clear-trigger',

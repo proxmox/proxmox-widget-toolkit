@@ -314,7 +314,30 @@ Ext.define('Proxmox.node.APTHistory', {
     },
 
     createPackageGrid: function () {
+        let me = this;
         let H = Proxmox.node.APTUtils;
+        // a removed package usually has no changelog installed anymore
+        let hasChangelog = (rec) => !!rec?.data['new-version'];
+
+        // shows the changes between the versions of a package change, also those that got
+        // reverted by a downgrade, or all up to the version if it did not change, like for a
+        // reinstall
+        let showChangelog = function (rec) {
+            let { action, package: packageName } = rec.data;
+            let oldVersion = rec.data['old-version'];
+            let newVersion = rec.data['new-version'];
+            let changed = oldVersion !== newVersion;
+            Ext.create('Proxmox.window.PackageChangelog', {
+                nodename: me.nodename,
+                packageName,
+                sinceVersion: changed
+                    ? { upgrade: oldVersion, downgrade: newVersion }[action]
+                    : undefined,
+                toVersion: action === 'downgrade' ? oldVersion : newVersion,
+                autoShow: true,
+            });
+        };
+        let packageSm = Ext.create('Ext.selection.RowModel');
         return Ext.create('Ext.grid.Panel', {
             itemId: 'packages',
             title: gettext('Packages'),
@@ -324,6 +347,24 @@ Ext.define('Proxmox.node.APTHistory', {
             setTransaction: function (rec) {
                 this.setEmptyText(rec ? gettext('No package changes recorded.') : '');
                 this.getStore().setData(rec?.data.packages ?? []);
+            },
+            selModel: packageSm,
+            tbar: [
+                {
+                    xtype: 'proxmoxButton',
+                    text: gettext('Changelog'),
+                    selModel: packageSm,
+                    disabled: true,
+                    enableFn: hasChangelog,
+                    handler: (_button, _event, rec) => showChangelog(rec),
+                },
+            ],
+            listeners: {
+                itemdblclick: (_view, rec) => {
+                    if (hasChangelog(rec)) {
+                        showChangelog(rec);
+                    }
+                },
             },
             columns: [
                 {

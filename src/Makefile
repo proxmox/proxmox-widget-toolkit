@@ -89,6 +89,7 @@ JSSRC=					\
 	window/ConfirmRemoveDialog.js	\
 	window/SafeDestroy.js		\
 	window/PackageVersions.js	\
+	window/PackageChangelog.js	\
 	window/TaskViewer.js		\
 	window/LanguageEdit.js		\
 	window/DiskSmart.js		\

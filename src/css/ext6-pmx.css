@@ -591,3 +591,68 @@ div.right-aligned {
     transform: rotate(180deg);
 }
 /* APT history summary end */
+
+/* package changelog start */
+.pmx-changelog {
+    padding: 5px 10px;
+}
+.pmx-changelog-entry {
+    margin-bottom: 14px;
+}
+.pmx-changelog-more {
+    display: block;
+    margin: 4px 0 10px;
+}
+.pmx-changelog-entry-header {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: baseline;
+    gap: 0.5em;
+    padding: 3px 0;
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+.pmx-changelog-version {
+    font-weight: bold;
+    font-size: 1.1em;
+}
+.pmx-changelog-tag {
+    padding: 0 5px;
+    border-radius: 3px;
+    background-color: rgba(128, 128, 128, 0.15);
+    font-size: 0.9em;
+}
+.pmx-changelog-urgent {
+    background-color: rgba(255, 152, 0, 0.3);
+}
+.pmx-changelog-entry-header > .pmx-changelog-meta {
+    margin-left: auto;
+    opacity: 0.75;
+}
+.pmx-changelog-changes {
+    margin: 4px 0;
+    padding-left: 1.6em;
+    list-style: disc outside;
+}
+.pmx-changelog-changes .pmx-changelog-changes {
+    margin: 2px 0;
+    list-style-type: circle;
+}
+.pmx-changelog-changes > li {
+    margin: 3px 0;
+    line-height: 1.45;
+}
+.pmx-changelog-author {
+    margin: 6px 0 0;
+    font-style: italic;
+    opacity: 0.8;
+}
+.pmx-changelog-text {
+    margin: 4px 0;
+    line-height: 1.45;
+    white-space: pre-wrap;
+}
+.pmx-changelog-date {
+    float: right;
+    opacity: 0.7;
+}
+/* package changelog end */
