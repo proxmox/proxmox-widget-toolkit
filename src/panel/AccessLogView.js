@@ -58,15 +58,23 @@ Ext.define('Proxmox.panel.AccessLogView', {
                     valid = false;
                 }
                 let value = field.getValue();
-                if (typeof value === 'string') {
+                // values of exact filters can end with spaces, like the ones statistics list
+                if (typeof value === 'string' && !field.exactValue) {
                     value = value.trim();
                 }
-                if (value === null || value === undefined || value === '') {
+                if (value === null || value === undefined || value === '' || value === false) {
                     continue;
                 }
                 count++;
                 if (field.filterParam === 'status') {
-                    Object.assign(params, statusFilters[value]);
+                    let code = Number(value);
+                    Object.assign(
+                        params,
+                        statusFilters[value] ?? { 'min-status': code, 'max-status': code },
+                    );
+                } else if (value === true) {
+                    // Proxmox VE takes booleans as 1 or 0 only
+                    params[field.filterParam] = 1;
                 } else {
                     params[field.filterParam] = value;
                 }
@@ -313,6 +321,10 @@ Ext.define('Proxmox.panel.AccessLogView', {
             if (document.visibilityState !== 'visible') {
                 return;
             }
+            // statistics cover the view, and each request shows up in the log
+            if (me.statisticsWindow?.isVisible()) {
+                return;
+            }
             if (view.getView().getScrollable().getPosition().y > 5) {
                 return;
             }
@@ -345,6 +357,8 @@ Ext.define('Proxmox.panel.AccessLogView', {
 
         filterChange: function () {
             let me = this;
+            let pathGroup = me.getView().down('[filterParam="path-group"]');
+            pathGroup.setHidden(!pathGroup.getValue());
             let filter = me.getFilter();
             if (!filter) {
                 return;
@@ -439,6 +453,51 @@ Ext.define('Proxmox.panel.AccessLogView', {
             this.lookup('filterButton').setPressed(true);
         },
 
+        showStatistics: function () {
+            let me = this;
+            let view = me.getView();
+            let filter = me.getFilter();
+            if (!filter) {
+                return;
+            }
+
+            let params = { ...filter.params, top: 25 };
+            if (me.getViewModel().get('livemode')) {
+                // the last day up to the last full minute, which the timespan fields can hold, for
+                // a row to lead to exactly the requests it counted
+                let until = Math.floor(Date.now() / 60000) * 60 - 1;
+                params.since = until + 1 - 24 * 3600;
+                params.until = until;
+            }
+            let fields = Object.fromEntries(
+                view.query('[filterParam]').map((field) => [field.filterParam, field.getValue()]),
+            );
+            me.statisticsWindow?.destroy();
+            me.statisticsWindow = Ext.create('Proxmox.window.AccessLogStats', {
+                url: `${view.url}/stats`,
+                params,
+                listeners: {
+                    drilldown: function (selection) {
+                        // use the counted interval, not a moving live interval
+                        me.getViewModel().set({
+                            livemode: false,
+                            since: new Date(selection.since * 1000),
+                            until: new Date((selection.until - 59) * 1000),
+                        });
+                        for (const [param, value] of Object.entries({
+                            ...fields,
+                            ...selection.fields,
+                        })) {
+                            view.down(`[filterParam="${param}"]`).setValue(value);
+                        }
+                        me.lookup('filterButton').setPressed(true);
+                        me.reload();
+                    },
+                },
+            });
+            me.statisticsWindow.show();
+        },
+
         onItemContextMenu: function (table, record, item, index, event) {
             let me = this;
             event.stopEvent();
@@ -507,6 +566,7 @@ Ext.define('Proxmox.panel.AccessLogView', {
             Ext.TaskManager.stop(me.liveTask);
             document.removeEventListener('visibilitychange', me.onVisibilityChange);
             me.detailsWindow?.destroy();
+            me.statisticsWindow?.destroy();
             me.contextMenu?.destroy();
         },
     },
@@ -623,6 +683,12 @@ Ext.define('Proxmox.panel.AccessLogView', {
                         html: '{problems}',
                         hidden: '{!problems}',
                     },
+                },
+                {
+                    xtype: 'button',
+                    text: gettext('Statistics'),
+                    iconCls: 'fa fa-bar-chart',
+                    handler: 'showStatistics',
                 },
                 {
                     xtype: 'textfield',
@@ -744,13 +810,43 @@ Ext.define('Proxmox.panel.AccessLogView', {
             },
             items: [
                 {
+                    // the user field shares its row with a checkbox
+                    flex: 1.5,
+                    minWidth: 280,
+                    maxWidth: 440,
                     items: [
                         {
-                            xtype: 'textfield',
+                            xtype: 'fieldcontainer',
                             fieldLabel: gettext('User'),
-                            filterParam: 'auth-id',
-                            emptyText: gettext('All'),
-                            maxLength: 1024,
+                            layout: 'hbox',
+                            defaults: {
+                                listeners: {
+                                    change: {
+                                        fn: 'filterChange',
+                                        buffer: 500,
+                                    },
+                                },
+                            },
+                            items: [
+                                {
+                                    xtype: 'textfield',
+                                    filterParam: 'auth-id',
+                                    emptyText: gettext('All'),
+                                    maxLength: 1024,
+                                    flex: 1,
+                                },
+                                {
+                                    xtype: 'checkbox',
+                                    filterParam: 'auth-id-exact',
+                                    boxLabel: gettext('Exact match'),
+                                    margin: '0 0 0 10',
+                                    autoEl: {
+                                        'data-qtip': gettext(
+                                            'Only the user itself, not its API tokens.',
+                                        ),
+                                    },
+                                },
+                            ],
                         },
                         {
                             xtype: 'textfield',
@@ -797,8 +893,19 @@ Ext.define('Proxmox.panel.AccessLogView', {
                         {
                             xtype: 'textfield',
                             fieldLabel: gettext('Path'),
+                            labelWidth: 80,
                             filterParam: 'path',
                             emptyText: gettext('Contains'),
+                            maxLength: 1024,
+                        },
+                        {
+                            xtype: 'textfield',
+                            fieldLabel: gettext('Path Group'),
+                            labelWidth: 80,
+                            filterParam: 'path-group',
+                            hidden: true,
+                            exactValue: true,
+                            emptyText: gettext('All'),
                             maxLength: 1024,
                         },
                     ],

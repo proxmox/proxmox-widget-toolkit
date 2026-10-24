@@ -83,6 +83,7 @@ JSSRC=					\
 	panel/TfaView.js		\
 	panel/NotesView.js		\
 	panel/WebhookEditPanel.js	\
+	window/AccessLogStats.js	\
 	window/Edit.js			\
 	window/PasswordEdit.js		\
 	window/ConfirmRemoveDialog.js	\
