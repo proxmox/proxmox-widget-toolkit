@@ -545,6 +545,7 @@ Ext.define('Proxmox.node.APTHistory', {
             hidden: true,
             items: [
                 me.createPackageGrid(),
+                { xtype: 'proxmoxNodeAPTHistoryChangelogs', nodename: me.nodename },
                 {
                     xtype: 'proxmoxNodeAPTHistoryDetail',
                     title: gettext('Terminal Log'),

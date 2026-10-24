@@ -509,7 +509,7 @@ div.right-aligned {
 }
 /* terminal output end */
 
-/* APT history summary start */
+/* APT history start */
 .pmx-apt-history-summary {
     line-height: 20px;
 }
@@ -590,7 +590,60 @@ div.right-aligned {
 .pmx-expanded > .pmx-apt-history-command-toggle {
     transform: rotate(180deg);
 }
-/* APT history summary end */
+.pmx-apt-history-changelogs {
+    padding: 0 10px;
+}
+.pmx-apt-history-changelogs details {
+    border-bottom: 1px solid rgba(128, 128, 128, 0.25);
+}
+.pmx-apt-history-changelogs summary {
+    display: flex;
+    gap: 0.6em;
+    align-items: baseline;
+    padding: 6px 0;
+    cursor: pointer;
+    list-style: none;
+}
+.pmx-apt-history-changelogs summary::-webkit-details-marker {
+    display: none;
+}
+.pmx-apt-history-changelogs summary > .fa-caret-right {
+    flex-shrink: 0;
+    opacity: 0.7;
+    transition: transform 0.1s;
+}
+.pmx-apt-history-changelogs details[open] > summary > .fa-caret-right {
+    transform: rotate(90deg);
+}
+.pmx-apt-history-changelogs-name {
+    font-weight: bold;
+    white-space: nowrap;
+}
+.pmx-apt-history-changelogs-versions {
+    font-family: monospace;
+    white-space: nowrap;
+}
+.pmx-apt-history-changelogs-binaries {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    opacity: 0.7;
+}
+.pmx-apt-history-changelogs-meta {
+    margin-left: auto;
+    white-space: nowrap;
+    opacity: 0.7;
+}
+.pmx-apt-history-changelogs-error {
+    min-width: 0;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.pmx-apt-history-changelogs-entries {
+    padding: 4px 0 10px 1.6em;
+}
+/* APT history end */
 
 /* package changelog start */
 .pmx-changelog {

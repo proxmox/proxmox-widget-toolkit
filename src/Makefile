@@ -120,6 +120,7 @@ JSSRC=					\
 	node/APTUtils.js			\
 	node/APT.js			\
 	node/APTHistoryDetail.js		\
+	node/APTHistoryChangelogs.js	\
 	node/APTHistory.js		\
 	node/APTRepositories.js		\
 	node/NetworkEdit.js		\
