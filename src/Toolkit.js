@@ -803,6 +803,22 @@ Ext.define('Proxmox.grid.column.Date', {
     renderer: undefined,
 });
 
+// ExtJS puts the tooltip of an action item only into data-qtip, which assistive technology does
+// not read, so the icon buttons of action columns would have no accessible name.
+Ext.define('Proxmox.grid.column.Action', {
+    override: 'Ext.grid.column.Action',
+
+    defaultRenderer: function () {
+        let html = this.callParent(arguments);
+        let cls = Ext.String.escapeRegex(this.actionIconCls);
+        let item = new RegExp(
+            `(<(?:div|img)\\b[^>]*\\sclass="${cls}\\b[^"]*"[^>]*?) data-qtip="([^"]*)"`,
+            'g',
+        );
+        return html.replace(item, '$1 data-qtip="$2" aria-label="$2"');
+    },
+});
+
 // force alert boxes to be rendered with an Error Icon
 // since Ext.Msg is an object and not a prototype, we need to override it
 // after the framework has been initiated
