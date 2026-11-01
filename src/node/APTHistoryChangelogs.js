@@ -5,6 +5,7 @@ Ext.define('Proxmox.node.APTHistoryChangelogs', {
     title: gettext('Changelogs'),
     path: 'transaction-changelogs',
     bodyCls: 'pmx-apt-history-changelogs',
+    emptyChangelogText: Proxmox.node.APTUtils.emptyChangelogText,
 
     setGroupsOpen: function (open) {
         for (const details of this.body.dom.querySelectorAll('details')) {
@@ -21,7 +22,7 @@ Ext.define('Proxmox.node.APTHistoryChangelogs', {
             return '';
         }
         if (!group.entries.length) {
-            return Proxmox.node.APTUtils.emptyChangelogText;
+            return this.emptyChangelogText;
         }
         let html = Proxmox.window.PackageChangelogRenderer.renderEntries(group.entries);
         if (group['unlisted-version']) {

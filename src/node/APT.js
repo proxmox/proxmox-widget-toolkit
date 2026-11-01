@@ -27,6 +27,9 @@ Ext.define('Proxmox.node.APT', {
     // set to false to disable showing changelogs, which get fetched from the package repositories
     canShowChangelog: true,
 
+    // opt in only for products with the update-changelogs endpoint
+    canShowUpdateChangelogs: false,
+
     columns: [
         {
             header: gettext('Package'),
@@ -179,6 +182,35 @@ Ext.define('Proxmox.node.APT', {
             handler: (b, e, rec) => show_changelog(rec),
         });
 
+        let changelogs_btn = new Ext.Button({
+            text: gettext('All Changelogs'),
+            hidden: !me.canShowUpdateChangelogs,
+            disabled: true,
+            handler: () =>
+                Ext.create('Ext.window.Window', {
+                    title: gettext('Changelogs of Pending Updates'),
+                    width: 1000,
+                    height: 700,
+                    layout: 'fit',
+                    modal: true,
+                    autoShow: true,
+                    items: [
+                        {
+                            xtype: 'proxmoxNodeAPTHistoryChangelogs',
+                            title: null,
+                            nodename: me.nodename,
+                            path: 'update-changelogs',
+                            transactionRequired: false,
+                            emptyChangelogText: gettext('No changelog entries for these versions.'),
+                        },
+                    ],
+                }),
+        });
+
+        me.mon(store, 'datachanged', () => {
+            changelogs_btn.setDisabled(!me.canShowChangelog || store.getCount() === 0);
+        });
+
         let verbose_desc_checkbox = new Ext.form.field.Checkbox({
             boxLabel: gettext('Show details'),
             value: false,
@@ -191,9 +223,16 @@ Ext.define('Proxmox.node.APT', {
         });
 
         if (me.upgradeBtn) {
-            me.tbar = [update_btn, me.upgradeBtn, changelog_btn, '->', verbose_desc_checkbox];
+            me.tbar = [
+                update_btn,
+                me.upgradeBtn,
+                changelog_btn,
+                changelogs_btn,
+                '->',
+                verbose_desc_checkbox,
+            ];
         } else {
-            me.tbar = [update_btn, changelog_btn, '->', verbose_desc_checkbox];
+            me.tbar = [update_btn, changelog_btn, changelogs_btn, '->', verbose_desc_checkbox];
         }
 
         Ext.apply(me, {

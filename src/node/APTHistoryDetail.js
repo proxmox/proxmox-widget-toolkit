@@ -10,6 +10,7 @@ Ext.define('Proxmox.node.APTHistoryDetail', {
     nodename: undefined,
     path: undefined,
     extraParams: undefined,
+    transactionRequired: true,
     request: 0,
 
     renderData: (data) => Ext.htmlEncode(data),
@@ -29,25 +30,26 @@ Ext.define('Proxmox.node.APTHistoryDetail', {
     load: function () {
         let me = this;
         let rec = me.transaction;
+        let id = me.transactionRequired ? rec?.getId() : me.path;
         if (
-            !rec ||
             !me.rendered ||
             me.disabled ||
-            me.up('tabpanel').getActiveTab() !== me ||
-            rec.getId() === me.loadedId
+            (me.transactionRequired && (!rec || me.up('tabpanel').getActiveTab() !== me)) ||
+            id === me.loadedId
         ) {
             return;
         }
-        me.loadedId = rec.getId();
+        me.loadedId = id;
+        let params = { ...me.extraParams };
+        if (me.transactionRequired) {
+            params['start-time'] = rec.data['start-time'];
+            params['start-index'] = rec.data['start-index'];
+        }
         me.update('');
         Proxmox.node.APTUtils.loadInto(
             me,
             `/nodes/${me.nodename}/apt/${me.path}`,
-            {
-                ...me.extraParams,
-                'start-time': rec.data['start-time'],
-                'start-index': rec.data['start-index'],
-            },
+            params,
             (response) => {
                 me.update(me.renderData(response.result.data));
                 me.scrollTo(0, 0);
