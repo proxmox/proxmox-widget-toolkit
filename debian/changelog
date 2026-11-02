@@ -1,3 +1,26 @@
+proxmox-widget-toolkit (5.2.11) trixie; urgency=medium
+
+  * fix #6943: network selector: show the comments of IPv6 entries, for
+    example when selecting corosync links or Ceph networks. The comment of
+    IPv6-only interfaces was dropped, and the IPv6 entry of dual-stack
+    interfaces had none.
+
+  * language map: add Bengali, Greek, Irish, Lao and Mongolian as available
+    languages.
+
+  * fix rendering error messages with multiple lines in the error mask of
+    views, which showed the line break tags literally, for example in the
+    Proxmox Backup Server web interface.
+
+  * give the icon buttons of grid action columns an accessible name from
+    their tooltip, so that screen readers no longer announce them as unnamed
+    buttons.
+
+  * fix #7294: dark theme: show the icon of VNets in resource pools with full
+    opacity, so that it stays clearly visible.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 03 Nov 2026 00:11:36 +0100
+
 proxmox-widget-toolkit (5.2.10) trixie; urgency=medium
 
   * api-viewer: fix handling of 'null' return schema
