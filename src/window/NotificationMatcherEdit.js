@@ -78,7 +78,7 @@ Ext.define('Proxmox.window.NotificationMatcherEdit', {
         labelWidth: 120,
     },
 
-    width: 800,
+    width: 1000,
 
     initComponent: function () {
         let me = this;
