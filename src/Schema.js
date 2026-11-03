@@ -86,6 +86,16 @@ Ext.define('Proxmox.Schema', {
         }
     },
 
+    notificationMatcherExpressions: false,
+
+    notificationMatcherPanelType: function () {
+        if (Proxmox.Schema.notificationMatcherExpressions) {
+            return 'pmxNotificationMatchExpressionEditPanel';
+        } else {
+            return 'pmxNotificationMatchRulesEditPanel';
+        }
+    },
+
     pxarFileTypes: {
         b: { icon: 'cube', label: gettext('Block Device') },
         c: { icon: 'tty', label: gettext('Character Device') },

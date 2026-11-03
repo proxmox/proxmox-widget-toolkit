@@ -22,3 +22,7 @@
   background-color: $background-darker;
   border-color: $border-color;
 }
+
+.x-tree-node-text > code {
+    background-color: $background-darkest;
+}

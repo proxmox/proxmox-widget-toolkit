@@ -51,3 +51,7 @@ div.eol-notice + div[id^="panel-"] > div[id^="panel-"][id$="-bodyWrap"] > div {
 .pmx-unclickable {
   pointer-events: none;
 }
+
+.pmx-horizontal-separator {
+    border-top: 1px solid $border-color-alt;
+}

@@ -248,6 +248,53 @@ div.right-aligned {
     background-color: #f5f5f5;
 }
 
+/* the small icons */
+.x-tree-icon-custom:after {
+    position: relative;
+    left: -5px;
+    top: 1px;
+    font-size: 0.75em;
+    text-shadow: -1px 0px 2px #fff;
+    content: "\ ";
+}
+
+/* yellow ! triangle */
+.x-tree-icon-custom.internal-error:after {
+    content: "\f071";
+    color: #ffcc00;
+}
+
+.x-tree-node-text > code {
+    display: inline-block;
+    background-color: #f5f5f5;
+    border-radius: 4px;
+    padding: 1px 4px;
+    margin: 1px 0;
+    font-size: 11px;
+    /* a single long value, e.g. a regex, has to break instead of overflowing */
+    overflow-wrap: anywhere;
+}
+
+/* The notification matcher rule tree wraps its labels, see 'cellWrap'. Laying
+ * the cell out as a flex row keeps the wrapped lines aligned with the first
+ * one, instead of restarting at the left edge under the indentation. */
+.pmx-match-rule-tree .x-grid-cell-inner-treecolumn {
+    display: flex;
+    align-items: flex-start;
+}
+
+/* indentation, elbows and the node icon have a fixed size and must not shrink */
+.pmx-match-rule-tree .x-tree-elbow-img,
+.pmx-match-rule-tree .x-tree-icon {
+    flex: none;
+}
+
+/* 'min-width' lets the label get narrower than its longest value */
+.pmx-match-rule-tree .x-tree-node-text {
+    flex: 1;
+    min-width: 0;
+}
+
 /* fix padding for legend in header */
 .x-legend-inner {
     padding: 0;
@@ -431,3 +478,7 @@ div.right-aligned {
     font-style: italic;
 }
 /* journal log level coloring end */
+
+.pmx-horizontal-separator {
+    border-top: 1px solid #cfcfcf;
+}

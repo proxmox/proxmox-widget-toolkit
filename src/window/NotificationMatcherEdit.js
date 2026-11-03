@@ -95,6 +95,9 @@ Ext.define('Proxmox.window.NotificationMatcherEdit', {
             me.method = 'POST';
         } else {
             me.url += `/${me.name}`;
+            if (Proxmox.Schema.notificationMatcherExpressions) {
+                me.loadUrl = me.url + '?migrate-to-expression=1';
+            }
             me.method = 'PUT';
         }
 
@@ -119,7 +122,7 @@ Ext.define('Proxmox.window.NotificationMatcherEdit', {
                         {
                             name: me.name,
                             title: gettext('Match Rules'),
-                            xtype: 'pmxNotificationMatchRulesEditPanel',
+                            xtype: Proxmox.Schema.notificationMatcherPanelType(),
                             isCreate: me.isCreate,
                             baseUrl: me.baseUrl,
                         },
@@ -1013,7 +1016,7 @@ Ext.define('Proxmox.panel.MatchCalendarSettings', {
     initComponent: function () {
         let me = this;
         Ext.apply(me.viewModel, {
-            parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
+            parent: me.up(Proxmox.Schema.notificationMatcherPanelType()).getViewModel(),
         });
         me.callParent();
     },
@@ -1091,7 +1094,7 @@ Ext.define('Proxmox.panel.MatchSeveritySettings', {
     initComponent: function () {
         let me = this;
         Ext.apply(me.viewModel, {
-            parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
+            parent: me.up(Proxmox.Schema.notificationMatcherPanelType()).getViewModel(),
         });
         me.callParent();
     },
@@ -1164,7 +1167,7 @@ Ext.define('Proxmox.panel.MatchFieldSettings', {
                             regexVal += `(${currentData.value.join('|')})`;
                         }
                         regexVal += '$';
-                        newValue.push(regexVal);
+                        newValue = regexVal;
                     }
 
                     record.set({
@@ -1282,7 +1285,7 @@ Ext.define('Proxmox.panel.MatchFieldSettings', {
         });
 
         Ext.apply(me.viewModel, {
-            parent: me.up('pmxNotificationMatchRulesEditPanel').getViewModel(),
+            parent: me.up(Proxmox.Schema.notificationMatcherPanelType()).getViewModel(),
         });
         Ext.apply(me, {
             items: [
