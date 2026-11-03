@@ -361,7 +361,7 @@ Ext.define('Proxmox.panel.NotificationRulesEditPanel', {
                             break;
                         case 'match-calendar':
                             data = {
-                                value: '',
+                                value: '00:00-23:59',
                             };
                             break;
                     }
@@ -977,6 +977,11 @@ Ext.define('Proxmox.panel.MatchCalendarSettings', {
                 },
                 set: function (value) {
                     let me = this;
+
+                    if (!me.get('typeIsMatchCalendar')) {
+                        return;
+                    }
+
                     let record = me.get('selectedRecord');
                     let currentData = record.get('data');
                     record.set({
@@ -992,23 +997,346 @@ Ext.define('Proxmox.panel.MatchCalendarSettings', {
             },
         },
     },
+    controller: {
+        xclass: 'Ext.app.ViewController',
+        control: {
+            'grid checkbox': {
+                change: 'dowChanged',
+            },
+            timefield: {
+                change: 'timeChanged',
+            },
+            'field[reference=timeframe]': {
+                change: 'setGridData',
+            },
+        },
+
+        weekdays: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+
+        setGridData: function (field, value) {
+            let me = this;
+
+            let record = me.parseTimeframe(value);
+
+            me.lookup('weekdayGrid').getStore().setData([record]);
+            me.lookup('timeStart').setValue(record.start);
+            me.lookup('timeEnd').setValue(record.end);
+        },
+
+        parseTimeframe: function (timeframe) {
+            let me = this;
+
+            let matches = /^(?:([A-Za-z.,]+)\s*)?([0-9:]+)\s*-\s*([0-9:]+)$/.exec(timeframe);
+
+            // Schedules which the editor cannot represent, an empty one in
+            // particular, start out without any selected day and are thus
+            // shown as invalid.
+            if (!matches) {
+                return {
+                    start: '00:00',
+                    end: '23:59',
+                };
+            }
+
+            let [, days, start, end] = matches;
+
+            if (start === '0') {
+                start = '00:00';
+            }
+
+            let record = {
+                start,
+                end,
+            };
+
+            if (!days) {
+                days = 'mon..sun';
+            }
+
+            days = days.split(',');
+            days.forEach((day) => {
+                // We don't care about casing
+                day = day.toLowerCase();
+
+                if (record[day]) {
+                    return;
+                }
+
+                if (day.includes('..')) {
+                    // we have a range 'xxx..yyy'
+                    let [startDay, endDay] = day.split('..');
+
+                    // We accept both 'monday' and 'mon'
+                    startDay = startDay.substring(0, 3);
+                    endDay = endDay.substring(0, 3);
+
+                    let startIdx = me.weekdays.indexOf(startDay);
+                    let endIdx = me.weekdays.indexOf(endDay);
+
+                    if (endIdx < startIdx) {
+                        endIdx += me.weekdays.length;
+                    }
+
+                    for (let dayIdx = startIdx; dayIdx <= endIdx; dayIdx++) {
+                        let curDay = me.weekdays[dayIdx % me.weekdays.length];
+                        if (!record[curDay]) {
+                            record[curDay] = true;
+                        }
+                    }
+                } else {
+                    // We accept both 'monday' and 'mon'
+                    let dayTrimmed = day.substring(0, 3);
+                    if (me.weekdays.indexOf(dayTrimmed) !== -1) {
+                        record[dayTrimmed] = true;
+                    }
+                }
+            });
+
+            return record;
+        },
+
+        dowChanged: function (field, value) {
+            let me = this;
+            let record = field.getWidgetRecord();
+            if (record === undefined) {
+                // this is sometimes called before a record/column is initialized
+                return;
+            }
+            let col = field.getWidgetColumn();
+            record.set(col.dataIndex, value);
+            record.commit();
+
+            let startField = me.lookup('timeStart');
+            let endField = me.lookup('timeEnd');
+
+            me.updateTimeframeField(startField, endField);
+        },
+
+        timeChanged: function (field, value) {
+            let me = this;
+
+            let startField = me.lookup('timeStart');
+            let endField = me.lookup('timeEnd');
+
+            let start = startField.getValue();
+            let end = endField.getValue();
+
+            let valid = !(start && end && start > end);
+
+            if (!valid) {
+                startField.markInvalid(gettext('Start time must be before end time'));
+                endField.markInvalid(gettext('End time must be after start time'));
+            } else {
+                startField.clearInvalid();
+                endField.clearInvalid();
+            }
+
+            me.updateTimeframeField(startField, endField);
+        },
+
+        updateTimeframeField: function (startField, endField) {
+            let me = this;
+
+            let data = me.lookup('weekdayGrid').getStore().getData().getAt(0);
+
+            let days = me.formatSelectedDays(data.data);
+
+            let start = me.formatTime(startField);
+            let end = me.formatTime(endField);
+
+            // An empty selection cannot be expressed, as a schedule without
+            // weekdays already matches every day. Store an empty schedule
+            // instead, which is reported as invalid by the rule tree.
+            let timeframe = '';
+
+            if (days !== undefined) {
+                timeframe = days ? `${days} ${start}-${end}` : `${start}-${end}`;
+            }
+
+            let field = me.lookup('timeframe');
+            field.suspendEvent('change');
+            field.setValue(timeframe);
+
+            me.getViewModel().set('matchCalendarValue', timeframe);
+
+            field.resumeEvent('change');
+        },
+
+        // Returns the weekday part of a schedule, which is empty if every day is
+        // selected, or `undefined` if no day is selected at all.
+        formatSelectedDays: function (days) {
+            let me = this;
+            let selected = me.weekdays.filter((day) => days[day]);
+
+            if (selected.length === 0) {
+                return undefined;
+            }
+            if (selected.length === me.weekdays.length) {
+                return '';
+            }
+            if (selected.length === 1) {
+                return selected[0];
+            }
+
+            // Check if selected days are a contiguous block in weekday order
+            let indices = selected.map((day) => me.weekdays.indexOf(day));
+            let isContiguous = indices.every((idx, i) => i === 0 || idx === indices[i - 1] + 1);
+
+            if (isContiguous) {
+                return `${selected[0]}..${selected[selected.length - 1]}`;
+            }
+
+            return selected.join(',');
+        },
+
+        formatTime: function (timefield) {
+            let value = timefield.getValue();
+
+            if (!value) {
+                return '';
+            }
+
+            let hours = value.getHours().toString().padStart(2, '0');
+            let minutes = value.getMinutes().toString().padStart(2, '0');
+            return `${hours}:${minutes}`;
+        },
+    },
     items: [
         {
-            xtype: 'proxmoxKVComboBox',
-            fieldLabel: gettext('Timespan to match'),
+            xtype: 'hidden',
+            reference: 'timeframe',
             isFormField: false,
             allowBlank: false,
-            editable: true,
-            displayField: 'key',
-            field: 'value',
             bind: {
                 value: '{matchCalendarValue}',
-                disabled: '{!typeIsMatchCalender}',
             },
-
-            comboItems: [
-                ['mon 8-12', ''],
-                ['tue..fri,sun 0:00-23:59', ''],
+        },
+        {
+            xtype: 'timefield',
+            reference: 'timeStart',
+            fieldLabel: gettext('Time Start'),
+            isFormField: false,
+            format: 'H:i',
+            altFormats: 'G:i|Gi|G',
+            formatText: 'HH:MM',
+            maskRe: /[\d:]/,
+            stripCharsRe: /[^\d:]+/g,
+            allowBlank: false,
+        },
+        {
+            xtype: 'timefield',
+            reference: 'timeEnd',
+            fieldLabel: gettext('Time End'),
+            isFormField: false,
+            format: 'H:i',
+            altFormats: 'G:i|Gi|G',
+            formatText: 'HH:MM',
+            maxValue: '23:59',
+            maskRe: /[\d:]/,
+            stripCharsRe: /[^\d:]+/g,
+            allowBlank: false,
+        },
+        {
+            xtype: 'fieldcontainer',
+            items: [
+                {
+                    xtype: 'grid',
+                    margin: '10 0 0 0',
+                    reference: 'weekdayGrid',
+                    store: {
+                        fields: ['mon', 'tue', 'wed', 'thu', 'fri', 'sat', 'sun'],
+                        data: [
+                            {
+                                mon: true,
+                                tue: true,
+                                wed: true,
+                                thu: true,
+                                fri: true,
+                                sat: true,
+                                sun: true,
+                            },
+                        ],
+                    },
+                    enableColumnMove: false,
+                    columns: {
+                        defaults: {
+                            menuDisabled: true,
+                            resizable: false,
+                        },
+                        items: [
+                            {
+                                text: gettext('Mon'),
+                                xtype: 'widgetcolumn',
+                                dataIndex: 'mon',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'checkbox',
+                                    isFormField: false,
+                                },
+                            },
+                            {
+                                text: gettext('Tue'),
+                                xtype: 'widgetcolumn',
+                                dataIndex: 'tue',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'checkbox',
+                                    isFormField: false,
+                                },
+                            },
+                            {
+                                text: gettext('Wed'),
+                                xtype: 'widgetcolumn',
+                                dataIndex: 'wed',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'checkbox',
+                                    isFormField: false,
+                                },
+                            },
+                            {
+                                text: gettext('Thu'),
+                                xtype: 'widgetcolumn',
+                                dataIndex: 'thu',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'checkbox',
+                                    isFormField: false,
+                                },
+                            },
+                            {
+                                text: gettext('Fri'),
+                                xtype: 'widgetcolumn',
+                                dataIndex: 'fri',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'checkbox',
+                                    isFormField: false,
+                                },
+                            },
+                            {
+                                text: gettext('Sat'),
+                                xtype: 'widgetcolumn',
+                                dataIndex: 'sat',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'checkbox',
+                                    isFormField: false,
+                                },
+                            },
+                            {
+                                text: gettext('Sun'),
+                                xtype: 'widgetcolumn',
+                                dataIndex: 'sun',
+                                flex: 1,
+                                widget: {
+                                    xtype: 'checkbox',
+                                    isFormField: false,
+                                },
+                            },
+                        ],
+                    },
+                },
             ],
         },
     ],

@@ -87,7 +87,7 @@ Ext.define('Proxmox.panel.NotificationMatchExpressionEditPanel', {
                             break;
                         case 'match-calendar':
                             data = {
-                                value: '',
+                                value: '00:00-23:59',
                             };
                             leaf = true;
                             break;
@@ -169,10 +169,19 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTreeExpression', {
     mixins: ['Proxmox.Mixin.CBind'],
     border: false,
 
+    // Converts a 'HH:MM' time into minutes since midnight, or NaN if it cannot
+    // be parsed.
+    parseTime: function (time) {
+        let [hours, minutes] = time.split(':');
+        return Number(hours) * 60 + Number(minutes ?? '0');
+    },
+
     // Returns a message describing why a node is incomplete, or undefined if
     // the node is fully configured. Incomplete nodes are marked in the tree and
     // block submitting the form.
     getNodeError: function (type, data, hasChildren) {
+        let me = this;
+
         switch (type) {
             case 'match-severity': {
                 let v = Ext.isArray(data.value) ? data.value.join(', ') : data.value;
@@ -192,7 +201,16 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTreeExpression', {
             case 'match-calendar': {
                 let v = data.value;
                 if (!v || !v.length) {
-                    return gettext('Calendar rules must have a schedule.');
+                    return gettext('Calendar rules must match at least one day.');
+                }
+
+                // Only schedules which the editor itself can produce are
+                // checked, any other one is left to the backend. Unparsable
+                // times compare as NaN and are thus not reported either.
+                let [, start, end] = /^(?:\S*\s+)?([0-9:]+)-([0-9:]+)$/.exec(v) ?? [];
+
+                if (start !== undefined && (me.parseTime(start) > me.parseTime(end))) {
+                    return gettext("A calendar rule's start time cannot be after the end time.");
                 }
                 break;
             }
@@ -330,7 +348,10 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTreeExpression', {
                 }
             }
             case 'match-calendar': {
-                let value = data.value ? data.value : '?';
+                // A schedule which is not fully specified, for instance because
+                // no weekday is selected, renders as blank, so show it as unset
+                // instead.
+                let value = Ext.isString(data.value) && data.value.trim() ? data.value : '?';
                 value = `<code>${Ext.String.htmlEncode(value)}</code>`;
 
                 if (invert) {
