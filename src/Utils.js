@@ -733,7 +733,7 @@ Ext.define('Proxmox.Utils', {
 
         // Only add product-agnostic fields here!
         notificationFieldName: {
-            type: gettext('Notification type'),
+            type: gettext('Notification Type'),
             hostname: gettext('Hostname'),
         },
 

@@ -128,7 +128,7 @@ Ext.define('Proxmox.window.NotificationMatcherEdit', {
                         },
                         {
                             name: me.name,
-                            title: gettext('Targets to notify'),
+                            title: gettext('Targets to Notify'),
                             xtype: 'pmxNotificationMatcherTargetPanel',
                             isCreate: me.isCreate,
                             baseUrl: me.baseUrl,
@@ -1396,7 +1396,7 @@ Ext.define('Proxmox.panel.MatchSeveritySettings', {
     items: [
         {
             xtype: 'proxmoxKVComboBox',
-            fieldLabel: gettext('Severities to match'),
+            fieldLabel: gettext('Severities to Match'),
             isFormField: false,
             allowBlank: true,
             multiSelect: true,
