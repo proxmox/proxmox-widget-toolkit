@@ -1,3 +1,18 @@
+proxmox-widget-toolkit (5.2.12) trixie; urgency=medium
+
+  * notifications: matcher: add a new editor for match rules, which products
+    enable once their API supports the 'expression' option:
+    - rules can be nested and combine calendar, field and severity rules with
+      all-of, any-of, one-of and their negations at any depth.
+    - calendar rules are set through start and end time fields and weekday
+      checkboxes, instead of a time range string like 'mon..tue 08:00-12:00'.
+    - existing matchers are loaded as an equivalent expression when edited.
+
+  * notifications: matcher: widen the edit window for its two-column layout,
+    and use title case consistently for its labels.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 04 Nov 2026 22:39:37 +0100
+
 proxmox-widget-toolkit (5.2.11) trixie; urgency=medium
 
   * fix #6943: network selector: show the comments of IPv6 entries, for
