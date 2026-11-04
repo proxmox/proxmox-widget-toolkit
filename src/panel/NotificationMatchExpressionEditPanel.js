@@ -92,19 +92,12 @@ Ext.define('Proxmox.panel.NotificationMatchExpressionEditPanel', {
                             leaf = true;
                             break;
                         case 'any-of':
-                            data = {};
-                            leaf = false;
-                            break;
                         case 'all-of':
-                            data = {};
-                            leaf = false;
-                            break;
                         case 'one-of':
                             data = {};
                             leaf = false;
                             break;
                         case 'match-always':
-                            value = 'match-always';
                             data = {};
                             leaf = true;
                             break;
@@ -285,7 +278,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTreeExpression', {
             case 'match-field': {
                 let valueIsArray = Ext.isArray(data.value);
 
-                let field = data.field ? data.field : '?';
+                let field = data.field || '?';
                 let value =
                     (!valueIsArray && data.value) || (valueIsArray && data.value.length)
                         ? data.value
@@ -454,8 +447,7 @@ Ext.define('Proxmox.panel.NotificationMatchRuleTreeExpression', {
                 return this.value;
             },
             getSubmitValue: function () {
-                let value = this.value;
-                return value;
+                return this.value;
             },
         });
 
