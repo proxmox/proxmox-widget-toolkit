@@ -56,7 +56,7 @@ Ext.define('Proxmox.form.KVComboBox', {
         }
 
         // returns a boolean or string
-        return "value '" + val + "' not allowed!";
+        return "value '" + Ext.htmlEncode(val) + "' not allowed!";
     },
 
     initComponent: function () {
