@@ -372,6 +372,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
         if (me.showAltNames && !me.isCreate) {
             column1.push({
                 xtype: 'displayfield',
+                htmlEncode: false,
                 name: 'altnames',
                 fieldLabel: gettext('Alternative Names'),
             });

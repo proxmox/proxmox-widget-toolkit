@@ -115,6 +115,7 @@ Ext.define('Proxmox.window.LocationEdit', {
                 },
                 {
                     xtype: 'displayfield',
+                    htmlEncode: false,
                     value: Ext.String.format(
                         gettext(
                             'To find coordinates, right-click a location on {0} or Google Maps.' +

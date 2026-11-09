@@ -803,6 +803,18 @@ Ext.define('Proxmox.grid.column.Date', {
     renderer: undefined,
 });
 
+Ext.define('PVE.form.field.Display', {
+    override: 'Ext.form.field.Display',
+
+    // By default don't allow HTML entities.
+    htmlEncode: true,
+
+    setSubmitValue: function (value) {
+        // do nothing, this is only to allow generalized  bindings for the:
+        // `me.isCreate ? 'textfield' : 'displayfield'` cases we have.
+    },
+});
+
 // ExtJS puts the tooltip of an action item only into data-qtip, which assistive technology does
 // not read, so the icon buttons of action columns would have no accessible name.
 Ext.define('Proxmox.grid.column.Action', {

@@ -17,6 +17,7 @@ Ext.define('Proxmox.window.ConsentModal', {
     items: [
         {
             xtype: 'displayfield',
+            htmlEncode: false,
             padding: 10,
             scrollable: true,
             cbind: {
