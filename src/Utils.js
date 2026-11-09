@@ -1127,7 +1127,7 @@ Ext.define('Proxmox.Utils', {
             if (Ext.isArray(value)) {
                 value.forEach(function (val) {
                     if (!Ext.isNumber(val)) {
-                        names.push(val);
+                        names.push(Ext.htmlEncode(val));
                     }
                 });
                 return names.join('<br>');
