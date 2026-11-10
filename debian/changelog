@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (5.2.13) trixie; urgency=medium
+
+  * encode more values that come from the API or other external sources
+    before showing them, so that they cannot inject HTML into the page:
+    - read-only display fields now show their value as plain text by
+      default. Fields that intentionally show formatted text, like the
+      consent banner, opt out explicitly.
+    - certificate viewer: encode the subject alternative names.
+    - key-value combo box: encode a rejected value in the validation error.
+    - network edit window: encode the alternative interface names.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 10 Nov 2026 21:52:50 +0100
+
 proxmox-widget-toolkit (5.2.12) trixie; urgency=medium
 
   * notifications: matcher: add a new editor for match rules, which products
