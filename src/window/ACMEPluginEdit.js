@@ -69,45 +69,34 @@ Ext.define('Proxmox.window.ACMEPluginEdit', {
                 for (const [name, definition] of Object.entries(schema.fields).sort((a, b) =>
                     a[0].localeCompare(b[0]),
                 )) {
-                    let xtype;
-                    switch (definition.type) {
-                        case 'string':
-                            xtype = 'proxmoxtextfield';
-                            break;
-                        case 'integer':
-                            xtype = 'proxmoxintegerfield';
-                            break;
-                        case 'number':
-                            xtype = 'numberfield';
-                            break;
-                        default:
-                            console.warn(`unknown type '${definition.type}'`);
-                            xtype = 'proxmoxtextfield';
-                            break;
-                    }
+                    let fieldName = `custom_${name}`;
+                    let context = { isCreate: me.up('pmxACMEPluginEdit').isCreate };
+
+                    let fieldDef = Proxmox.Utils.getFieldDefFromPropertySchema(
+                        fieldName,
+                        definition,
+                        {},
+                        context,
+                    );
 
                     let label = name;
                     if (typeof definition.name === 'string') {
                         label = definition.name;
                     }
 
-                    let field = Ext.create({
-                        xtype,
-                        name: `custom_${name}`,
+                    let extraProps = {
                         fieldLabel: Ext.htmlEncode(label),
                         width: '100%',
                         labelWidth: 150,
                         labelSeparator: '=',
-                        emptyText: definition.default || '',
-                        autoEl: definition.description
-                            ? {
-                                  tag: 'div',
-                                  'data-qtip': Ext.htmlEncode(
-                                      Ext.htmlEncode(definition.description),
-                                  ),
-                              }
-                            : undefined,
-                    });
+                        // The DNS plugin schema does not reliably mark fields as optional, and
+                        // some plugins accept alternative sets of credentials.
+                        allowBlank: true,
+                        // The values are submitted as part of 'data', not as fields on their own.
+                        deleteEmpty: false,
+                    };
+
+                    let field = Ext.create({ ...fieldDef, ...extraProps });
 
                     me.createdFields[name] = field;
                     container.add(field);
