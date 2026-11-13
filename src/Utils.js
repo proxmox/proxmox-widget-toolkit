@@ -1611,6 +1611,218 @@ Ext.define('Proxmox.Utils', {
             }
             return degrees;
         },
+
+        /**
+         * Takes a JSONSchema of a single property and transforms it into an
+         * object representing an ExtJS field.
+         *
+         * @param {string} fieldName - The value for the `name` property of the resulting object.
+         * @param {Object} propSchema - The JSON schema of a property.
+         * @param {Object} extraAttributes - Additional attributes describing the
+         * field which do not exist as keywords in JSON schema.
+         * Note that none of these attributes represent any specific ExtJS property.
+         * @param {Boolean} extraAttributes.readonly - Whether the field shall be read-only.
+         * "Read-only" here means that the field's `xtype` will be set to
+         * `'displayfield'`, regardless of what data type the field will
+         * display. Additionally, checkboxes (booleans) will be displayed as
+         * "Yes" or "No" depending on their value (locale-aware).
+         * @param {Boolean} extraAttributes.sensitive - Whether the field
+         * contains sensitive data, such as a password or similar.
+         * @param {Object} context - The context within which the field is being used.
+         * @param {Boolean} context.isCreate - Whether the field is used when creating a record.
+         */
+        getFieldDefFromPropertySchema: function (
+            fieldName,
+            propSchema,
+            extraAttributes = {},
+            context = {},
+        ) {
+            let hasDefault = propSchema.default !== undefined && propSchema.default !== null;
+            let isOptional = Boolean(propSchema.optional);
+
+            const fieldPropsByType = {
+                string: {
+                    xtype: 'proxmoxtextfield',
+                    minLength: propSchema.minLength,
+                    maxLength: propSchema.maxLength,
+                    emptyText: hasDefault ? String(propSchema.default) : '',
+                },
+                integer: {
+                    xtype: 'proxmoxintegerfield',
+                    minValue: propSchema.minimum,
+                    maxValue: propSchema.maximum,
+                    emptyText: hasDefault ? String(propSchema.default) : '',
+                },
+                // Ext JS' own number field submits empty values as empty string, which the
+                // API rejects for numbers, so reuse the integer field and allow decimals.
+                number: {
+                    xtype: 'proxmoxintegerfield',
+                    allowDecimals: true,
+                    // Ext JS rounds to two decimals by default
+                    decimalPrecision: 15,
+                    minValue: propSchema.minimum,
+                    maxValue: propSchema.maximum,
+                    emptyText: hasDefault ? String(propSchema.default) : '',
+                },
+                boolean: {
+                    xtype: 'proxmoxcheckbox',
+                    uncheckedValue: 0,
+                },
+            };
+
+            const commonFieldProps = {
+                name: fieldName,
+                fieldLabel: Ext.htmlEncode(fieldName),
+                allowBlank: isOptional,
+            };
+
+            // same values as accepted by PVE::JSONSchema::parse_boolean()
+            const anyToBool = (value) => {
+                if (typeof value === 'string' || value instanceof String) {
+                    return /^(?:1|on|yes|true)$/i.test(value.trim());
+                }
+
+                return Boolean(value);
+            };
+
+            let fieldProps = fieldPropsByType[propSchema.type];
+            if (fieldProps === undefined) {
+                console.warn(`Unhandled property type '${propSchema.type}'`);
+                fieldProps = fieldPropsByType.string;
+            }
+
+            let field = {
+                ...fieldProps,
+                ...commonFieldProps,
+            };
+
+            if (propSchema.multiline && field.xtype === 'proxmoxtextfield') {
+                field.xtype = 'proxmoxtextarea';
+            }
+
+            if (propSchema.title) {
+                field.fieldLabel = Ext.htmlEncode(propSchema.title);
+            }
+
+            if (propSchema.description) {
+                field.autoEl = {
+                    tag: 'div',
+                    'data-qtip': Ext.htmlEncode(Ext.htmlEncode(propSchema.description)),
+                };
+            }
+
+            // NOTE: Some context for this branch.
+            //
+            // Text and number fields only show the default as empty text
+            // instead of using it as value. This keeps unset properties unset,
+            // like in the rest of the UI, and also works for defaults that
+            // describe a behavior instead of being an actual value.
+            //
+            // However, checkboxes cannot show an empty text, AND they *always*
+            // submit a value, even if left empty. This means that a property
+            // with `default => 1` (in Perl) that was never explicitly set to
+            // `true` in the UI would then be silently set to `0` on creation.
+            if (propSchema.type === 'boolean') {
+                let defaultValue = hasDefault && anyToBool(propSchema.default);
+                field.checked = defaultValue;
+
+                // When editing (this branch), delete an optional property
+                // instead of setting it to its default. This makes it so that
+                // unset properties stay unset.
+                if (!context.isCreate && isOptional) {
+                    // The submitted values are either '1' or 0 here, because
+                    // that's what `getSubmitValue()` from Ext JS returns when
+                    // checked or unchecked. The check in `getSubmitData()`
+                    // would fail otherwise, e.g. `'1' === true` is false.
+                    field.defaultValue = defaultValue ? '1' : 0;
+                    field.deleteDefaultValue = true;
+                }
+            }
+
+            // NOTE: Like above, comboboxes also cannot show emptyText, so they
+            // too use the default as initial value.
+            if (propSchema.enum) {
+                // Keep the display values as plaintext, since the input
+                // element shows them as-is. Only the dropdown list renders
+                // them as HTML, so encode them there by using listConfig below
+                let comboItems = propSchema.enum.map((item) => [item, String(item)]);
+
+                if (isOptional) {
+                    let defaultText = Proxmox.Utils.defaultText;
+                    if (hasDefault) {
+                        defaultText += ` (${propSchema.default})`;
+                    }
+                    comboItems.unshift(['__default__', defaultText]);
+                    field.value = '__default__';
+                } else if (context.isCreate && hasDefault) {
+                    field.value = propSchema.default;
+                }
+
+                Object.assign(field, {
+                    xtype: 'proxmoxKVComboBox',
+                    comboItems: comboItems,
+                    deleteEmpty: !context.isCreate && isOptional,
+                    listConfig: {
+                        getInnerTpl: (displayField) => `{${displayField}:htmlEncode}`,
+                    },
+                });
+            } else if (!context.isCreate && isOptional) {
+                // Clearing an optional field must delete the property, otherwise it would keep
+                // its old value. Checkboxes always submit a value and are unaffected.
+                field.deleteEmpty = true;
+            }
+
+            if (extraAttributes.sensitive) {
+                // textarea fields for multiline strings stay as-is, because
+                // Ext JS will turn them into <input> elements otherwise, which
+                // in turn causes newlines to be replaced with spaces.
+                // 'inputType' unfortunately has no effect for textarea fields.
+                if (field.xtype !== 'proxmoxtextarea') {
+                    field.xtype = 'proxmoxtextfield';
+                    field.inputType = 'password';
+                }
+
+                // The current value is never sent to the client, so an empty sensitive field
+                // means "unchanged" when editing.
+                field.value = '';
+                field.deleteEmpty = false;
+                field.allowBlank = isOptional || !context.isCreate;
+
+                let emptyText = gettext('Unchanged');
+
+                if (context.isCreate) {
+                    if (isOptional) {
+                        emptyText = Proxmox.Utils.NoneText;
+                    } else {
+                        emptyText = '';
+                    }
+                }
+
+                field.emptyText = emptyText;
+            }
+
+            if (extraAttributes.readonly) {
+                field.xtype = 'displayfield';
+                // the displayed values are defined by the user and must not be rendered as HTML
+                field.htmlEncode = true;
+
+                if (propSchema.type === 'boolean') {
+                    field.renderer = Proxmox.Utils.format_boolean;
+                    field.value = field.checked ? 1 : 0;
+                } else if (field.value === '__default__') {
+                    field.value = hasDefault
+                        ? `${Proxmox.Utils.defaultText} (${propSchema.default})`
+                        : Proxmox.Utils.defaultText;
+                }
+
+                if (extraAttributes.sensitive) {
+                    field.value = '***********';
+                    field.emptyText = '';
+                }
+            }
+
+            return field;
+        },
     },
 
     singleton: true,
