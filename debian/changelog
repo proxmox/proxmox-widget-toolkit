@@ -1,3 +1,25 @@
+proxmox-widget-toolkit (5.2.14) trixie; urgency=medium
+
+  * form: add a plain 'proxmoxtextarea' field for multi-line text. Like the
+    text field, it can omit or delete an empty value on submit. The base64
+    text area now builds on it, with no change in behavior intended.
+
+  * utils: add a helper to construct a form field from the JSON schema of a
+    single property, so that edit windows can be generated from a schema
+    instead of being hard-coded:
+    - supports string, integer, number, boolean and enum properties, and maps
+      their limits, default and description to the field.
+    - text and number fields show the default only as a hint, so that unset
+      properties stay unset.
+    - fields can be marked as read-only or as sensitive. A sensitive field
+      keeps the stored value if left empty when editing, and hides its input
+      unless it is a multi-line one.
+
+  * acme: plugin edit: create the DNS API fields with the new helper, with no
+    visible change intended.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 16 Nov 2026 02:41:15 +0100
+
 proxmox-widget-toolkit (5.2.13) trixie; urgency=medium
 
   * encode more values that come from the API or other external sources
