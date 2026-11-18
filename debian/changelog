@@ -1,3 +1,42 @@
+proxmox-widget-toolkit (5.2.15) trixie; urgency=medium
+
+  * add access log view, which lists the requests of the API access log
+    of a node, newest first, with live mode, time range, search and
+    filters for user, client, method, status and path. A statistics
+    window shows request and error counts per client, user, path group
+    and status, and a histogram; opening a value narrows the view to its
+    requests.
+
+  * apt: encode values from the repository files and from the Release files
+    of the configured mirrors, like the origin, in the repository and
+    update panels, so that such files cannot inject markup.
+
+  * apt: allow products to show pending updates and repositories to users
+    who may only audit the node. The actions that need more privileges get
+    disabled instead of failing with a permission error.
+
+  * apt: add a history panel listing the past APT transactions of a node,
+    with when and how they were invoked, what they changed and whether they
+    failed. This helps to find the update that could have caused a
+    regression, or what happened during a failed upgrade:
+    - upgrades between major releases of Debian or Ceph are marked, and the
+      list can be filtered by them, by status, time range and changed
+      packages, and searched by command line and user.
+    - the selected transaction shows its package changes, its terminal
+      output with warnings and errors highlighted, and in a separate tab
+      the changelogs of all packages it changed, grouped by source package.
+    - the changelog of a changed package opens limited to the versions of
+      that change, with an adjustable range.
+    - changelog entries are shown as structured lists, linking CVE IDs,
+      closed Debian bugs and, for Proxmox packages, the fixed Bugzilla
+      entries.
+
+  * apt: updates: products can enable a button that shows the changelogs of
+    all pending updates at once, grouped by source package and limited to
+    the new versions.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 18 Nov 2026 02:34:23 +0100
+
 proxmox-widget-toolkit (5.2.14) trixie; urgency=medium
 
   * form: add a plain 'proxmoxtextarea' field for multi-line text. Like the
