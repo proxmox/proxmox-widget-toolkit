@@ -216,6 +216,7 @@ Ext.define('Proxmox.node.NetworkView', {
                         autoShow: true,
                         nodename: me.nodename,
                         iftype: 'OVSIntPort',
+                        ...me.editOptions,
                         listeners: {
                             destroy: () => reload(),
                         },

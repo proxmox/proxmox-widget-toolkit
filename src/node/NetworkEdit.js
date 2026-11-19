@@ -8,6 +8,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
     // Show alternative names below normal name
     showAltNames: false,
 
+    // Optional selector field config for assigning interfaces to a VRF.
+    vrfSelector: undefined,
+
     initComponent: function () {
         let me = this;
 
@@ -299,6 +302,20 @@ Ext.define('Proxmox.node.NetworkEdit', {
             });
         }
 
+        // OVS ports and bonds cannot be VRF members
+        if (me.vrfSelector && !['OVSPort', 'OVSBond'].includes(me.iftype)) {
+            column2.push({
+                ...me.vrfSelector,
+                fieldLabel: gettext('VRF'),
+                emptyText: gettext('No override'),
+                name: 'vrf',
+                nodename: me.nodename,
+                allowBlank: true,
+                skipEmptyText: true,
+                deleteEmpty: !me.isCreate,
+            });
+        }
+
         column2.push({
             xtype: 'textfield',
             fieldLabel: gettext('Comment'),
@@ -472,6 +489,10 @@ Ext.define('Proxmox.node.NetworkEdit', {
                         me.down('field[name=altnames]').setVisible(false);
                     }
                     me.setValues(data);
+                    // keep a VRF set on a fabric interface clearable, the fabric needs it removed
+                    if (data['vrf-readonly'] && !data.vrf) {
+                        me.down('field[name=vrf]')?.setDisabled(true);
+                    }
                     me.isValid(); // trigger validation
                 },
             });
