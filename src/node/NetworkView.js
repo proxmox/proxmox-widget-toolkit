@@ -444,6 +444,13 @@ Ext.define('Proxmox.node.NetworkView', {
                             falseText: Proxmox.Utils.disabledText,
                             undefinedText: Proxmox.Utils.defaultText,
                         },
+                        {
+                            header: gettext('Bridge VLAN IDs'),
+                            stateId: 'bridge_vids',
+                            hidden: true,
+                            hideable: !!me.editOptions.enableBridgeVlanIds,
+                            dataIndex: 'bridge_vids',
+                        },
                     ],
                     listeners: {
                         selectionchange: set_button_status,
