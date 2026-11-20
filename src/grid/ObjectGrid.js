@@ -217,6 +217,9 @@ Ext.define('Proxmox.grid.ObjectGrid', {
                 },
                 items: {
                     xtype: 'proxmoxBase64TextArea',
+                    // only a skipped empty value gets submitted as delete
+                    skipEmptyText: !!opts.deleteEmpty,
+                    deleteEmpty: !!opts.deleteEmpty,
                     ...fieldOpts,
                     name,
                 },
