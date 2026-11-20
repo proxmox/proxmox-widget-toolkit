@@ -424,6 +424,14 @@ Ext.define('Proxmox.node.NetworkView', {
                             hidden: true,
                             dataIndex: 'bond-primary',
                         },
+                        {
+                            header: gettext('VRF'),
+                            stateId: 'vrf',
+                            hidden: true,
+                            hideable: !!me.editOptions.vrfSelector,
+                            sortable: true,
+                            dataIndex: 'vrf',
+                        },
                     ],
                     listeners: {
                         selectionchange: set_button_status,
