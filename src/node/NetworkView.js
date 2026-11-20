@@ -432,6 +432,18 @@ Ext.define('Proxmox.node.NetworkView', {
                             sortable: true,
                             dataIndex: 'vrf',
                         },
+                        {
+                            xtype: 'booleancolumn',
+                            header: gettext('IPv4 Forwarding'),
+                            stateId: 'ip-forward',
+                            hidden: true,
+                            hideable: !!me.editOptions.enableIpForward,
+                            sortable: true,
+                            dataIndex: 'ip-forward',
+                            trueText: Proxmox.Utils.enabledText,
+                            falseText: Proxmox.Utils.disabledText,
+                            undefinedText: Proxmox.Utils.defaultText,
+                        },
                     ],
                     listeners: {
                         selectionchange: set_button_status,
