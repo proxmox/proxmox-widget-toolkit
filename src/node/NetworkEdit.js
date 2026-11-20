@@ -11,6 +11,9 @@ Ext.define('Proxmox.node.NetworkEdit', {
     // Optional selector field config for assigning interfaces to a VRF.
     vrfSelector: undefined,
 
+    // show the ip-forward option, the API of the product needs to support it
+    enableIpForward: false,
+
     initComponent: function () {
         let me = this;
 
@@ -316,6 +319,21 @@ Ext.define('Proxmox.node.NetworkEdit', {
             });
         }
 
+        if (me.enableIpForward && !['OVSPort', 'OVSBond'].includes(me.iftype)) {
+            column2.push({
+                xtype: 'proxmoxKVComboBox',
+                fieldLabel: gettext('IPv4 Forwarding'),
+                name: 'ip-forward',
+                value: '__default__',
+                comboItems: [
+                    ['__default__', Proxmox.Utils.defaultText],
+                    ['1', Proxmox.Utils.enabledText],
+                    ['0', Proxmox.Utils.disabledText],
+                ],
+                deleteEmpty: !me.isCreate,
+            });
+        }
+
         column2.push({
             xtype: 'textfield',
             fieldLabel: gettext('Comment'),
@@ -453,6 +471,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
             name: 'mtu',
         });
 
+
         Ext.applyIf(me, {
             url: url,
             method: method,
@@ -468,8 +487,39 @@ Ext.define('Proxmox.node.NetworkEdit', {
 
         me.callParent();
 
+        // An interface put into a VRF is usually an uplink, which needs forwarding for routed
+        // traffic. Suggest enabling it while forwarding is left at its default, only for VRF
+        // changes by the user, which make the field dirty, and withdraw the suggestion if the
+        // change is undone. A deliberate choice of the user is never changed.
+        let watchVrf = function () {
+            let vrf = me.down('field[name=vrf]');
+            let ipForward = me.down('field[name=ip-forward]');
+            if (!vrf || !ipForward) {
+                return;
+            }
+            let suggested = false;
+            let chosen = false;
+            ipForward.on('select', () => {
+                chosen = true;
+            });
+            vrf.on('change', (field, value) => {
+                if (chosen) {
+                    return;
+                }
+                let hasVrf = Ext.valueFrom(value, '') !== '';
+                if (hasVrf && field.isDirty() && ipForward.getValue() === '__default__') {
+                    ipForward.setValue('1');
+                    suggested = true;
+                } else if (suggested && (!hasVrf || !field.isDirty())) {
+                    ipForward.setValue('__default__');
+                    suggested = false;
+                }
+            });
+        };
+
         if (me.isCreate) {
             me.down('field[name=iface]').setValue(me.iface_default);
+            watchVrf();
         } else {
             me.load({
                 success: function (response, options) {
@@ -488,7 +538,11 @@ Ext.define('Proxmox.node.NetworkEdit', {
                     } else if (me.showAltNames && !me.isCreate) {
                         me.down('field[name=altnames]').setVisible(false);
                     }
+                    if (data['ip-forward'] !== undefined) {
+                        data['ip-forward'] = String(data['ip-forward']);
+                    }
                     me.setValues(data);
+                    watchVrf();
                     // keep a VRF set on a fabric interface clearable, the fabric needs it removed
                     if (data['vrf-readonly'] && !data.vrf) {
                         me.down('field[name=vrf]')?.setDisabled(true);
