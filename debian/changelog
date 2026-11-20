@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (5.2.16) trixie; urgency=medium
+
+  * node: network: add a VRF field for host interfaces, for products that
+    provide a VRF selector.
+
+  * node: network: add an IPv4 forwarding setting with default, enabled and
+    disabled, for products that support it. Enabling it is suggested when a
+    VRF is selected, as interfaces that receive routed traffic need it.
+
+ -- Proxmox Support Team <support@proxmox.com>  Fri, 20 Nov 2026 05:43:49 +0100
+
 proxmox-widget-toolkit (5.2.15) trixie; urgency=medium
 
   * add access log view, which lists the requests of the API access log
