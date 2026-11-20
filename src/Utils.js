@@ -713,6 +713,11 @@ Ext.define('Proxmox.Utils', {
             items.forEach((item) => {
                 item.columnWidth = 1 / factor;
             });
+            // Start each row at the left, the floated items would otherwise get caught on a
+            // taller item of the row above. This is a hack: 'columnCount' is an undocumented,
+            // internal property of the ExtJS column layout. If set, the layout gives each item
+            // whose index is a multiple of it 'clear: left' and removes 'clear' from the others.
+            container.getLayout().columnCount = factor;
 
             // we have to update the layout twice, since the first layout change
             // can trigger the scrollbar which reduces the amount of space left
