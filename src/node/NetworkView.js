@@ -416,6 +416,14 @@ Ext.define('Proxmox.node.NetworkView', {
                             flex: 1,
                             renderer: Ext.String.htmlEncode,
                         },
+                        // Columns without stateId are identified by their position in the saved
+                        // layout, so add new ones at the end and with a stateId.
+                        {
+                            header: gettext('Primary Slave'),
+                            stateId: 'bond-primary',
+                            hidden: true,
+                            dataIndex: 'bond-primary',
+                        },
                     ],
                     listeners: {
                         selectionchange: set_button_status,
