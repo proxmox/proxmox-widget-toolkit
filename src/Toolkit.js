@@ -685,7 +685,7 @@ Ext.define('Proxmox.selection.CheckboxModel', {
         let toDeselect = selected.filter((item) => !Ext.Array.contains(toSelect, item));
         if (toDeselect.length > 0) {
             changed = me.doDeselect(toDeselect, suppressEvent);
-            if (!changed) {
+            if (changed < toDeselect.length) {
                 failed = true;
             }
             if (me.destroyed) {
