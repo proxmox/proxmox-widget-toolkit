@@ -1,3 +1,14 @@
+proxmox-widget-toolkit (5.2.18) trixie; urgency=medium
+
+  * checkbox model: keep the rows as they were when a listener blocks their
+    selection or deselection, instead of failing with a TypeError.
+
+  * checkbox model: stop a selection that replaces the current one if a
+    listener blocks the deselection of a row, instead of selecting the new
+    rows next to the blocked one.
+
+ -- Proxmox Support Team <support@proxmox.com>  Sun, 22 Nov 2026 00:30:37 +0100
+
 proxmox-widget-toolkit (5.2.17) trixie; urgency=medium
 
   * object grid: delete an option when its text area, such as the consent
