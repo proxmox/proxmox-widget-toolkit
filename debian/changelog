@@ -1,3 +1,15 @@
+proxmox-widget-toolkit (5.2.17) trixie; urgency=medium
+
+  * object grid: delete an option when its text area, such as the consent
+    text, is cleared, instead of submitting an empty value.
+
+  * node: network: add columns for the bond primary, VRF, IPv4 forwarding and
+    bridge VLAN IDs, hidden by default, to compare these settings across all
+    interfaces. The VRF, IPv4 forwarding and bridge VLAN IDs columns are only
+    offered by products that support editing these settings.
+
+ -- Proxmox Support Team <support@proxmox.com>  Sat, 21 Nov 2026 18:52:33 +0100
+
 proxmox-widget-toolkit (5.2.16) trixie; urgency=medium
 
   * node: network: add a VRF field for host interfaces, for products that
