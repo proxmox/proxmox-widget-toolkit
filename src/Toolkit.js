@@ -665,7 +665,8 @@ Ext.define('Proxmox.selection.CheckboxModel', {
             }
         }
         if (blockedRecords.length > 0) {
-            records.remove(blockedRecords);
+            let blocked = new Set(blockedRecords);
+            records = records.filter((record) => !blocked.has(record));
         }
         selected.add(records);
         me.lastSelected = record;
