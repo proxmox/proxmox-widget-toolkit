@@ -93,6 +93,32 @@ Ext.define('Proxmox.node.APTUtils', {
             : (newVersion ?? oldVersion ?? '');
     },
 
+    // one line per change, for sharing them as plain text, in ASCII so that it survives any channel
+    // and can be searched for
+    changesAsText: function (changes) {
+        let counts = new Map();
+        for (const change of changes) {
+            counts.set(change.package, (counts.get(change.package) ?? 0) + 1);
+        }
+        return changes
+            .map((change) => {
+                // multiarch packages can change for several architectures at once
+                let name =
+                    counts.get(change.package) > 1 && change.arch
+                        ? `${change.package}:${change.arch}`
+                        : change.package;
+                let oldVersion = change['old-version'];
+                let newVersion = change['new-version'];
+                let versions =
+                    oldVersion && newVersion && oldVersion !== newVersion
+                        ? `${oldVersion} -> ${newVersion}`
+                        : newVersion || oldVersion;
+                let line = versions ? `${name}: ${versions}` : name;
+                return change.action === 'upgrade' ? `${line}\n` : `${line} (${change.action})\n`;
+            })
+            .join('');
+    },
+
     // the log only has one second resolution, and local time, so a transaction can end before
     // it started if the clock was set back
     durationText: function (data) {

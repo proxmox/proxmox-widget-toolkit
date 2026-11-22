@@ -207,8 +207,26 @@ Ext.define('Proxmox.node.APT', {
                 }),
         });
 
+        let copy_btn = new Ext.Button({
+            text: gettext('Copy List'),
+            disabled: true,
+            handler: () =>
+                Proxmox.Utils.copyToClipboard(
+                    Proxmox.node.APTUtils.changesAsText(
+                        store.getRange().map(({ data }) => ({
+                            action: data.OldVersion ? 'upgrade' : 'install',
+                            package: data.Package,
+                            arch: data.Arch,
+                            'old-version': data.OldVersion,
+                            'new-version': data.Version,
+                        })),
+                    ),
+                ),
+        });
+
         me.mon(store, 'datachanged', () => {
             changelogs_btn.setDisabled(!me.canShowChangelog || store.getCount() === 0);
+            copy_btn.setDisabled(store.getCount() === 0);
         });
 
         let verbose_desc_checkbox = new Ext.form.field.Checkbox({
@@ -228,11 +246,19 @@ Ext.define('Proxmox.node.APT', {
                 me.upgradeBtn,
                 changelog_btn,
                 changelogs_btn,
+                copy_btn,
                 '->',
                 verbose_desc_checkbox,
             ];
         } else {
-            me.tbar = [update_btn, changelog_btn, changelogs_btn, '->', verbose_desc_checkbox];
+            me.tbar = [
+                update_btn,
+                changelog_btn,
+                changelogs_btn,
+                copy_btn,
+                '->',
+                verbose_desc_checkbox,
+            ];
         }
 
         Ext.apply(me, {
