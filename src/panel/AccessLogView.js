@@ -849,7 +849,7 @@ Ext.define('Proxmox.panel.AccessLogView', {
                                     margin: '0 0 0 10',
                                     autoEl: {
                                         'data-qtip': gettext(
-                                            'Only the user itself, not its API tokens.',
+                                            'Match the whole user or API token, not just a part of it.',
                                         ),
                                     },
                                 },
