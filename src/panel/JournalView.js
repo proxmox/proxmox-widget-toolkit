@@ -337,6 +337,7 @@ Ext.define('Proxmox.panel.JournalView', {
             let me = this;
             me.getViewModel().set('livemode', false);
             me.updateView([], false);
+            me.updateParams();
         },
 
         // filters run server-side, so a change drops the buffered position and reloads
