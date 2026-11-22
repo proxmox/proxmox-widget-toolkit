@@ -615,6 +615,25 @@ Ext.define('Proxmox.Utils', {
                 res.htmlStatus || Proxmox.Utils.extractRequestError(res.result ?? {}, true),
             ),
 
+        copyToClipboard: function (text) {
+            let fail = (err) =>
+                Ext.Msg.alert(
+                    gettext('Error'),
+                    Ext.htmlEncode(
+                        Ext.String.format(
+                            gettext('Copying to the clipboard failed: {0}'),
+                            `${err}`,
+                        ),
+                    ),
+                );
+            // the browser has no clipboard API for a page that is not served securely
+            try {
+                navigator.clipboard.writeText(text).catch(fail);
+            } catch (err) {
+                fail(err);
+            }
+        },
+
         checked_command: function (orig_cmd) {
             Proxmox.Utils.API2Request({
                 url: '/nodes/localhost/subscription',
