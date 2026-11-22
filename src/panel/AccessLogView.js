@@ -376,6 +376,7 @@ Ext.define('Proxmox.panel.AccessLogView', {
                 field.suspendEvents();
                 field.setValue(null);
                 field.resumeEvents();
+                field.triggers?.clear?.setVisible(false);
             }
             me.filterChange();
         },
@@ -539,6 +540,12 @@ Ext.define('Proxmox.panel.AccessLogView', {
                 throw 'no url specified';
             }
             let me = this;
+            // a clear trigger follows its field's value right away, not delayed like the reload
+            for (const field of view.query('[filterParam]')) {
+                if (field.triggers?.clear) {
+                    field.on('change', (_field, value) => field.triggers.clear.setVisible(!!value));
+                }
+            }
             view.getView().on('scrollend', me.loadMoreIfNeeded, me);
             view.on('show', me.loadMoreIfNeeded, me);
             view.on('resize', me.loadMoreIfNeeded, me);
@@ -867,6 +874,16 @@ Ext.define('Proxmox.panel.AccessLogView', {
                             editable: true,
                             maxLength: 32,
                             store: ['GET', 'POST', 'PUT', 'DELETE'],
+                            triggers: {
+                                clear: {
+                                    cls: 'pmx-clear-trigger',
+                                    weight: -1,
+                                    hidden: true,
+                                    handler: function () {
+                                        this.setValue(null);
+                                    },
+                                },
+                            },
                         },
                         {
                             xtype: 'combobox',
@@ -885,6 +902,16 @@ Ext.define('Proxmox.panel.AccessLogView', {
                                 ['client-error', gettext('Client Errors')],
                                 ['server-error', gettext('Server Errors')],
                             ],
+                            triggers: {
+                                clear: {
+                                    cls: 'pmx-clear-trigger',
+                                    weight: -1,
+                                    hidden: true,
+                                    handler: function () {
+                                        this.setValue(null);
+                                    },
+                                },
+                            },
                         },
                     ],
                 },
