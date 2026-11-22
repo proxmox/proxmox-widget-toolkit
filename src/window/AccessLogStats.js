@@ -182,7 +182,12 @@ Ext.define('Proxmox.window.AccessLogStats', {
                                     ? gettext('Unknown')
                                     : '-'
                                 : Ext.htmlEncode(value);
-                        return drillDown(value) ? `<a href="#">${text}</a>` : text;
+                        if (!drillDown(value)) {
+                            return text;
+                        }
+                        // fill the cell, as values like '-' or '/' are hard to hit otherwise
+                        let style = 'display: block; overflow: hidden; text-overflow: ellipsis;';
+                        return `<a href="#" style="${style}">${text}</a>`;
                     },
                 },
                 { header: gettext('Requests'), dataIndex: 'requests', width: 100 },
