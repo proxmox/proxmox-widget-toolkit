@@ -347,6 +347,7 @@ Ext.define('Proxmox.node.APTHistory', {
             setTransaction: function (rec) {
                 this.setEmptyText(rec ? gettext('No package changes recorded.') : '');
                 this.getStore().setData(rec?.data.packages ?? []);
+                this.down('#copy').setDisabled(this.getStore().getCount() === 0);
             },
             selModel: packageSm,
             tbar: [
@@ -357,6 +358,17 @@ Ext.define('Proxmox.node.APTHistory', {
                     disabled: true,
                     enableFn: hasChangelog,
                     handler: (_button, _event, rec) => showChangelog(rec),
+                },
+                {
+                    itemId: 'copy',
+                    text: gettext('Copy List'),
+                    disabled: true,
+                    handler: function () {
+                        let records = this.up('grid').getStore().getRange();
+                        Proxmox.Utils.copyToClipboard(
+                            H.changesAsText(records.map((rec) => rec.data)),
+                        );
+                    },
                 },
             ],
             listeners: {
