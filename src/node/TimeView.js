@@ -15,11 +15,13 @@ Ext.define('Proxmox.node.TimeView', {
             return Ext.Date.format(servertime, 'Y-m-d H:i:s');
         };
 
-        let run_editor = () =>
-            Ext.create('Proxmox.node.TimeEdit', {
+        let run_editor = () => {
+            let win = Ext.create('Proxmox.node.TimeEdit', {
                 autoShow: true,
                 nodename: me.nodename,
             });
+            win.on('destroy', me.reload, me);
+        };
 
         Ext.apply(me, {
             url: `/api2/json/nodes/${me.nodename}/time`,
