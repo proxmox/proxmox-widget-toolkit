@@ -1,3 +1,23 @@
+proxmox-widget-toolkit (5.2.19) trixie; urgency=medium
+
+  * journal view: load the preselected timespan right away when switching to
+    it, instead of showing nothing until Update got pressed.
+
+  * access log view:
+    - add clear buttons to the method and status filters, which before could
+      only be reset together with all other filters.
+    - the user filter matches any user or API token containing the text, if
+      the server supports that, and the exact match option compares the whole
+      ID.
+    - statistics: let the link of a value fill its whole cell, so that short
+      values like '-' for requests without a user or '/' are easy to click.
+
+  * apt: add buttons for copying the pending updates and the package changes
+    of a past transaction as plain text, one package per line with its
+    versions, for example for a support request or a bug report.
+
+ -- Proxmox Support Team <support@proxmox.com>  Mon, 23 Nov 2026 01:38:26 +0100
+
 proxmox-widget-toolkit (5.2.18) trixie; urgency=medium
 
   * checkbox model: keep the rows as they were when a listener blocks their
