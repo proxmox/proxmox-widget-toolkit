@@ -708,4 +708,7 @@ div.right-aligned {
     float: right;
     opacity: 0.7;
 }
+.pmx-changelog-version-unusable {
+    opacity: 0.4;
+}
 /* package changelog end */

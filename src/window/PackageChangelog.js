@@ -241,6 +241,24 @@ Ext.define('Proxmox.window.PackageChangelog', {
             },
         });
 
+        // the position of a version in the changelog, newest first, -1 if it does not list it
+        let position = (version) => {
+            let records = versionStore.getData();
+            return (records.getSource() ?? records).findIndexBy(
+                (rec) => rec.data.version === version?.trim(),
+            );
+        };
+        // Whether a version of the From or To field can form a range with the other one, as the
+        // From version has to be older. Versions that the changelog does not list limit nothing.
+        let usable = function (kind, version) {
+            let other = position((kind === 'since' ? toField : sinceField).getValue());
+            let own = position(version);
+            if (other < 0 || own < 0) {
+                return true;
+            }
+            return kind === 'since' ? own > other : own < other;
+        };
+
         let load = function () {
             let params = { name: me.packageName };
             let since = sinceField.getValue()?.trim();
@@ -270,6 +288,12 @@ Ext.define('Proxmox.window.PackageChangelog', {
                     }
                     if (entries.length) {
                         showEntries(firstPart());
+                    } else if (since && !usable('since', since)) {
+                        view.update(
+                            Ext.htmlEncode(
+                                gettext('The From version must be older than the To version.'),
+                            ),
+                        );
                     } else {
                         view.update(Proxmox.node.APTUtils.emptyChangelogText);
                     }
@@ -286,7 +310,7 @@ Ext.define('Proxmox.window.PackageChangelog', {
             );
         };
 
-        let versionField = (label, value, emptyText) =>
+        let versionField = (kind, label, value, emptyText) =>
             Ext.create('Ext.form.field.ComboBox', {
                 fieldLabel: label,
                 labelWidth: 35,
@@ -299,15 +323,31 @@ Ext.define('Proxmox.window.PackageChangelog', {
                 displayField: 'version',
                 anyMatch: true,
                 listConfig: {
-                    itemTpl: '{version:htmlEncode}<span class="pmx-changelog-date">{day}</span>',
+                    // greys out the versions that cannot form a range with the other field
+                    itemTpl: new Ext.XTemplate(
+                        '<div class="{[this.rangeCls(values.version)]}">',
+                        '{version:htmlEncode}<span class="pmx-changelog-date">{day}</span>',
+                        '</div>',
+                        {
+                            rangeCls: (version) =>
+                                usable(kind, version) ? '' : 'pmx-changelog-version-unusable',
+                        },
+                    ),
                     // also lets the list expand before its versions are loaded
                     emptyText: gettext('No matching versions'),
                 },
+                validator: (version) =>
+                    usable(kind, version) ||
+                    (kind === 'since'
+                        ? gettext('The From version must be older than the To version.')
+                        : gettext('The To version must be newer than the From version.')),
                 triggers: {
                     clear: Proxmox.node.APTUtils.clearTrigger(value),
                 },
                 listeners: {
                     expand: (field) => {
+                        // the greyed out versions depend on the other field
+                        field.getPicker().refresh();
                         if (!versionStore.isLoaded() && !versionStore.isLoading()) {
                             versionStore.load({
                                 // the list closes when the loaded versions include the value
@@ -322,14 +362,15 @@ Ext.define('Proxmox.window.PackageChangelog', {
                     change: {
                         fn: (field, newValue) => {
                             Proxmox.node.APTUtils.toggleClearTrigger(field, newValue);
+                            (kind === 'since' ? toField : sinceField).validate();
                             load();
                         },
                         buffer: 300,
                     },
                 },
             });
-        let sinceField = versionField(gettext('From'), me.sinceVersion, gettext('Oldest'));
-        let toField = versionField(gettext('To'), me.toVersion, gettext('Newest'));
+        let sinceField = versionField('since', gettext('From'), me.sinceVersion, gettext('Oldest'));
+        let toField = versionField('to', gettext('To'), me.toVersion, gettext('Newest'));
 
         Ext.apply(me, {
             title: `${gettext('Changelog')}: ${Ext.htmlEncode(me.packageName)}`,
