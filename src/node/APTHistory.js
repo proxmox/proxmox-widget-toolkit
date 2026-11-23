@@ -10,6 +10,7 @@ Ext.define('pmx-apt-history', {
         { name: 'comment', defaultValue: '' },
         { name: 'error', defaultValue: '' },
         'packages',
+        'running',
         {
             name: 'duration',
             calculate: (data) =>
@@ -22,7 +23,10 @@ Ext.define('pmx-apt-history', {
                 if (data.error) {
                     return 2;
                 }
-                return data['end-time'] === undefined ? 1 : 0;
+                if (data['end-time'] === undefined) {
+                    return data.running ? 3 : 1;
+                }
+                return 0;
             },
         },
     ],
@@ -201,6 +205,54 @@ Ext.define('Proxmox.node.APTHistory', {
         me.tabs.items.each((tab) => tab.setTransaction(rec, reload));
     },
 
+    transactionId: (entry) => `${entry['start-time']}.${entry['start-index'] ?? 0}`,
+
+    // the transaction that the API reports as running, which is the newest one in the log, also
+    // if the filters hide it
+    runningTransaction: function () {
+        let records = this.store.getData();
+        return (records.getSource() ?? records).findBy((rec) => rec.data.running === true);
+    },
+
+    // While the newest transaction runs, only it gets checked for changes, which reads less of the
+    // logs, and the whole history reloads once it changed, for example finished.
+    pollRunning: function () {
+        let me = this;
+        let running = me.runningTransaction();
+        if (me.destroyed || !running || !me.isVisible(true)) {
+            // showing the history again reloads it
+            return;
+        }
+        if (document.hidden) {
+            // check again once the browser shows the page
+            me.pollTask.delay(5000);
+            return;
+        }
+        Proxmox.Utils.API2Request({
+            url: `/nodes/${me.nodename}/apt/history`,
+            params: { limit: 1 },
+            method: 'GET',
+            success: ({ result }) => {
+                if (me.destroyed) {
+                    return;
+                }
+                let [entry] = result.data ?? [];
+                let unchanged =
+                    entry &&
+                    me.transactionId(entry) === running.getId() &&
+                    entry['end-time'] === undefined &&
+                    !entry.error &&
+                    Proxmox.node.APTUtils.parseRunning(entry.running) === true;
+                if (unchanged) {
+                    me.pollTask.delay(5000);
+                } else {
+                    me.store.load();
+                }
+            },
+            failure: () => me.pollTask?.delay(5000),
+        });
+    },
+
     deselectHidden: function () {
         let me = this;
         let sm = me.historyGrid.getSelectionModel();
@@ -226,7 +278,8 @@ Ext.define('Proxmox.node.APTHistory', {
                     // any field conversion, so add it here
                     transform: (response) => {
                         for (const entry of response.data ?? []) {
-                            entry.id = `${entry['start-time']}.${entry['start-index'] ?? 0}`;
+                            entry.id = me.transactionId(entry);
+                            entry.running = Proxmox.node.APTUtils.parseRunning(entry.running);
                         }
                         return response;
                     },
@@ -581,7 +634,14 @@ Ext.define('Proxmox.node.APTHistory', {
                 me.deselectHidden();
                 me.showDetails(true);
             }
+            if (me.runningTransaction()) {
+                me.pollTask.delay(5000);
+            } else {
+                me.pollTask.cancel();
+            }
         });
+        me.pollTask = new Ext.util.DelayedTask(() => me.pollRunning());
+        me.on('destroy', () => me.pollTask.cancel());
         me.tbar = me.createFilters();
         me.items = [
             me.historyGrid,

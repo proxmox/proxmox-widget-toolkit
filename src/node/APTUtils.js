@@ -133,10 +133,21 @@ Ext.define('Proxmox.node.APTUtils', {
             return `<i class="fa fa-times critical"></i> ${Ext.htmlEncode(data.error)}`;
         }
         if (data['end-time'] === undefined) {
+            if (data.running === true) {
+                return `<i class="fa fa-spinner fa-pulse"></i> ${gettext('Running')}`;
+            }
+            if (data.running === false) {
+                return `<i class="fa fa-exclamation warning"></i> ${gettext('Interrupted')}`;
+            }
+            // from a version that cannot tell
             return `<i class="fa fa-exclamation warning"></i> ${gettext('Interrupted or still running')}`;
         }
         return `<i class="fa fa-check good"></i> ${gettext('OK')}`;
     },
+
+    // whether a transaction is running, true, interrupted, false, or either, undefined, from the
+    // API value, a boolean or the 0 and 1 of the Perl APIs
+    parseRunning: (value) => (value === undefined || value === null ? undefined : !!+value),
 
     renderDuration: (_value, _meta, record) => Proxmox.node.APTUtils.durationText(record.data),
 
