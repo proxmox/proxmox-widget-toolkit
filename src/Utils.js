@@ -1732,6 +1732,8 @@ Ext.define('Proxmox.Utils', {
                 field.autoEl = {
                     tag: 'div',
                     'data-qtip': Ext.htmlEncode(Ext.htmlEncode(propSchema.description)),
+                    // anchor above the field so validation error tips at the pointer don't cover it
+                    'data-anchor': 'bottom',
                 };
             }
 
