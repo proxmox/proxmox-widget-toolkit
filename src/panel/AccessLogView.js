@@ -15,17 +15,14 @@ Ext.define('pmx-access-log-entry', {
     ],
 });
 
-// shows the API access log of a node, newest requests first.
 Ext.define('Proxmox.panel.AccessLogView', {
     extend: 'Ext.grid.Panel',
     xtype: 'proxmoxAccessLogView',
 
-    // the access log endpoint, like '/api2/extjs/nodes/localhost/access-log'
     url: undefined,
 
     pageSize: 500,
 
-    // how often live mode checks for new requests, in milliseconds
     liveInterval: 3000,
 
     // live mode starts over after adding that many requests, so an open view does not grow forever
@@ -39,7 +36,6 @@ Ext.define('Proxmox.panel.AccessLogView', {
     controller: {
         xclass: 'Ext.app.ViewController',
 
-        // returns { params, count }, or undefined while a field is invalid.
         getFilter: function () {
             let me = this;
             let vm = me.getViewModel();
@@ -100,7 +96,6 @@ Ext.define('Proxmox.panel.AccessLogView', {
             return { params, count };
         },
 
-        // with keepRows, replace the existing rows only after the newest page arrives.
         reload: function (keepRows) {
             let me = this;
             let view = me.getView();
@@ -186,8 +181,7 @@ Ext.define('Proxmox.panel.AccessLogView', {
                         vm.set('failed', true);
                         Proxmox.Utils.setErrorMask(table, response.htmlStatus);
                     } else {
-                        // stop loading on scroll, which would just fail again, unless the server
-                        // was only busy with other requests to the log
+                        // pause scroll-loading on failure unless the server was only busy (503)
                         me.olderFailed = !me.isBusy(response);
                         Proxmox.Utils.setErrorMask(table, false);
                         Ext.Msg.alert(gettext('Error'), response.htmlStatus);
@@ -236,13 +230,11 @@ Ext.define('Proxmox.panel.AccessLogView', {
                     if (me.isDestroyed || generation !== me.generation) {
                         return;
                     }
-                    // the server is busy with other requests to the log, the next tick tries again
                     if (me.isBusy(response)) {
                         me.newerRunning = false;
                         return;
                     }
-                    // the part of the log after the head can be gone after rotations, so start
-                    // over, which shows the error if it persists
+                    // restart from scratch on rotation or error (which surfaces persistent errors)
                     me.restart();
                 },
                 success: function (response) {
@@ -431,7 +423,6 @@ Ext.define('Proxmox.panel.AccessLogView', {
                             flex: 1,
                             cellWrap: true,
                             renderer: function (value, metaData) {
-                                // paths and user agents can be long without any space
                                 metaData.tdStyle = 'word-break: break-all;';
                                 return Ext.htmlEncode(value);
                             },
@@ -464,8 +455,7 @@ Ext.define('Proxmox.panel.AccessLogView', {
 
             let params = { ...filter.params, top: 25 };
             if (me.getViewModel().get('livemode')) {
-                // the last day up to the last full minute, which the timespan fields can hold, for
-                // a row to lead to exactly the requests it counted
+                // align to full minutes so drill-down matches the minute-resolution timespan fields
                 let until = Math.floor(Date.now() / 60000) * 60 - 1;
                 params.since = until + 1 - 24 * 3600;
                 params.until = until;
@@ -567,7 +557,6 @@ Ext.define('Proxmox.panel.AccessLogView', {
             view.on('boxready', me.reload, me, { single: true });
         },
 
-        // the view's destruction hook releases resources it does not own
         cleanup: function () {
             let me = this;
             Ext.TaskManager.stop(me.liveTask);
@@ -701,7 +690,6 @@ Ext.define('Proxmox.panel.AccessLogView', {
                     xtype: 'textfield',
                     filterParam: 'search',
                     emptyText: gettext('Search client, user or path'),
-                    // takes the free space before the fill does
                     flex: 10,
                     minWidth: 120,
                     maxWidth: 250,
@@ -817,7 +805,6 @@ Ext.define('Proxmox.panel.AccessLogView', {
             },
             items: [
                 {
-                    // the user field shares its row with a checkbox
                     flex: 1.5,
                     minWidth: 280,
                     maxWidth: 440,

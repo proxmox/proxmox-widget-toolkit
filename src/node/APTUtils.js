@@ -67,7 +67,6 @@ Ext.define('Proxmox.node.APTUtils', {
         return [...H.releaseChanges(packages), ...summaries].join(', ');
     },
 
-    // packages whose major version is the major release of what they belong to
     releasePackages: new Map([
         ['base-files', 'Debian'],
         ['ceph-base', 'Ceph'],
@@ -93,8 +92,7 @@ Ext.define('Proxmox.node.APTUtils', {
             : (newVersion ?? oldVersion ?? '');
     },
 
-    // one line per change, for sharing them as plain text, in ASCII so that it survives any channel
-    // and can be searched for
+    // plain ASCII ("->") for clipboard sharing
     changesAsText: function (changes) {
         let counts = new Map();
         for (const change of changes) {
@@ -139,14 +137,12 @@ Ext.define('Proxmox.node.APTUtils', {
             if (data.running === false) {
                 return `<i class="fa fa-exclamation warning"></i> ${gettext('Interrupted')}`;
             }
-            // from a version that cannot tell
             return `<i class="fa fa-exclamation warning"></i> ${gettext('Interrupted or still running')}`;
         }
         return `<i class="fa fa-check good"></i> ${gettext('OK')}`;
     },
 
-    // whether a transaction is running, true, interrupted, false, or either, undefined, from the
-    // API value, a boolean or the 0 and 1 of the Perl APIs
+    // normalize boolean or Perl 0/1 API values while preserving undefined
     parseRunning: (value) => (value === undefined || value === null ? undefined : !!+value),
 
     renderDuration: (_value, _meta, record) => Proxmox.node.APTUtils.durationText(record.data),
@@ -167,7 +163,6 @@ Ext.define('Proxmox.node.APTUtils', {
         return text;
     },
 
-    // loads data while masking the component, only the latest request of it gets handled
     loadInto: function (cmp, url, params, onSuccess, onFailure) {
         let request = (cmp.request = (cmp.request ?? 0) + 1);
         cmp.setLoading(gettext('Please wait...'));
@@ -184,7 +179,6 @@ Ext.define('Proxmox.node.APTUtils', {
         });
     },
 
-    // the styles the API keeps in the terminal output, by SGR parameter
     termLogStyles: {
         1: 'bold',
         2: 'dim',

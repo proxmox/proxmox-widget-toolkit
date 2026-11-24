@@ -38,8 +38,7 @@ Ext.define('Proxmox.node.APTHistoryChangelogs', {
         this.groups = groups;
         let html = groups
             .map((group, id) => {
-                // the binary packages of a source can change between different versions, for
-                // example with binary-only uploads, show each change between versions once
+                // deduplicate version transitions across binary packages (e.g. binNMUs)
                 let transitions = new Set(group.packages.map(Proxmox.node.APTUtils.versionsText));
                 let versions = Ext.htmlEncode([...transitions].join(' / '));
                 let name = group.source ?? group.packages[0].package;

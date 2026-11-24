@@ -1,6 +1,5 @@
 Ext.define('Proxmox.window.PackageChangelogRenderer', {
     singleton: true,
-    // urgencies worth pointing out, the usual ones are low and medium
     urgentUrgencies: ['high', 'critical', 'emergency'],
 
     renderEntries: function (entries) {
@@ -41,7 +40,6 @@ Ext.define('Proxmox.window.PackageChangelogRenderer', {
         try {
             changes = me.renderChanges(entry.changes, proxmox);
         } catch (_err) {
-            // rather show unusual changes as they are written than not at all
             changes = `<div class="pmx-changelog-text">${Ext.htmlEncode(entry.changes)}</div>`;
         }
         return (
@@ -52,16 +50,11 @@ Ext.define('Proxmox.window.PackageChangelogRenderer', {
         );
     },
 
-    // renders the changes of an entry, usually lists marked with '*' and nested ones marked
-    // with '-' or '+', with continuation lines indented further, and sections per author like
-    // '[ Some One ]' for entries combining the work of several people. Other text keeps its
-    // line breaks, as it can be an example of output or configuration.
+    // parse Debian changelog bullets, [ Author ] headers, and preformatted paragraphs
     renderChanges: function (changes, proxmox) {
         let me = Proxmox.window.PackageChangelogRenderer;
         let root = { kind: 'root', indent: -1, children: [] };
-        // the open list items, by the indentation of their marker
         let stack = [root];
-        // the node that continuation lines get added to
         let current;
         for (const line of changes.split('\n')) {
             let indent = line.search(/\S/);
@@ -131,8 +124,6 @@ Ext.define('Proxmox.window.PackageChangelogRenderer', {
         return render(root.children);
     },
 
-    // escapes text and links CVE IDs, Debian bugs closed by an upload and, for Proxmox
-    // packages, the Bugzilla entries they fix
     renderText: function (text, proxmox) {
         let link = (url, label) =>
             `<a href="${url}" target="_blank" rel="noopener noreferrer">${label}</a>`;
@@ -152,8 +143,6 @@ Ext.define('Proxmox.window.PackageChangelogRenderer', {
     },
 });
 
-// shows the changelog that an installed package ships, limited to the versions later than
-// sinceVersion up to including toVersion, like for an upgrade from the former to the latter
 Ext.define('Proxmox.window.PackageChangelog', {
     extend: 'Ext.window.Window',
     alias: 'widget.proxmoxPackageChangelog',
@@ -222,7 +211,6 @@ Ext.define('Proxmox.window.PackageChangelog', {
             },
         });
 
-        // all entries, for selecting from their versions, only loaded once that is wanted
         let versionStore = Ext.create('Ext.data.Store', {
             fields: [
                 'date',
@@ -241,15 +229,13 @@ Ext.define('Proxmox.window.PackageChangelog', {
             },
         });
 
-        // the position of a version in the changelog, newest first, -1 if it does not list it
         let position = (version) => {
             let records = versionStore.getData();
             return (records.getSource() ?? records).findIndexBy(
                 (rec) => rec.data.version === version?.trim(),
             );
         };
-        // Whether a version of the From or To field can form a range with the other one, as the
-        // From version has to be older. Versions that the changelog does not list limit nothing.
+        // store is newest-first, so From (since) must have a higher index than To
         let usable = function (kind, version) {
             let other = position((kind === 'since' ? toField : sinceField).getValue());
             let own = position(version);
@@ -276,7 +262,6 @@ Ext.define('Proxmox.window.PackageChangelog', {
                 (response) => {
                     entries = response.result.data;
                     note = '';
-                    // without an entry for the version, the newest entry is the only one
                     if (to && entries.length && !entries.some((entry) => entry.version === to)) {
                         let text = Ext.String.format(
                             gettext(
@@ -323,7 +308,6 @@ Ext.define('Proxmox.window.PackageChangelog', {
                 displayField: 'version',
                 anyMatch: true,
                 listConfig: {
-                    // greys out the versions that cannot form a range with the other field
                     itemTpl: new Ext.XTemplate(
                         '<div class="{[this.rangeCls(values.version)]}">',
                         '{version:htmlEncode}<span class="pmx-changelog-date">{day}</span>',

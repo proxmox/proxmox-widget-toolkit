@@ -78,7 +78,6 @@ Ext.define('Proxmox.node.APTHistorySummary', {
         me.updateLayout();
     },
 
-    // only a command line that does not fit into its line can be expanded
     updateCommandToggle: function () {
         let me = this;
         let line = me.getEl()?.dom.querySelector('.pmx-apt-history-command');
@@ -155,11 +154,8 @@ Ext.define('Proxmox.node.APTHistory', {
 
     layout: 'border',
 
-    // set to false to disable showing the terminal output, e.g. without the privileges for it
     canShowTermLog: true,
 
-    // allows changing whether the terminal output can be shown after creation, e.g. once the
-    // privileges of the user are known
     setCanShowTermLog: function (canShowTermLog) {
         let me = this;
         me.canShowTermLog = canShowTermLog;
@@ -171,7 +167,6 @@ Ext.define('Proxmox.node.APTHistory', {
         termLog.setDisabled(!canShowTermLog);
     },
 
-    // the terms of the package filter, of which a package name must contain one
     packageTerms: [],
 
     matchingChanges: function (packages) {
@@ -207,15 +202,13 @@ Ext.define('Proxmox.node.APTHistory', {
 
     transactionId: (entry) => `${entry['start-time']}.${entry['start-index'] ?? 0}`,
 
-    // the transaction that the API reports as running, which is the newest one in the log, also
-    // if the filters hide it
+    // check the unfiltered store so active filters do not hide a running transaction
     runningTransaction: function () {
         let records = this.store.getData();
         return (records.getSource() ?? records).findBy((rec) => rec.data.running === true);
     },
 
-    // While the newest transaction runs, only it gets checked for changes, which reads less of the
-    // logs, and the whole history reloads once it changed, for example finished.
+    // poll only the newest entry while running; reload the full history once it changes
     pollRunning: function () {
         let me = this;
         let running = me.runningTransaction();
@@ -224,7 +217,6 @@ Ext.define('Proxmox.node.APTHistory', {
             return;
         }
         if (document.hidden) {
-            // check again once the browser shows the page
             me.pollTask.delay(5000);
             return;
         }
@@ -372,9 +364,7 @@ Ext.define('Proxmox.node.APTHistory', {
         // a removed package usually has no changelog installed anymore
         let hasChangelog = (rec) => !!rec?.data['new-version'];
 
-        // shows the changes between the versions of a package change, also those that got
-        // reverted by a downgrade, or all up to the version if it did not change, like for a
-        // reinstall
+        // swap bounds on downgrade to show reverted changes; omit lower bound on reinstall
         let showChangelog = function (rec) {
             let { action, package: packageName } = rec.data;
             let oldVersion = rec.data['old-version'];
@@ -597,7 +587,6 @@ Ext.define('Proxmox.node.APTHistory', {
         me.store = me.createStore();
         Proxmox.Utils.monStoreErrors(me, me.store, true);
         me.historyGrid = me.createHistoryGrid();
-        // shown like the empty text of a grid until a transaction gets selected
         me.placeholder = Ext.create('Ext.Component', {
             flex: 1,
             cls: 'x-grid-empty',
@@ -627,8 +616,7 @@ Ext.define('Proxmox.node.APTHistory', {
                 },
             ],
         });
-        // a reload keeps the selection, but the transaction can have changed, e.g. finished, and
-        // then also be hidden by the filters
+        // re-sync details and selection on reload in case the entry changed or was filtered
         me.mon(me.store, 'load', (_store, _records, success) => {
             if (success) {
                 me.deselectHidden();
