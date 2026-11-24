@@ -317,6 +317,16 @@ Ext.define('Proxmox.node.NetworkEdit', {
                 skipEmptyText: true,
                 deleteEmpty: !me.isCreate,
             });
+            columnB.push({
+                xtype: 'displayfield',
+                itemId: 'vrfGatewayHint',
+                userCls: 'pmx-hint',
+                margin: columnB.length ? '5 0 0 0' : undefined,
+                hidden: true,
+                value: gettext(
+                    'The gateway of this interface will only apply within the VRF. Moving the interface used for management or cluster traffic into a VRF can make the node unreachable.',
+                ),
+            });
         }
 
         if (me.enableIpForward && !['OVSPort', 'OVSBond'].includes(me.iftype)) {
@@ -517,9 +527,27 @@ Ext.define('Proxmox.node.NetworkEdit', {
             });
         };
 
+        // Only VRF changes by the user show the hint, an interface already in a VRF may well hold
+        // the gateway of that VRF.
+        let watchVrfGateway = function () {
+            let hint = me.down('#vrfGatewayHint');
+            if (!hint) {
+                return;
+            }
+            let vrf = me.down('field[name=vrf]');
+            let gateways = ['gateway', 'gateway6'].map((name) => me.down(`field[name=${name}]`));
+            let update = () => {
+                let hasVrf = Ext.valueFrom(vrf.getValue(), '') !== '';
+                let hasGateway = gateways.some((field) => !!field?.getValue());
+                hint.setVisible(hasVrf && vrf.isDirty() && hasGateway);
+            };
+            [vrf, ...gateways].forEach((field) => field?.on('change', update));
+        };
+
         if (me.isCreate) {
             me.down('field[name=iface]').setValue(me.iface_default);
             watchVrf();
+            watchVrfGateway();
         } else {
             me.load({
                 success: function (response, options) {
@@ -543,6 +571,7 @@ Ext.define('Proxmox.node.NetworkEdit', {
                     }
                     me.setValues(data);
                     watchVrf();
+                    watchVrfGateway();
                     // keep a VRF set on a fabric interface clearable, the fabric needs it removed
                     if (data['vrf-readonly'] && !data.vrf) {
                         me.down('field[name=vrf]')?.setDisabled(true);
