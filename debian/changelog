@@ -1,3 +1,22 @@
+proxmox-widget-toolkit (5.2.22) trixie; urgency=medium
+
+  * journal view:
+    - let the time range and filter toolbars scroll on narrow screens, so
+      that Update and Filter stay reachable, for example in the system log of
+      a node at 1024x768.
+    - keep the unit of a service log on Reset. Before, Reset showed the log
+      of the whole node in the window of the service.
+
+  * network: show a hint when a VRF is selected for an interface with a
+    gateway, as the gateway then only applies within the VRF, and moving the
+    interface used for management or cluster traffic into a VRF can make the
+    node unreachable.
+
+  * fields from a property schema: show the description above the field, so
+    that the error tip of an invalid field does not cover it.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 24 Nov 2026 22:05:52 +0100
+
 proxmox-widget-toolkit (5.2.21) trixie; urgency=medium
 
   * fix #8297: dns, time: reload the view after its editor is closed. Before,
