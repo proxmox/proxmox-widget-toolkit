@@ -454,6 +454,7 @@ Ext.define('Proxmox.panel.JournalView', {
         {
             xtype: 'toolbar',
             dock: 'top',
+            overflowHandler: 'scroller',
             items: [
                 '->',
                 {
