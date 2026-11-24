@@ -532,6 +532,7 @@ Ext.define('Proxmox.panel.JournalView', {
         {
             xtype: 'toolbar',
             dock: 'top',
+            overflowHandler: 'scroller',
             reference: 'filterSection',
             bind: { hidden: '{!showFilters}' },
             items: [
