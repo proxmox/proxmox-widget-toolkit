@@ -1,3 +1,16 @@
+proxmox-widget-toolkit (5.2.21) trixie; urgency=medium
+
+  * fix #8297: dns, time: reload the view after its editor is closed. Before,
+    it showed the old values until the next poll, which takes up to ten
+    seconds for DNS, so removing a DNS server looked like it did nothing.
+
+  * summary and dashboard panels: start each row of items at the left. An
+    item taller than the others of its row, like the status panel of a guest
+    summary in Proxmox VE, caught the first item of the next row and moved all
+    following items over by one column.
+
+ -- Proxmox Support Team <support@proxmox.com>  Tue, 24 Nov 2026 08:16:16 +0100
+
 proxmox-widget-toolkit (5.2.20) trixie; urgency=medium
 
   * apt: history:
