@@ -361,7 +361,6 @@ Ext.define('Proxmox.panel.JournalView', {
             }
         },
 
-        // enable the Reset button only while some filter differs from the unfiltered default
         syncFiltersActive: function () {
             let me = this;
             let priority = me.lookup('priorityFilter');
@@ -370,17 +369,17 @@ Ext.define('Proxmox.panel.JournalView', {
             }
             let active =
                 priority.getValue() !== '__all__' ||
-                !!me.lookup('unitFilter').getValue() ||
+                (me.lookup('unitFilter').getValue() || '') !== (me.getView().unit || '') ||
                 !!me.lookup('serviceFilter').getValue() ||
                 me.lookup('kernelFilter').getValue();
             me.getViewModel().set('filtersActive', active);
         },
 
-        // reset every filter to the unfiltered view, broadening a per-service log to the whole node
         onResetFilters: function () {
             let me = this;
             me.lookup('priorityFilter').setValue('__all__');
-            me.lookup('unitFilter').setValue('');
+            // preserve initial unit for per-service logs
+            me.lookup('unitFilter').setValue(me.getView().unit || '');
             me.lookup('serviceFilter').setValue('');
             me.lookup('kernelFilter').setValue(false);
             me.onFilterChange();
