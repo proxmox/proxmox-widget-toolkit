@@ -1,3 +1,13 @@
+proxmox-widget-toolkit (5.2.23) trixie; urgency=medium
+
+  * utils: avoid throwing an unhandled JavaScript error when an error or
+    load mask is updated on a component that was already destroyed or
+    has no DOM element, for example when an in-flight API request
+    finishes after navigating away from a view. Skipped error messages
+    are still logged to the browser console.
+
+ -- Proxmox Support Team <support@proxmox.com>  Wed, 25 Nov 2026 12:34:22 +0100
+
 proxmox-widget-toolkit (5.2.22) trixie; urgency=medium
 
   * journal view:
