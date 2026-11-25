@@ -399,10 +399,16 @@ Ext.define('Proxmox.Utils', {
         // use el.mask() instead
         setErrorMask: function (comp, msg) {
             if (!comp || comp.destroyed || comp.destroying) {
+                if (msg && msg !== true) {
+                    console.debug('skipping error mask on missing or destroyed component:', msg);
+                }
                 return;
             }
             let el = comp.el;
             if (!el || el.destroyed || !el.dom) {
+                if (msg && msg !== true) {
+                    console.warn('skipping error mask on component without DOM element:', msg);
+                }
                 return;
             }
             if (!msg) {
