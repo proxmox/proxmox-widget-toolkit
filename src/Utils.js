@@ -398,8 +398,11 @@ Ext.define('Proxmox.Utils', {
         // comp.setLoading() is buggy in ExtJS 4.0.7, so we
         // use el.mask() instead
         setErrorMask: function (comp, msg) {
+            if (!comp || comp.destroyed || comp.destroying) {
+                return;
+            }
             let el = comp.el;
-            if (!el) {
+            if (!el || el.destroyed || !el.dom) {
                 return;
             }
             if (!msg) {
